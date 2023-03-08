@@ -1,0 +1,15 @@
+{
+  "soundVolume": {
+    "Sound_GoldCoin": 0.59,
+    "Sound_OneArmBandit": 1.0,
+    "Sound_PopShow": 1.0,
+    "Sound_UIButton": 1.0,
+    "Sound_Hint": 1.0,
+    "Sound_Undo": 1.0,
+    "Sound_PassLevel": 1.0,
+    "Sound_ChestOpen": 1.0
+  },
+  "musicVolume": {
+    "Sound_BGM": 1.0
+  }
+}

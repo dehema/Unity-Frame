@@ -1,0 +1,62 @@
+{
+  "bonus": {
+    "inStack": {
+      "trigger": "inStack",
+      "type": "gold",
+      "price": 0.1,
+      "weight": 1
+    },
+    "build": {
+      "trigger": "build",
+      "type": "cash",
+      "price": 1.2,
+      "weight": 1
+    },
+    "ace": {
+      "trigger": "ace",
+      "type": "puzzle",
+      "price": 0,
+      "weight": 2
+    },
+    "smallChest": {
+      "trigger": "smallChest",
+      "type": "cash",
+      "price": 3,
+      "weight": 1
+    },
+    "midChest": {
+      "trigger": "midChest",
+      "type": "cash",
+      "price": 10,
+      "weight": 1
+    },
+    "bigChest": {
+      "trigger": "bigChest",
+      "type": "cash",
+      "price": 30,
+      "weight": 1
+    }
+  },
+  "others": {
+    "smallChest_unlock": {
+      "key": "smallChest_unlock",
+      "value": 3,
+      "#description": "小宝箱解锁需要签到次数"
+    },
+    "midChest_unlock": {
+      "key": "midChest_unlock",
+      "value": 10,
+      "#description": "中宝箱解锁需要签到次数"
+    },
+    "bigChest_unlock": {
+      "key": "bigChest_unlock",
+      "value": 30,
+      "#description": "大宝箱解锁需要签到次数"
+    },
+    "passLevel_chestNum": {
+      "key": "passLevel_chestNum",
+      "value": 4,
+      "#description": "过关后可以免费打开的宝箱数"
+    }
+  }
+}
