@@ -1,0 +1,78 @@
+{
+  "CashOutMethod": {
+    "1": {
+      "ID": 1,
+      "type": 1,
+      "cashNum": 102,
+      "needNum": 102,
+      "taskID": 1,
+      "countDown": 20
+    },
+    "2": {
+      "ID": 2,
+      "type": 1,
+      "cashNum": 111,
+      "needNum": 111,
+      "taskID": 2,
+      "countDown": 15
+    },
+    "3": {
+      "ID": 3,
+      "type": 1,
+      "cashNum": 109,
+      "needNum": 109,
+      "taskID": 3,
+      "countDown": 3
+    },
+    "4": {
+      "ID": 4,
+      "type": 2,
+      "cashNum": 53.2,
+      "needNum": 10000,
+      "taskID": 1,
+      "countDown": 20
+    },
+    "5": {
+      "ID": 5,
+      "type": 2,
+      "cashNum": 12.8,
+      "needNum": 9955,
+      "taskID": 2,
+      "countDown": 15
+    },
+    "6": {
+      "ID": 6,
+      "type": 2,
+      "cashNum": 8.6,
+      "needNum": 9657,
+      "taskID": 3,
+      "countDown": 10
+    }
+  },
+  "Task": {
+    "1": {
+      "ID": 1,
+      "type": 1,
+      "need": 2,
+      "countDown": 15,
+      "descLang": 1667199141,
+      "descLangNoLimit": 1667198313
+    },
+    "2": {
+      "ID": 2,
+      "type": 2,
+      "need": 2,
+      "countDown": 15,
+      "descLang": 1667199142,
+      "descLangNoLimit": 1667198314
+    },
+    "3": {
+      "ID": 3,
+      "type": 3,
+      "need": 10000,
+      "countDown": 15,
+      "descLang": 1667199143,
+      "descLangNoLimit": 1667198315
+    }
+  }
+}

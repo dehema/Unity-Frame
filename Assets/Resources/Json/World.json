@@ -1,0 +1,22 @@
+{
+  "Unit": {
+    "player": {
+      "ID": "player",
+      "size": 1
+    },
+    "city": {
+      "ID": "city",
+      "size": 2
+    },
+    "troop": {
+      "ID": "troop",
+      "size": 1
+    }
+  },
+  "Common": {
+    "1": {
+      "ID": 1,
+      "val": ""
+    }
+  }
+}

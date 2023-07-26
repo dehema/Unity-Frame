@@ -1,0 +1,12 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public partial class #ScriptName# : #Superclass#
+{
+#UIModelContent#
+    override internal void _LoadUI()    
+    {
+#Content#    }
+}

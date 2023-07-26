@@ -1,0 +1,15 @@
+{
+	"BuildTarget": "Android",
+	"DesState": "STR",
+	"BaseUrl": "http://g.creativecatapp.com",
+	"GameName": "Solitaire Klondike World",
+	"PackageName": "com.classicsolitaregame.solitareklondikeworld",
+	"BuildCode": 1,
+	"Applovin_SDK_KEY": "Fs-cUqJfRU6DI-3nHAtCUubM2g2mHMT4kl_2_v9IyohMfXicNfA0eEwvSJ6gvrtpXtmu2TpTdL-QrLAMqwaXPS",
+	"Applovin_REWARD_ID": "",
+	"Applovin_INTER_ID": "",
+	"Adjust_APP_ID": "",
+	"GameCode": "",
+	"Rate_Url": "www",
+	"Build_path": "/Users/yfax/Desktop/未命名文件夹"
+}

@@ -1,0 +1,23 @@
+{
+  "GearID": {
+    "sword_1": {
+      "gearID": "sword_1",
+      "gearType": "sword",
+      "langID": "长剑",
+      "#注释": "长剑"
+    }
+  },
+  "WeaponOffset": {
+    "sword_1": {
+      "WeaponID": "sword_1",
+      "posX": "0.011",
+      "posY": "-0.068",
+      "posZ": "-0.015",
+      "angX": "7.216",
+      "angY": "-157.351",
+      "angZ": "92.852",
+      "#备注": ""
+    }
+  },
+  "Other": {}
+}

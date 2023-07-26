@@ -1,0 +1,57 @@
+{
+  "Mix": {
+    "1667200000": {
+      "tid": 1667200000,
+      "img_c_1": "[\"UI/Common/box_small_close\",51,46]",
+      "img_c_2": "",
+      "img_c_3": ""
+    },
+    "1667200001": {
+      "tid": 1667200001,
+      "img_c_1": "[\"UI/Common/box_small_close\",51,46]",
+      "img_c_2": "[\"UI/Common/box_small_open\",52,46]",
+      "img_c_3": ""
+    },
+    "1667200002": {
+      "tid": 1667200002,
+      "img_c_1": "[\"UI/Common/box_small_close\",51,46]",
+      "img_c_2": "[\"UI/Common/box_small_close\",51,46]",
+      "img_c_3": "[\"UI/Common/box_small_close\",51,46]"
+    },
+    "1667200010": {
+      "tid": 1667200010,
+      "img_c_1": "[\"UI/GameDesc/tips_wild\",104,41]",
+      "img_c_2": "",
+      "img_c_3": ""
+    },
+    "1667200011": {
+      "tid": 1667200011,
+      "img_c_1": "[\"UI/GameDesc/tips_freeSpin\",229,44]",
+      "img_c_2": "",
+      "img_c_3": ""
+    },
+    "1667200012": {
+      "tid": 1667200012,
+      "img_c_1": "[\"UI/GameDesc/tips_cash\",150,44]",
+      "img_c_2": "",
+      "img_c_3": ""
+    },
+    "1667200013": {
+      "tid": 1667200013,
+      "img_c_1": "[\"UI/GameDesc/tips_bonus\",209,52]",
+      "img_c_2": "",
+      "img_c_3": ""
+    },
+    "1667200014": {
+      "tid": 1667200014,
+      "img_c_1": "[\"UI/GameDesc/boost_disco_1\",138,42]",
+      "img_c_2": "",
+      "img_c_3": ""
+    }
+  },
+  "勿删": {
+    "1": {
+      "ID": 1
+    }
+  }
+}

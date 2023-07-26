@@ -1,0 +1,105 @@
+{
+  "Common": {
+    "HPSliderDisplay": {
+      "ID": "HPSliderDisplay",
+      "val": 1.5,
+      "#备注": "血条持续时间"
+    },
+    "World_Size": {
+      "ID": "World_Size",
+      "val": "200,200",
+      "#备注": "大地图_地图尺寸(宽,高)"
+    },
+    "World_UnitPixelSize": {
+      "ID": "World_UnitPixelSize",
+      "val": "256",
+      "#备注": "大地图_单元像素大小（大地图上视为一个单元格的像素大小）"
+    },
+    "World_Camera_MoveSpeed": {
+      "ID": "World_Camera_MoveSpeed",
+      "val": "15",
+      "#备注": "大地图_相机_移动速度"
+    },
+    "World_Camera_DragSpeed": {
+      "ID": "World_Camera_DragSpeed",
+      "val": "0.015",
+      "#备注": "大地图_相机_拖拽速度"
+    },
+    "World_Camera_ZoomHeight": {
+      "ID": "World_Camera_ZoomHeight",
+      "val": "10,20",
+      "#备注": "大地图_相机_高度区间"
+    },
+    "World_Camera_ZoomRot": {
+      "ID": "World_Camera_ZoomRot",
+      "val": "40,50",
+      "#备注": "大地图_相机_角度区间"
+    },
+    "World_Camera_ZoomSpeed": {
+      "ID": "World_Camera_ZoomSpeed",
+      "val": "0.3",
+      "#备注": "大地图_相机_缩放速度"
+    },
+    "World_Player_MoveSpeed": {
+      "ID": "World_Player_MoveSpeed",
+      "val": "5",
+      "#备注": "大地图_玩家_移动速度 "
+    },
+    "World_Unit_RotX": {
+      "ID": "World_Unit_RotX",
+      "val": "45",
+      "#备注": "大地图_单位_X轴旋转量"
+    },
+    "World_Time_NormalSpeed": {
+      "ID": "World_Time_NormalSpeed",
+      "val": "0.8",
+      "#备注": "大地图_时间_普通的流速"
+    },
+    "World_Time_QuickSpeed": {
+      "ID": "World_Time_QuickSpeed",
+      "val": "2",
+      "#备注": "大地图_时间_加快的流速"
+    },
+    "World_Trade_MoveSpeed": {
+      "ID": "World_Trade_MoveSpeed",
+      "val": "2.0",
+      "#备注": "大地图_商队_移动速度"
+    },
+    "World_Trade_InitGold": {
+      "ID": "World_Trade_InitGold",
+      "val": "100",
+      "#备注": "大地图_商队_初始资金"
+    },
+    "row_16": {
+      "ID": "",
+      "val": 0.0,
+      "#备注": ""
+    },
+    "row_17": {
+      "ID": "",
+      "val": 0.0,
+      "#备注": ""
+    },
+    "row_18": {
+      "ID": "",
+      "val": 0.0,
+      "#备注": ""
+    },
+    "row_19": {
+      "ID": "",
+      "val": 0.0,
+      "#备注": ""
+    },
+    "row_20": {
+      "ID": "",
+      "val": 0.0,
+      "#备注": ""
+    },
+    "row_21": {
+      "ID": "",
+      "val": 0.0,
+      "#备注": " "
+    }
+  },
+  "Other": {}
+}

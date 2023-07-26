@@ -1,0 +1,110 @@
+#层级配置 每个层级单位之间额间隔默认为400，也就是说order为1的层级从400开始，与order为2的层级中间间隔400个sortingOrder可以使用，[comment]为注释
+#考虑到canvas的sortingOrder最大只能到32767，order的上限不能超过32767/400也就是80稍多一点，为保证增加默认间隔不需要修改order，建议最大order不超过40
+layer:
+    NormalUI:
+        comment: 普通UI
+        order: 0
+    MenuUI:
+        comment: 游戏菜单UI
+        order: 5
+    PopUI:
+        comment: 弹窗UI
+        order: 10
+    TipsUI:
+        comment: 提示UI
+        order: 20
+    GuideUI:
+        comment: 引导UI
+        order: 25
+    PreventUI:
+        comment: 阻挡点击UI
+        order: 27
+    CursorUI:
+        comment: 光标特效
+        order: 28
+
+#View配置
+#必填#
+#[key]为prefab同名，默认也与脚本同名
+#[comment]为注释，调试时会用到
+#可选#
+#[layer]为layer配置字段，用来调整canvas的sortingOrder
+#[hasBg]为背景图是否接受射线默认true
+#[bgColor]背景颜色默认透明
+#[bgClose]点击背景是否关闭
+#[showMethod]显示动画 pop为弹出
+#[worldAllow]允许存在在大地图上的UI，如果允许则：屏幕边缘光标改变样式，打开页面不暂停世界时间流速，屏幕不能移动到Game窗口外面
+#[escClose]按ESC键可以关闭的页面
+view:
+    DebugView:
+        comment: 调试弹窗
+        layer: NormalUI
+    BlockView:
+        comment: 奖励弹窗
+        layer: PopUI
+        hasBg: true
+        bgColor: "#000000B0"
+    TopView:
+        comment: 资源栏
+        layer: PopUI
+        hasBg: false
+        worldAllow: true
+    LoadingView:
+        comment: loading
+        layer: PopUI
+    ExampleView:
+        comment: 示例UI
+        layer: PopUI
+        bgColor: "#000000B0"
+        showMethod: pop
+        bgClose: true
+    TipsView:
+        comment: 提示弹窗UI
+        layer: TipsUI
+        hasBg: false
+        worldAllow: true
+    ImageTextMixView:
+        comment: 图文混合
+        bgColor: "#000000B0"
+        bgClose: true
+    HUDView:
+        comment: 战场计时数据
+        layer: TipsUI
+        hasBg: false
+        worldAllow: true
+    RecruitView:
+        comment: 招募
+        layer: PopUI
+        bgColor: "#000000B0"
+        escClose: true
+    LoadSceneView:
+        comment: 读取页面
+    CursorEffectView:
+        comment: 光标特效
+        layer: CursorUI
+        hasBg: false
+        worldAllow: true
+    EscView:
+        comment: 暂停游戏菜单
+        layer: TipsUI
+        bgColor: "#000000B0"
+        escClose: true
+    SettingView:
+        comment: 设置
+        layer: TipsUI
+        bgColor: "#000000B0"
+        escClose: true
+    CityInfoView:
+        comment: 城镇信息
+        layer: PopUI
+        bgColor: "#000000B0"
+        escClose: true
+        showMethod: pop
+    BattleVictoryView:
+        comment: 战斗胜利
+        layer: PopUI
+        bgColor: "#000000B0"
+    BattleDefeatView:
+        comment: 战斗失败
+        layer: PopUI
+        bgColor: "#000000B0"

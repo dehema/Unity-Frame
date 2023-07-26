@@ -1,0 +1,126 @@
+{
+  "faction": {
+    "11": {
+      "factionID": 11,
+      "name": 1667200411,
+      "raceID": "Human",
+      "_defaultBuilding": "10001,11001,12001",
+      "_initial_Building": "10001,11001,11011,11021,12001",
+      "_init_troop_unit": "{1101:5}"
+    },
+    "12": {
+      "factionID": 12,
+      "name": 1667200412,
+      "raceID": "Human",
+      "_defaultBuilding": "10001,11001,12001",
+      "_initial_Building": "10001,11001,11011,11021,12001",
+      "_init_troop_unit": "{1101:5}"
+    },
+    "21": {
+      "factionID": 21,
+      "name": 1667200421,
+      "raceID": "Orc",
+      "_defaultBuilding": "10001,11001,12001",
+      "_initial_Building": "10001,11001,11011,11021,12001",
+      "_init_troop_unit": "{2101:5}"
+    },
+    "31": {
+      "factionID": 31,
+      "name": 1667200431,
+      "raceID": "HighElf",
+      "_defaultBuilding": "10001,11001,12001",
+      "_initial_Building": "10001,11001,11011,11021,12001",
+      "_init_troop_unit": "{3101:5}"
+    },
+    "41": {
+      "factionID": 41,
+      "name": 1667200441,
+      "raceID": "Barbarian",
+      "_defaultBuilding": "10001,11001,12001",
+      "_initial_Building": "10001,11001,11011,11021,12001",
+      "_init_troop_unit": "{4101:5}"
+    },
+    "51": {
+      "factionID": 51,
+      "name": 1667200451,
+      "raceID": "Undead",
+      "_defaultBuilding": "10001,11001,12001",
+      "_initial_Building": "10001,11001,11011,11021,12001",
+      "_init_troop_unit": "{5101:5}"
+    }
+  },
+  "race": {
+    "Human": {
+      "raceID": "Human",
+      "name": 1667200301,
+      "_mainBase": 10001,
+      "_military": "11001",
+      "_economy": "12001",
+      "Column5": "",
+      "Column6": "",
+      "Column7": "",
+      "Column8": "",
+      "Column9": ""
+    },
+    "Orc": {
+      "raceID": "Orc",
+      "name": 1667200302,
+      "_mainBase": 10001,
+      "_military": "11001",
+      "_economy": "12001",
+      "Column5": "",
+      "Column6": "",
+      "Column7": "",
+      "Column8": "",
+      "Column9": ""
+    },
+    "HighElf": {
+      "raceID": "HighElf",
+      "name": 1667200303,
+      "_mainBase": 10001,
+      "_military": "11001",
+      "_economy": "12001",
+      "Column5": "",
+      "Column6": "",
+      "Column7": "",
+      "Column8": "",
+      "Column9": ""
+    },
+    "Barbarian": {
+      "raceID": "Barbarian",
+      "name": 1667200304,
+      "_mainBase": 10001,
+      "_military": "11001",
+      "_economy": "12001",
+      "Column5": "",
+      "Column6": "",
+      "Column7": "",
+      "Column8": "",
+      "Column9": ""
+    },
+    "Undead": {
+      "raceID": "Undead",
+      "name": 1667200305,
+      "_mainBase": 10001,
+      "_military": "11001",
+      "_economy": "12001",
+      "Column5": "",
+      "Column6": "",
+      "Column7": "",
+      "Column8": "",
+      "Column9": ""
+    },
+    "Dwarf": {
+      "raceID": "Dwarf",
+      "name": 1667200306,
+      "_mainBase": 10001,
+      "_military": "11001",
+      "_economy": "12001",
+      "Column5": "",
+      "Column6": "",
+      "Column7": "",
+      "Column8": "",
+      "Column9": ""
+    }
+  }
+}
