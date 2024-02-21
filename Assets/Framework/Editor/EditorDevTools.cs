@@ -128,6 +128,8 @@ public class EditorDevTools : EditorWindow
             string path = Directory.GetParent(Application.dataPath).FullName + @"\Product\StaticData";
             System.Diagnostics.Process.Start("Explorer.exe", path);
         }
+        GUILayout.EndHorizontal();
+        GUILayout.BeginHorizontal();
         if (GUILayout.Button("¥Úø™∂‡”Ô—‘≈‰÷√"))
         {
             string langName = Application.systemLanguage.ToString();
@@ -138,6 +140,10 @@ public class EditorDevTools : EditorWindow
             string path = Application.streamingAssetsPath + $"/Lang/{langName}.json";
             Debug.Log(path);
             EditorUtility.OpenWithDefaultApp(path);
+        }
+        if (GUILayout.Button("∂‡”Ô—‘∫∫“Î”¢"))
+        {
+            EditorTranslate.OnClickTranslateLanguage();
         }
         GUILayout.EndHorizontal();
         GUILayout.BeginHorizontal();
@@ -153,6 +159,11 @@ public class EditorDevTools : EditorWindow
             }
         }
         GUILayout.EndHorizontal();
+    }
+
+    public static string GetLangPath(SystemLanguage language)
+    {
+        return Application.streamingAssetsPath + $"/Lang/{language}.json";
     }
 
     bool audit = false;
