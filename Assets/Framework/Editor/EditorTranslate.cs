@@ -21,8 +21,11 @@ public class EditorTranslate : MonoBehaviour
         Dictionary<string, string> englishDict = ReadChineseJson(SystemLanguage.English);
         List<string> transLangKey = new List<string>();
         StringBuilder transStr = new StringBuilder();
+        List<string> ignoreList = GetTranslateIgnore();
         foreach (var item in chineseDict)
         {
+            if (ignoreList.Contains(item.Key))
+                continue;
             if (!englishDict.ContainsKey(item.Key))
             {
                 transLangKey.Add(item.Key);
@@ -37,6 +40,11 @@ public class EditorTranslate : MonoBehaviour
             }
         }
         string transTxt = transStr.ToString();
+        if (string.IsNullOrEmpty(transTxt))
+        {
+            Debug.Log("没有需要翻译的多余项");
+            return;
+        }
         //执行翻译
         List<string> transVal = TransStr(transTxt);
         if (transLangKey.Count != transVal.Count)
@@ -55,11 +63,13 @@ public class EditorTranslate : MonoBehaviour
         Dictionary<string, string> newEnglishDict = new Dictionary<string, string>();
         foreach (var item in chineseDict)
         {
+            if (ignoreList.Contains(item.Key))
+                continue;
             newEnglishDict.Add(item.Key, englishDict[item.Key]);
         }
         string transFileTxt = JsonConvert.SerializeObject(newEnglishDict);
         File.WriteAllText(EditorDevTools.GetLangPath(SystemLanguage.English), transFileTxt);
-        Debug.Log("翻译完成,共翻译" + transLangKey.Count + "个多语言");
+        Debug.Log("翻译完成,共翻译" + transLangKey.Count + $"个多语言,跳过{ignoreList.Count}个翻译项");
     }
 
     static Dictionary<string, string> ReadChineseJson(SystemLanguage language)
@@ -68,6 +78,20 @@ public class EditorTranslate : MonoBehaviour
         string content = File.ReadAllText(path);
         Dictionary<string, string> dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(content);
         return dict;
+    }
+
+    static List<string> GetTranslateIgnore()
+    {
+        List<string> list = new List<string>();
+        string path = Application.streamingAssetsPath + $"/Lang/translateIgnore.json";
+        if (!File.Exists(path))
+        {
+            return list;
+        }
+        string content = File.ReadAllText(path);
+        list = JsonConvert.DeserializeObject<List<string>>(content);
+        return list;
+
     }
 
     /// <summary>
