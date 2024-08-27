@@ -34,7 +34,7 @@ public class SceneMgr : MonoSingleton<SceneMgr>
     /// </summary>
     public void OnSceneStartChange()
     {
-        if (currSceneID == SceneID.WorldMap)
+        if (currSceneID == SceneID.MainScene)
         {
         }
     }
@@ -51,7 +51,7 @@ public class SceneMgr : MonoSingleton<SceneMgr>
     {
         get
         {
-            return currSceneID == SceneID.WorldMap;
+            return currSceneID == SceneID.MainScene;
         }
     }
 

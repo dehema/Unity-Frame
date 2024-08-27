@@ -1,7 +1,7 @@
 public enum SceneID
 { 
-    GameScene,
-    WorldMap,
+    LoadScene,
+    MainScene,
     BattleField,
     GUIKit,
 }
