@@ -3,5 +3,6 @@
     LoadScene,
     MainScene,
     BattleField,
+    FPSDemo,
     GUIKit,
 }

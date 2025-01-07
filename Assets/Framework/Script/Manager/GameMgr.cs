@@ -37,7 +37,7 @@ public class GameMgr : MonoBehaviour
 
     public void StartGame()
     {
-        SceneMgr.Ins.ChangeScene(SceneID.MainScene, () => { EnterGame(); });
+        SceneMgr.Ins.ChangeScene(SceneID.FPSDemo, () => { EnterGame(); });
     }
 
     /// <summary>
