@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+锘縰sing Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -26,30 +26,30 @@ public class AllFactionConfig : ConfigBase
 public class FactionConfig
 {
     /// <summary>
-    /// 派系ID
+    /// 娲剧郴ID
     /// </summary>
     public int ID;
     public string name;
     /// <summary>
-    /// 种族ID
+    /// 绉嶆棌ID
     /// </summary>
     public RaceType raceID;
     public string _defaultBuilding;
     public string _initial_Building;
     /// <summary>
-    /// 默认被建造的建筑
+    /// 榛樿琚缓閫犵殑寤虹瓚
     /// </summary>
     public List<int> defaultBuilding = new List<int>();
     /// <summary>
-    /// 初始可显示的
+    /// 鍒濆鍙樉绀虹殑
     /// </summary>
     public List<int> initial_Building = new List<int>();
     /// <summary>
-    /// 初始部队单位
+    /// 鍒濆閮ㄩ槦鍗曚綅
     /// </summary>
     public string _init_troop_unit;
     /// <summary>
-    /// 初始部队单位
+    /// 鍒濆閮ㄩ槦鍗曚綅
     /// </summary>
     public Dictionary<int, int> init_troop_unit = new Dictionary<int, int>();
 
@@ -62,27 +62,27 @@ public class FactionConfig
 }
 
 /// <summary>
-/// 种族建筑
+/// 绉嶆棌寤虹瓚
 /// </summary>
 public class RaceConfig
 {
     /// <summary>
-    /// 种族类型
+    /// 绉嶆棌绫诲瀷
     /// </summary>
     public RaceType raceType;
     public string _mainBase;
     public string _military;
     public string _economy;
     /// <summary>
-    /// 主要序列
+    /// 涓昏搴忓垪
     /// </summary>
     public List<int> mainBase = new List<int>();
     /// <summary>
-    /// 军事序列
+    /// 鍐涗簨搴忓垪
     /// </summary>
     public List<int> military = new List<int>();
     /// <summary>
-    /// 经济序列
+    /// 缁忔祹搴忓垪
     /// </summary>
     public List<int> economy = new List<int>();
     public void Init()

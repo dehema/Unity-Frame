@@ -1,26 +1,26 @@
-/// <summary>
-/// Ñ°Â·Ä¿µÄ
+ï»¿/// <summary>
+/// å¯»è·¯ç›®çš„
 /// </summary>
 public enum NavPurpose
 {
     /// <summary>
-    /// ÒÆ¶¯µ½Ä³¸öÎ»ÖÃ
+    /// ç§»åŠ¨åˆ°æŸä¸ªä½ç½®
     /// </summary>
     movePos,
     /// <summary>
-    /// ·ÃÎÊ³ÇÕò
+    /// è®¿é—®åŸé•‡
     /// </summary>
     city,
     /// <summary>
-    /// ·ÃÎÊ²¿¶Ó
+    /// è®¿é—®éƒ¨é˜Ÿ
     /// </summary>
     troop,
     /// <summary>
-    /// Ã³Ò×
+    /// è´¸æ˜“
     /// </summary>
     trade,
     /// <summary>
-    /// Ã³Ò×·µ»Ø
+    /// è´¸æ˜“è¿”å›
     /// </summary>
     tradeBack,
 }

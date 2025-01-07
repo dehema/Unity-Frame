@@ -1,4 +1,4 @@
-public enum GoLayer
+﻿public enum GoLayer
 {
     Model = 12
 }

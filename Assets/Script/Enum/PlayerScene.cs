@@ -1,19 +1,19 @@
-using System.Collections;
+锘縰sing System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public enum PlayerScene
 {
     /// <summary>
-    /// 世界
+    /// 涓栫晫
     /// </summary>
     world,
     /// <summary>
-    /// 城镇
+    /// 鍩庨晣
     /// </summary>
     city,
     /// <summary>
-    /// 战场
+    /// 鎴樺満
     /// </summary>
     battleFiled,
 }

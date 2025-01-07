@@ -1,4 +1,4 @@
-public enum TimeSpeed
+﻿public enum TimeSpeed
 {
     pause,
     normal,

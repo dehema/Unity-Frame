@@ -1,4 +1,4 @@
-public class AnimatorParams
+﻿public class AnimatorParams
 {
     public const string idle = "idle";
     public const string run = "run";

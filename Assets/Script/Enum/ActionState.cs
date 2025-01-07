@@ -1,4 +1,4 @@
-public enum ActionState
+﻿public enum ActionState
 {
     idle,
     run,

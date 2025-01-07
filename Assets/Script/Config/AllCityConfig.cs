@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+锘縰sing Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -30,24 +30,24 @@ public class CityConfig
     public int ID;
     public string name;
     /// <summary>
-    /// X坐标
+    /// X鍧愭爣
     /// </summary>
     public float posX;
     /// <summary>
-    /// Y坐标
+    /// Y鍧愭爣
     /// </summary>
     public float posY;
     public string icon;
     /// <summary>
-    /// 派系ID
+    /// 娲剧郴ID
     /// </summary>
     public int factionID;
     /// <summary>
-    /// 商队数量
+    /// 鍟嗛槦鏁伴噺
     /// </summary>
     public int tradeCaravan_num;
     /// <summary>
-    /// 商队初始资金
+    /// 鍟嗛槦鍒濆璧勯噾
     /// </summary>
     public int tradeCaravan_gold;
 }
@@ -56,56 +56,56 @@ public class BuildingConfig
 {
     public int ID;
     /// <summary>
-    /// 建筑ID
+    /// 寤虹瓚ID
     /// </summary>
     public string buildingID;
     /// <summary>
-    /// 种族
+    /// 绉嶆棌
     /// </summary>
     public RaceType raceType;
     /// <summary>
-    /// 建筑类型
+    /// 寤虹瓚绫诲瀷
     /// </summary>
     public BuildingType buildingType;
     /// <summary>
-    /// 建筑二级类型
+    /// 寤虹瓚浜岀骇绫诲瀷
     /// </summary>
     public BuildingSubType buildingSubType;
     /// <summary>
-    /// 建筑名称
+    /// 寤虹瓚鍚嶇О
     /// </summary>
     public string name;
     /// <summary>
-    /// 前置建筑
+    /// 鍓嶇疆寤虹瓚
     /// </summary>
     public string _preBuildingIDs;
     /// <summary>
-    /// 升级后的建筑ID
+    /// 鍗囩骇鍚庣殑寤虹瓚ID
     /// </summary>
     public int upgradeBuildingID = 0;
     /// <summary>
-    /// 图标
+    /// 鍥炬爣
     /// </summary>
     public string icon;
     /// <summary>
-    /// 花费金钱
+    /// 鑺辫垂閲戦挶
     /// </summary>
     public int costGold;
     /// <summary>
-    /// 升级耗时
+    /// 鍗囩骇鑰楁椂
     /// </summary>
     public int costHour;
     /// <summary>
-    /// 是否启用
+    /// 鏄惁鍚敤
     /// </summary>
     public bool enable;
     /// <summary>
-    /// 每日工资
+    /// 姣忔棩宸ヨ祫
     /// </summary>
     public int dailySalary;
 
     /// <summary>
-    /// 前置建筑
+    /// 鍓嶇疆寤虹瓚
     /// </summary>
     public List<int> preBuildingIDs = new List<int>();
 
@@ -117,18 +117,18 @@ public class BuildingConfig
 }
 
 /// <summary>
-/// 军事设施每日招募设置
+/// 鍐涗簨璁炬柦姣忔棩鎷涘嫙璁剧疆
 /// </summary>
 public class RecruitDailyConfig
 {
     public int ID;
     /// <summary>
-    /// 生成总数
+    /// 鐢熸垚鎬绘暟
     /// </summary>
     public int totalNum;
     public string _recruitNum;
     /// <summary>
-    /// 招募
+    /// 鎷涘嫙
     /// </summary>
     public Dictionary<int, int> recruitNum;
 

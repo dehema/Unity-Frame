@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 
 public class AllUnitConfig : ConfigBase
@@ -14,57 +14,57 @@ public class AllUnitConfig : ConfigBase
 public class UnitConfig
 {
     /// <summary>
-    /// ID µÚ1Î»ÊÇÖÖ×åID µÚ¶şÎ»ÊÇ±øÖÖÀàĞÍ ×îºóÁ½Î»ÊÇ·ÖÀà
+    /// ID ç¬¬1ä½æ˜¯ç§æ—ID ç¬¬äºŒä½æ˜¯å…µç§ç±»å‹ æœ€åä¸¤ä½æ˜¯åˆ†ç±»
     /// </summary>
     public int ID;
     public UnitType type;
     public string name;
     /// <summary>
-    /// ÉúÃüÖµ
+    /// ç”Ÿå‘½å€¼
     /// </summary>
     public int hp;
     /// <summary>
-    /// ÒÆ¶¯ËÙ¶È
+    /// ç§»åŠ¨é€Ÿåº¦
     /// </summary>
     public float moveSpeed;
     /// <summary>
-    /// ¹¥»÷Á¦
+    /// æ”»å‡»åŠ›
     /// </summary>
     public float attack;
     /// <summary>
-    /// ¹¥»÷¼ä¸ô
+    /// æ”»å‡»é—´éš”
     /// </summary>
     public float attackInterval;
     /// <summary>
-    /// ¹¥»÷·¶Î§
+    /// æ”»å‡»èŒƒå›´
     /// </summary>
     public float attackRange;
     /// <summary>
-    /// ¹¥»÷µĞÈËºó,¶Ô·½¶à¾ÃÊÜÉË
+    /// æ”»å‡»æ•Œäººå,å¯¹æ–¹å¤šä¹…å—ä¼¤
     /// </summary>
     public float attackHurtTime;
     /// <summary>
-    /// ¹¥»÷Ê±³¤
+    /// æ”»å‡»æ—¶é•¿
     /// </summary>
     public float attackDuration;
     /// <summary>
-    /// ×ªÏòËÙ¶È
+    /// è½¬å‘é€Ÿåº¦
     /// </summary>
     public float angularSpeed;
     /// <summary>
-    /// Ä£ĞÍ¸ß¶È
+    /// æ¨¡å‹é«˜åº¦
     /// </summary>
     public float height;
     /// <summary>
-    /// ¼ÛÖµ/ÕĞÄ¼¼Û¸ñ
+    /// ä»·å€¼/æ‹›å‹Ÿä»·æ ¼
     /// </summary>
     public int value;
     /// <summary>
-    /// Ã¿¼¶¼ÛÖµÔö³¤
+    /// æ¯çº§ä»·å€¼å¢é•¿
     /// </summary>
     public int value_pre;
     /// <summary>
-    /// Î¬»¤·Ñ
+    /// ç»´æŠ¤è´¹
     /// </summary>
     public int upkeep;
     public string fullID;

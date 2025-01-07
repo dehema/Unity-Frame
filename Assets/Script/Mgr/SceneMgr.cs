@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,11 +6,11 @@ using UnityEngine.SceneManagement;
 
 public class SceneMgr : MonoSingleton<SceneMgr>
 {
-    //ÒªÇĞ»»µÄ³¡¾°Ãû³Æ
+    //è¦åˆ‡æ¢çš„åœºæ™¯åç§°
     string targetSceneName;
     SceneID currSceneID;
     /// <summary>
-    /// ÇĞ»»³¡¾°
+    /// åˆ‡æ¢åœºæ™¯
     /// </summary>
     /// <param name="_sceneID"></param>
     public void ChangeScene(SceneID _sceneID, Action _changeSuccess = null)
@@ -22,7 +22,7 @@ public class SceneMgr : MonoSingleton<SceneMgr>
         {
             currSceneID = _sceneID;
             _changeSuccess?.Invoke();
-            Debug.Log("ÇĞ»»ÖÁ³¡¾°" + viewParams.targetSceneName);
+            Debug.Log("åˆ‡æ¢è‡³åœºæ™¯" + viewParams.targetSceneName);
             OnSceneChangeComplete();
         };
         OnSceneStartChange();
@@ -30,7 +30,7 @@ public class SceneMgr : MonoSingleton<SceneMgr>
     }
 
     /// <summary>
-    /// ³¡¾°¿ªÊ¼Ìø×ª
+    /// åœºæ™¯å¼€å§‹è·³è½¬
     /// </summary>
     public void OnSceneStartChange()
     {
@@ -40,11 +40,11 @@ public class SceneMgr : MonoSingleton<SceneMgr>
     }
 
     /// <summary>
-    /// ³¡¾°Ìø×ªÍê³É
+    /// åœºæ™¯è·³è½¬å®Œæˆ
     /// </summary>
     void OnSceneChangeComplete()
     {
-        Debug.Log("Ìø×ªµ½³¡¾°:" + targetSceneName);
+        Debug.Log("è·³è½¬åˆ°åœºæ™¯:" + targetSceneName);
     }
 
     public bool IsWorld
