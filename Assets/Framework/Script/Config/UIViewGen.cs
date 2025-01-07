@@ -1,18 +1,18 @@
-﻿public enum ViewLayer
+public enum ViewLayer
 { 
-	//鏅€歎I
+	//普通UI
 	NormalUI = 0,
-	//娓告垙鑿滃崟UI
+	//游戏菜单UI
 	MenuUI = 5,
-	//寮圭獥UI
+	//弹窗UI
 	PopUI = 10,
-	//鎻愮ずUI
+	//提示UI
 	TipsUI = 20,
-	//寮曞UI
+	//引导UI
 	GuideUI = 25,
-	//闃绘尅鐐瑰嚮UI
+	//阻挡点击UI
 	PreventUI = 27,
-	//鍏夋爣鐗规晥
+	//光标特效
 	CursorUI = 28,
 }
 

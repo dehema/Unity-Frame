@@ -1,4 +1,4 @@
-﻿#if UNITY_CHANGE1 || UNITY_CHANGE2 || UNITY_CHANGE3 || UNITY_CHANGE4
+#if UNITY_CHANGE1 || UNITY_CHANGE2 || UNITY_CHANGE3 || UNITY_CHANGE4
 #warning UNITY_CHANGE has been set manually
 #elif UNITY_4_0 || UNITY_4_1 || UNITY_4_2 || UNITY_4_3 || UNITY_4_4 || UNITY_4_5 || UNITY_4_6 || UNITY_4_7
 #define UNITY_CHANGE1
@@ -66,7 +66,7 @@ public class Images
 }
 
 //To use Reporter just create reporter from menu (Reporter->Create) at first scene your game start.
-//then set the 鈥?Scrip execution order 鈥?in (Edit -> Project Settings ) of Reporter.cs to be the highest.
+//then set the ” Scrip execution order ” in (Edit -> Project Settings ) of Reporter.cs to be the highest.
 
 //Now to view logs all what you have to do is to make a circle gesture using your mouse (click and drag) 
 //or your finger (touch and drag) on the screen to show all these logs
