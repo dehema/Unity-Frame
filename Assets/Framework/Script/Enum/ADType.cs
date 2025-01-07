@@ -1,15 +1,15 @@
-public enum ADInterstitalType
+ï»¿public enum ADInterstitalType
 {
     /// <summary>
-    ///  ¶¨Ê±¹ã¸æ
+    ///  å®šæ—¶å¹¿å‘Š
     /// </summary>
     Timing = 1,
     /// <summary>
-    ///  Ìø¹ı¼¤ÀøÊÓÆµ
+    ///  è·³è¿‡æ¿€åŠ±è§†é¢‘
     /// </summary>
     PassReward = 2,
     /// <summary>
-    /// ÓÎÏ·ÔİÍ£
+    /// æ¸¸æˆæš‚åœ
     /// </summary>
     applicationPause
 }

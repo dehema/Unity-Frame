@@ -1,18 +1,18 @@
-/// <summary>
-/// ²¿¶ÓÀàÐÍ
+ï»¿/// <summary>
+/// éƒ¨é˜Ÿç±»åž‹
 /// </summary>
 public enum TroopType
 {
     /// <summary>
-    /// Íæ¼Ò
+    /// çŽ©å®¶
     /// </summary>
     Player,
     /// <summary>
-    /// ¾ü¶Ó
+    /// å†›é˜Ÿ
     /// </summary>
     Army,
     /// <summary>
-    /// ÉÌ¶Ó
+    /// å•†é˜Ÿ
     /// </summary>
     Trade,
 }

@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using UnityEditor;
@@ -9,17 +9,17 @@ public class EditorExportUI : EditorWindow
 {
     static GameObject uiPrefab;
     /// <summary>
-    /// µ¼³öµÄµÄÊÇÊÓÍ¼½Å±¾
+    /// å¯¼å‡ºçš„çš„æ˜¯è§†å›¾è„šæœ¬
     /// </summary>
     static bool isExportView;
     /// <summary>
-    /// µ¼³öÊÓÍ¼µÄUI
+    /// å¯¼å‡ºè§†å›¾çš„UI
     /// </summary>
     public static void ExportViewUI(GameObject _uiPrefab = null)
     {
         if (EditorApplication.isPlaying)
         {
-            EditorUtility.DisplayDialog("´íÎó", "ÕıÔÚÔËĞĞÊ±²»ÄÜµ¼³ö", "ok");
+            EditorUtility.DisplayDialog("é”™è¯¯", "æ­£åœ¨è¿è¡Œæ—¶ä¸èƒ½å¯¼å‡º", "ok");
             return;
         }
         uiPrefab = _uiPrefab;
@@ -29,7 +29,7 @@ public class EditorExportUI : EditorWindow
             stage = PrefabStageUtility.GetCurrentPrefabStage();
             if (!stage)
             {
-                EditorUtility.DisplayDialog("´íÎó", "ÏÈ´ò¿ªÒ»¸öViewµÄÔ¤ÖÆÌå£¬½øÈëÔ¤ÖÆÌåÄ£Ê½", "ok");
+                EditorUtility.DisplayDialog("é”™è¯¯", "å…ˆæ‰“å¼€ä¸€ä¸ªViewçš„é¢„åˆ¶ä½“ï¼Œè¿›å…¥é¢„åˆ¶ä½“æ¨¡å¼", "ok");
                 return;
             }
         }
@@ -44,9 +44,9 @@ public class EditorExportUI : EditorWindow
         string scriptContent = GetUIScriptContent(tfList);
         string uiModelContent = GetUIModelContent(tfList);
         string folderPath = string.Empty;
-        //¸¸ÀàÃû³Æ
+        //çˆ¶ç±»åç§°
         string superClassName = isExportView ? "BaseView" : "BaseUI";
-        //»ñÈ¡View½Å±¾Â·¾¶
+        //è·å–Viewè„šæœ¬è·¯å¾„
         if (baseView != null)
         {
             superClassName = baseView.GetType().BaseType.ToString();
@@ -70,7 +70,7 @@ public class EditorExportUI : EditorWindow
         //}
         if (string.IsNullOrEmpty(folderPath))
         {
-            EditorUtility.DisplayDialog("´íÎó", "ÕÒ²»µ½ÓëViewÔ¤ÖÆÌåÍ¬Ãû½Å±¾", "ok");
+            EditorUtility.DisplayDialog("é”™è¯¯", "æ‰¾ä¸åˆ°ä¸Viewé¢„åˆ¶ä½“åŒåè„šæœ¬", "ok");
             return;
         }
         string tempViewUIContent = string.Empty;
@@ -94,11 +94,11 @@ public class EditorExportUI : EditorWindow
         File.WriteAllText(viewUIPath, scriptContent);
         AssetDatabase.Refresh();
         EditorGUIUtility.PingObject(AssetDatabase.LoadAssetAtPath<Object>(viewUIPath));
-        Debug.Log($"µ¼³ö{viewUIPath}");
+        Debug.Log($"å¯¼å‡º{viewUIPath}");
     }
 
     /// <summary>
-    /// »ñÈ¡×Ô¶¯µ¼³öViewÉÏËùÓĞUIÄ£°å½Å±¾
+    /// è·å–è‡ªåŠ¨å¯¼å‡ºViewä¸Šæ‰€æœ‰UIæ¨¡æ¿è„šæœ¬
     /// </summary>
     /// <returns></returns>
     public static string GetExportViewScriptTemplatePath()
@@ -107,7 +107,7 @@ public class EditorExportUI : EditorWindow
     }
 
     /// <summary>
-    /// »ñÈ¡×Ô¶¯µ¼³öPrefabÉÏËùÓĞUIÄ£°å½Å±¾
+    /// è·å–è‡ªåŠ¨å¯¼å‡ºPrefabä¸Šæ‰€æœ‰UIæ¨¡æ¿è„šæœ¬
     /// </summary>
     /// <returns></returns>
     public static string GetExportUIWidgetTemplatePath()
@@ -116,7 +116,7 @@ public class EditorExportUI : EditorWindow
     }
 
     /// <summary>
-    /// »ñÈ¡×Ô¶¯µ¼³ö¶ÔÏó³ØItemÉÏËùÓĞUIÄ£°å½Å±¾
+    /// è·å–è‡ªåŠ¨å¯¼å‡ºå¯¹è±¡æ± Itemä¸Šæ‰€æœ‰UIæ¨¡æ¿è„šæœ¬
     /// </summary>
     /// <returns></returns>
     public static string GetExportPoolItemBaseTemplatePath()
@@ -125,7 +125,7 @@ public class EditorExportUI : EditorWindow
     }
 
     /// <summary>
-    /// »ñÈ¡ËùÓĞ·ûºÏ¹æÔòµÄUI
+    /// è·å–æ‰€æœ‰ç¬¦åˆè§„åˆ™çš„UI
     /// </summary>
     /// <returns></returns>
     public static List<Transform> GetRegularRoot(List<Transform> _tfList)
@@ -148,7 +148,7 @@ public class EditorExportUI : EditorWindow
     }
 
     /// <summary>
-    /// »ñÈ¡ViewUI½Å±¾µÄÄÚÈİ
+    /// è·å–ViewUIè„šæœ¬çš„å†…å®¹
     /// </summary>
     /// <param name="_tfList"></param>
     /// <returns></returns>
@@ -159,7 +159,7 @@ public class EditorExportUI : EditorWindow
         {
             string name = item.name;
             string goName = name.Replace("$", string.Empty).Split('#')[0];
-            //´¦ÀíÄ³¸ö½Úµã
+            //å¤„ç†æŸä¸ªèŠ‚ç‚¹
             string rootPath = GetRootFullPath(item.transform);
             scriptStr.Append($"        {goName} = transform.Find(\"{rootPath}\").gameObject;\n");
             if (name.Contains("#"))
@@ -171,7 +171,7 @@ public class EditorExportUI : EditorWindow
                     if (item.GetComponent(componentFullName) == null)
                     {
                         EditorGUIUtility.PingObject(item);
-                        EditorUtility.DisplayDialog("´íÎó", $"ÎïÌå{goName}ÕÒ²»µ½×é¼ş{componentFullName}", "ok");
+                        EditorUtility.DisplayDialog("é”™è¯¯", $"ç‰©ä½“{goName}æ‰¾ä¸åˆ°ç»„ä»¶{componentFullName}", "ok");
                     }
                     else
                     {
@@ -186,7 +186,7 @@ public class EditorExportUI : EditorWindow
     }
 
     /// <summary>
-    /// »ñÈ¡ÊÓÍ¼UIµÄÄ£ĞÍÀàÄÚÈİ
+    /// è·å–è§†å›¾UIçš„æ¨¡å‹ç±»å†…å®¹
     /// </summary>
     /// <param name="_tfList"></param>
     /// <returns></returns>
@@ -197,7 +197,7 @@ public class EditorExportUI : EditorWindow
         {
             string name = item.name;
             string goName = name.Replace("$", string.Empty).Split('#')[0];
-            //´¦ÀíÄ³¸ö½Úµã
+            //å¤„ç†æŸä¸ªèŠ‚ç‚¹
             scriptStr.Append($"    [HideInInspector]\n");
             scriptStr.Append($"    public GameObject {goName};\n");
             if (name.Contains("#"))
@@ -219,7 +219,7 @@ public class EditorExportUI : EditorWindow
     }
 
     /// <summary>
-    /// »ñÈ¡×é¼ş¼ò³Æ
+    /// è·å–ç»„ä»¶ç®€ç§°
     /// </summary>
     /// <returns></returns>
     public static string GetComponentFullName(string _name)
@@ -241,7 +241,7 @@ public class EditorExportUI : EditorWindow
     }
 
     /// <summary>
-    /// »ñÈ¡Ò»¸ö½ÚµãµÄÈ«²¿Â·¾¶
+    /// è·å–ä¸€ä¸ªèŠ‚ç‚¹çš„å…¨éƒ¨è·¯å¾„
     /// </summary>
     /// <param name="_trans"></param>
     /// <returns></returns>
@@ -263,7 +263,7 @@ public class EditorExportUI : EditorWindow
     }
 
     /// <summary>
-    /// µİ¹éÕâ¸öÒ³ÃæµÄËùÓĞ½Úµã
+    /// é€’å½’è¿™ä¸ªé¡µé¢çš„æ‰€æœ‰èŠ‚ç‚¹
     /// </summary>
     /// <param name="_root"></param>
     /// <param name="_tfList"></param>

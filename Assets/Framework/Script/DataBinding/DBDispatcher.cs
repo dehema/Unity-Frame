@@ -1,11 +1,11 @@
-using DB;
+ï»¿using DB;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// °ó¶¨ÊÂ¼ş·Ö·¢Æ÷
+/// ç»‘å®šäº‹ä»¶åˆ†å‘å™¨
 /// </summary>
 public class DBDispatcher
 {

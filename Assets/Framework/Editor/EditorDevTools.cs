@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -26,7 +26,7 @@ public class EditorDevTools : EditorWindow
         titleLabelStyle = new GUIStyle() { fontSize = 20, alignment = TextAnchor.MiddleCenter };
     }
 
-    [MenuItem("¿ª·¢¹¤¾ß/¿ª·¢¹¤¾ß")]
+    [MenuItem("å¼€å‘å·¥å…·/å¼€å‘å·¥å…·")]
     static void OpenMainWindow()
     {
         EditorDevTools window = GetWindow<EditorDevTools>();
@@ -55,38 +55,38 @@ public class EditorDevTools : EditorWindow
 
     private void OnGUIEditor()
     {
-        EditorGUILayout.LabelField("<color=white>------------------- ±à¼­ -------------------</color>", titleLabelStyle, GUILayout.Height(20));
+        EditorGUILayout.LabelField("<color=white>------------------- ç¼–è¾‘ -------------------</color>", titleLabelStyle, GUILayout.Height(20));
         GUILayout.BeginHorizontal();
         editorScriptPath = GetEditorScriptPath();
-        GUILayout.Label("±à¼­½Å±¾Â·¾¶:" + editorScriptPath);
-        if (GUILayout.Button("´ò¿ª±à¼­Æ÷½Å±¾"))
+        GUILayout.Label("ç¼–è¾‘è„šæœ¬è·¯å¾„:" + editorScriptPath);
+        if (GUILayout.Button("æ‰“å¼€ç¼–è¾‘å™¨è„šæœ¬"))
         {
             OpenEditorScript();
         }
         GUILayout.EndHorizontal();
         GUILayout.BeginHorizontal();
-        if (GUILayout.Button("Çå³ıPlayerPrefs"))
+        if (GUILayout.Button("æ¸…é™¤PlayerPrefs"))
         {
             PlayerPrefs.DeleteAll(); ;
         }
-        if (GUILayout.Button("É¾³ıËùÓĞ¶ªÊ§µÄ½Å±¾×é¼ş"))
+        if (GUILayout.Button("åˆ é™¤æ‰€æœ‰ä¸¢å¤±çš„è„šæœ¬ç»„ä»¶"))
         {
             DelAllMissScripts();
         }
         GUILayout.EndHorizontal();
         GUILayout.BeginHorizontal();
-        if (GUILayout.Button("Ìæ»»ËùÓĞ¶ªÊ§×ÖÌåµÄÎÄ±¾"))
+        if (GUILayout.Button("æ›¿æ¢æ‰€æœ‰ä¸¢å¤±å­—ä½“çš„æ–‡æœ¬"))
         {
             ReplaceAllFont(true);
         }
-        if (GUILayout.Button("Ìæ»»ËùÓĞÎÄ±¾µÄ×ÖÌå"))
+        if (GUILayout.Button("æ›¿æ¢æ‰€æœ‰æ–‡æœ¬çš„å­—ä½“"))
         {
             ReplaceAllFont();
         }
         newfont = EditorGUILayout.ObjectField(newfont, typeof(Font)) as Font;
         GUILayout.EndHorizontal();
         GUILayout.BeginHorizontal();
-        if (GUILayout.Button("µ¼³öExcel"))
+        if (GUILayout.Button("å¯¼å‡ºExcel"))
         {
             ExportExcel2Json();
         }
@@ -100,11 +100,11 @@ public class EditorDevTools : EditorWindow
         EditorGUILayout.LabelField("<color=white>------------------- UI -------------------</color>", titleLabelStyle, GUILayout.Height(20));
         GUILayout.BeginHorizontal();
         createViewName = GUILayout.TextField(createViewName, 30, GUILayout.Width(170));
-        if (GUILayout.Button("´´½¨View"))
+        if (GUILayout.Button("åˆ›å»ºView"))
         {
             EditorViewCreater.CreateView(createViewName);
         }
-        if (GUILayout.Button("µ¼³öUI"))
+        if (GUILayout.Button("å¯¼å‡ºUI"))
         {
             EditorExportUI.ExportViewUI();
         }
@@ -112,25 +112,25 @@ public class EditorDevTools : EditorWindow
     }
     private void OnGUIUIConfig()
     {
-        //UIÅäÖÃ
-        EditorGUILayout.LabelField("<color=white>------------------- ÅäÖÃ -------------------</color>", titleLabelStyle, GUILayout.Height(20));
+        //UIé…ç½®
+        EditorGUILayout.LabelField("<color=white>------------------- é…ç½® -------------------</color>", titleLabelStyle, GUILayout.Height(20));
         GUILayout.BeginHorizontal();
-        if (GUILayout.Button("´ò¿ªViewÅäÖÃÎÄ¼ş"))
+        if (GUILayout.Button("æ‰“å¼€Viewé…ç½®æ–‡ä»¶"))
         {
             OpenUIViewConfig();
         }
-        if (GUILayout.Button("µ¼³öViewÅäÖÃ"))
+        if (GUILayout.Button("å¯¼å‡ºViewé…ç½®"))
         {
             ExportViewConfig();
         }
-        if (GUILayout.Button("´ò¿ªExcelÅäÖÃÎÄ¼ş¼Ğ"))
+        if (GUILayout.Button("æ‰“å¼€Excelé…ç½®æ–‡ä»¶å¤¹"))
         {
             string path = Directory.GetParent(Application.dataPath).FullName + @"\Product\StaticData";
             System.Diagnostics.Process.Start("Explorer.exe", path);
         }
         GUILayout.EndHorizontal();
         GUILayout.BeginHorizontal();
-        if (GUILayout.Button("´ò¿ª¶àÓïÑÔÅäÖÃ"))
+        if (GUILayout.Button("æ‰“å¼€å¤šè¯­è¨€é…ç½®"))
         {
             string langName = Application.systemLanguage.ToString();
             if (Application.systemLanguage == SystemLanguage.ChineseSimplified || Application.systemLanguage == SystemLanguage.ChineseTraditional)
@@ -141,7 +141,7 @@ public class EditorDevTools : EditorWindow
             Debug.Log(path);
             EditorUtility.OpenWithDefaultApp(path);
         }
-        if (GUILayout.Button("¶àÓïÑÔººÒëÓ¢"))
+        if (GUILayout.Button("å¤šè¯­è¨€æ±‰è¯‘è‹±"))
         {
             EditorTranslate.OnClickTranslateLanguage();
         }
@@ -149,11 +149,11 @@ public class EditorDevTools : EditorWindow
         GUILayout.BeginHorizontal();
         if (EditorApplication.isPlaying)
         {
-            if (GUILayout.Button("Ì×ÓÃ±¾µØÅäÖÃ"))
+            if (GUILayout.Button("å¥—ç”¨æœ¬åœ°é…ç½®"))
             {
                 ConfigMgr.Ins.LoadAllConfig();
             }
-            if (GUILayout.Button("Ì×ÓÃÔ¶¶ËÅäÖÃ"))
+            if (GUILayout.Button("å¥—ç”¨è¿œç«¯é…ç½®"))
             {
                 ConfigMgr.Ins.LoadAllConfig(false);
             }
@@ -169,26 +169,26 @@ public class EditorDevTools : EditorWindow
     bool audit = false;
     private void OnGUIUIPlaying()
     {
-        //ÔËĞĞ
-        EditorGUILayout.LabelField("<color=white>------------------- ÔËĞĞ -------------------</color>", titleLabelStyle, GUILayout.Height(20));
+        //è¿è¡Œ
+        EditorGUILayout.LabelField("<color=white>------------------- è¿è¡Œ -------------------</color>", titleLabelStyle, GUILayout.Height(20));
         GUILayout.BeginHorizontal();
         if (EditorApplication.isPlaying)
         {
-            if (GUILayout.Button("Í£Ö¹ÓÎÏ· Ctrl+P", commonLayout))
+            if (GUILayout.Button("åœæ­¢æ¸¸æˆ Ctrl+P", commonLayout))
             {
                 EditorCoroutineUtility.StartCoroutine(StopGame(), this);
             }
         }
         else
         {
-            if (GUILayout.Button("Æô¶¯ÓÎÏ· Ctrl+P | Ctrl+R", commonLayout))
+            if (GUILayout.Button("å¯åŠ¨æ¸¸æˆ Ctrl+P | Ctrl+R", commonLayout))
             {
                 StartGame();
             }
         }
         if (EditorApplication.isPlaying)
         {
-            if (GUILayout.Button("ÖØÆôÓÎÏ· Ctrl+R", commonLayout))
+            if (GUILayout.Button("é‡å¯æ¸¸æˆ Ctrl+R", commonLayout))
             {
                 ResetGame();
             }
@@ -198,7 +198,7 @@ public class EditorDevTools : EditorWindow
         {
             GUILayout.BeginHorizontal();
             //Time.timeScale
-            GUILayout.Label("ÓÎÏ·È«¾ÖËÙ¶È x1 - x10", GUILayout.Width(130));
+            GUILayout.Label("æ¸¸æˆå…¨å±€é€Ÿåº¦ x1 - x10", GUILayout.Width(130));
             gameTimeSpeed = GUILayout.HorizontalSlider(gameTimeSpeed, 1, 10, GUILayout.Width(this.position.width - 420));
             GUILayout.Label("x0.2 - x1", GUILayout.Width(50));
             gameTimeSpeed = GUILayout.HorizontalSlider(gameTimeSpeed, 0.2f, 1f, GUILayout.Width(100));
@@ -218,25 +218,25 @@ public class EditorDevTools : EditorWindow
             EditorGUILayout.LabelField("<color=#02FF19>x" + gameTimeSpeed.ToString("f2") + "</color>", timeScaleStyle, GUILayout.Width(80));
             GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
-            GameSettingStatic.ResLog = GUILayout.Toggle(GameSettingStatic.ResLog, "×ÊÔ´log");
-            audit = GUILayout.Toggle(audit, "ÉóºËÄ£Ê½");
+            GameSettingStatic.ResLog = GUILayout.Toggle(GameSettingStatic.ResLog, "èµ„æºlog");
+            audit = GUILayout.Toggle(audit, "å®¡æ ¸æ¨¡å¼");
             GUILayout.EndHorizontal();
         }
     }
 
     /// <summary>
-    /// ÆäËû
+    /// å…¶ä»–
     /// </summary>
     private void OnGUIUIOther()
     {
-        GUILayout.Label("<color=white>------------------- ÆäËû -------------------</color>", titleLabelStyle, GUILayout.Height(20));
+        GUILayout.Label("<color=white>------------------- å…¶ä»– -------------------</color>", titleLabelStyle, GUILayout.Height(20));
         GUILayout.BeginHorizontal();
-        GUILayout.Label("HierarchyÓÒ¼ü->BM¹¤¾ß", GUILayout.Width(150));
+        GUILayout.Label("Hierarchyå³é”®->BMå·¥å…·", GUILayout.Width(150));
         GUILayout.EndHorizontal();
     }
 
     /// <summary>
-    /// µ÷ÊÔ
+    /// è°ƒè¯•
     /// </summary>
     private void OnGUIDebug()
     {
@@ -244,7 +244,7 @@ public class EditorDevTools : EditorWindow
         GUILayout.EndHorizontal();
     }
 
-    [MenuItem("¿ª·¢¹¤¾ß/ÖØÆô %R")]
+    [MenuItem("å¼€å‘å·¥å…·/é‡å¯ %R")]
     static void ResetGame()
     {
         if (Application.isPlaying)
@@ -257,7 +257,7 @@ public class EditorDevTools : EditorWindow
         }
     }
     /// <summary>
-    /// µ±ÓĞ´ËÎÄ¼şÊ±ËµÃ÷´úÂë±àÒëºóĞèÒªÖØÆô
+    /// å½“æœ‰æ­¤æ–‡ä»¶æ—¶è¯´æ˜ä»£ç ç¼–è¯‘åéœ€è¦é‡å¯
     /// </summary>
     readonly static string ReStartGameFile = "temp_ReStartGameFile";
     void _ResetGame()
@@ -268,7 +268,7 @@ public class EditorDevTools : EditorWindow
     }
 
     /// <summary>
-    /// ´Ë±ê¼Ç¿ÉÒÔÈÃ½Å±¾ÔÚ±àÒëºóÔÚµ÷ÓÃÒ»´Î
+    /// æ­¤æ ‡è®°å¯ä»¥è®©è„šæœ¬åœ¨ç¼–è¯‘ååœ¨è°ƒç”¨ä¸€æ¬¡
     /// </summary>
     [DidReloadScripts]
     public static void OnCompileScripts()
@@ -286,7 +286,7 @@ public class EditorDevTools : EditorWindow
     public IEnumerator StopGame()
     {
         EditorApplication.isPlaying = false;
-        EditorUtility.DisplayProgressBar("½ø¶È", "µÈ´ıÔËĞĞÍ£Ö¹", 0.1f);
+        EditorUtility.DisplayProgressBar("è¿›åº¦", "ç­‰å¾…è¿è¡Œåœæ­¢", 0.1f);
 
         yield return new EditorWaitForSeconds(0.1f);
 
@@ -300,7 +300,7 @@ public class EditorDevTools : EditorWindow
             yield break;
         var scene = EditorSceneManager.OpenScene("Assets/Scenes/GameScene.unity", OpenSceneMode.Single);
         EditorSceneManager.SetActiveScene(scene);
-        EditorUtility.DisplayProgressBar("´ò¿ª", "GameScene³¡¾°", 0.1f);
+        EditorUtility.DisplayProgressBar("æ‰“å¼€", "GameSceneåœºæ™¯", 0.1f);
         yield return new EditorWaitForSeconds(0.1f);
         EditorUtility.ClearProgressBar();
         EditorApplication.isPlaying = true;
@@ -329,7 +329,7 @@ public class EditorDevTools : EditorWindow
         }
     }
 
-    [MenuItem("GameObject/BM¹¤¾ß/Ö» ÏÔÊ¾&&µã»÷Õâ¸öÎïÌå", priority = 0)]
+    [MenuItem("GameObject/BMå·¥å…·/åª æ˜¾ç¤º&&ç‚¹å‡»è¿™ä¸ªç‰©ä½“", priority = 0)]
     public static void PickingAndIsolateObj()
     {
         Object obj = Selection.activeObject;
@@ -337,27 +337,27 @@ public class EditorDevTools : EditorWindow
         {
             return;
         }
-        //ÏÔÊ¾
+        //æ˜¾ç¤º
         GameObject go = obj as GameObject;
-        //µã»÷
+        //ç‚¹å‡»
         HideAllGameObject();
         SceneVisibilityManager.instance.EnablePicking(go, true);
         SceneVisibilityManager.instance.Show(go, true);
     }
 
-    [MenuItem("GameObject/BM¹¤¾ß/Ö»ÏÔÊ¾×îºóÒ»¸öNormalUI", priority = 1)]
+    [MenuItem("GameObject/BMå·¥å…·/åªæ˜¾ç¤ºæœ€åä¸€ä¸ªNormalUI", priority = 1)]
     public static void OnlyShowLastNormalUI()
     {
         OnlyShowLastUI(ViewLayer.NormalUI.ToString());
     }
 
-    [MenuItem("GameObject/BM¹¤¾ß/Ö»ÏÔÊ¾×îºóÒ»¸öPopUpUI", priority = 2)]
+    [MenuItem("GameObject/BMå·¥å…·/åªæ˜¾ç¤ºæœ€åä¸€ä¸ªPopUpUI", priority = 2)]
     public static void OnlyShowLastPopUI()
     {
         OnlyShowLastUI(ViewLayer.PopUI.ToString());
     }
 
-    [MenuItem("GameObject/BM¹¤¾ß/Ö»ÏÔÊ¾×îºóÒ»¸öTipsUI", priority = 3)]
+    [MenuItem("GameObject/BMå·¥å…·/åªæ˜¾ç¤ºæœ€åä¸€ä¸ªTipsUI", priority = 3)]
     public static void OnlyShowLastTipsUI()
     {
         OnlyShowLastUI(ViewLayer.TipsUI.ToString());
@@ -398,20 +398,20 @@ public class EditorDevTools : EditorWindow
         HideAllGameObject();
         SceneVisibilityManager.instance.EnablePicking(uigo, true);
         SceneVisibilityManager.instance.Show(uigo, true);
-        //HierarchyÃæ°åÑ¡Ôñ¸ÃÎïÌå
+        //Hierarchyé¢æ¿é€‰æ‹©è¯¥ç‰©ä½“
         EditorGUIUtility.PingObject(uigo);
         Selection.activeGameObject = uigo;
     }
 
 
-    [MenuItem("GameObject/BM¹¤¾ß/ÖØÖÃ ÏÔÊ¾&&µã»÷", priority = 999)]
+    [MenuItem("GameObject/BMå·¥å…·/é‡ç½® æ˜¾ç¤º&&ç‚¹å‡»", priority = 999)]
     public static void PickingAndIsolateReset()
     {
         ShowAllGameObject();
     }
 
     /// <summary>
-    /// ÏÔÊ¾ºÍ¿Éµã»÷ËùÓĞµÄÎïÌå
+    /// æ˜¾ç¤ºå’Œå¯ç‚¹å‡»æ‰€æœ‰çš„ç‰©ä½“
     /// </summary>
     private static void ShowAllGameObject()
     {
@@ -423,7 +423,7 @@ public class EditorDevTools : EditorWindow
     }
 
     /// <summary>
-    /// Òş²ØºÍ²»¿Éµã»÷ËùÓĞµÄÎïÌå
+    /// éšè—å’Œä¸å¯ç‚¹å‡»æ‰€æœ‰çš„ç‰©ä½“
     /// </summary>
     private static void HideAllGameObject()
     {
@@ -435,17 +435,17 @@ public class EditorDevTools : EditorWindow
     }
 
     /// <summary>
-    /// ´ò¿ª´Ë½Å±¾
+    /// æ‰“å¼€æ­¤è„šæœ¬
     /// </summary>
     private static void OpenEditorScript()
     {
         editorScriptPath = GetEditorScriptPath();
-        Debug.Log("´ò¿ª½Å±¾" + editorScriptPath);
+        Debug.Log("æ‰“å¼€è„šæœ¬" + editorScriptPath);
         EditorUtility.OpenWithDefaultApp(editorScriptPath);
     }
 
     /// <summary>
-    /// É¾³ıËùÓĞ¶ªÊ§µÄ½Å±¾×é¼ş
+    /// åˆ é™¤æ‰€æœ‰ä¸¢å¤±çš„è„šæœ¬ç»„ä»¶
     /// </summary>
     public static void DelAllMissScripts()
     {
@@ -459,7 +459,7 @@ public class EditorDevTools : EditorWindow
             if (missNum > 0)
             {
                 PrefabUtility.SaveAsPrefabAsset(_ui, PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(_ui));
-                Debug.Log(string.Format("{0}É¾³ı{1}¸ö¶ªÊ§½Å±¾", _uiPath, missNum));
+                Debug.Log(string.Format("{0}åˆ é™¤{1}ä¸ªä¸¢å¤±è„šæœ¬", _uiPath, missNum));
             }
         };
         ForeachAllUIPrefab(action);
@@ -467,15 +467,15 @@ public class EditorDevTools : EditorWindow
 
     [SerializeField]
     static Font newfont;
-    /// Ìæ»»ËùÓĞ¶ªÊ§×ÖÌåµÄÎÄ±¾×é¼ş
+    /// æ›¿æ¢æ‰€æœ‰ä¸¢å¤±å­—ä½“çš„æ–‡æœ¬ç»„ä»¶
     /// </summary>
     /// </summary>
-    /// <param name="_onlyMissFont">Ö»ÓĞ¶ªÊ§×ÖÌåµÄÎÄ±¾</param>
+    /// <param name="_onlyMissFont">åªæœ‰ä¸¢å¤±å­—ä½“çš„æ–‡æœ¬</param>
     public static void ReplaceAllFont(bool _onlyMissFont = false)
     {
         if (newfont == null)
         {
-            EditorUtility.DisplayDialog("ÌáÊ¾", "ÏÈÉèÖÃĞÂ×ÖÌå", "È·¶¨");
+            EditorUtility.DisplayDialog("æç¤º", "å…ˆè®¾ç½®æ–°å­—ä½“", "ç¡®å®š");
             return;
         }
         Action<GameObject, string> action = (GameObject _ui, string _uiPath) =>
@@ -493,14 +493,14 @@ public class EditorDevTools : EditorWindow
             if (textNum > 0)
             {
                 PrefabUtility.SaveAsPrefabAsset(_ui, PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(_ui));
-                Debug.Log($"{_uiPath}Ìæ»»{textNum}¸öÎÄ±¾");
+                Debug.Log($"{_uiPath}æ›¿æ¢{textNum}ä¸ªæ–‡æœ¬");
             }
         };
         ForeachAllUIPrefab(action);
     }
 
     /// <summary>
-    /// ±éÀúËùÓĞUIÔ¤ÖÆÌå
+    /// éå†æ‰€æœ‰UIé¢„åˆ¶ä½“
     /// </summary>
     public static void ForeachAllUIPrefab(Action<GameObject, string> _action)
     {
@@ -525,7 +525,7 @@ public class EditorDevTools : EditorWindow
     }
 
     /// <summary>
-    /// Excelµ¼³ÉJson
+    /// Excelå¯¼æˆJson
     /// </summary>
     public static void ExportExcel2Json()
     {
@@ -535,7 +535,7 @@ public class EditorDevTools : EditorWindow
             batPath += "/Product/excel2json/excel2json.bat";
             if (!File.Exists(batPath))
             {
-                EditorUtility.DisplayDialog("´íÎó", "Ã»ÓĞÕÒµ½ÎÄ¼ş" + batPath, "È·¶¨");
+                EditorUtility.DisplayDialog("é”™è¯¯", "æ²¡æœ‰æ‰¾åˆ°æ–‡ä»¶" + batPath, "ç¡®å®š");
                 return;
             }
             System.Diagnostics.Process pro = new System.Diagnostics.Process();
@@ -545,16 +545,16 @@ public class EditorDevTools : EditorWindow
             pro.StartInfo.CreateNoWindow = false;
             pro.Start();
             pro.WaitForExit();
-            Debug.Log("µ¼³öÍê³É->Resources/Json/");
+            Debug.Log("å¯¼å‡ºå®Œæˆ->Resources/Json/");
         }
         catch (Exception ex)
         {
-            Debug.LogError("Ö´ĞĞÊ§°Ü ´íÎóÔ­Òò:" + ex.Message);
+            Debug.LogError("æ‰§è¡Œå¤±è´¥ é”™è¯¯åŸå› :" + ex.Message);
         }
     }
 
     /// <summary>
-    /// »ñÈ¡UIViewÅäÖÃYamlÎÄ¼şÂ·¾¶
+    /// è·å–UIViewé…ç½®Yamlæ–‡ä»¶è·¯å¾„
     /// </summary>
     /// <returns></returns>
     public string GetUIViewConfigPath()
@@ -563,7 +563,7 @@ public class EditorDevTools : EditorWindow
     }
 
     /// <summary>
-    /// »ñÈ¡UIViewÅäÖÃYamlÎÄ¼şÂ·¾¶
+    /// è·å–UIViewé…ç½®Yamlæ–‡ä»¶è·¯å¾„
     /// </summary>
     /// <returns></returns>
     public string GetUIViewTemplatePath()
@@ -572,7 +572,7 @@ public class EditorDevTools : EditorWindow
     }
 
     /// <summary>
-    /// »ñÈ¡UIViewÅäÖÃYamlÎÄ¼şÂ·¾¶
+    /// è·å–UIViewé…ç½®Yamlæ–‡ä»¶è·¯å¾„
     /// </summary>
     /// <returns></returns>
     public string GetUIViewUIViewGenPath()
@@ -581,7 +581,7 @@ public class EditorDevTools : EditorWindow
     }
 
     /// <summary>
-    /// ´ò¿ªViewµÄyamlÅäÖÃÎÄ¼ş
+    /// æ‰“å¼€Viewçš„yamlé…ç½®æ–‡ä»¶
     /// </summary>
     public void OpenUIViewConfig()
     {
@@ -589,14 +589,14 @@ public class EditorDevTools : EditorWindow
     }
 
     /// <summary>
-    /// µ¼³öViewÅäÖÃ
+    /// å¯¼å‡ºViewé…ç½®
     /// </summary>
     public void ExportViewConfig()
     {
         string configPath = GetUIViewConfigPath();
         if (!File.Exists(configPath))
         {
-            Debug.LogError("ÕÒ²»µ½UIView.yamlÎÄ¼ş");
+            Debug.LogError("æ‰¾ä¸åˆ°UIView.yamlæ–‡ä»¶");
             return;
         }
         string config = File.ReadAllText(configPath);
@@ -605,7 +605,7 @@ public class EditorDevTools : EditorWindow
               .Build();
         UIViewConfig UIViewConfig = deserializer.Deserialize<UIViewConfig>(config);
         Utility.Dump(UIViewConfig);
-        //´´½¨Ä£°å
+        //åˆ›å»ºæ¨¡æ¿
         string template = File.ReadAllText(GetUIViewTemplatePath());
         Template temp = Template.Parse(template);
         List<object> layerConfigList = new List<object>();

@@ -1,4 +1,4 @@
-using DG.Tweening;
+锘縰sing DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,7 +10,7 @@ public partial class TipsView : BaseView
     ObjPool tipsPool;
     List<GameObject> items = new List<GameObject>();
     /// <summary>
-    /// item高度
+    /// item楂樺害
     /// </summary>
     float itemHeight = 0;
     const float tweenMoveDuration = 0.5f;
@@ -32,7 +32,7 @@ public partial class TipsView : BaseView
     }
 
     /// <summary>
-    /// 重新对齐
+    /// 閲嶆柊瀵归綈
     /// </summary>
     void ReAlign(int _offset, Action _cb = null)
     {
@@ -98,7 +98,7 @@ public partial class TipsView : BaseView
     }
 
     /// <summary>
-    /// 根据浮动框选择位置
+    /// 鏍规嵁娴姩妗嗛�夋嫨浣嶇疆
     /// </summary>
     /// <param name="_rect"></param>
     /// <returns></returns>
@@ -111,7 +111,7 @@ public partial class TipsView : BaseView
     }
 
     /// <summary>
-    /// 显示通用浮动信息
+    /// 鏄剧ず閫氱敤娴姩淇℃伅
     /// </summary>
     public void ShowCommonFloatTips(string _tips)
     {
@@ -131,7 +131,7 @@ public partial class TipsView : BaseView
     }
 
     /// <summary>
-    /// 隐藏通用浮动信息
+    /// 闅愯棌閫氱敤娴姩淇℃伅
     /// </summary>
     public void HideCommonFloatTips()
     {

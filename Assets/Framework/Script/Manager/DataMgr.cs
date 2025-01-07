@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+ï»¿using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,14 +11,14 @@ using UnityEngine.UIElements;
 public class DataMgr : Singleton<DataMgr>
 {
     /// <summary>
-    /// Íæ¼Ò´æµµ
+    /// ç©å®¶å­˜æ¡£
     /// </summary>
     public PlayerData playerData;
     bool isLoaded = false;
     public GameData gameData;
     public SettingData settingData;
     /// <summary>
-    /// Íæ¼ÒÅÉÏµ
+    /// ç©å®¶æ´¾ç³»
     /// </summary>
     public const int playerFactionID = 11;
 
@@ -28,7 +28,7 @@ public class DataMgr : Singleton<DataMgr>
         {
             return;
         }
-        //Íæ¼ÒÊı¾İ
+        //ç©å®¶æ•°æ®
         playerData = new PlayerData();
         string playerDataStr = PlayerPrefs.GetString(SaveField.playerData);
         if (string.IsNullOrEmpty(playerDataStr))
@@ -39,11 +39,11 @@ public class DataMgr : Singleton<DataMgr>
         else
         {
             Dictionary<string, object> dict = JsonConvert.DeserializeObject<Dictionary<string, object>>(playerDataStr);
-            Utility.Dump("-------------------------------Íæ¼ÒÊı¾İ--------------------------------");
+            Utility.Dump("-------------------------------ç©å®¶æ•°æ®--------------------------------");
             playerData.SetVal(dict);
         }
         InitGameData();
-        //ÉèÖÃ
+        //è®¾ç½®
         settingData = JsonConvert.DeserializeObject<SettingData>(PlayerPrefs.GetString(SaveField.settingData));
         if (settingData == null)
         {
@@ -66,7 +66,7 @@ public class DataMgr : Singleton<DataMgr>
     }
 
     /// <summary>
-    /// ³õÊ¼»¯ÓÎÏ·Êı¾İ
+    /// åˆå§‹åŒ–æ¸¸æˆæ•°æ®
     /// </summary>
     void InitGameData()
     {
@@ -74,7 +74,7 @@ public class DataMgr : Singleton<DataMgr>
     }
 
     /// <summary>
-    /// ±£´æÓÎÏ·Êı¾İ £¨ÉèÖÃ¡¢Ç©µ½µÈ£©
+    /// ä¿å­˜æ¸¸æˆæ•°æ® ï¼ˆè®¾ç½®ã€ç­¾åˆ°ç­‰ï¼‰
     /// </summary>
     public void SaveGameData()
     {
@@ -83,7 +83,7 @@ public class DataMgr : Singleton<DataMgr>
     }
 
     /// <summary>
-    /// ±£´æÍæ¼ÒÊı¾İ£¨ÊôĞÔÊıÖµ£©
+    /// ä¿å­˜ç©å®¶æ•°æ®ï¼ˆå±æ€§æ•°å€¼ï¼‰
     /// </summary>
     public void SavePlayerData()
     {
@@ -92,7 +92,7 @@ public class DataMgr : Singleton<DataMgr>
     }
 
     /// <summary>
-    /// ±£´æÉèÖÃÊı¾İ
+    /// ä¿å­˜è®¾ç½®æ•°æ®
     /// </summary>
     public void SaveSettingData()
     {
@@ -102,7 +102,7 @@ public class DataMgr : Singleton<DataMgr>
     }
 
     /// <summary>
-    /// Íæ¼ÒµÇÂ½
+    /// ç©å®¶ç™»é™†
     /// </summary>
     public void Login()
     {
@@ -110,7 +110,7 @@ public class DataMgr : Singleton<DataMgr>
     }
 
     /// <summary>
-    /// ĞÂµÄµÇÂ¼ÈÕ
+    /// æ–°çš„ç™»å½•æ—¥
     /// </summary>
     public void NewDay()
     {
@@ -118,7 +118,7 @@ public class DataMgr : Singleton<DataMgr>
     }
 
     /// <summary>
-    /// ±£´æËùÓĞÊı¾İ
+    /// ä¿å­˜æ‰€æœ‰æ•°æ®
     /// </summary>
     public void SaveAllData()
     {

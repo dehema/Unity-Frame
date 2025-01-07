@@ -1,4 +1,4 @@
-#if UNITY_WSA
+﻿#if UNITY_WSA
 using System;
 using System.Collections;
 using System.Collections.Generic;

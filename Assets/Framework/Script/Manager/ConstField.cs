@@ -1,19 +1,19 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ConstField
 {
     /// <summary>
-    /// ÏßÉÏÅäÖÃ
+    /// çº¿ä¸Šé…ç½®
     /// </summary>
     public const string ConfigOnline = "ConfigOnline";
     /// <summary>
-    ///  Ã³Ò×³µ¶ÓËÙ¶È
+    ///  è´¸æ˜“è½¦é˜Ÿé€Ÿåº¦
     /// </summary>
     public const string TradeSpeed = "TradeSpeed";
     /// <summary>
-    ///  Ã³Ò×³µ¶ÓÃ³Ò×³É¹¦½ğ±Ò·­±¶ÏµÊı
+    ///  è´¸æ˜“è½¦é˜Ÿè´¸æ˜“æˆåŠŸé‡‘å¸ç¿»å€ç³»æ•°
     /// </summary>
     public const string TradeSuccessGoldDouble = "TradeSuccessGoldDouble";
 }

@@ -1,4 +1,4 @@
-public enum SceneID
+﻿public enum SceneID
 { 
     LoadScene,
     MainScene,

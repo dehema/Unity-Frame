@@ -1,4 +1,4 @@
-using com.adjust.sdk;
+ï»¿using com.adjust.sdk;
 using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
@@ -49,7 +49,7 @@ namespace DB
         {
             _field = new Dictionary<string, System.Reflection.FieldInfo>();
             _fieldType = new Dictionary<string, MemberType>();
-            // ³õÊ¼»¯×Ö¶Î, ±ãÓÚ bind
+            // åˆå§‹åŒ–å­—æ®µ, ä¾¿äº bind
             foreach (var field in this.GetType().GetFields())
             {
                 if (field.FieldType.IsSubclassOf(typeof(DBObject)))

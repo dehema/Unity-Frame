@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Linq;
 using UnityEngine;
@@ -11,7 +11,7 @@ public class Lang : MonoBehaviour
     {
         if (string.IsNullOrEmpty(tid))
         {
-            Debug.LogError("tidΪ��", gameObject);
+            Debug.LogError("tid为空", gameObject);
         }
         Refresh();
     }

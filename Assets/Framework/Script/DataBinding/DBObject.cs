@@ -1,4 +1,4 @@
-
+﻿
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -42,7 +42,7 @@ namespace DB
         }
 
         /// <summary>
-        /// 赋值
+        /// 璧嬪€?
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -89,7 +89,7 @@ namespace DB
         }
 
         /// <summary>
-        /// 分发事件
+        /// 鍒嗗彂浜嬩欢
         /// </summary>
         /// <param name="action"></param>
         protected void Emit(DBAction action)
@@ -116,7 +116,7 @@ namespace DB
         }
 
         /// <summary>
-        /// 清除绑定对象
+        /// 娓呴櫎缁戝畾瀵硅薄
         /// </summary>
         /// <returns></returns>
         public bool Clear()

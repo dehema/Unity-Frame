@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,7 +6,7 @@ public class ReporterLauncher : MonoBehaviour
 {
     void Start()
     {
-        //µÈÍøÂçÊı¾İ·µ»Ø
+        //ç­‰ç½‘ç»œæ•°æ®è¿”å›
         Timer.Ins.SetTimeOut(() =>
         {
             bool enable = Utility.IsDebug && !Application.isEditor;
@@ -15,7 +15,7 @@ public class ReporterLauncher : MonoBehaviour
                 Reporter reporter = gameObject.GetComponent<Reporter>();
                 reporter.Initialize();
             }
-            Debug.Log("ReporterLauncherÆô¶¯" + enable);
+            Debug.Log("ReporterLauncherå¯åŠ¨" + enable);
         }, 5);
     }
 }

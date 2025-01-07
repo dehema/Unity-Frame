@@ -1,4 +1,4 @@
-using Codice.Utils;
+ï»¿using Codice.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -13,7 +13,7 @@ using Random = UnityEngine.Random;
 public class EditorTranslate : MonoBehaviour
 {
     /// <summary>
-    /// µã»÷·­Òë
+    /// ç‚¹å‡»ç¿»è¯‘
     /// </summary>
     public static void OnClickTranslateLanguage()
     {
@@ -42,24 +42,24 @@ public class EditorTranslate : MonoBehaviour
         string transTxt = transStr.ToString();
         if (string.IsNullOrEmpty(transTxt))
         {
-            Debug.Log("Ã»ÓĞĞèÒª·­ÒëµÄ¶àÓàÏî");
+            Debug.Log("æ²¡æœ‰éœ€è¦ç¿»è¯‘çš„å¤šä½™é¡¹");
             return;
         }
-        //Ö´ĞĞ·­Òë
+        //æ‰§è¡Œç¿»è¯‘
         List<string> transVal = TransStr(transTxt);
         if (transLangKey.Count != transVal.Count)
         {
-            Debug.LogError("·­Òë³ö´í£¬keyºÍvalµÄÊıÁ¿¶Ô²»ÉÏ");
+            Debug.LogError("ç¿»è¯‘å‡ºé”™ï¼Œkeyå’Œvalçš„æ•°é‡å¯¹ä¸ä¸Š");
             return;
         }
-        //Ìî³ä·­ÒëºóµÄÊı¾İ
+        //å¡«å……ç¿»è¯‘åçš„æ•°æ®
         for (int i = 0; i < transLangKey.Count; i++)
         {
             string key = transLangKey[i];
             string val = transVal[i];
             englishDict[key] = val;
         }
-        //ÅÅĞò ¸úÖĞÎÄÎÄ±¾Ò»Ñù
+        //æ’åº è·Ÿä¸­æ–‡æ–‡æœ¬ä¸€æ ·
         Dictionary<string, string> newEnglishDict = new Dictionary<string, string>();
         foreach (var item in chineseDict)
         {
@@ -69,7 +69,7 @@ public class EditorTranslate : MonoBehaviour
         }
         string transFileTxt = JsonConvert.SerializeObject(newEnglishDict);
         File.WriteAllText(EditorDevTools.GetLangPath(SystemLanguage.English), transFileTxt);
-        Debug.Log("·­ÒëÍê³É,¹²·­Òë" + transLangKey.Count + $"¸ö¶àÓïÑÔ,Ìø¹ı{ignoreList.Count}¸ö·­ÒëÏî");
+        Debug.Log("ç¿»è¯‘å®Œæˆ,å…±ç¿»è¯‘" + transLangKey.Count + $"ä¸ªå¤šè¯­è¨€,è·³è¿‡{ignoreList.Count}ä¸ªç¿»è¯‘é¡¹");
     }
 
     static Dictionary<string, string> ReadChineseJson(SystemLanguage language)
@@ -95,19 +95,19 @@ public class EditorTranslate : MonoBehaviour
     }
 
     /// <summary>
-    /// ·­Òë×Ö·û´®
+    /// ç¿»è¯‘å­—ç¬¦ä¸²
     /// </summary>
     static List<string> TransStr(string q)
     {
-        // Ô´ÓïÑÔ
+        // æºè¯­è¨€
         string from = "zh";
-        // Ä¿±êÓïÑÔ
+        // ç›®æ ‡è¯­è¨€
         string to = "en";
         //appId
         string appId = "20230925001829523";
-        //Ëæ»úÊı
+        //éšæœºæ•°
         string salt = Random.Range(0, 100000).ToString();
-        // ÃÜÔ¿
+        // å¯†é’¥
         string secretKey = "CLJf59XylJlwYqwE35TW";
         string sign = EncryptString(appId + q + salt + secretKey);
         string url = "http://api.fanyi.baidu.com/api/trans/vip/translate?";
@@ -138,22 +138,22 @@ public class EditorTranslate : MonoBehaviour
         return strList;
     }
 
-    // ¼ÆËãMD5Öµ
+    // è®¡ç®—MD5å€¼
     public static string EncryptString(string str)
     {
         MD5 md5 = MD5.Create();
-        // ½«×Ö·û´®×ª»»³É×Ö½ÚÊı×é
+        // å°†å­—ç¬¦ä¸²è½¬æ¢æˆå­—èŠ‚æ•°ç»„
         byte[] byteOld = Encoding.UTF8.GetBytes(str);
-        // µ÷ÓÃ¼ÓÃÜ·½·¨
+        // è°ƒç”¨åŠ å¯†æ–¹æ³•
         byte[] byteNew = md5.ComputeHash(byteOld);
-        // ½«¼ÓÃÜ½á¹û×ª»»Îª×Ö·û´®
+        // å°†åŠ å¯†ç»“æœè½¬æ¢ä¸ºå­—ç¬¦ä¸²
         StringBuilder sb = new StringBuilder();
         foreach (byte b in byteNew)
         {
-            // ½«×Ö½Ú×ª»»³É16½øÖÆ±íÊ¾µÄ×Ö·û´®£¬
+            // å°†å­—èŠ‚è½¬æ¢æˆ16è¿›åˆ¶è¡¨ç¤ºçš„å­—ç¬¦ä¸²ï¼Œ
             sb.Append(b.ToString("x2"));
         }
-        // ·µ»Ø¼ÓÃÜµÄ×Ö·û´®
+        // è¿”å›åŠ å¯†çš„å­—ç¬¦ä¸²
         return sb.ToString();
     }
 }

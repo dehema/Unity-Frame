@@ -1,11 +1,11 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace DB
 {
     /// <summary>
-    /// Êı¾İ¸üĞÂÀàĞÍ
+    /// æ•°æ®æ›´æ–°ç±»å‹
     /// </summary>
     public enum DBAction
     {
@@ -16,12 +16,12 @@ namespace DB
     }
 
     /// <summary>
-    /// Êı¾İ±ä¶¯
+    /// æ•°æ®å˜åŠ¨
     /// </summary>
     public class DBModify
     {
         /// <summary>
-        /// Êı¾İ¸üĞÂÀàĞÍ
+        /// æ•°æ®æ›´æ–°ç±»å‹
         /// </summary>
         public object value;
         public DBAction action;
@@ -40,15 +40,15 @@ namespace DB
     public class DBKeyModify : DBModify
     {
         /// <summary>
-        ///  Êı¾İµÄ key
+        ///  æ•°æ®çš„ key
         /// </summary>
         public string key;
         /// <summary>
-        /// ÊÇ·ñÊÇµÚÒ»¸ö
+        /// æ˜¯å¦æ˜¯ç¬¬ä¸€ä¸ª
         /// </summary>
         public bool isFirst;
         /// <summary>
-        /// ÊÇ·ñÊÇ×îºóÒ»¸ö
+        /// æ˜¯å¦æ˜¯æœ€åä¸€ä¸ª
         /// </summary>
         public bool isLast;
 

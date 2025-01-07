@@ -1,9 +1,9 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// ��ͼ�㼶
+/// 视图层级
 /// </summary>
 public class ViewLayerModel
 {

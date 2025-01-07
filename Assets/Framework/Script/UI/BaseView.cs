@@ -1,4 +1,4 @@
-using DB;
+ï»¿using DB;
 using DG.Tweening;
 using System;
 using System.Collections;
@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-//ÉúÃüÖÜÆÚÓÅÏÈ¼¶ Awake->OnEnable->Init->OnOpen->Start
+//ç”Ÿå‘½å‘¨æœŸä¼˜å…ˆçº§ Awake->OnEnable->Init->OnOpen->Start
 public class BaseView : BaseUI, IBaseView
 {
     [HideInInspector]
@@ -108,7 +108,7 @@ public class BaseView : BaseUI, IBaseView
     }
 
     /// <summary>
-    /// ¼ÆÊ±Æ÷
+    /// è®¡æ—¶å™¨
     /// </summary>
     protected TimerHandler SetTimeOut(Action<TimerDispatcher> _action, float _totalTime)
     {
@@ -116,7 +116,7 @@ public class BaseView : BaseUI, IBaseView
     }
 
     /// <summary>
-    /// ¶¨Ê±Æ÷
+    /// å®šæ—¶å™¨
     /// </summary>
     public TimerHandler SetInterval(Action<TimerDispatcher> _action, float _interval, float _totalTime = int.MaxValue)
     {
@@ -124,7 +124,7 @@ public class BaseView : BaseUI, IBaseView
     }
 
     /// <summary>
-    /// µ¹¼ÆÊ±
+    /// å€’è®¡æ—¶
     /// </summary>
     public TimerHandler SetCountDown(Action<TimerDispatcher> _action, float _totalTime, float _startTime = 0)
     {
@@ -132,7 +132,7 @@ public class BaseView : BaseUI, IBaseView
     }
 
     /// <summary>
-    /// »ñÈ¡¼ÆÊ±Æ÷×éÃû
+    /// è·å–è®¡æ—¶å™¨ç»„å
     /// </summary>
     /// <returns></returns>
     private string GetTimerGroupName()
@@ -143,7 +143,7 @@ public class BaseView : BaseUI, IBaseView
 
     List<DBHandler.Binding> dbHandlers = new List<DBHandler.Binding>();
     /// <summary>
-    /// Êı¾İ°ó¶¨ Ê¹ÓÃÕâ¸ö·½·¨°ó¶¨µÄÊÂ¼şÔÚ¹Ø±ÕÒ³ÃæÊ±×Ô¶¯½â°ó
+    /// æ•°æ®ç»‘å®š ä½¿ç”¨è¿™ä¸ªæ–¹æ³•ç»‘å®šçš„äº‹ä»¶åœ¨å…³é—­é¡µé¢æ—¶è‡ªåŠ¨è§£ç»‘
     /// </summary>
     /// <param name="binding"></param>
     protected void DataBind(DBObject dBObject, Action<DBModify> callfunc)
@@ -153,7 +153,7 @@ public class BaseView : BaseUI, IBaseView
     }
 
     /// <summary>
-    /// ½â³ıËùÓĞ°ó¶¨
+    /// è§£é™¤æ‰€æœ‰ç»‘å®š
     /// </summary>
     protected void UnBindAllDataBind()
     {

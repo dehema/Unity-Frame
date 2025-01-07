@@ -1,4 +1,4 @@
-using System.IO;
+ï»¿using System.IO;
 using UnityEditor;
 using UnityEngine;
 using System;
@@ -18,7 +18,7 @@ public class EditorViewCreater
     static Scene currScene;
     const string tempViewCreater = "/._tempViewCreater.txt";
     /// <summary>
-    /// ´´½¨Ê¾ÀıUI
+    /// åˆ›å»ºç¤ºä¾‹UI
     /// </summary>
     public static void CreateView(string _viewName)
     {
@@ -26,15 +26,15 @@ public class EditorViewCreater
             return;
         CreateViewScene(_viewName);
         CreateViewScript(_viewName);
-        ///µ÷ÓÃCreateViewScriptÖ®ºó£¬½Å±¾Ò»¶¨´´½¨³É¹¦£¬ÕâÊ±ºòĞèÒªÖØ±àÒë´úÂë£¬µÈ±àÒëÍê³Éºóµ÷ÓÃOnCompileScripts
+        ///è°ƒç”¨CreateViewScriptä¹‹åï¼Œè„šæœ¬ä¸€å®šåˆ›å»ºæˆåŠŸï¼Œè¿™æ—¶å€™éœ€è¦é‡ç¼–è¯‘ä»£ç ï¼Œç­‰ç¼–è¯‘å®Œæˆåè°ƒç”¨OnCompileScripts
         CreateViewPrefab(_viewName);
         //view.AddComponent(Type.GetType("UnityEngine.Rigidbody, UnityEngine.PhysicsModule"));
         //view.AddComponent(Type.GetType("DebugView, Assembly-CSharp"));
-        Debug.Log("´´½¨View--->" + _viewName);
+        Debug.Log("åˆ›å»ºView--->" + _viewName);
     }
 
     /// <summary>
-    /// ´Ë±ê¼Ç¿ÉÒÔÈÃ½Å±¾ÔÚ±àÒëºóÔÚµ÷ÓÃÒ»´Î
+    /// æ­¤æ ‡è®°å¯ä»¥è®©è„šæœ¬åœ¨ç¼–è¯‘ååœ¨è°ƒç”¨ä¸€æ¬¡
     /// </summary>
     [DidReloadScripts]
     public static void OnCompileScripts()
@@ -65,7 +65,7 @@ public class EditorViewCreater
     {
         if (Resources.Load<GameObject>(UIMgr.uiPrefabPath + _viewName))
         {
-            EditorUtility.DisplayDialog("´íÎó", $"ÒÑ´æÔÚÍ¬ÃûÔ¤ÖÆÌå--->{UIMgr.uiPrefabPath + _viewName}", "ok");
+            EditorUtility.DisplayDialog("é”™è¯¯", $"å·²å­˜åœ¨åŒåé¢„åˆ¶ä½“--->{UIMgr.uiPrefabPath + _viewName}", "ok");
             return null;
         }
         GameObject view = PrefabUtility.InstantiatePrefab(Resources.Load<GameObject>(UIMgr.uiPrefabPath + "TemplateView")) as GameObject;
@@ -93,7 +93,7 @@ public class EditorViewCreater
         }
         catch (Exception)
         {
-            Debug.Log($"Ìí¼Ó×é¼ş{_viewName}Ê§°Ü", _view);
+            Debug.Log($"æ·»åŠ ç»„ä»¶{_viewName}å¤±è´¥", _view);
             throw;
         }
         string sceneName = EditorSceneManager.GetActiveScene().name;
@@ -102,10 +102,10 @@ public class EditorViewCreater
         string prefabPath = Application.dataPath + relativePath + sceneName + ".prefab";
         //if (File.Exists(prefabPath))
         //{
-        //    EditorUtility.DisplayDialog("´íÎó", $"ÒÑ´æÔÚÍ¬ÃûÔ¤ÖÆÌå--->{prefabPath}", "ok");
+        //    EditorUtility.DisplayDialog("é”™è¯¯", $"å·²å­˜åœ¨åŒåé¢„åˆ¶ä½“--->{prefabPath}", "ok");
         //    return null;
         //}
-        Debug.Log("Éú³ÉViewÔ¤ÖÆÌå" + prefabPath, viewGo);
+        Debug.Log("ç”ŸæˆViewé¢„åˆ¶ä½“" + prefabPath, viewGo);
         GameObject prefab = PrefabUtility.SaveAsPrefabAssetAndConnect(viewGo, prefabPath, InteractionMode.AutomatedAction);
         return prefab;
     }
@@ -118,19 +118,19 @@ public class EditorViewCreater
         string viewPath = Application.dataPath + relativePath;
         if (File.Exists(viewPath))
         {
-            EditorUtility.DisplayDialog("´íÎó", $"ÒÑ´æÔÚÍ¬Ãû½Å±¾--->{viewPath}", "ok");
+            EditorUtility.DisplayDialog("é”™è¯¯", $"å·²å­˜åœ¨åŒåè„šæœ¬--->{viewPath}", "ok");
             return false;
         }
         string viewTemp = File.ReadAllText(GetAutoCreateViewTemplatePath());
         string viewScript = viewTemp.Replace("#ViewName#", _viewName);
         File.WriteAllText(viewPath, viewScript);
-        Debug.Log("Éú³ÉView½Å±¾" + viewPath);
+        Debug.Log("ç”ŸæˆViewè„šæœ¬" + viewPath);
         AssetDatabase.Refresh();
         return true;
     }
 
     /// <summary>
-    /// ¼ì²éÃüÃû¹æÔò
+    /// æ£€æŸ¥å‘½åè§„åˆ™
     /// </summary>
     /// <param name="_viewName"></param>
     /// <returns></returns>
@@ -138,14 +138,14 @@ public class EditorViewCreater
     {
         if (string.IsNullOrEmpty(_viewName))
         {
-            EditorUtility.DisplayDialog("´íÎó", "ÔÚÇ°ÃæµÄÊäÈë¿òÖĞÊäÈëÒª´´½¨µÄView", "ok");
+            EditorUtility.DisplayDialog("é”™è¯¯", "åœ¨å‰é¢çš„è¾“å…¥æ¡†ä¸­è¾“å…¥è¦åˆ›å»ºçš„View", "ok");
             return false;
         }
         foreach (char item in _viewName)
         {
             if ((!char.IsLetter(item) || char.ToLower(item) < 'a' || char.ToLower(item) > 'z') && item != '_')
             {
-                EditorUtility.DisplayDialog("´íÎó", "ÃüÃû²»·ûºÏ¹æÔò", "ok");
+                EditorUtility.DisplayDialog("é”™è¯¯", "å‘½åä¸ç¬¦åˆè§„åˆ™", "ok");
                 return false;
             }
         }
@@ -153,7 +153,7 @@ public class EditorViewCreater
     }
 
     /// <summary>
-    /// »ñÈ¡×Ô¶¯Ò³ÃæµÄÄ£°åÎÄ¼şÂ·¾¶
+    /// è·å–è‡ªåŠ¨é¡µé¢çš„æ¨¡æ¿æ–‡ä»¶è·¯å¾„
     /// </summary>
     /// <returns></returns>
     public static string GetAutoCreateViewTemplatePath()

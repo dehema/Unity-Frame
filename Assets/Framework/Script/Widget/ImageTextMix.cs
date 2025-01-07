@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using System.Net.Http.Headers;
 using System.Reflection;
@@ -6,15 +6,15 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
-//Ë¼Â·ÈçÏÂ
-//1.ÏÖÔÚÔ­ÎÄ±¾×Ö·ûµÄ»ù´¡ÉÏ¼ÓÒ»¸ö¿Õ¸ñ£¬»ñÈ¡Ò»¸ö¿Õ¸ñËùÕ¼µÄ¿í¶È£¬ÓĞµÄÎÄ±¾×é¼ş¿ªÆôÁËbestFit×Ö¶Î£¬ËùÒÔ¼ÓÒ»¸ö¿Õ¸ñ»áµ¼ÖÂ¼ÆËã³öµÄ¿í¶ÈĞ¡ÓÚÕı³£¿í¶È£¬µ«Êµ¼ÊÇé¿ö¿ÉÒÔºöÂÔ²»¼Æ¡£
-//2.Ìæ»»ËùÓĞµÄÕ¼Î»×Ö·ûÎª²»Ğ¡ÓÚÆä¿í¶ÈÊıÁ¿µÄ¿Õ¸ñ£¬Èç¹ûÕâÕÅÍ¼Õ¼30¸öÏñËØ£¬µ«ÊÇÕâ¸öÎÄ±¾×é¼şµÄÉèÖÃÒ»¸ö¿Õ¸ñ²Å20ÏñËØ£¬ÔòÌæ»»ÎªÁ½¸ö¿Õ¸ñ£¬Í¬Ê±¼ÇÂ¼ÏÂÌæ»»¿Õ¸ñµÄË÷Òı
-//3.¸ù¾İ¿Õ¸ñË÷ÒıµÄÎ»ÖÃÉú³ÉÍ¼Æ¬£¬Í¼Æ¬µÄÎ»ÖÃÊÇ Ë÷Òı¿Õ¸ñµÄ¹â±êÎ»ÖÃ£¨×óÉÏ½Ç£©+¿í¶È£¨¿Õ¸ñÊıÁ¿*¿Õ¸ñ¿í¶È/2£©-¸ß¶È£¨µ¥ĞĞ¸ß¶È/2£©
+//æ€è·¯å¦‚ä¸‹
+//1.ç°åœ¨åŸæ–‡æœ¬å­—ç¬¦çš„åŸºç¡€ä¸ŠåŠ ä¸€ä¸ªç©ºæ ¼ï¼Œè·å–ä¸€ä¸ªç©ºæ ¼æ‰€å çš„å®½åº¦ï¼Œæœ‰çš„æ–‡æœ¬ç»„ä»¶å¼€å¯äº†bestFitå­—æ®µï¼Œæ‰€ä»¥åŠ ä¸€ä¸ªç©ºæ ¼ä¼šå¯¼è‡´è®¡ç®—å‡ºçš„å®½åº¦å°äºæ­£å¸¸å®½åº¦ï¼Œä½†å®é™…æƒ…å†µå¯ä»¥å¿½ç•¥ä¸è®¡ã€‚
+//2.æ›¿æ¢æ‰€æœ‰çš„å ä½å­—ç¬¦ä¸ºä¸å°äºå…¶å®½åº¦æ•°é‡çš„ç©ºæ ¼ï¼Œå¦‚æœè¿™å¼ å›¾å 30ä¸ªåƒç´ ï¼Œä½†æ˜¯è¿™ä¸ªæ–‡æœ¬ç»„ä»¶çš„è®¾ç½®ä¸€ä¸ªç©ºæ ¼æ‰20åƒç´ ï¼Œåˆ™æ›¿æ¢ä¸ºä¸¤ä¸ªç©ºæ ¼ï¼ŒåŒæ—¶è®°å½•ä¸‹æ›¿æ¢ç©ºæ ¼çš„ç´¢å¼•
+//3.æ ¹æ®ç©ºæ ¼ç´¢å¼•çš„ä½ç½®ç”Ÿæˆå›¾ç‰‡ï¼Œå›¾ç‰‡çš„ä½ç½®æ˜¯ ç´¢å¼•ç©ºæ ¼çš„å…‰æ ‡ä½ç½®ï¼ˆå·¦ä¸Šè§’ï¼‰+å®½åº¦ï¼ˆç©ºæ ¼æ•°é‡*ç©ºæ ¼å®½åº¦/2ï¼‰-é«˜åº¦ï¼ˆå•è¡Œé«˜åº¦/2ï¼‰
 
-//Ö®Ç°µÄÎÊÌâÔÚÓÚÍ¼Æ¬µÄÎ»ÖÃÊÇÒ»¸öÒ»¸öÉú³ÉµÄ£¬µÚÒ»ÕÅÍ¼Æ¬Éú³ÉÖ®ºó£¬Ìæ»»µÄ¿Õ¸ñ×Ö·û¾Í»áµ¼ÖÂÕû¸öÎÄ±¾×é¼şµÄÉèÖÃ¸Ä±ä£¬Ó¦¸Ã°ÑÊı¾İ´¦ÀíºÃ£¬×îºóÒ»ÆğÉú³ÉÍ¼Æ¬
+//ä¹‹å‰çš„é—®é¢˜åœ¨äºå›¾ç‰‡çš„ä½ç½®æ˜¯ä¸€ä¸ªä¸€ä¸ªç”Ÿæˆçš„ï¼Œç¬¬ä¸€å¼ å›¾ç‰‡ç”Ÿæˆä¹‹åï¼Œæ›¿æ¢çš„ç©ºæ ¼å­—ç¬¦å°±ä¼šå¯¼è‡´æ•´ä¸ªæ–‡æœ¬ç»„ä»¶çš„è®¾ç½®æ”¹å˜ï¼Œåº”è¯¥æŠŠæ•°æ®å¤„ç†å¥½ï¼Œæœ€åä¸€èµ·ç”Ÿæˆå›¾ç‰‡
 
 /// <summary>
-/// Í¼ÎÄ»ìºÏ½Å±¾£¨ĞèÒªÅäºÏÍ¼ÎÄÅäÖÃºÍ¶àÓïÑÔÎÄ±¾£©
+/// å›¾æ–‡æ··åˆè„šæœ¬ï¼ˆéœ€è¦é…åˆå›¾æ–‡é…ç½®å’Œå¤šè¯­è¨€æ–‡æœ¬ï¼‰
 /// </summary>
 [RequireComponent(typeof(Text))]
 public class ImageTextMix : MonoBehaviour
@@ -24,7 +24,7 @@ public class ImageTextMix : MonoBehaviour
     ImageTextMixUnitConfig config;
     RectTransform rect;
     string textStr;
-    //¿Õ¸ñ¿í¶È
+    //ç©ºæ ¼å®½åº¦
     float spaceUnitLenth;
     TextGenerator generator;
     int spaceNum;
@@ -90,7 +90,7 @@ public class ImageTextMix : MonoBehaviour
         {
             return "";
         }
-        //¼ÆËã¿Õ¸ñÊıÁ¿ 
+        //è®¡ç®—ç©ºæ ¼æ•°é‡ 
         spaceNum = Mathf.CeilToInt(_imgConfig.width / spaceUnitLenth);
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < spaceNum; i++)
@@ -111,7 +111,7 @@ public class ImageTextMix : MonoBehaviour
         {
             int charIndex = replaceStrIndex[i];
             TIMix_Image _imgConfig = config.imgConfigs[i];
-            //´´½¨Í¼Æ¬
+            //åˆ›å»ºå›¾ç‰‡
             GameObject go = Tools.Ins.Create2DGo("img1", transform);
             createImages.Add(go);
             Image img = go.AddComponent<Image>();
@@ -120,7 +120,7 @@ public class ImageTextMix : MonoBehaviour
             RectTransform imgRect = go.GetComponent<RectTransform>();
             imgRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, _imgConfig.width);
             imgRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, _imgConfig.height);
-            //»ñÈ¡Î»ÖÃ
+            //è·å–ä½ç½®
             Vector2 cursorPos = generator.characters[charIndex].cursorPos;
             cursorPos += new Vector2(spaceNum * (spaceUnitLenth / 2), -generator.lines[0].height / 2);
             imgRect.anchoredPosition = cursorPos;

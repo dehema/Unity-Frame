@@ -1,4 +1,4 @@
-using DB;
+锘縰sing DB;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -34,7 +34,7 @@ public class ResMgr : MonoSingleton<ResMgr>
     }
 
     /// <summary>
-    /// 增加奖励
+    /// 澧炲姞濂栧姳
     /// </summary>  
     /// <param name="_resType"></param>
     /// <param name="_num"></param>
@@ -47,13 +47,13 @@ public class ResMgr : MonoSingleton<ResMgr>
             dBFloat.Value += _num;
             if (GameSettingStatic.ResLog)
             {
-                Debug.Log(string.Format("获得奖励{0}{1},总计{2}", _resType.ToString(), _num, dBFloat.Value));
+                Debug.Log(string.Format("鑾峰緱濂栧姳{0}{1},鎬昏{2}", _resType.ToString(), _num, dBFloat.Value));
             }
         }
     }
 
     /// <summary>
-    /// 资源数量
+    /// 璧勬簮鏁伴噺
     /// </summary>
     /// <param name="_resType"></param>
     public float GetResNum(ResType _resType)
@@ -63,7 +63,7 @@ public class ResMgr : MonoSingleton<ResMgr>
     }
 
     /// <summary>
-    /// 资源数量
+    /// 璧勬簮鏁伴噺
     /// </summary>
     /// <param name="_resType"></param>
     public DBObject GetResFeild(ResType _resType)
@@ -77,7 +77,7 @@ public class ResMgr : MonoSingleton<ResMgr>
     }
 
     /// <summary>
-    /// 获得资源图片
+    /// 鑾峰緱璧勬簮鍥剧墖
     /// </summary>
     /// <param name="_resType"></param>
     /// <returns></returns>
@@ -107,7 +107,7 @@ public class ResMgr : MonoSingleton<ResMgr>
 }
 
 /// <summary>
-/// 资源类型
+/// 璧勬簮绫诲瀷
 /// </summary>
 public enum ResType
 {

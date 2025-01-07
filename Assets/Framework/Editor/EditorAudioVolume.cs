@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
@@ -12,14 +12,14 @@ using Unity.EditorCoroutines.Editor;
 public class EditorAudioVolume : EditorWindow
 {
     /// <summary>
-    /// ÓÃÀ´×÷±È½ÏµÄ±¸·İÊı¾İ£¬Èç¹û²»Ò»ÖÂÔò±£´æ
+    /// ç”¨æ¥ä½œæ¯”è¾ƒçš„å¤‡ä»½æ•°æ®ï¼Œå¦‚æœä¸ä¸€è‡´åˆ™ä¿å­˜
     /// </summary>
     AudioVolumeData volumeData_origin = new AudioVolumeData();
     AudioVolumeData volumeData = new AudioVolumeData();
     readonly string audioVolumeConfigPath = Application.streamingAssetsPath + "/AudioVolumeConfig.json";
     static GUIStyle titleLabelStyle;
     /// <summary>
-    /// ÊÇ·ñÒÑ¾­¶ÁÈ¡¹ıÄÚÈİ
+    /// æ˜¯å¦å·²ç»è¯»å–è¿‡å†…å®¹
     /// </summary>
     bool isLoadData = false;
     bool isSaveData = false;
@@ -42,11 +42,11 @@ public class EditorAudioVolume : EditorWindow
         }
     }
 
-    [MenuItem("¿ª·¢¹¤¾ß/ÒôÆµÎÄ¼şÒôÁ¿´óĞ¡µ÷Õû")]
+    [MenuItem("å¼€å‘å·¥å…·/éŸ³é¢‘æ–‡ä»¶éŸ³é‡å¤§å°è°ƒæ•´")]
     static void OpenMainWindow()
     {
         EditorAudioVolume window = GetWindow<EditorAudioVolume>();
-        window.titleContent = new GUIContent("ÒôÆµÎÄ¼şÒôÁ¿´óĞ¡µ÷Õû");
+        window.titleContent = new GUIContent("éŸ³é¢‘æ–‡ä»¶éŸ³é‡å¤§å°è°ƒæ•´");
         window.position = new Rect(400, 100, 640, 480);
         window.Show();
     }
@@ -54,9 +54,9 @@ public class EditorAudioVolume : EditorWindow
     EditorCoroutine saveCoroutine = null;
     private void OnGUI()
     {
-        EditorGUILayout.LabelField("<color=white>------------------- ÒôĞ§ -------------------</color>", titleLabelStyle, GUILayout.Height(20));
+        EditorGUILayout.LabelField("<color=white>------------------- éŸ³æ•ˆ -------------------</color>", titleLabelStyle, GUILayout.Height(20));
         AudioGUI(typeof(AudioSound));
-        EditorGUILayout.LabelField("<color=white>------------------- ÒôÀÖ -------------------</color>", titleLabelStyle, GUILayout.Height(20));
+        EditorGUILayout.LabelField("<color=white>------------------- éŸ³ä¹ -------------------</color>", titleLabelStyle, GUILayout.Height(20));
         AudioGUI(typeof(AudioMusic));
         if (saveCoroutine != null)
         {
@@ -98,7 +98,7 @@ public class EditorAudioVolume : EditorWindow
         }
         volume /= 100f;
 
-        EditorGUILayout.LabelField("ÒôÁ¿:" + volume, GUILayout.Width(100));
+        EditorGUILayout.LabelField("éŸ³é‡:" + volume, GUILayout.Width(100));
         GUILayout.EndHorizontal();
         //data
         if (volume != currVolume || !isSaveData || volume < 0)
@@ -146,7 +146,7 @@ public class EditorAudioVolume : EditorWindow
     }
 
     /// <summary>
-    /// ±£´æÒôÆµÅäÖÃ
+    /// ä¿å­˜éŸ³é¢‘é…ç½®
     /// </summary>
     private IEnumerator SaveAudioVolumeConfig()
     {
@@ -157,13 +157,13 @@ public class EditorAudioVolume : EditorWindow
             yield break;
         File.WriteAllText(audioVolumeConfigPath, JsonConvert.SerializeObject(volumeData, Formatting.Indented));
         AssetDatabase.Refresh();
-        ///¸²Ğ´ÅäÖÃÎÄ¼ş
+        ///è¦†å†™é…ç½®æ–‡ä»¶
         EditorGUIUtility.PingObject(AssetDatabase.LoadAssetAtPath<Object>(audioVolumeConfigPath));
-        Debug.Log("±£´æÒôÁ¿ÅäÖÃÎÄ¼şµ½->" + audioVolumeConfigPath);
+        Debug.Log("ä¿å­˜éŸ³é‡é…ç½®æ–‡ä»¶åˆ°->" + audioVolumeConfigPath);
     }
 
     /// <summary>
-    /// ¼ì²éÊı¾İÊÇ·ñ±ä¸ü¹ı ±ä¸ü¹ıÔò±£´æÅäÖÃÎÄ¼ş
+    /// æ£€æŸ¥æ•°æ®æ˜¯å¦å˜æ›´è¿‡ å˜æ›´è¿‡åˆ™ä¿å­˜é…ç½®æ–‡ä»¶
     /// </summary>
     /// <returns></returns>
     public bool CheckData()

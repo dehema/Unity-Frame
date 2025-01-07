@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 
@@ -7,9 +7,9 @@ using UnityEngine;
 public class MultiplyGradientColor : BaseMeshEffect
 {
     public UnityEngine.Gradient gradientColor = new UnityEngine.Gradient();
-    //ÊÇ·ñ´¹Ö±·½Ïò
+    //æ˜¯å¦å‚ç›´æ–¹å‘
     public bool isVertical = true;
-    //ÊÇ·ñµş¼ÓÔ­ÓĞÑÕÉ«
+    //æ˜¯å¦å åŠ åŸæœ‰é¢œè‰²
     public bool isMultiplyTextColor = false;
     protected MultiplyGradientColor()
     {
@@ -21,7 +21,7 @@ public class MultiplyGradientColor : BaseMeshEffect
         vh.GetUIVertexStream(verts);
         vh.Clear();
 
-        //Ã¿¸ö×ÖÄ¸ ·ÖÎªÁ½¸öÈı½ÇĞÎ,6¸ö¶¥µã£¬ÈçÏÂÍ¼ 0ºÍ5Î»ÖÃÏàÍ¬ 2ºÍ3Î»ÖÃÏàÍ¬
+        //æ¯ä¸ªå­—æ¯ åˆ†ä¸ºä¸¤ä¸ªä¸‰è§’å½¢,6ä¸ªé¡¶ç‚¹ï¼Œå¦‚ä¸‹å›¾ 0å’Œ5ä½ç½®ç›¸åŒ 2å’Œ3ä½ç½®ç›¸åŒ
         /**
          *   5-0 ---- 1
          *    | \    |
@@ -95,9 +95,9 @@ public class MultiplyGradientColor : BaseMeshEffect
             }
         }
 
-        //Ìí¼ÓÈı½ÇĞÎ
+        //æ·»åŠ ä¸‰è§’å½¢
 
-        //Ã¿¸ö×ÖÄ¸µÄ¶¥µãÊıÁ¿
+        //æ¯ä¸ªå­—æ¯çš„é¡¶ç‚¹æ•°é‡
         int stepVertCount = (gradientColor.colorKeys.Length - 1) * 2 * 3;
         for (int i = 0; i < vh.currentVertCount; i += stepVertCount)
         {
@@ -126,7 +126,7 @@ public class MultiplyGradientColor : BaseMeshEffect
         return a;
     }
 
-    //¸ù¾İ±ÈÀı´´½¨¶¥µã £¨timeÕâÀïÊÇgradientColorÀïµÄ±ÈÀı£©
+    //æ ¹æ®æ¯”ä¾‹åˆ›å»ºé¡¶ç‚¹ ï¼ˆtimeè¿™é‡Œæ˜¯gradientColoré‡Œçš„æ¯”ä¾‹ï¼‰
     private UIVertex CreateVertexByTime(UIVertex start, UIVertex end, float time)
     {
         UIVertex center = new UIVertex();

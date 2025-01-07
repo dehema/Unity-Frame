@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
@@ -39,7 +39,7 @@ public class LangMgr : MonoSingleton<LangMgr>
         }
         else
         {
-            Debug.LogError("多语言配置读取失败" + unityWebRequest.error);
+            Debug.LogError("澶氳瑷€閰嶇疆璇诲彇澶辫触" + unityWebRequest.error);
         }
     }
 
@@ -47,7 +47,7 @@ public class LangMgr : MonoSingleton<LangMgr>
     {
         if (!langDict.ContainsKey(_tid))
         {
-            Debug.LogError($"找不到语言{currLang}文本{_tid}");
+            Debug.LogError($"鎵句笉鍒拌瑷€{currLang}鏂囨湰{_tid}");
             return _tid;
         }
         return langDict[_tid];
@@ -55,7 +55,7 @@ public class LangMgr : MonoSingleton<LangMgr>
 
     public void RefreshAllTextLang()
     {
-        //后台切回
+        //鍚庡彴鍒囧洖
         if (Application.systemLanguage != lastSystemLang)
         {
             Lang[] langs = UIMgr.Ins.gameObject.GetComponentsInChildren<Lang>(true);
@@ -72,13 +72,13 @@ public class LangMgr : MonoSingleton<LangMgr>
     }
 
     /// <summary>
-    /// 获取名称
+    /// 鑾峰彇鍚嶇О
     /// </summary>
     /// <returns></returns>
     public string GetLanguageName(SystemLanguage _lang)
     {
         if (_lang == SystemLanguage.Chinese)
-            return "简体中文";
+            return "绠€浣撲腑鏂?;
         else if (_lang == SystemLanguage.English)
             return "English";
         return "unkown";

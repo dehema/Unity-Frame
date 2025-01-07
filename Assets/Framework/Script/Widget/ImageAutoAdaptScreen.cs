@@ -1,11 +1,11 @@
-using System.Collections;
+锘縰sing System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 /// <summary>
-/// 根据screen尺寸自动调整缩放，保证在比例不变的情况下永远占满屏幕
+/// 鏍规嵁screen灏哄鑷姩璋冩暣缂╂斁锛屼繚璇佸湪姣斾緥涓嶅彉鐨勬儏鍐典笅姘歌繙鍗犳弧灞忓箷
 /// </summary>
 [RequireComponent(typeof(Image))]
 public class ImageAutoAdaptScreen : BaseUI

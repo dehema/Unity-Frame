@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
@@ -36,7 +36,7 @@ namespace DB
 
         private Dictionary<DBObject, List<Binding>> _bindingListDict = new Dictionary<DBObject, List<Binding>>();
         /// <summary>
-        /// °ó¶¨
+        /// ç»‘å®š
         /// </summary>
         /// <param name="obj"></param>
         /// <param name="bind"></param>
@@ -58,7 +58,7 @@ namespace DB
         }
 
         /// <summary>
-        /// ½â³ý°ó¶¨
+        /// è§£é™¤ç»‘å®š
         /// </summary>
         /// <param name="obj"></param>
         public void UnBind(DBObject obj)
@@ -75,7 +75,7 @@ namespace DB
         }
 
         /// <summary>
-        /// ½â³ýËùÓÐ°ó¶¨
+        /// è§£é™¤æ‰€æœ‰ç»‘å®š
         /// </summary>
         public void UnBindAll()
         {

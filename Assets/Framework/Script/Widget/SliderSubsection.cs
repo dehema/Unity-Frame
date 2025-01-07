@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,7 +6,7 @@ using DG.Tweening;
 using System;
 
 /// <summary>
-/// ÏÖ×´Í¼·Ö¶Î×é¼ş
+/// ç°çŠ¶å›¾åˆ†æ®µç»„ä»¶
 /// </summary>
 public class SliderSubsection : BaseUI
 {
@@ -56,7 +56,7 @@ public class SliderSubsection : BaseUI
     }
 
     /// <summary>
-    /// »ñµÃ·Ö¶ÎÎ»ÖÃ ÊÀ½ç×ø±ê
+    /// è·å¾—åˆ†æ®µä½ç½® ä¸–ç•Œåæ ‡
     /// </summary>
     /// <returns></returns>
     public List<Vector3> GetSubsectionPos(List<float> _subsectionTargets)
@@ -67,7 +67,7 @@ public class SliderSubsection : BaseUI
         }
         subsectionTargets = _subsectionTargets;
         int _subsectionNum = _subsectionTargets.Count;
-        //ÏÈ¼ÆËã·Ö¶ÎÖ®ºóµÄÄ¿±êÖµ ±ÈÈçµÚÒ»¶ÎUI¿í¶ÈÖ®Õ¼ÁËÈı·ÖÖ®Ò» µ«Ä¿±êÖµÊÇ×îĞ¡µÄÖ»ÓĞ×î´óÖµµÄÊ®·ÖÖ®Ò»
+        //å…ˆè®¡ç®—åˆ†æ®µä¹‹åçš„ç›®æ ‡å€¼ æ¯”å¦‚ç¬¬ä¸€æ®µUIå®½åº¦ä¹‹å äº†ä¸‰åˆ†ä¹‹ä¸€ ä½†ç›®æ ‡å€¼æ˜¯æœ€å°çš„åªæœ‰æœ€å¤§å€¼çš„ååˆ†ä¹‹ä¸€
         List<Vector2> anchoredPos = new List<Vector2>();
         RectTransform rect = imgSlider.rectTransform;
         float _subsectionWidth = rect.rect.width / _subsectionNum;

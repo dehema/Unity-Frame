@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
@@ -38,7 +38,7 @@ public class ConfigMgr : MonoSingleton<ConfigMgr>
     }
 
     /// <summary>
-    /// ¶ÁÈ¡ÅäÖÃ
+    /// è¯»å–é…ç½®
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="key"></param>
@@ -50,11 +50,11 @@ public class ConfigMgr : MonoSingleton<ConfigMgr>
         {
             string filePath = configPath + key;
             _config = Resources.Load<TextAsset>(filePath).text;
-            Debug.Log("¶ÁÈ¡µ½ÅäÖÃÎÄ¼ş" + filePath + "\n" + _config);
+            Debug.Log("è¯»å–åˆ°é…ç½®æ–‡ä»¶" + filePath + "\n" + _config);
         }
         else
         {
-            Debug.Log("¶ÁÈ¡µ½Ô¶¶ËÅäÖÃ" + typeof(T).ToString() + "\n" + _config);
+            Debug.Log("è¯»å–åˆ°è¿œç«¯é…ç½®" + typeof(T).ToString() + "\n" + _config);
         }
         T t = JsonConvert.DeserializeObject<T>(_config);
         ConfigBase configBase = t as ConfigBase;
@@ -63,7 +63,7 @@ public class ConfigMgr : MonoSingleton<ConfigMgr>
     }
 
     /// <summary>
-    /// »ñÈ¡UIViewÅäÖÃYamlÎÄ¼şÂ·¾¶
+    /// è·å–UIViewé…ç½®Yamlæ–‡ä»¶è·¯å¾„
     /// </summary>
     /// <returns></returns>
     public string GetUIViewConfigPath()
@@ -72,12 +72,12 @@ public class ConfigMgr : MonoSingleton<ConfigMgr>
     }
 
     /// <summary>
-    /// ¶ÁÈ¡UIÅäÖÃ
+    /// è¯»å–UIé…ç½®
     /// </summary>
     /// <returns></returns>
     public UIViewConfig LoadUIConfig()
     {
-        Utility.Log("¿ªÊ¼¶ÁÈ¡UIÅäÖÃ");
+        Utility.Log("å¼€å§‹è¯»å–UIé…ç½®");
         string configPath = GetUIViewConfigPath();
         string config = Resources.Load<TextAsset>(configPath).text;
         var deserializer = new DeserializerBuilder()
@@ -89,7 +89,7 @@ public class ConfigMgr : MonoSingleton<ConfigMgr>
     }
 
     /// <summary>
-    /// ¶ÁÈ¡³ÇÕòÅäÖÃ
+    /// è¯»å–åŸé•‡é…ç½®
     /// </summary>
     /// <returns></returns>
     public CityConfig GetCityConfig(int _cityID)
@@ -98,7 +98,7 @@ public class ConfigMgr : MonoSingleton<ConfigMgr>
     }
 
     /// <summary>
-    /// ¶ÁÈ¡µ¥Î»ÅäÖÃ
+    /// è¯»å–å•ä½é…ç½®
     /// </summary>
     /// <returns></returns>
     public UnitConfig GetUnitConfig(int _unitID)
@@ -107,7 +107,7 @@ public class ConfigMgr : MonoSingleton<ConfigMgr>
     }
 
     /// <summary>
-    /// »ñÈ¡ÅÉÏµÅäÖÃ
+    /// è·å–æ´¾ç³»é…ç½®
     /// </summary>
     /// <returns></returns>
     public FactionConfig GetFactionConfig(int _factionID)
