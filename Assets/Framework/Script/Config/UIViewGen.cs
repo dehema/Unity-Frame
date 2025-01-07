@@ -1,4 +1,4 @@
-public enum ViewLayer
+﻿public enum ViewLayer
 { 
 	//普通UI
 	NormalUI = 0,
