@@ -3,14 +3,8 @@ using UnityEditor;
 using UnityEngine;
 using System;
 using UnityEditor.Callbacks;
-using Object = UnityEngine.Object;
-using DG.Tweening.Plugins.Core.PathCore;
-using UnityEditor.SearchService;
-using UnityEngine.SceneManagement;
 using Scene = UnityEngine.SceneManagement.Scene;
 using UnityEditor.SceneManagement;
-using System.Collections;
-using Unity.EditorCoroutines.Editor;
 using UnityEngine.UI;
 
 public class EditorViewCreater
@@ -98,8 +92,11 @@ public class EditorViewCreater
         }
         string sceneName = EditorSceneManager.GetActiveScene().name;
         GameObject viewGo = GameObject.Find(sceneName);
-        string relativePath = $"/Resources/View/";
-        string prefabPath = Application.dataPath + relativePath + sceneName + ".prefab";
+        string relativePath = "/Resources/View/";
+        string dirPath = Application.dataPath + relativePath;
+        if (!Directory.Exists(dirPath))
+            Directory.CreateDirectory(dirPath);
+        string prefabPath = dirPath + sceneName + ".prefab";
         //if (File.Exists(prefabPath))
         //{
         //    EditorUtility.DisplayDialog("错误", $"已存在同名预制体--->{prefabPath}", "ok");
@@ -110,12 +107,13 @@ public class EditorViewCreater
         return prefab;
     }
 
-
-
+    //创建脚本
     public static bool CreateViewScript(string _viewName)
     {
-        string relativePath = $"/Script/View/{_viewName}.cs";
-        string viewPath = Application.dataPath + relativePath;
+        string dirPath = Application.dataPath + "/Script/View/";
+        if (!Directory.Exists(dirPath))
+            Directory.CreateDirectory(dirPath);
+        string viewPath = dirPath + $"{_viewName}.cs";
         if (File.Exists(viewPath))
         {
             EditorUtility.DisplayDialog("错误", $"已存在同名脚本--->{viewPath}", "ok");
