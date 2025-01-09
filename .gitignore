@@ -8,3 +8,4 @@ Assets/StreamingAssets/build_info
 Temp
 obj
 .vs
+*.dwlt
