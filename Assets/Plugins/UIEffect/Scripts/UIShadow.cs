@@ -4,9 +4,6 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 #if UNITY_EDITOR
-using System.IO;
-using System.Linq;
-using UnityEditor;
 
 #endif
 
@@ -31,7 +28,8 @@ namespace Coffee.UIEffects
         [Range(0, 1)]
         float m_BlurFactor = 1;
 
-        [Tooltip("Shadow effect style.")] [SerializeField]
+        [Tooltip("Shadow effect style.")]
+        [SerializeField]
         ShadowStyle m_Style = ShadowStyle.Shadow;
 
         [SerializeField] private Color m_EffectColor = new Color(0f, 0f, 0f, 0.5f);
@@ -147,13 +145,13 @@ namespace Coffee.UIEffects
         }
 
 
-// #if UNITY_EDITOR
-//         protected override void OnValidate()
-//         {
-//             effectDistance = m_EffectDistance;
-//             base.OnValidate();
-//         }
-// #endif
+        // #if UNITY_EDITOR
+        //         protected override void OnValidate()
+        //         {
+        //             effectDistance = m_EffectDistance;
+        //             base.OnValidate();
+        //         }
+        // #endif
 
         // #if TMP_PRESENT
         // protected void OnCullStateChanged (bool state)
@@ -343,41 +341,41 @@ namespace Coffee.UIEffects
         //         graphic.SetVerticesDirty();
         // }
 
-// #if UNITY_EDITOR
-//         public void OnBeforeSerialize()
-//         {
-//         }
-//
-//         public void OnAfterDeserialize()
-//         {
-//             EditorApplication.delayCall += UpgradeIfNeeded;
-//         }
-//
-//
-// #pragma warning disable 0612
-//         void UpgradeIfNeeded()
-//         {
-//             if (0 < m_AdditionalShadows.Count)
-//             {
-//                 foreach (var s in m_AdditionalShadows)
-//                 {
-//                     if (s.style == ShadowStyle.None)
-//                     {
-//                         continue;
-//                     }
-//
-//                     var shadow = gameObject.AddComponent<UIShadow>();
-//                     shadow.style = s.style;
-//                     shadow.effectDistance = s.effectDistance;
-//                     shadow.effectColor = s.effectColor;
-//                     shadow.useGraphicAlpha = s.useGraphicAlpha;
-//                     shadow.blurFactor = s.blur;
-//                 }
-//
-//                 m_AdditionalShadows = null;
-//             }
-//         }
-// #pragma warning restore 0612
-// #endif
+        // #if UNITY_EDITOR
+        //         public void OnBeforeSerialize()
+        //         {
+        //         }
+        //
+        //         public void OnAfterDeserialize()
+        //         {
+        //             EditorApplication.delayCall += UpgradeIfNeeded;
+        //         }
+        //
+        //
+        // #pragma warning disable 0612
+        //         void UpgradeIfNeeded()
+        //         {
+        //             if (0 < m_AdditionalShadows.Count)
+        //             {
+        //                 foreach (var s in m_AdditionalShadows)
+        //                 {
+        //                     if (s.style == ShadowStyle.None)
+        //                     {
+        //                         continue;
+        //                     }
+        //
+        //                     var shadow = gameObject.AddComponent<UIShadow>();
+        //                     shadow.style = s.style;
+        //                     shadow.effectDistance = s.effectDistance;
+        //                     shadow.effectColor = s.effectColor;
+        //                     shadow.useGraphicAlpha = s.useGraphicAlpha;
+        //                     shadow.blurFactor = s.blur;
+        //                 }
+        //
+        //                 m_AdditionalShadows = null;
+        //             }
+        //         }
+        // #pragma warning restore 0612
+        // #endif
     }
 }

@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 #if UNITY_EDITOR
-using System.IO;
-using System.Linq;
-using UnityEditor;
 
 #endif
 
@@ -30,7 +27,9 @@ namespace Coffee.UIEffects
         [Range(0, 1)]
         float m_EffectFactor = 1;
 
-        [Tooltip("Color effect factor between 0(no effect) and 1(complete effect).")] [SerializeField] [Range(0, 1)]
+        [Tooltip("Color effect factor between 0(no effect) and 1(complete effect).")]
+        [SerializeField]
+        [Range(0, 1)]
         float m_ColorFactor = 1;
 
         [FormerlySerializedAs("m_Blur")]
@@ -39,16 +38,21 @@ namespace Coffee.UIEffects
         [Range(0, 1)]
         float m_BlurFactor = 1;
 
-        [FormerlySerializedAs("m_ToneMode")] [Tooltip("Effect mode")] [SerializeField]
+        [FormerlySerializedAs("m_ToneMode")]
+        [Tooltip("Effect mode")]
+        [SerializeField]
         EffectMode m_EffectMode = EffectMode.None;
 
-        [Tooltip("Color effect mode")] [SerializeField]
+        [Tooltip("Color effect mode")]
+        [SerializeField]
         ColorMode m_ColorMode = ColorMode.Multiply;
 
-        [Tooltip("Blur effect mode")] [SerializeField]
+        [Tooltip("Blur effect mode")]
+        [SerializeField]
         BlurMode m_BlurMode = BlurMode.None;
 
-        [Tooltip("Advanced blurring remove common artifacts in the blur effect for uGUI.")] [SerializeField]
+        [Tooltip("Advanced blurring remove common artifacts in the blur effect for uGUI.")]
+        [SerializeField]
         bool m_AdvancedBlur = false;
 
         private enum BlurEx
@@ -180,10 +184,10 @@ namespace Coffee.UIEffects
             if (!isActiveAndEnabled || !material || !material.shader)
                 return k_InvalidHash;
 
-            var shaderVariantId = (uint) (((int) m_EffectMode << 6) + ((int) m_ColorMode << 9) +
-                                          ((int) m_BlurMode << 11) + ((m_AdvancedBlur ? 1 : 0) << 13));
+            var shaderVariantId = (uint)(((int)m_EffectMode << 6) + ((int)m_ColorMode << 9) +
+                                          ((int)m_BlurMode << 11) + ((m_AdvancedBlur ? 1 : 0) << 13));
             return new Hash128(
-                (uint) material.GetInstanceID(),
+                (uint)material.GetInstanceID(),
                 k_ShaderId + shaderVariantId,
                 0,
                 0
@@ -226,7 +230,7 @@ namespace Coffee.UIEffects
                 Vector3 size = default(Vector3);
                 Vector3 tPos = default(Vector3);
                 Vector3 tUV = default(Vector3);
-                float expand = (float) blurMode * 6 * 2;
+                float expand = (float)blurMode * 6 * 2;
 
                 for (int i = 0; i < count; i += bundleSize)
                 {

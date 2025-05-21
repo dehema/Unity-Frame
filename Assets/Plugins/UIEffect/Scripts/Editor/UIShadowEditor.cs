@@ -1,6 +1,4 @@
 ﻿using UnityEditor;
-using UnityEditorInternal;
-using UnityEngine;
 
 namespace Coffee.UIEffects.Editors
 {
@@ -41,7 +39,7 @@ namespace Coffee.UIEffects.Editors
             EditorGUILayout.PropertyField(_spStyle);
 
             // When shadow is enable, show parameters.
-            if (_spStyle.intValue != (int) ShadowStyle.None)
+            if (_spStyle.intValue != (int)ShadowStyle.None)
             {
                 EditorGUI.indentLevel++;
                 EditorGUILayout.PropertyField(_spEffectDistance);

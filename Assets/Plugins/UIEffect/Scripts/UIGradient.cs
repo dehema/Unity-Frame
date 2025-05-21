@@ -10,7 +10,7 @@ namespace Coffee.UIEffects
     [AddComponentMenu("UI/UIEffects/UIGradient", 101)]
     public class UIGradient : BaseMeshEffect
     {
-        static readonly Vector2[] s_SplitedCharacterPosition = {Vector2.up, Vector2.one, Vector2.right, Vector2.zero};
+        static readonly Vector2[] s_SplitedCharacterPosition = { Vector2.up, Vector2.one, Vector2.right, Vector2.zero };
 
         /// <summary>
         /// Gradient direction.
@@ -34,37 +34,51 @@ namespace Coffee.UIEffects
         }
 
 
-        [Tooltip("Gradient Direction.")] [SerializeField]
+        [Tooltip("Gradient Direction.")]
+        [SerializeField]
         Direction m_Direction;
 
-        [Tooltip("Color1: Top or Left.")] [SerializeField]
+        [Tooltip("Color1: Top or Left.")]
+        [SerializeField]
         Color m_Color1 = Color.white;
 
-        [Tooltip("Color2: Bottom or Right.")] [SerializeField]
+        [Tooltip("Color2: Bottom or Right.")]
+        [SerializeField]
         Color m_Color2 = Color.white;
 
-        [Tooltip("Color3: For diagonal.")] [SerializeField]
+        [Tooltip("Color3: For diagonal.")]
+        [SerializeField]
         Color m_Color3 = Color.white;
 
-        [Tooltip("Color4: For diagonal.")] [SerializeField]
+        [Tooltip("Color4: For diagonal.")]
+        [SerializeField]
         Color m_Color4 = Color.white;
 
-        [Tooltip("Gradient rotation.")] [SerializeField] [Range(-180, 180)]
+        [Tooltip("Gradient rotation.")]
+        [SerializeField]
+        [Range(-180, 180)]
         float m_Rotation;
 
-        [Tooltip("Gradient offset for Horizontal, Vertical or Angle.")] [SerializeField] [Range(-1, 1)]
+        [Tooltip("Gradient offset for Horizontal, Vertical or Angle.")]
+        [SerializeField]
+        [Range(-1, 1)]
         float m_Offset1;
 
-        [Tooltip("Gradient offset for Diagonal.")] [SerializeField] [Range(-1, 1)]
+        [Tooltip("Gradient offset for Diagonal.")]
+        [SerializeField]
+        [Range(-1, 1)]
         float m_Offset2;
 
-        [Tooltip("Gradient style for Text.")] [SerializeField]
+        [Tooltip("Gradient style for Text.")]
+        [SerializeField]
         GradientStyle m_GradientStyle;
 
-        [Tooltip("Color space to correct color.")] [SerializeField]
+        [Tooltip("Color space to correct color.")]
+        [SerializeField]
         ColorSpace m_ColorSpace = ColorSpace.Uninitialized;
 
-        [Tooltip("Ignore aspect ratio.")] [SerializeField]
+        [Tooltip("Ignore aspect ratio.")]
+        [SerializeField]
         bool m_IgnoreAspectRatio = true;
 
         /// <summary>
@@ -249,21 +263,21 @@ namespace Coffee.UIEffects
                     rect.Set(0, 0, 1, 1);
                     break;
                 case GradientStyle.Fit:
-                {
-                    // Fit to contents.
-                    rect.xMin = rect.yMin = float.MaxValue;
-                    rect.xMax = rect.yMax = float.MinValue;
-                    for (var i = 0; i < vh.currentVertCount; i++)
                     {
-                        vh.PopulateUIVertex(ref vertex, i);
-                        rect.xMin = Mathf.Min(rect.xMin, vertex.position.x);
-                        rect.yMin = Mathf.Min(rect.yMin, vertex.position.y);
-                        rect.xMax = Mathf.Max(rect.xMax, vertex.position.x);
-                        rect.yMax = Mathf.Max(rect.yMax, vertex.position.y);
-                    }
+                        // Fit to contents.
+                        rect.xMin = rect.yMin = float.MaxValue;
+                        rect.xMax = rect.yMax = float.MinValue;
+                        for (var i = 0; i < vh.currentVertCount; i++)
+                        {
+                            vh.PopulateUIVertex(ref vertex, i);
+                            rect.xMin = Mathf.Min(rect.xMin, vertex.position.x);
+                            rect.yMin = Mathf.Min(rect.yMin, vertex.position.y);
+                            rect.xMax = Mathf.Max(rect.xMax, vertex.position.x);
+                            rect.yMax = Mathf.Max(rect.yMax, vertex.position.y);
+                        }
 
-                    break;
-                }
+                        break;
+                    }
             }
 
             // Gradient rotation.

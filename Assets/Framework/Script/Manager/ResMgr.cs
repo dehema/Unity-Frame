@@ -1,12 +1,7 @@
-﻿using DB;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using System;
+using DB;
 using UnityEngine;
-using UnityEngine.Networking;
-using UnityEngine.UI;
-using UnityEngine.XR;
+using Image = UnityEngine.UI.Image;
 
 public class ResMgr : MonoSingleton<ResMgr>
 {

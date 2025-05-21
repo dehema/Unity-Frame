@@ -1,10 +1,5 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using YamlDotNet.Serialization.NamingConventions;
-using YamlDotNet.Serialization;
-using System.Collections.Generic;
-using UnityEngine.UIElements;
-using System.Globalization;
 
 public class UIMgr : MonoBehaviour
 {

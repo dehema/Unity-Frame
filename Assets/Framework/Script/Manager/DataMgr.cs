@@ -1,12 +1,6 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using UnityEditor;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 using UnityEngine;
-using UnityEngine.Playables;
-using UnityEngine.UIElements;
 
 public class DataMgr : Singleton<DataMgr>
 {

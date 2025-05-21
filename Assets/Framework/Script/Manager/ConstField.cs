@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class ConstField
+﻿public class ConstField
 {
     /// <summary>
     /// 线上配置

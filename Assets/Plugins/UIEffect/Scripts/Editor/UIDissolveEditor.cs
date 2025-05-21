@@ -1,9 +1,5 @@
 ﻿using UnityEditor;
-using UnityEditorInternal;
 using UnityEngine;
-using System.Linq;
-using System.Collections.Generic;
-using UnityEngine.UI;
 
 namespace Coffee.UIEffects.Editors
 {

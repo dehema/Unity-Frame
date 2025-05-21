@@ -1,8 +1,7 @@
-﻿using DB;
-using DG.Tweening;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
+using DB;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 

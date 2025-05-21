@@ -1,8 +1,6 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
+using Newtonsoft.Json;
 
 public class AllFactionConfig : ConfigBase
 {

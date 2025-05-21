@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public enum PlayerScene
+﻿public enum PlayerScene
 {
     /// <summary>
     /// 世界

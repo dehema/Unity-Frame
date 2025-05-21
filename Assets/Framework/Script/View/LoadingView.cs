@@ -1,6 +1,6 @@
-﻿using DG.Tweening;
+﻿using System;
+using DG.Tweening;
 using UnityEngine;
-using System;
 
 public partial class LoadingView : BaseView
 {

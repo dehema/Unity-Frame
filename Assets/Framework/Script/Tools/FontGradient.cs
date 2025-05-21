@@ -1,8 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
-using System;
 /// <summary>
 /// 渐变字体
 /// </summary>
@@ -73,7 +71,7 @@ public class FontGradient : BaseMeshEffect
             vh.SetUIVertex(vertex, i);
         }
     }
-    public void FadeAlpha(float end,float time)
+    public void FadeAlpha(float end, float time)
     {
         //ModifyMesh(_vh);
         graphic.CrossFadeAlpha(end, time, false);

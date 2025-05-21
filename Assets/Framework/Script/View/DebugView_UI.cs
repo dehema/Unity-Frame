@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public partial class DebugView : BaseView
@@ -38,7 +36,7 @@ public partial class DebugView : BaseView
     [HideInInspector]
     public Button btEnterBattleField_Button;
 
-    internal override void _LoadUI()    
+    internal override void _LoadUI()
     {
         base._LoadUI();
         bg = transform.Find("$bg#Image,Button").gameObject;

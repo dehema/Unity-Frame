@@ -1,18 +1,18 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using UnityEditor;
-using UnityEditor.SceneManagement;
-using Unity.EditorCoroutines.Editor;
-using System.IO;
-using UnityEngine.UI;
-using System;
-using Object = UnityEngine.Object;
-using Path = System.IO.Path;
-using DotLiquid;
+﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using DotLiquid;
+using Unity.EditorCoroutines.Editor;
+using UnityEditor;
+using UnityEditor.Callbacks;
+using UnityEditor.SceneManagement;
+using UnityEngine;
+using UnityEngine.UI;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
-using UnityEditor.Callbacks;
+using Object = UnityEngine.Object;
+using Path = System.IO.Path;
 
 public class EditorDevTools : EditorWindow
 {

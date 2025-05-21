@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
-using System.Collections;
 
 namespace Coffee.UIEffects
 {
@@ -19,25 +17,42 @@ namespace Coffee.UIEffects
         float _lastRotation;
         EffectArea _lastEffectArea;
 
-        [Tooltip("Location for shiny effect.")] [FormerlySerializedAs("m_Location")] [SerializeField] [Range(0, 1)]
+        [Tooltip("Location for shiny effect.")]
+        [FormerlySerializedAs("m_Location")]
+        [SerializeField]
+        [Range(0, 1)]
         float m_EffectFactor = 0.5f;
 
-        [Tooltip("Width for shiny effect.")] [SerializeField] [Range(0, 1)]
+        [Tooltip("Width for shiny effect.")]
+        [SerializeField]
+        [Range(0, 1)]
         float m_Width = 0.25f;
 
-        [Tooltip("Rotation for shiny effect.")] [SerializeField] [Range(-180, 180)]
+        [Tooltip("Rotation for shiny effect.")]
+        [SerializeField]
+        [Range(-180, 180)]
         float m_Rotation = 135;
 
-        [Tooltip("Softness for shiny effect.")] [SerializeField] [Range(0.01f, 1)]
+        [Tooltip("Softness for shiny effect.")]
+        [SerializeField]
+        [Range(0.01f, 1)]
         float m_Softness = 1f;
 
-        [Tooltip("Brightness for shiny effect.")] [FormerlySerializedAs("m_Alpha")] [SerializeField] [Range(0, 1)]
+        [Tooltip("Brightness for shiny effect.")]
+        [FormerlySerializedAs("m_Alpha")]
+        [SerializeField]
+        [Range(0, 1)]
         float m_Brightness = 1f;
 
-        [Tooltip("Gloss factor for shiny effect.")] [FormerlySerializedAs("m_Highlight")] [SerializeField] [Range(0, 1)]
+        [Tooltip("Gloss factor for shiny effect.")]
+        [FormerlySerializedAs("m_Highlight")]
+        [SerializeField]
+        [Range(0, 1)]
         float m_Gloss = 1;
 
-        [Header("Advanced Option")] [Tooltip("The area for effect.")] [SerializeField]
+        [Header("Advanced Option")]
+        [Tooltip("The area for effect.")]
+        [SerializeField]
         protected EffectArea m_EffectArea;
 
         [SerializeField] EffectPlayer m_Player;
@@ -183,7 +198,7 @@ namespace Coffee.UIEffects
                 return k_InvalidHash;
 
             return new Hash128(
-                (uint) material.GetInstanceID(),
+                (uint)material.GetInstanceID(),
                 k_ShaderId,
                 0,
                 0

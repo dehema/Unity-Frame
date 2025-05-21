@@ -16,11 +16,14 @@
 //use UNITY_CHANGE4 for unity 2018.3 (Networking system)
 
 using UnityEngine;
-using System.IO;
-using System.Collections;
-using System.Collections.Generic;
 #if UNITY_CHANGE3
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
+using System.Collections;
+using System.IO;
+
+
+
 #endif
 #if UNITY_CHANGE4
 using UnityEngine.Networking;

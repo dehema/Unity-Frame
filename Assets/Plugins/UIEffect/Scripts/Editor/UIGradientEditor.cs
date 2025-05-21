@@ -1,6 +1,5 @@
 ﻿using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Coffee.UIEffects.Editors
 {
@@ -68,7 +67,7 @@ namespace Coffee.UIEffects.Editors
             //================
             // Color.
             //================
-            switch ((UIGradient.Direction) _spDirection.intValue)
+            switch ((UIGradient.Direction)_spDirection.intValue)
             {
                 case UIGradient.Direction.Horizontal:
                     EditorGUILayout.PropertyField(_spColor1, k_TextLeft);
@@ -99,7 +98,7 @@ namespace Coffee.UIEffects.Editors
             //================
             // Angle.
             //================
-            if ((int) UIGradient.Direction.Angle <= _spDirection.intValue)
+            if ((int)UIGradient.Direction.Angle <= _spDirection.intValue)
             {
                 EditorGUILayout.PropertyField(_spRotation);
             }
@@ -108,7 +107,7 @@ namespace Coffee.UIEffects.Editors
             //================
             // Offset.
             //================
-            if ((int) UIGradient.Direction.Diagonal == _spDirection.intValue)
+            if ((int)UIGradient.Direction.Diagonal == _spDirection.intValue)
             {
                 EditorGUILayout.PropertyField(_spOffset1, k_TextVerticalOffset);
                 EditorGUILayout.PropertyField(_spOffset2, k_TextHorizontalOffset);

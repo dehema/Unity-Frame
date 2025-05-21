@@ -1,9 +1,8 @@
-﻿using DG.Tweening;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
-using System;
 
 public partial class TipsView : BaseView
 {

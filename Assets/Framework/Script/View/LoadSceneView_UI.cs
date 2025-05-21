@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public partial class LoadSceneView : BaseView
@@ -24,7 +22,7 @@ public partial class LoadSceneView : BaseView
     [HideInInspector]
     public Text txtProgress_Text;
 
-    internal override void _LoadUI()    
+    internal override void _LoadUI()
     {
         base._LoadUI();
         bg = transform.Find("$bg#Image,Button").gameObject;

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public partial class BlockView : BaseView
@@ -16,7 +14,7 @@ public partial class BlockView : BaseView
     [HideInInspector]
     public RectTransform content_Rect;
 
-    internal override void _LoadUI()    
+    internal override void _LoadUI()
     {
         base._LoadUI();
         bg = transform.Find("$bg#Image,Button").gameObject;

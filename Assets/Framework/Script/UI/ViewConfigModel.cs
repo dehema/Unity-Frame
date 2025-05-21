@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class ViewConfigModel
+﻿public class ViewConfigModel
 {
     public string comment;
     public string layer = "NormalUI";

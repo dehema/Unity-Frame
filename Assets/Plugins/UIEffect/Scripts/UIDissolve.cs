@@ -1,11 +1,7 @@
 ﻿using System;
 using UnityEngine;
-using UnityEditor;
-using UnityEngine.UI;
 using UnityEngine.Serialization;
-using System.Text;
-using System.Linq;
-using System.IO;
+using UnityEngine.UI;
 
 namespace Coffee.UIEffects
 {
@@ -29,16 +25,23 @@ namespace Coffee.UIEffects
         [Range(0, 1)]
         float m_EffectFactor = 0.5f;
 
-        [Tooltip("Edge width.")] [SerializeField] [Range(0, 1)]
+        [Tooltip("Edge width.")]
+        [SerializeField]
+        [Range(0, 1)]
         float m_Width = 0.5f;
 
-        [Tooltip("Edge softness.")] [SerializeField] [Range(0, 1)]
+        [Tooltip("Edge softness.")]
+        [SerializeField]
+        [Range(0, 1)]
         float m_Softness = 0.5f;
 
-        [Tooltip("Edge color.")] [SerializeField] [ColorUsage(false)]
+        [Tooltip("Edge color.")]
+        [SerializeField]
+        [ColorUsage(false)]
         Color m_Color = new Color(0.0f, 0.25f, 1.0f);
 
-        [Tooltip("Edge color effect mode.")] [SerializeField]
+        [Tooltip("Edge color effect mode.")]
+        [SerializeField]
         ColorMode m_ColorMode = ColorMode.Add;
 
         [Tooltip("Noise texture for dissolving (single channel texture).")]
@@ -46,16 +49,22 @@ namespace Coffee.UIEffects
         [FormerlySerializedAs("m_NoiseTexture")]
         Texture m_TransitionTexture;
 
-        [Header("Advanced Option")] [Tooltip("The area for effect.")] [SerializeField]
+        [Header("Advanced Option")]
+        [Tooltip("The area for effect.")]
+        [SerializeField]
         protected EffectArea m_EffectArea;
 
-        [Tooltip("Keep effect aspect ratio.")] [SerializeField]
+        [Tooltip("Keep effect aspect ratio.")]
+        [SerializeField]
         bool m_KeepAspectRatio;
 
-        [Header("Effect Player")] [SerializeField]
+        [Header("Effect Player")]
+        [SerializeField]
         EffectPlayer m_Player;
 
-        [Tooltip("Reverse the dissolve effect.")] [FormerlySerializedAs("m_ReverseAnimation")] [SerializeField]
+        [Tooltip("Reverse the dissolve effect.")]
+        [FormerlySerializedAs("m_ReverseAnimation")]
+        [SerializeField]
         bool m_Reverse = false;
 
         /// <summary>
@@ -206,10 +215,10 @@ namespace Coffee.UIEffects
             if (!isActiveAndEnabled || !material || !material.shader)
                 return k_InvalidHash;
 
-            var shaderVariantId = (uint) ((int) m_ColorMode << 6);
-            var resourceId = (uint) transitionTexture.GetInstanceID();
+            var shaderVariantId = (uint)((int)m_ColorMode << 6);
+            var resourceId = (uint)transitionTexture.GetInstanceID();
             return new Hash128(
-                (uint) material.GetInstanceID(),
+                (uint)material.GetInstanceID(),
                 k_ShaderId + shaderVariantId,
                 resourceId,
                 0
@@ -239,7 +248,7 @@ namespace Coffee.UIEffects
 
             // rect.
             var tex = transitionTexture;
-            var aspectRatio = m_KeepAspectRatio && tex ? ((float) tex.width) / tex.height : -1;
+            var aspectRatio = m_KeepAspectRatio && tex ? ((float)tex.width) / tex.height : -1;
             var rect = m_EffectArea.GetEffectArea(vh, rectTransform.rect, aspectRatio);
 
             // Calculate vertex position.

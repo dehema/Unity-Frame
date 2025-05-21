@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class PrefabPath
+﻿public class PrefabPath
 {
     /// <summary>
     /// 世界地图城镇

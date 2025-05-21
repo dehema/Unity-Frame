@@ -1,6 +1,6 @@
-﻿using UnityEngine;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Coffee.UIEffects
 {
@@ -16,19 +16,22 @@ namespace Coffee.UIEffects
         /// <summary>
         /// Gets or sets a value indicating whether is playing.
         /// </summary>
-        [Header("Effect Player")] [Tooltip("Playing.")]
+        [Header("Effect Player")]
+        [Tooltip("Playing.")]
         public bool play = false;
 
         /// <summary>
         /// Gets or sets the delay before looping.
         /// </summary>
-        [Tooltip("Initial play delay.")] [Range(0f, 10f)]
+        [Tooltip("Initial play delay.")]
+        [Range(0f, 10f)]
         public float initialPlayDelay = 0;
 
         /// <summary>
         /// Gets or sets the duration.
         /// </summary>
-        [Tooltip("Duration.")] [Range(0.01f, 10f)]
+        [Tooltip("Duration.")]
+        [Range(0.01f, 10f)]
         public float duration = 1;
 
         /// <summary>
@@ -39,7 +42,8 @@ namespace Coffee.UIEffects
         /// <summary>
         /// Gets or sets the delay before looping.
         /// </summary>
-        [Tooltip("Delay before looping.")] [Range(0f, 10f)]
+        [Tooltip("Delay before looping.")]
+        [Range(0f, 10f)]
         public float loopDelay = 0;
 
         /// <summary>

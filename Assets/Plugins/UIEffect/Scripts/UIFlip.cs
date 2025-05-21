@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace Coffee.UIEffects
@@ -9,10 +7,12 @@ namespace Coffee.UIEffects
     [AddComponentMenu("UI/UIEffects/UIFlip", 102)]
     public class UIFlip : BaseMeshEffect
     {
-        [Tooltip("Flip horizontally.")] [SerializeField]
+        [Tooltip("Flip horizontally.")]
+        [SerializeField]
         private bool m_Horizontal = false;
 
-        [Tooltip("Flip vertically.")] [SerializeField]
+        [Tooltip("Flip vertically.")]
+        [SerializeField]
         private bool m_Veritical = false;
 
         /// <summary>

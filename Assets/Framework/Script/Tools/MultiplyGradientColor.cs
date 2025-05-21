@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.UI;
 
 [AddComponentMenu("UI/Effects/MultiplyGradientColor")]
 [RequireComponent(typeof(Text))]

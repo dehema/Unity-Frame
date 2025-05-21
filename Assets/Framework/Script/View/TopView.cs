@@ -1,9 +1,6 @@
-﻿using DG.Tweening;
-using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System;
+using DG.Tweening;
 using UnityEngine;
-using UnityEngine.UI;
 
 public partial class TopView : BaseView
 {

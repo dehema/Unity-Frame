@@ -1,11 +1,11 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using UnityEditor;
-using UnityEngine;
-using System;
 using UnityEditor.Callbacks;
-using Scene = UnityEngine.SceneManagement.Scene;
 using UnityEditor.SceneManagement;
+using UnityEngine;
 using UnityEngine.UI;
+using Scene = UnityEngine.SceneManagement.Scene;
 
 public class EditorViewCreater
 {

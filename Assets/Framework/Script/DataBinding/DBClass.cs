@@ -1,10 +1,5 @@
-﻿using com.adjust.sdk;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
-using UnityEngine;
-using YamlDotNet.Core.Tokens;
 
 namespace DB
 {

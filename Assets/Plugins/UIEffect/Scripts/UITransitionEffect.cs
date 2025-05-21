@@ -1,7 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Serialization;
-using System;
 
 namespace Coffee.UIEffects
 {
@@ -28,34 +27,49 @@ namespace Coffee.UIEffects
         private bool _lastKeepAspectRatio;
         private static Texture _defaultTransitionTexture;
 
-        [Tooltip("Effect mode.")] [SerializeField]
+        [Tooltip("Effect mode.")]
+        [SerializeField]
         EffectMode m_EffectMode = EffectMode.Cutoff;
 
-        [Tooltip("Effect factor between 0(hidden) and 1(shown).")] [SerializeField] [Range(0, 1)]
+        [Tooltip("Effect factor between 0(hidden) and 1(shown).")]
+        [SerializeField]
+        [Range(0, 1)]
         float m_EffectFactor = 0.5f;
 
-        [Tooltip("Transition texture (single channel texture).")] [SerializeField]
+        [Tooltip("Transition texture (single channel texture).")]
+        [SerializeField]
         Texture m_TransitionTexture;
 
-        [Header("Advanced Option")] [Tooltip("The area for effect.")] [SerializeField]
+        [Header("Advanced Option")]
+        [Tooltip("The area for effect.")]
+        [SerializeField]
         EffectArea m_EffectArea = EffectArea.RectTransform;
 
-        [Tooltip("Keep effect aspect ratio.")] [SerializeField]
+        [Tooltip("Keep effect aspect ratio.")]
+        [SerializeField]
         bool m_KeepAspectRatio;
 
-        [Tooltip("Dissolve edge width.")] [SerializeField] [Range(0, 1)]
+        [Tooltip("Dissolve edge width.")]
+        [SerializeField]
+        [Range(0, 1)]
         float m_DissolveWidth = 0.5f;
 
-        [Tooltip("Dissolve edge softness.")] [SerializeField] [Range(0, 1)]
+        [Tooltip("Dissolve edge softness.")]
+        [SerializeField]
+        [Range(0, 1)]
         float m_DissolveSoftness = 0.5f;
 
-        [Tooltip("Dissolve edge color.")] [SerializeField] [ColorUsage(false)]
+        [Tooltip("Dissolve edge color.")]
+        [SerializeField]
+        [ColorUsage(false)]
         Color m_DissolveColor = new Color(0.0f, 0.25f, 1.0f);
 
-        [Tooltip("Disable the graphic's raycast target on hidden.")] [SerializeField]
+        [Tooltip("Disable the graphic's raycast target on hidden.")]
+        [SerializeField]
         bool m_PassRayOnHidden;
 
-        [Header("Effect Player")] [SerializeField]
+        [Header("Effect Player")]
+        [SerializeField]
         EffectPlayer m_Player;
 
 
@@ -221,10 +235,10 @@ namespace Coffee.UIEffects
             if (!isActiveAndEnabled || !material || !material.shader)
                 return k_InvalidHash;
 
-            var shaderVariantId = (uint) ((int) m_EffectMode << 6);
-            var resourceId = (uint) transitionTexture.GetInstanceID();
+            var shaderVariantId = (uint)((int)m_EffectMode << 6);
+            var resourceId = (uint)transitionTexture.GetInstanceID();
             return new Hash128(
-                (uint) material.GetInstanceID(),
+                (uint)material.GetInstanceID(),
                 k_ShaderId + shaderVariantId,
                 resourceId,
                 0
@@ -255,7 +269,7 @@ namespace Coffee.UIEffects
 
             // rect.
             var tex = transitionTexture;
-            var aspectRatio = m_KeepAspectRatio && tex ? ((float) tex.width) / tex.height : -1;
+            var aspectRatio = m_KeepAspectRatio && tex ? ((float)tex.width) / tex.height : -1;
             var rect = m_EffectArea.GetEffectArea(vh, rectTransform.rect, aspectRatio);
 
             // Set parameters to vertex.

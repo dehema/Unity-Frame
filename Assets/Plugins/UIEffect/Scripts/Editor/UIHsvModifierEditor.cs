@@ -1,7 +1,4 @@
 ﻿using UnityEditor;
-using UnityEditorInternal;
-using UnityEngine;
-using System.Linq;
 
 namespace Coffee.UIEffects.Editors
 {

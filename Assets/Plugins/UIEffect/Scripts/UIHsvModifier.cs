@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 
@@ -15,19 +14,31 @@ namespace Coffee.UIEffects
         private const uint k_ShaderId = 6 << 3;
         private static readonly ParameterTexture s_ParamTex = new ParameterTexture(7, 128, "_ParamTex");
 
-        [Header("Target")] [Tooltip("Target color to affect hsv shift.")] [SerializeField] [ColorUsage(false)]
+        [Header("Target")]
+        [Tooltip("Target color to affect hsv shift.")]
+        [SerializeField]
+        [ColorUsage(false)]
         Color m_TargetColor = Color.red;
 
-        [Tooltip("Color range to affect hsv shift [0 ~ 1].")] [SerializeField] [Range(0, 1)]
+        [Tooltip("Color range to affect hsv shift [0 ~ 1].")]
+        [SerializeField]
+        [Range(0, 1)]
         float m_Range = 0.1f;
 
-        [Header("Adjustment")] [Tooltip("Hue shift [-0.5 ~ 0.5].")] [SerializeField] [Range(-0.5f, 0.5f)]
+        [Header("Adjustment")]
+        [Tooltip("Hue shift [-0.5 ~ 0.5].")]
+        [SerializeField]
+        [Range(-0.5f, 0.5f)]
         float m_Hue;
 
-        [Tooltip("Saturation shift [-0.5 ~ 0.5].")] [SerializeField] [Range(-0.5f, 0.5f)]
+        [Tooltip("Saturation shift [-0.5 ~ 0.5].")]
+        [SerializeField]
+        [Range(-0.5f, 0.5f)]
         float m_Saturation;
 
-        [Tooltip("Value shift [-0.5 ~ 0.5].")] [SerializeField] [Range(-0.5f, 0.5f)]
+        [Tooltip("Value shift [-0.5 ~ 0.5].")]
+        [SerializeField]
+        [Range(-0.5f, 0.5f)]
         float m_Value;
 
         /// <summary>
@@ -118,7 +129,7 @@ namespace Coffee.UIEffects
                 return k_InvalidHash;
 
             return new Hash128(
-                (uint) material.GetInstanceID(),
+                (uint)material.GetInstanceID(),
                 k_ShaderId,
                 0,
                 0

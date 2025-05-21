@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 
@@ -12,7 +10,8 @@ namespace Coffee.UIEffects
     [ExecuteInEditMode]
     public class UISyncEffect : BaseMaterialEffect
     {
-        [Tooltip("The target effect to synchronize.")] [SerializeField]
+        [Tooltip("The target effect to synchronize.")]
+        [SerializeField]
         private BaseMeshEffect m_TargetEffect;
 
         public BaseMeshEffect targetEffect

@@ -1,8 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System;
-using System.Collections.Generic;
 
 public class Tools : MonoSingleton<Tools>
 {

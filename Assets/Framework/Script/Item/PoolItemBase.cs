@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
-
-public class PoolItemBase : BaseUI
+﻿public class PoolItemBase : BaseUI
 {
     public virtual void OnCreate(params object[] _params)
     {

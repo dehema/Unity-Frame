@@ -16,7 +16,7 @@ namespace Coffee.UIEffects
     public static class EffectAreaExtensions
     {
         static readonly Rect rectForCharacter = new Rect(0, 0, 1, 1);
-        static readonly Vector2[] splitedCharacterPosition = {Vector2.up, Vector2.one, Vector2.right, Vector2.zero};
+        static readonly Vector2[] splitedCharacterPosition = { Vector2.up, Vector2.one, Vector2.right, Vector2.zero };
 
         /// <summary>
         /// Gets effect for area.

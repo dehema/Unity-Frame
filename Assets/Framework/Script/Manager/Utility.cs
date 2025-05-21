@@ -1,15 +1,14 @@
-﻿using System.Collections;
-using UnityEngine;
-using Newtonsoft.Json;
+﻿using System;
 using System.Collections.Generic;
-using System;
-using UnityEngine.UI;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
+using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
-using DG.Tweening;
-using System.Net.Sockets;
-using System.Net;
-using System.Text;
+using Newtonsoft.Json;
+using UnityEngine;
+using UnityEngine.UI;
 
 public static class Utility
 {

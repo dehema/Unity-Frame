@@ -1,9 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using Newtonsoft.Json;
+using UnityEngine;
 using UnityEngine.Networking;
-using UnityEditor;
 
 public class LangMgr : MonoSingleton<LangMgr>
 {

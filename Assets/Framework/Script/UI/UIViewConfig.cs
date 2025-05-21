@@ -1,9 +1,6 @@
-﻿using DotLiquid;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 
-public class UIViewConfig 
+public class UIViewConfig
 {
     public Dictionary<string, ViewLayerModel> layer;
     public Dictionary<string, ViewConfigModel> view;

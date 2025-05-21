@@ -1,8 +1,6 @@
-﻿using DB;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
+using DB;
 
 /// <summary>
 /// 绑定事件分发器

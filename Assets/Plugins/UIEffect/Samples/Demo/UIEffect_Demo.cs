@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace Coffee.UIEffects
@@ -50,16 +47,16 @@ namespace Coffee.UIEffects
             var pos = new Vector3(0, 0, -25);
             var rot = new Vector3(0, 0, 0);
 
-            if ((RenderMode) mode == RenderMode.WorldSpace)
+            if ((RenderMode)mode == RenderMode.WorldSpace)
             {
-                SetRenderMode((int) RenderMode.ScreenSpaceCamera);
+                SetRenderMode((int)RenderMode.ScreenSpaceCamera);
                 canvas.renderMode = RenderMode.WorldSpace;
                 pos.x = 45;
                 rot.y = -20;
             }
             else
             {
-                canvas.renderMode = (RenderMode) mode;
+                canvas.renderMode = (RenderMode)mode;
             }
 
             cam.transform.SetPositionAndRotation(pos, Quaternion.Euler(rot));

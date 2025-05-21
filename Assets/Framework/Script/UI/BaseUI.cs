@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Runtime.CompilerServices;
-using UnityEngine;
-using UnityEngine.UI;
-using System;
+﻿using UnityEngine;
 
 public class BaseUI : MonoBehaviour
 {

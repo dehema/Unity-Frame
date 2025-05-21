@@ -1,9 +1,14 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Text;
+using System.Xml.Linq;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.UIElements;
+using static UnityEditor.Progress;
 
 public class EditorExportUI : EditorWindow
 {
@@ -95,6 +100,56 @@ public class EditorExportUI : EditorWindow
         AssetDatabase.Refresh();
         EditorGUIUtility.PingObject(AssetDatabase.LoadAssetAtPath<Object>(viewUIPath));
         Debug.Log($"导出{viewUIPath}");
+
+        SetSerializedObject(uiPrefab);
+    }
+
+    static void SetSerializedObject(GameObject _uiPrefab)
+    {
+        List<Transform> allRoot = ForeachRoot(uiPrefab.transform);
+        List<Transform> tfList = GetRegularRoot(allRoot);
+        string scriptContent = GetUIScriptContent(tfList);
+        string uiModelContent = GetUIModelContent(tfList);
+        Dictionary<string, List<string>> dic = GetRootAndComponentsName(tfList);
+        SerializedObject serializedObj = new SerializedObject(_uiPrefab.GetComponent<BaseUI>());
+        if (serializedObj == null)
+            return;
+        serializedObj.Update();
+        foreach (var item in dic)
+        {
+            string rootName = item.Key;
+            List<string> componentNames = item.Value;
+            SerializedProperty rootField = serializedObj.FindProperty(rootName);
+            string rootFullName = GetRootFullName(rootName, componentNames);
+            Debug.Log(rootFullName);
+            GameObject goRoot = _uiPrefab.transform.FindRecursive(rootFullName).gameObject;
+            rootField.objectReferenceValue = goRoot;
+            foreach (var componentName in componentNames)
+            {
+                string componentRootName = rootName + "_" + componentName;
+                SerializedProperty componentField = serializedObj.FindProperty(componentRootName);
+                componentField.objectReferenceValue = goRoot.GetComponent(GetComponentFullName(componentName));
+            }
+        }
+        // 应用更改
+        serializedObj.ApplyModifiedProperties();
+    }
+
+    /// <summary>
+    /// 根据节点简称和包含的组件获取节点全程
+    /// </summary>
+    /// <param name="_abbrName"></param>
+    /// <param name="_componentNames"></param>
+    /// <returns></returns>
+    static string GetRootFullName(string _abbrName, List<string> _componentNames)
+    {
+        string name = "$" + _abbrName;
+        if (_componentNames.Count > 0)
+        {
+            name += "#";
+            name += string.Join(",", _componentNames);
+        }
+        return name;
     }
 
     /// <summary>
@@ -193,29 +248,51 @@ public class EditorExportUI : EditorWindow
     public static string GetUIModelContent(List<Transform> _tfList)
     {
         StringBuilder scriptStr = new StringBuilder();
+        Dictionary<string, List<string>> dic = GetRootAndComponentsName(_tfList);
+        foreach (var item in dic)
+        {
+            string goName = item.Key;
+            //scriptStr.Append($"    [HideInInspector]\n");
+            scriptStr.Append($"    [SerializeField]\n");
+            scriptStr.Append($"    public GameObject {goName};\n");
+            foreach (string _componentName in item.Value)
+            {
+                string componentFullName = GetComponentFullName(_componentName);
+                scriptStr.Append($"    public {componentFullName} {goName + "_" + _componentName};\n");
+            }
+        }
+        return scriptStr.ToString();
+    }
+
+    /// <summary>
+    /// 获取节点名字和对应的组件名字
+    /// </summary>
+    /// <param name="_tfList"></param>
+    /// <returns></returns>
+    public static Dictionary<string, List<string>> GetRootAndComponentsName(List<Transform> _tfList)
+    {
+        Dictionary<string, List<string>> dic = new Dictionary<string, List<string>>();
+
         foreach (var item in _tfList)
         {
             string name = item.name;
+            List<string> components = new List<string>();
             string goName = name.Replace("$", string.Empty).Split('#')[0];
-            //处理某个节点
-            scriptStr.Append($"    [HideInInspector]\n");
-            scriptStr.Append($"    public GameObject {goName};\n");
             if (name.Contains("#"))
             {
-                string components = name.Replace("$", string.Empty).Split('#')[1];
-                foreach (var componentName in components.Split(','))
+                string allComponentName = name.Replace("$", string.Empty).Split('#')[1];
+                foreach (var componentName in allComponentName.Split(','))
                 {
                     string componentFullName = GetComponentFullName(componentName);
                     if (item.GetComponent(componentFullName) != null)
                     {
-                        scriptStr.Append($"    [HideInInspector]\n");
-                        scriptStr.Append($"    public {componentFullName} {goName + "_" + componentName};\n");
-                        //Debug.Log(component, componentRoot);
+                        components.Add(componentName);
                     }
                 }
             }
+            dic[goName] = components;
         }
-        return scriptStr.ToString();
+        return dic;
     }
 
     /// <summary>

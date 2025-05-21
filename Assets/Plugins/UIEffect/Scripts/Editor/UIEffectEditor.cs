@@ -1,8 +1,5 @@
 ﻿using UnityEditor;
-using UnityEditorInternal;
 using UnityEngine;
-using System.Linq;
-using System;
 
 namespace Coffee.UIEffects.Editors
 {
@@ -41,7 +38,7 @@ namespace Coffee.UIEffects.Editors
                 EditorGUILayout.PropertyField(_spEffectMode);
 
             // When effect is enable, show parameters.
-            if (_spEffectMode.intValue != (int) EffectMode.None)
+            if (_spEffectMode.intValue != (int)EffectMode.None)
             {
                 EditorGUI.indentLevel++;
                 EditorGUILayout.PropertyField(_spEffectFactor);
@@ -70,7 +67,7 @@ namespace Coffee.UIEffects.Editors
                 EditorGUILayout.PropertyField(_spBlurMode);
 
             // When blur is enable, show parameters.
-            if (_spBlurMode.intValue != (int) BlurMode.None)
+            if (_spBlurMode.intValue != (int)BlurMode.None)
             {
                 EditorGUI.indentLevel++;
                 EditorGUILayout.PropertyField(_spBlurFactor);

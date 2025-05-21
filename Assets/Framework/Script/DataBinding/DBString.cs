@@ -1,8 +1,4 @@
-﻿using DB;
-using System.Collections;
-using UnityEngine;
-
-namespace DB
+﻿namespace DB
 {
     public class DBString : DBObject
     {

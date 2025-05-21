@@ -1,7 +1,5 @@
 ﻿using UnityEditor;
-using UnityEditorInternal;
 using UnityEngine;
-using System.Linq;
 
 namespace Coffee.UIEffects.Editors
 {
@@ -64,7 +62,7 @@ namespace Coffee.UIEffects.Editors
 
             EditorGUI.indentLevel++;
             EditorGUILayout.PropertyField(_spEffectFactor);
-            if (_spEffectMode.intValue == (int) UITransitionEffect.EffectMode.Dissolve)
+            if (_spEffectMode.intValue == (int)UITransitionEffect.EffectMode.Dissolve)
             {
                 EditorGUILayout.PropertyField(_spDissolveWidth);
                 EditorGUILayout.PropertyField(_spDissolveSoftness);

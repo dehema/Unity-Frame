@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -87,7 +86,7 @@ namespace Coffee.UIEffects
         protected void SetShaderVariants(Material newMaterial, params object[] variants)
         {
             // Set shader keywords as variants
-            var keywords = variants.Where(x => 0 < (int) x)
+            var keywords = variants.Where(x => 0 < (int)x)
                 .Select(x => x.ToString().ToUpper())
                 .Concat(newMaterial.shaderKeywords)
                 .Distinct()

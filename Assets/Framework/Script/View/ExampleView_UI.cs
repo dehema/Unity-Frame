@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public partial class ExampleView : ExampleViewParent
@@ -46,7 +44,7 @@ public partial class ExampleView : ExampleViewParent
     [HideInInspector]
     public GameObject exampleWidget;
 
-    internal override void _LoadUI()    
+    internal override void _LoadUI()
     {
         base._LoadUI();
         bg = transform.Find("$bg#Image,Button").gameObject;

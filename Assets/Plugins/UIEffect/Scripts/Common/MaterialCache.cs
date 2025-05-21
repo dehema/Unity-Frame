@@ -1,8 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using System;
 using UnityEngine;
-using System.Text;
 using UnityEngine.UI;
 
 namespace Coffee.UIEffects

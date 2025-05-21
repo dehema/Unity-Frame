@@ -1,11 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
 using UnityEngine;
-using Newtonsoft.Json;
-using YamlDotNet.Serialization.NamingConventions;
 using YamlDotNet.Serialization;
-using System.IO;
-using System;
+using YamlDotNet.Serialization.NamingConventions;
 
 public class ConfigMgr : MonoSingleton<ConfigMgr>
 {
