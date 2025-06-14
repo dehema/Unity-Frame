@@ -1,0 +1,21 @@
+{
+    "name": "wm.jsontool",
+    "displayName": "wm.jsonTool",
+    "version": "0.0.1",
+    "unity": "2022.3",
+    "unityRelease": "43f1",
+    "description": "导excel表数据，自动生成映射类",
+    "keywords": ["Test","Package"],
+    "author": "dehema",
+    "dependencies": {
+    "com.unity.nuget.newtonsoft-json": "3.2.1"
+    },
+    "samples": [
+	    {
+	      "displayName": "Cinemachine Example Scenes",
+	      "description": "Sample scenes illustrating various ways to use Cinemachine",
+	      "path": "Samples~/Cinemachine Example Scenes"
+	    }
+  	],
+  	"documentationUrl": "https://docs.unity3d.com/Packages/com.unity.cinemachine@2.9/manual/index.html"
+}
