@@ -1,0 +1,21 @@
+{
+    "name": "com.dehema.rainframework",
+    "displayName": "RainFramework",
+    "version": "0.0.1",
+    "unity": "2022.3",
+    "unityRelease": "43f1",
+    "description": "导excel表数据，自动生成映射类",
+    "keywords": ["Framework"],
+    "author": "dehema",
+    "dependencies": {
+    "com.unity.nuget.newtonsoft-json": "3.2.1"
+    },
+    "samples": [
+	    {
+	      "displayName": "RainFramework Example Scenes",
+	      "description": "使用模块化管理和VMMV模式的轻量级前端框架",
+	      "path": "Samples~/RainFramework Example Scenes"
+	    }
+  	],
+  	"documentationUrl": "https://docs.unity3d.com/Packages/com.unity.cinemachine@2.9/manual/index.html"
+}
