@@ -14,7 +14,7 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T
         if (instance == null)
         {
             GameObject obj = new GameObject(typeof(T).Name);
-            obj.transform.SetParent(MainMgr.Ins.transform);
+            obj.transform.SetParent(GameMgr.Ins.transform);
             instance = obj.AddComponent<T>();
         }
         return instance;

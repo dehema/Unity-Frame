@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using F8Framework.Core;
+using F8Framework.Launcher;
+using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 public class GameMgr : MonoBehaviour
 {
@@ -9,6 +12,7 @@ public class GameMgr : MonoBehaviour
     {
         Ins = this;
         DontDestroyOnLoad(this);
+        Application.targetFrameRate = 60;
     }
 
     private void Start()
@@ -29,6 +33,18 @@ public class GameMgr : MonoBehaviour
         {
             StartGame();
         }
+
+
+
+        //新模块
+        ModuleCenter.Initialize(this);
+        FF8.Timer = ModuleCenter.CreateModule<TimerManager>();
+        FF8.Message = ModuleCenter.CreateModule<MessageManager>();
+    }
+
+    private void Update()
+    {
+        ModuleCenter.Update();
     }
 
     public void StartGame()

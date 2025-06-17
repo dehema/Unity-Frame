@@ -30,7 +30,7 @@ public class EditorDevTools : EditorWindow
     static void OpenMainWindow()
     {
         EditorDevTools window = GetWindow<EditorDevTools>();
-        window.titleContent = new GUIContent("BM Development Tools");
+        window.titleContent = new GUIContent("Rain Development Tools");
         window.position = new Rect(400, 100, 640, 480);
         window.Show();
     }
