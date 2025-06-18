@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Networking;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
     /// <summary>
     /// 文件下载器；

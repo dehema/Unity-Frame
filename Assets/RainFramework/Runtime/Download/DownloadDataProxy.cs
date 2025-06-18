@@ -1,4 +1,4 @@
-﻿namespace F8Framework.Core
+﻿namespace Rain.Core
 {
     /// <summary>
     /// download模块数据；

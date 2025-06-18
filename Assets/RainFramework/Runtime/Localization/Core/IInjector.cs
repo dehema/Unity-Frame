@@ -1,4 +1,4 @@
-﻿namespace F8Framework.Core
+﻿namespace Rain.Core
 {
 	public interface IInjector
 	{

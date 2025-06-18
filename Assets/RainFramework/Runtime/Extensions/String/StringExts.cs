@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
     public static class StringExts
     {

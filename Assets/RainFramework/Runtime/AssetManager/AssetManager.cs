@@ -5,7 +5,7 @@ using System.IO;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
     //异步加载完成的回调
     public delegate void OnAssetObject<T>(T obj) where T : Object;
@@ -167,7 +167,7 @@ namespace F8Framework.Core
                     }
                     else
                     {
-                        LogF8.LogError("AssetBundle和Resource都找不到指定资源可用的索引：" + assetName);
+                        RLog.LogError("AssetBundle和Resource都找不到指定资源可用的索引：" + assetName);
                         return new AssetInfo();
                     }
                 }
@@ -185,7 +185,7 @@ namespace F8Framework.Core
                     }
                     else
                     {
-                        LogF8.LogError("AssetBundle找不到指定远程资源可用的索引：" + assetName);
+                        RLog.LogError("AssetBundle找不到指定远程资源可用的索引：" + assetName);
                         return new AssetInfo();
                     }
                 }
@@ -241,7 +241,7 @@ namespace F8Framework.Core
                     {
                         return o;
                     }
-                    LogF8.LogError("获取不到资产或者类型错误！");
+                    RLog.LogError("获取不到资产或者类型错误！");
                 }
 
                 return null;
@@ -296,7 +296,7 @@ namespace F8Framework.Core
                     {
                         return o;
                     }
-                    LogF8.LogError("获取不到资产或者类型错误！");
+                    RLog.LogError("获取不到资产或者类型错误！");
                 }
 
                 return null;
@@ -349,7 +349,7 @@ namespace F8Framework.Core
                     {
                         return o;
                     }
-                    LogF8.LogError("获取不到资产！");
+                    RLog.LogError("获取不到资产！");
                 }
 
                 return null;
@@ -815,7 +815,7 @@ namespace F8Framework.Core
 #if UNITY_EDITOR
                     if (IsEditorMode)
                     {
-                        LogF8.LogAsset("编辑器模式下无需加载文件夹");
+                        RLog.LogAsset("编辑器模式下无需加载文件夹");
                         return;
                     }
 #endif
@@ -1288,7 +1288,7 @@ namespace F8Framework.Core
 #if UNITY_EDITOR
                     if (IsEditorMode)
                     {
-                        LogF8.LogAsset("编辑器模式下无需加载文件夹");
+                        RLog.LogAsset("编辑器模式下无需加载文件夹");
                         End();
                         return dirLoader;
                     }
@@ -1334,7 +1334,7 @@ namespace F8Framework.Core
 #if UNITY_EDITOR
                     if (IsEditorMode)
                     {
-                        LogF8.LogAsset("编辑器模式下无需加载文件夹");
+                        RLog.LogAsset("编辑器模式下无需加载文件夹");
                         End();
                         return dirLoader;
                     }
@@ -1413,7 +1413,7 @@ namespace F8Framework.Core
 #if UNITY_EDITOR
                     if (IsEditorMode)
                     {
-                        LogF8.LogAsset("编辑器模式下无需加载文件夹");
+                        RLog.LogAsset("编辑器模式下无需加载文件夹");
                         yield break;
                     }
 #endif
@@ -1444,7 +1444,7 @@ namespace F8Framework.Core
 #if UNITY_EDITOR
                     if (IsEditorMode)
                     {
-                        LogF8.LogAsset("编辑器模式下无需加载文件夹");
+                        RLog.LogAsset("编辑器模式下无需加载文件夹");
                         yield break;
                     }
 #endif
@@ -1697,7 +1697,7 @@ namespace F8Framework.Core
 
                 if (showTip)
                 {
-                    LogF8.LogError("Resource找不到指定资源可用的索引：" + assetName);
+                    RLog.LogError("Resource找不到指定资源可用的索引：" + assetName);
                 }
                 return new AssetInfo(AssetTypeEnum.RESOURCE, assetName);
             }
@@ -1718,7 +1718,7 @@ namespace F8Framework.Core
 
                 if (showTip)
                 {
-                    LogF8.LogError("AssetBundle找不到指定资源可用的索引：" + assetName);
+                    RLog.LogError("AssetBundle找不到指定资源可用的索引：" + assetName);
                 }
                 return new AssetInfo(AssetTypeEnum.ASSET_BUNDLE, assetName);
             }

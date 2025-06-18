@@ -1,4 +1,4 @@
-﻿namespace F8Framework.Core
+﻿namespace Rain.Core
 {
     /// <summary>
     /// 支持localhost地址与http地址；

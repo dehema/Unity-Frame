@@ -1,5 +1,5 @@
-﻿using F8Framework.Core;
-using F8Framework.Launcher;
+﻿using Rain.Core;
+using Rain.Launcher;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 
@@ -38,13 +38,31 @@ public class GameMgr : MonoBehaviour
 
         //新模块
         ModuleCenter.Initialize(this);
-        FF8.Timer = ModuleCenter.CreateModule<TimerManager>();
-        FF8.Message = ModuleCenter.CreateModule<MessageManager>();
+        RA.Timer = ModuleCenter.CreateModule<TimerMgr>();
+        RA.Message = ModuleCenter.CreateModule<MessageManager>();
+        RA.Audio = ModuleCenter.CreateModule<AudioManager>();
+        RA.Asset = ModuleCenter.CreateModule<AssetManager>();
+
+        //AudioClip clip = RA.Asset.Load<AudioClip>("audio/Electronic high shot");
+        //AudioManager.Ins.PlayAudioEffect(clip);
     }
 
     private void Update()
     {
         ModuleCenter.Update();
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            GameObject testprefab = RA.Asset.Load<GameObject>("testprefab");
+            if (testprefab)
+            {
+                GameObject.Instantiate(testprefab);
+            }
+
+            AudioManager.Ins.PlayAudioEffect("Electronic high shot");
+
+
+        }
     }
 
     public void StartGame()

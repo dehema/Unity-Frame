@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.Networking;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
     public class DefaultDownloadRequester : IDownloadRequester
     {
@@ -59,13 +59,13 @@ namespace F8Framework.Core
                     }
                     else
                     {
-                        LogF8.LogError("Content-Length 标头找不到或无效: " + request.error);
+                        RLog.LogError("Content-Length 标头找不到或无效: " + request.error);
                         callback?.Invoke(-1);
                     }
                 }
                 else
                 {
-                    LogF8.LogError("检索文件大小时出错: " + request.error);
+                    RLog.LogError("检索文件大小时出错: " + request.error);
                     callback?.Invoke(-1);
                 }
             }

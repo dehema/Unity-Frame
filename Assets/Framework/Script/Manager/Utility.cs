@@ -88,24 +88,9 @@ public static class Utility
         return ColorUtility.ToHtmlStringRGBA(_color);
     }
 
-    public static void SetButton(this Button _button, Action _action, AudioSound _music = AudioSound.Sound_UIButton)
+    public static void SetButton(this Button _button, Action _action)
     {
-        Tools.Ins.SetButton(_button, _action, _music);
-    }
-
-    public static void SetDebugButton(this Button _button, Action _action, AudioSound _music = AudioSound.Sound_UIButton)
-    {
-        Tools.Ins.SetDebugButton(_button, _action, _music);
-    }
-
-    public static void SetToggle(this Toggle _toggle, Action<bool> _action = null, AudioSound _music = AudioSound.Sound_UIButton)
-    {
-        Tools.Ins.SetToggle(_toggle, _action, _music);
-    }
-
-    public static void SetDebugToggle(this Toggle _toggle, Action<bool> _action = null, AudioSound _music = AudioSound.Sound_UIButton)
-    {
-        Tools.Ins.SetDebugToggle(_toggle, _action, _music);
+        Tools.Ins.SetButton(_button, _action);
     }
 
     /// <summary>

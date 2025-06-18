@@ -4,7 +4,7 @@ using System.Text;
 using System;
 using System.Collections.Generic;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
     public static partial class Util
     {
@@ -124,7 +124,7 @@ namespace F8Framework.Core
                 if (!dir.Exists)
                 {
                     dir.Create();
-                    LogF8.LogUtil("Path:" + path + "Folder is created ");
+                    RLog.LogUtil("Path:" + path + "Folder is created ");
                 }
             }
 

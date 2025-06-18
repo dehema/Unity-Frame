@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
     /// <summary>
     /// 下载模块下载器接口；

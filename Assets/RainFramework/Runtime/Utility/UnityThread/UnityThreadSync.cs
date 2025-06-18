@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
     /// <summary>
     /// unity线程同步类

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using DB;
+using Rain.Core;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
+using Ease = DG.Tweening.Ease;
 
 //生命周期优先级 Awake->OnEnable->Init->OnOpen->Start
 public class BaseView : BaseUI, IBaseView
@@ -90,7 +91,7 @@ public class BaseView : BaseUI, IBaseView
             _cb?.Invoke();
         }
         //timer
-        Timer.Ins.RemoveTimerGroup(GetTimerGroupName());
+        //Timer.Ins.RemoveTimerGroup(GetTimerGroupName());
         //unbind
         UnBindAllDataBind();
     }
@@ -109,26 +110,26 @@ public class BaseView : BaseUI, IBaseView
     /// <summary>
     /// 计时器
     /// </summary>
-    protected TimerHandler SetTimeOut(Action<TimerDispatcher> _action, float _totalTime)
-    {
-        return Timer.Ins.SetTimeOut(_action, _totalTime, GetTimerGroupName());
-    }
+    //protected TimerHandler SetTimeOut(Action<TimerDispatcher> _action, float _totalTime)
+    //{
+    //    return Timer.Ins.SetTimeOut(_action, _totalTime, GetTimerGroupName());
+    //}
 
-    /// <summary>
-    /// 定时器
-    /// </summary>
-    public TimerHandler SetInterval(Action<TimerDispatcher> _action, float _interval, float _totalTime = int.MaxValue)
-    {
-        return Timer.Ins.SetInterval(_action, _interval, _totalTime, GetTimerGroupName());
-    }
+    ///// <summary>
+    ///// 定时器
+    ///// </summary>
+    //public TimerHandler SetInterval(Action<TimerDispatcher> _action, float _interval, float _totalTime = int.MaxValue)
+    //{
+    //    return Timer.Ins.SetInterval(_action, _interval, _totalTime, GetTimerGroupName());
+    //}
 
-    /// <summary>
-    /// 倒计时
-    /// </summary>
-    public TimerHandler SetCountDown(Action<TimerDispatcher> _action, float _totalTime, float _startTime = 0)
-    {
-        return Timer.Ins.SetCountDown(_action, _totalTime, _startTime, GetTimerGroupName());
-    }
+    ///// <summary>
+    ///// 倒计时
+    ///// </summary>
+    //public TimerHandler SetCountDown(Action<TimerDispatcher> _action, float _totalTime, float _startTime = 0)
+    //{
+    //    return Timer.Ins.SetCountDown(_action, _totalTime, _startTime, GetTimerGroupName());
+    //}
 
     /// <summary>
     /// 获取计时器组名
@@ -136,8 +137,9 @@ public class BaseView : BaseUI, IBaseView
     /// <returns></returns>
     private string GetTimerGroupName()
     {
-        string groupName = Timer.Ins.GetGroupName(_viewName);
-        return groupName;
+        //string groupName = Timer.Ins.GetGroupName(_viewName);
+        //return groupName;
+        return "";
     }
 
     List<DBHandler.Binding> dbHandlers = new List<DBHandler.Binding>();

@@ -52,8 +52,8 @@ public class DataMgr : Singleton<DataMgr>
             }
             SaveSettingData();
         }
-        AudioMgr.Ins.soundVolume = settingData.soundVolume;
-        AudioMgr.Ins.musicVolume = settingData.musicVolume;
+        //AudioMgr.Ins.soundVolume = settingData.soundVolume;
+        //AudioMgr.Ins.musicVolume = settingData.musicVolume;
         isLoaded = true;
         //login
         Login();
@@ -90,8 +90,8 @@ public class DataMgr : Singleton<DataMgr>
     /// </summary>
     public void SaveSettingData()
     {
-        settingData.musicVolume = AudioMgr.Ins.musicVolume;
-        settingData.soundVolume = AudioMgr.Ins.soundVolume;
+        //settingData.musicVolume = AudioMgr.Ins.musicVolume;
+        //settingData.soundVolume = AudioMgr.Ins.soundVolume;
         PlayerPrefs.SetString(SaveField.settingData, JsonConvert.SerializeObject(settingData));
     }
 

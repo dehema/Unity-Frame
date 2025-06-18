@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
     //================================================
     /*
@@ -102,7 +102,7 @@ namespace F8Framework.Core
             {
                 return _downloader;
             }
-            LogF8.LogError("已存在同名的下载器！");
+            RLog.LogError("已存在同名的下载器！");
             return null;
         }
         

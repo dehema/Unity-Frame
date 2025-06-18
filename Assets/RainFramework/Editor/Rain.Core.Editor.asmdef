@@ -1,0 +1,23 @@
+{
+    "name": "asmdef.Core.Editor",
+    "rootNamespace": "",
+    "references": [
+        "Unity.TextMeshPro",
+        "Rain.Core",
+        "ICSharpCode.SharpZipLib",
+        "Excel",
+        "LitJson",
+        "HybridCLR.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

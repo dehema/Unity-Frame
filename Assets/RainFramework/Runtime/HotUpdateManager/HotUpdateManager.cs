@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
     public class HotUpdateManager : ModuleSingleton<HotUpdateManager>, IModule
     {
@@ -52,13 +52,13 @@ namespace F8Framework.Core
             }
             
             string path = GameConfig.LocalGameVersion.AssetRemoteAddress + "/" + nameof(GameVersion) + ".json";
-            LogF8.Log($"初始化远程版本：{path}");
+            RLog.Log($"初始化远程版本：{path}");
             
             UnityWebRequest webRequest = UnityWebRequest.Get(path);
             yield return webRequest.SendWebRequest();
             if (webRequest.result != UnityWebRequest.Result.Success)
             {
-                LogF8.LogError($"获取游戏远程版本失败：{path} ，错误：{webRequest.error}");
+                RLog.LogError($"获取游戏远程版本失败：{path} ，错误：{webRequest.error}");
             }
             else
             {
@@ -79,13 +79,13 @@ namespace F8Framework.Core
             }
 
             string path = GameConfig.LocalGameVersion.AssetRemoteAddress + HotUpdateDirName + Separator + nameof(AssetBundleMap) + ".json";
-            LogF8.Log($"始化资源版本：{path}");
+            RLog.Log($"始化资源版本：{path}");
             
             UnityWebRequest webRequest = UnityWebRequest.Get(path);
             yield return webRequest.SendWebRequest();
             if (webRequest.result != UnityWebRequest.Result.Success)
             {
-                LogF8.LogError($"获取游戏资源版本失败：{path} ，错误：{webRequest.error}");
+                RLog.LogError($"获取游戏资源版本失败：{path} ，错误：{webRequest.error}");
             }
             else
             {
@@ -195,16 +195,16 @@ namespace F8Framework.Core
             // 设置热更下载器回调
             hotUpdateDownloader.OnDownloadSuccess += (eventArgs) =>
             {
-                LogF8.LogVersion($"获取热更资源完成！：{eventArgs.DownloadInfo.DownloadUrl}");
+                RLog.LogVersion($"获取热更资源完成！：{eventArgs.DownloadInfo.DownloadUrl}");
             };
             hotUpdateDownloader.OnDownloadFailure += (eventArgs) =>
             {
-                LogF8.LogError($"获取热更资源失败。：{eventArgs.DownloadInfo.DownloadUrl}\n{eventArgs.ErrorMessage}");
+                RLog.LogError($"获取热更资源失败。：{eventArgs.DownloadInfo.DownloadUrl}\n{eventArgs.ErrorMessage}");
                 failure?.Invoke();
             };
             hotUpdateDownloader.OnDownloadStart += (eventArgs) =>
             {
-                LogF8.LogVersion($"开始获取热更资源...：{eventArgs.DownloadInfo.DownloadUrl}");
+                RLog.LogVersion($"开始获取热更资源...：{eventArgs.DownloadInfo.DownloadUrl}");
             };
             hotUpdateDownloader.OnDownloadOverallProgress += (eventArgs) =>
             {
@@ -218,7 +218,7 @@ namespace F8Framework.Core
             };
             hotUpdateDownloader.OnAllDownloadTaskCompleted += (eventArgs) =>
             {
-                LogF8.LogVersion($"所有热更资源获取完成！，用时：{eventArgs.TimeSpan}");
+                RLog.LogVersion($"所有热更资源获取完成！，用时：{eventArgs.TimeSpan}");
                 WriteVersion();
                 completed?.Invoke();
             };
@@ -302,17 +302,17 @@ namespace F8Framework.Core
             // 设置分包下载器回调
             packageDownloader.OnDownloadSuccess += (eventArgs) =>
             {
-                LogF8.LogVersion($"获取分包资源完成！：{eventArgs.DownloadInfo.DownloadUrl}");
+                RLog.LogVersion($"获取分包资源完成！：{eventArgs.DownloadInfo.DownloadUrl}");
                 downloadPaths.Add(eventArgs.DownloadInfo.DownloadPath);
             };
             packageDownloader.OnDownloadFailure += (eventArgs) =>
             {
-                LogF8.LogError($"获取分包资源失败。：{eventArgs.DownloadInfo.DownloadUrl}\n{eventArgs.ErrorMessage}");
+                RLog.LogError($"获取分包资源失败。：{eventArgs.DownloadInfo.DownloadUrl}\n{eventArgs.ErrorMessage}");
                 failure?.Invoke();
             };
             packageDownloader.OnDownloadStart += (eventArgs) =>
             {
-                LogF8.LogVersion($"开始获取分包资源...：{eventArgs.DownloadInfo.DownloadUrl}");
+                RLog.LogVersion($"开始获取分包资源...：{eventArgs.DownloadInfo.DownloadUrl}");
             };
             packageDownloader.OnDownloadOverallProgress += (eventArgs) =>
             {
@@ -326,7 +326,7 @@ namespace F8Framework.Core
             };
             packageDownloader.OnAllDownloadTaskCompleted += (eventArgs) =>
             {
-                LogF8.LogVersion($"所有分包资源获取完成！，用时：{eventArgs.TimeSpan}");
+                RLog.LogVersion($"所有分包资源获取完成！，用时：{eventArgs.TimeSpan}");
 #if UNITY_WEBGL
                 // 使用协程
 				Util.Unity.StartCoroutine(UnZipPackagePathsCo(downloadPaths, completed));

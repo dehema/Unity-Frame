@@ -1,6 +1,6 @@
 ﻿using UnityEngine.Playables;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
 	public class TextLocalizerPlayableBehaviour : PlayableBehaviour
 	{

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-namespace F8Framework.Core
+namespace Rain.Core
 {
     public static class KeyValuePairExts
     {

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Playables;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
 	[System.Serializable]
 	public class TextLocalizerPlayableAsset : PlayableAsset

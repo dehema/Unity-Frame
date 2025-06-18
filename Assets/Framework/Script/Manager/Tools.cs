@@ -5,16 +5,16 @@ using UnityEngine.UI;
 
 public class Tools : MonoSingleton<Tools>
 {
-    public void SetButton(Button _button, Action _action, AudioSound _music = AudioSound.Sound_UIButton)
+    public void SetButton(Button _button, Action _action)
     {
         _button.onClick.AddListener(() =>
         {
-            AudioMgr.Ins.PlaySound(_music);
+            //AudioMgr.Ins.PlaySound(_music);
             _action();
         });
     }
 
-    public void SetDebugButton(Button _button, Action _action, AudioSound _music = AudioSound.Sound_UIButton)
+    public void SetDebugButton(Button _button, Action _action)
     {
         if (!Application.isEditor)
         {
@@ -25,16 +25,16 @@ public class Tools : MonoSingleton<Tools>
         SetButton(_button, _action);
     }
 
-    public void SetToggle(Toggle _toggle, Action<bool> _action = null, AudioSound _music = AudioSound.Sound_UIButton)
+    public void SetToggle(Toggle _toggle, Action<bool> _action = null)
     {
         _toggle.onValueChanged.AddListener((_ison) =>
         {
-            AudioMgr.Ins.PlaySound(_music);
+            //AudioMgr.Ins.PlaySound(_music);
             _action?.Invoke(_ison);
         });
     }
 
-    public void SetDebugToggle(Toggle _toggle, Action<bool> _action = null, AudioSound _music = AudioSound.Sound_UIButton)
+    public void SetDebugToggle(Toggle _toggle, Action<bool> _action = null)
     {
         if (!Application.isEditor)
         {

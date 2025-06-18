@@ -10,7 +10,7 @@ using Excel;
 using UnityEngine;
 using Assembly = System.Reflection.Assembly;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
     public class SupportType
     {
@@ -50,7 +50,7 @@ namespace F8Framework.Core
 
     public class ReadExcel : Singleton<ReadExcel>
     {
-        private const string CODE_NAMESPACE = "F8Framework.F8ExcelDataClass"; //由表生成的数据类型均在此命名空间内
+        private const string CODE_NAMESPACE = "Rain.F8ExcelDataClass"; //由表生成的数据类型均在此命名空间内
         private string ExcelPath = "config"; //需要导表的目录
         private Dictionary<string, List<ConfigData[]>> dataDict; //存放所有数据表内的数据，key：类名  value：数据
 
@@ -76,7 +76,7 @@ namespace F8Framework.Core
 #else
         string INPUT_PATH = URLSetting.CS_STREAMINGASSETS_URL + ExcelPath;
 #endif
-            LogF8.LogConfig(INPUT_PATH);
+            RLog.LogConfig(INPUT_PATH);
             if (string.IsNullOrEmpty(INPUT_PATH))
             {
                 throw new Exception("请先设置数据表路径！");
@@ -121,7 +121,7 @@ namespace F8Framework.Core
             string method= "RuntimeLoadAll";
             object[] parameters = new object[] { objs };
             Util.Assembly.InvokeMethod(_class, method, parameters);
-            LogF8.LogConfig("<color=green>运行时导表成功！</color>");
+            RLog.LogConfig("<color=green>运行时导表成功！</color>");
         }
 
         //数据表内每一格数据
@@ -221,7 +221,7 @@ namespace F8Framework.Core
                         }
 
                         dataDict.Add(className, dataList);
-                        LogF8.LogConfig(className);
+                        RLog.LogConfig(className);
                     }
                 } while (excelReader.NextResult()); //excelReader.NextResult() Excel表下一个sheet页有没有数据
             }
@@ -250,7 +250,7 @@ namespace F8Framework.Core
                     else
                     {
                         //2019.4.28f1,2020.3.33f1都出现的BUG（2021.3.8f1测试通过），编译dll后没及时刷新，导致修改name或id后读取失败，需要二次编译
-                        LogF8.LogConfig("info是空的：" + data.Name);
+                        RLog.LogConfig("info是空的：" + data.Name);
                     }
                 }
 
@@ -280,7 +280,7 @@ namespace F8Framework.Core
 
         private static void DebugError(string type, string data, string classname)
         {
-            LogF8.LogError(string.Format("数据类型错误，类型：{0}  数据：{1}  类名：{2}", type, data, classname));
+            RLog.LogError(string.Format("数据类型错误，类型：{0}  数据：{1}  类名：{2}", type, data, classname));
         }
         
         public static object ParseValue(string type, string data, string classname)
@@ -347,7 +347,7 @@ namespace F8Framework.Core
                         object value = ParseValue(valueType, elementsLength >= i + 2 ? elements[i + 1] : null, classname);
                         if (dictionary.Contains(key))
                         {
-                            LogF8.LogError("Dictionary 重复Key值：{0}  Value值：{1}  类型：{2}  数据：{3}  类名：{4}",key, value, type, data, classname);
+                            RLog.LogError("Dictionary 重复Key值：{0}  Value值：{1}  类型：{2}  数据：{3}  类名：{4}",key, value, type, data, classname);
                         }
                         else
                         {

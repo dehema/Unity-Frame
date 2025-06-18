@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
     /// <summary>
     /// 引用池信息。

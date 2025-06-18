@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
 	public class RawImageInjector : IInjector
 	{
@@ -28,7 +28,7 @@ namespace F8Framework.Core
 					{
 						Texture texture = sprite.texture;
 						rawImage.texture = texture;
-						LogF8.LogAsset("本地化图片类型错误，已自动转换：" + asset);
+						RLog.LogAsset("本地化图片类型错误，已自动转换：" + asset);
 						return;
 					}
 					rawImage.texture = asset as Texture;

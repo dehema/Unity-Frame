@@ -1,18 +1,17 @@
-using F8Framework.Core;
+using Rain.Core;
 using UnityEngine;
-using static Reporter;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
     public abstract class ModuleSingletonMono<T> : MonoBehaviour where T : class, IModule
     {
         private static T _instance;
-        public static T Instance
+        public static T Ins
         {
             get
             {
                 if (_instance == null)
-                    LogF8.LogError($"模块 {typeof(T)} 未创建。");
+                    RLog.LogError($"模块 {typeof(T)} 未创建。");
                 return _instance;
             }
         }

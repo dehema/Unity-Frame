@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
     /// <summary>
     /// 资源文件下载器。
@@ -83,7 +83,7 @@ namespace F8Framework.Core
             catch (Exception e)
             {
                 string message = string.Format("无法发送uri：{0} 的文件下载请求。异常：{1}", uri, e.Message);
-                LogF8.LogError(message);
+                RLog.LogError(message);
                 LoadFail();
             }
         }
@@ -106,7 +106,7 @@ namespace F8Framework.Core
             catch (Exception e)
             {
                 string message = string.Format("无法为uri：{0} 资产捆绑包下载请求。异常：{1}", uri, e.Message);
-                LogF8.LogError(message);
+                RLog.LogError(message);
                 LoadFail();
             }
         }
@@ -115,7 +115,7 @@ namespace F8Framework.Core
         {
             if (!FileTools.IsLegalURI(uri))
             {
-                LogF8.LogError($"无法为uri：{uri}资产捆绑包下载请求。无效的URI。");
+                RLog.LogError($"无法为uri：{uri}资产捆绑包下载请求。无效的URI。");
                 LoadFail();
                 yield break;
             }
@@ -129,7 +129,7 @@ namespace F8Framework.Core
             }
             catch (Exception e)
             {
-                LogF8.LogError($"无法创建 UnityWebRequest，URI：{uri}。异常：{e.Message}");
+                RLog.LogError($"无法创建 UnityWebRequest，URI：{uri}。异常：{e.Message}");
                 LoadFail();
                 yield break;
             }
@@ -139,7 +139,7 @@ namespace F8Framework.Core
             
             if (uwr.result != UnityWebRequest.Result.Success)
             {
-                LogF8.LogError($"无法对 URI：{uri} 发起资源包下载请求。错误：{uwr.error}");
+                RLog.LogError($"无法对 URI：{uri} 发起资源包下载请求。错误：{uwr.error}");
                 LoadFail();
             }
         }

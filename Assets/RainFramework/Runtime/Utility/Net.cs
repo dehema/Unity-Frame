@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Net.Sockets;
 using System.Text.RegularExpressions;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
     public static partial class Util
     {

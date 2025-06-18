@@ -4,7 +4,7 @@ using System.IO;
 using System.Threading.Tasks;
 using ICSharpCode.SharpZipLib.Zip;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
     public static partial class Util
     {
@@ -44,7 +44,7 @@ namespace F8Framework.Core
 
                 public void OnFinished(string result)
                 {
-                    LogF8.LogUtil("Zip Finished : " + result);
+                    RLog.LogUtil("Zip Finished : " + result);
                 }
             }
             
@@ -58,7 +58,7 @@ namespace F8Framework.Core
 
                 if (!File.Exists(sourceFile))
                 {
-                    LogF8.LogError("要解压的文件不存在：" + sourceFile);
+                    RLog.LogError("要解压的文件不存在：" + sourceFile);
                     return result;
                 }
 
@@ -136,10 +136,10 @@ namespace F8Framework.Core
                 catch (System.Exception ex)
                 {
                     GC.Collect();
-                    LogF8.LogError("文件解压发生错误：" + ex);
+                    RLog.LogError("文件解压发生错误：" + ex);
                     return result;
                 }
-                LogF8.LogUtil("Zip解压完成：" + sourceFile);
+                RLog.LogUtil("Zip解压完成：" + sourceFile);
                 GC.Collect();
                 return result;
             }
@@ -149,7 +149,7 @@ namespace F8Framework.Core
             {
                 if (!File.Exists(sourceFile))
                 {
-                    LogF8.LogError("要解压的文件不存在：" + sourceFile);
+                    RLog.LogError("要解压的文件不存在：" + sourceFile);
                     yield break;
                 }
 
@@ -215,7 +215,7 @@ namespace F8Framework.Core
                                     }
                                     catch (System.Exception ex)
                                     {
-                                        LogF8.LogError("文件解压发生错误：" + ex);
+                                        RLog.LogError("文件解压发生错误：" + ex);
                                     }
                                     // 解压一个等待一帧，注意耗时
                                     yield return null;
@@ -228,7 +228,7 @@ namespace F8Framework.Core
 
                     zipStream.Close();
                 }
-                LogF8.LogUtil("Zip解压完成：" + sourceFile);
+                RLog.LogUtil("Zip解压完成：" + sourceFile);
                 GC.Collect();
             }
             
@@ -318,7 +318,7 @@ namespace F8Framework.Core
                 }
                 catch (Exception e)
                 {
-                    LogF8.LogError("压缩文件夹失败：" + e);
+                    RLog.LogError("压缩文件夹失败：" + e);
                     return false;
                 }
                 finally
@@ -363,7 +363,7 @@ namespace F8Framework.Core
                 }
                 catch (Exception e)
                 {
-                    LogF8.LogError("压缩文件夹失败：" + e);
+                    RLog.LogError("压缩文件夹失败：" + e);
                     return false;
                 }
 

@@ -3,7 +3,7 @@
 
 using System;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
     [Serializable]
     public class GoogleTranslateRequest

@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using Unity.EditorCoroutines.Editor;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -101,19 +103,30 @@ public class EditorExportUI : EditorWindow
         EditorGUIUtility.PingObject(AssetDatabase.LoadAssetAtPath<Object>(viewUIPath));
         Debug.Log($"导出{viewUIPath}");
 
-        SetSerializedObject(uiPrefab);
+        EditorCoroutineUtility.StartCoroutine(SetSerializedObject(uiPrefab), uiPrefab);
     }
 
-    static void SetSerializedObject(GameObject _uiPrefab)
+    /// <summary>
+    /// 序列化对象
+    /// </summary>
+    /// <param name="_uiPrefab"></param>
+    static IEnumerator SetSerializedObject(GameObject _uiPrefab)
     {
+        while (EditorApplication.isCompiling)
+            yield return new WaitForEndOfFrame();
+        Debug.Log("编译完成");
         List<Transform> allRoot = ForeachRoot(uiPrefab.transform);
         List<Transform> tfList = GetRegularRoot(allRoot);
         string scriptContent = GetUIScriptContent(tfList);
         string uiModelContent = GetUIModelContent(tfList);
         Dictionary<string, List<string>> dic = GetRootAndComponentsName(tfList);
-        SerializedObject serializedObj = new SerializedObject(_uiPrefab.GetComponent<BaseUI>());
+        BaseUI baseUI = _uiPrefab.GetComponent<BaseUI>();
+        SerializedObject serializedObj = new SerializedObject(baseUI);
         if (serializedObj == null)
-            return;
+        {
+            Debug.Log("找不到序列化脚本，返回");
+            yield break;
+        }
         serializedObj.Update();
         foreach (var item in dic)
         {
@@ -121,7 +134,11 @@ public class EditorExportUI : EditorWindow
             List<string> componentNames = item.Value;
             SerializedProperty rootField = serializedObj.FindProperty(rootName);
             string rootFullName = GetRootFullName(rootName, componentNames);
-            Debug.Log(rootFullName);
+            if (rootField == null)
+            {
+                Debug.Log("找不到序列化对象，跳出");
+                continue;
+            }
             GameObject goRoot = _uiPrefab.transform.FindRecursive(rootFullName).gameObject;
             rootField.objectReferenceValue = goRoot;
             foreach (var componentName in componentNames)
@@ -134,6 +151,7 @@ public class EditorExportUI : EditorWindow
         // 应用更改
         serializedObj.ApplyModifiedProperties();
     }
+
 
     /// <summary>
     /// 根据节点简称和包含的组件获取节点全程

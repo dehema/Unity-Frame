@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using Object = UnityEngine.Object;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
     public class AssetDatabaseManager : Singleton<AssetDatabaseManager>
     {
@@ -39,7 +39,7 @@ namespace F8Framework.Core
                 {
                     var loadSceneParams = new UnityEngine.SceneManagement.LoadSceneParameters(UnityEngine.SceneManagement.LoadSceneMode.Single, UnityEngine.SceneManagement.LocalPhysicsMode.None);
                     UnityEditor.SceneManagement.EditorSceneManager.LoadSceneInPlayMode(assetPath, loadSceneParams);
-                    LogF8.LogAsset("编辑器模式下自动加载场景");
+                    RLog.LogAsset("编辑器模式下自动加载场景");
                 }
                 return o;
             }
@@ -72,7 +72,7 @@ namespace F8Framework.Core
                     {
                         var loadSceneParams = new UnityEngine.SceneManagement.LoadSceneParameters(UnityEngine.SceneManagement.LoadSceneMode.Single, UnityEngine.SceneManagement.LocalPhysicsMode.None);
                         UnityEditor.SceneManagement.EditorSceneManager.LoadSceneInPlayMode(assetPath, loadSceneParams);
-                        LogF8.LogAsset("编辑器模式下自动加载场景");
+                        RLog.LogAsset("编辑器模式下自动加载场景");
                     }
                     return o;
                 }

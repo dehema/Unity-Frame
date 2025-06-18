@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
     public class SpriteRendererInjector : IInjector
     {
@@ -27,7 +27,7 @@ namespace F8Framework.Core
                     {
                         Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
                         spriteRenderer.sprite = sprite;
-                        LogF8.LogAsset("本地化图片类型错误，已自动转换：" + asset);
+                        RLog.LogAsset("本地化图片类型错误，已自动转换：" + asset);
                         return;
                     }
                     spriteRenderer.sprite = asset as Sprite;

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
     [DisallowMultipleComponent]
     public class CoroutineHelper : MonoBehaviour
@@ -394,7 +394,7 @@ namespace F8Framework.Core
                     }
                     catch (Exception e)
                     {
-                        LogF8.LogError(e);
+                        RLog.LogError(e);
                     }
 
                     removalDelayTaskList.Add(task);
@@ -435,7 +435,7 @@ namespace F8Framework.Core
                     }
                     catch (Exception e)
                     {
-                        LogF8.LogError(e);
+                        RLog.LogError(e);
                         triggered = true;
                     }
                 }
@@ -448,7 +448,7 @@ namespace F8Framework.Core
                     }
                     catch (Exception e)
                     {
-                        LogF8.LogError(e);
+                        RLog.LogError(e);
                     }
 
                     removalConditionTaskList.Add(task);

@@ -3,7 +3,7 @@ using System.IO;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
     public static partial class Util
     {

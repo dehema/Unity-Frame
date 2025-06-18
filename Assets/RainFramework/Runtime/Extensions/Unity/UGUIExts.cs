@@ -4,7 +4,7 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
     public static class UGUIExts
     {

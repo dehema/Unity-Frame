@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
     public interface IModule
     {

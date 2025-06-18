@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using TMPro;
 #endif
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
 	public class FontInjector : IInjector
 	{

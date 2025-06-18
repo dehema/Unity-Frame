@@ -3,7 +3,7 @@
 using System.Collections.Generic;
 using UnityEngine.Scripting;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
    public static class AssetBundleMap
    {

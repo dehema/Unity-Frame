@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
-using F8Framework.Core;
-using static Reporter;
+using Rain.Core;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
     public class EventDispatcher : IMessageManager
     {
@@ -25,7 +24,7 @@ namespace F8Framework.Core
             EventData eventData = new EventData(eventId, listener, handle);
             events[eventId].Add(eventData);
 
-            MessageManager.Instance.AddEventListener(eventId, listener, handle);
+            MessageManager.Ins.AddEventListener(eventId, listener, handle);
         }
 
         public void AddEventListener<T>(T eventName, Action<object[]> listener, object handle = null) where T : Enum, IConvertible
@@ -43,7 +42,7 @@ namespace F8Framework.Core
             EventData<object[]> eventData = new EventData<object[]>(eventId, listener, handle);
             events[eventId].Add(eventData);
 
-            MessageManager.Instance.AddEventListener(eventId, listener, handle);
+            MessageManager.Ins.AddEventListener(eventId, listener, handle);
         }
 
         public void RemoveEventListener<T>(T eventName, Action listener, object handle = null) where T : Enum, IConvertible
@@ -70,7 +69,7 @@ namespace F8Framework.Core
                     {
                         if (item is EventData eb && eb.Listener == listener && eb.Handle == handle)
                         {
-                            MessageManager.Instance.RemoveEventListener(eventId, eb.Listener, eb.Handle);
+                            MessageManager.Ins.RemoveEventListener(eventId, eb.Listener, eb.Handle);
                             delects.Add(eb);
                         }
                     }
@@ -102,7 +101,7 @@ namespace F8Framework.Core
                     HashSet<IEventDataBase> ebs = events[eventId];
                     if (ebs.Count < 0)
                     {
-                        LogF8.Log("不可能为零");
+                        RLog.Log("不可能为零");
                         return;
                     }
 
@@ -112,7 +111,7 @@ namespace F8Framework.Core
                     {
                         if (item is EventData<object[]> eb && eb.Listener == listener && eb.Handle == handle)
                         {
-                            MessageManager.Instance.RemoveEventListener(eventId, eb.Listener, eb.Handle);
+                            MessageManager.Ins.RemoveEventListener(eventId, eb.Listener, eb.Handle);
                             delects.Add(eb);
                         }
                     }
@@ -146,29 +145,29 @@ namespace F8Framework.Core
                 if (events[eventId].Count > 0)
                 {
                     events.Remove(eventId);
-                    MessageManager.Instance.RemoveEventListener(eventId);
+                    MessageManager.Ins.RemoveEventListener(eventId);
                 }
             }
         }
 
         public void DispatchEvent<T>(T eventName) where T : Enum, IConvertible
         {
-            MessageManager.Instance.DispatchEvent(eventName);
+            MessageManager.Ins.DispatchEvent(eventName);
         }
 
         public void DispatchEvent(int eventId)
         {
-            MessageManager.Instance.DispatchEvent(eventId);
+            MessageManager.Ins.DispatchEvent(eventId);
         }
 
         public void DispatchEvent<T>(T eventName, params object[] arg1) where T : Enum, IConvertible
         {
-            MessageManager.Instance.DispatchEvent(eventName, arg1);
+            MessageManager.Ins.DispatchEvent(eventName, arg1);
         }
 
         public void DispatchEvent(int eventId, params object[] arg1)
         {
-            MessageManager.Instance.DispatchEvent(eventId, arg1);
+            MessageManager.Ins.DispatchEvent(eventId, arg1);
         }
 
         public void Clear()
@@ -181,11 +180,11 @@ namespace F8Framework.Core
                     {
                         if (eventData is IEventData typedEventData)
                         {
-                            MessageManager.Instance.RemoveEventListener(typedEventData.GetEvent(), typedEventData.Listener, typedEventData.Handle);
+                            MessageManager.Ins.RemoveEventListener(typedEventData.GetEvent(), typedEventData.Listener, typedEventData.Handle);
                         }
                         else if (eventData is IEventData<object[]> typedEventData1)
                         {
-                            MessageManager.Instance.RemoveEventListener(typedEventData1.GetEvent(), typedEventData1.Listener, typedEventData1.Handle);
+                            MessageManager.Ins.RemoveEventListener(typedEventData1.GetEvent(), typedEventData1.Listener, typedEventData1.Handle);
                         }
                     }
                 }

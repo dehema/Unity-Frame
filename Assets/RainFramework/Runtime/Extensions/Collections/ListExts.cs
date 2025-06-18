@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
     public static class ListExts
     {

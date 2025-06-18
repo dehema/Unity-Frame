@@ -2,7 +2,7 @@
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
 	[TrackClipType(typeof(TextLocalizerPlayableAsset))]
 	[TrackBindingType(typeof(TextLocalizer))]

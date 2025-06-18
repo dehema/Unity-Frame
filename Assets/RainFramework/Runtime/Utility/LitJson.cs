@@ -2,7 +2,7 @@
 using System.IO;
 using LitJson; // 使用 LitJson 库进行 JSON 操作
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
     public static partial class Util
     {

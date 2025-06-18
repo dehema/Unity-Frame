@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
 	public class AudioLocalizer : LocalizerBase
 	{
@@ -49,7 +49,7 @@ namespace F8Framework.Core
 
 			if (!Localization.Instance.Has(textId))
 			{
-				if (Application.isPlaying) LogF8.LogError($"Text ID: {textId} 不可用。");
+				if (Application.isPlaying) RLog.LogError($"Text ID: {textId} 不可用。");
 				return false;
 			}
 

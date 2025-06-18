@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
     public class BaseDirLoader : IEnumerator
     {
@@ -46,7 +46,7 @@ namespace F8Framework.Core
             {
                 if (LoaderSuccess)
                 {
-                    LogF8.LogError("加载已完成，请使用GetAssetObject方法获取资产！");
+                    RLog.LogError("加载已完成，请使用GetAssetObject方法获取资产！");
                 }
                 return null;
             }
@@ -97,7 +97,7 @@ namespace F8Framework.Core
                 }
                 catch (Exception e)
                 {
-                    LogF8.LogException(e);
+                    RLog.LogException(e);
                 }
             });
         }

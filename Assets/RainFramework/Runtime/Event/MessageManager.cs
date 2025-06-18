@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using F8Framework.Core;
-using static Reporter;
-using UnityEngine;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
     // 消息管理器类，实现了单例模式和消息管理接口
     public class MessageManager : ModuleSingletonMono<MessageManager>, IMessageManager, IModule
@@ -21,31 +18,31 @@ namespace F8Framework.Core
         // 输出消息死循环的函数
         private void MessageLoop(string debugInfo)
         {
-            LogF8.LogError("消息死循环：{0}", debugInfo);
+            RLog.LogError("消息死循环：{0}", debugInfo);
         }
 
         // 输出不存在事件处理函数的警告
         private void NotActionLog(string eventId, string actionName)
         {
-            LogF8.LogEvent("函数不存在：【{0}】【{1}】", eventId, actionName);
+            RLog.LogEvent("函数不存在：【{0}】【{1}】", eventId, actionName);
         }
 
         // 输出不存在监听者的警告
         private void NotListenerLog(string debugInfo)
         {
-            LogF8.LogEvent("监听者不存在：{0}", debugInfo);
+            RLog.LogEvent("监听者不存在：{0}", debugInfo);
         }
 
         // 输出不存在事件的警告
         private void NotEventLogDispatch(string eventId)
         {
-            LogF8.LogEvent("没有创建监听，发送事件：【{0}】", eventId);
+            RLog.LogEvent("没有创建监听，发送事件：【{0}】", eventId);
         }
 
         // 输出不存在事件的警告
         private void NotEventLogRemove(string eventId)
         {
-            LogF8.LogEvent("没有创建监听，移除监听：【{0}】", eventId);
+            RLog.LogEvent("没有创建监听，移除监听：【{0}】", eventId);
         }
 
         private void OnApplicationFocus(bool hasFocus)
@@ -99,7 +96,7 @@ namespace F8Framework.Core
             {
                 if (events[eventId].Contains(eventData))
                 {
-                    LogF8.LogEvent("不能允许存在重复的事件处理函数。");
+                    RLog.LogEvent("不能允许存在重复的事件处理函数。");
                     return;
                 }
             }
@@ -126,7 +123,7 @@ namespace F8Framework.Core
             {
                 if (events[eventId].Contains(eventData))
                 {
-                    LogF8.LogEvent("不能允许存在重复的事件处理函数。");
+                    RLog.LogEvent("不能允许存在重复的事件处理函数。");
                     return;
                 }
             }

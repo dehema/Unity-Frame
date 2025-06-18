@@ -2,9 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static Reporter;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
     public static class ModuleCenter
     {
@@ -44,7 +43,7 @@ namespace F8Framework.Core
                 Debug.LogError("MonoBehaviour 为空。");
             if (_behaviour != null)
             {
-                LogF8.LogModule($"{nameof(ModuleCenter)} 已初始化。");
+                RLog.LogModule($"{nameof(ModuleCenter)} 已初始化。");
                 return;
             }
 
@@ -65,9 +64,9 @@ namespace F8Framework.Core
             // 说明：初始化之后，如果忘记更新ModuleCenter
             if (_frame == 0)
             {
-                LogF8.LogModule($"暂未调用轮询方法：ModuleCenter.Update");
-                LogF8.LogModule($"暂未调用轮询方法：ModuleCenter.LateUpdate");
-                LogF8.LogModule($"暂未调用轮询方法：ModuleCenter.FixedUpdate");
+                RLog.LogModule($"暂未调用轮询方法：ModuleCenter.Update");
+                RLog.LogModule($"暂未调用轮询方法：ModuleCenter.LateUpdate");
+                RLog.LogModule($"暂未调用轮询方法：ModuleCenter.FixedUpdate");
             }
         }
 
@@ -223,13 +222,13 @@ namespace F8Framework.Core
         {
             if (priority < 0)
             {
-                LogF8.LogModule("模块优先级不能为负");
+                RLog.LogModule("模块优先级不能为负");
                 priority = 0;
             }
 
             if (Contains(typeof(T)))
             {
-                LogF8.LogModule($"游戏模块 {typeof(T)} 已存在");
+                RLog.LogModule($"游戏模块 {typeof(T)} 已存在");
                 return GetModule<T>();
             }
 
@@ -240,7 +239,7 @@ namespace F8Framework.Core
                 priority = ++minPriority;
             }
 
-            LogF8.LogModule($"创建游戏模块: {typeof(T).Name}");
+            RLog.LogModule($"创建游戏模块: {typeof(T).Name}");
 
             T module = null;
 
@@ -342,7 +341,7 @@ namespace F8Framework.Core
                     return _coms[i].Module as T;
             }
 
-            LogF8.LogError($"未找到游戏模块 {type}");
+            RLog.LogError($"未找到游戏模块 {type}");
             return null;
         }
 
@@ -367,7 +366,7 @@ namespace F8Framework.Core
         public static MonoBehaviour GetBehaviour()
         {
             if (_behaviour == null)
-                LogF8.LogError($"{nameof(ModuleCenter)} 未初始化。使用 ModuleCenter.Initialize");
+                RLog.LogError($"{nameof(ModuleCenter)} 未初始化。使用 ModuleCenter.Initialize");
             return _behaviour;
         }
     }

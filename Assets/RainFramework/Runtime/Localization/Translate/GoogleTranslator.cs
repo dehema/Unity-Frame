@@ -6,7 +6,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
     public class GoogleTranslator
     {

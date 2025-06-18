@@ -4,7 +4,7 @@ using System.IO;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
     /// <summary>
     /// 提供资产捆绑包管理工具，包括加载、扩展和卸载。
@@ -1007,7 +1007,7 @@ namespace F8Framework.Core
                 }
                 else
                 {
-                    LogF8.LogError("AssetBundle清单加载失败：" + manifestPath);
+                    RLog.LogError("AssetBundle清单加载失败：" + manifestPath);
                 }
             }
             else
@@ -1023,7 +1023,7 @@ namespace F8Framework.Core
                 }
                 else
                 {
-                    LogF8.LogError("AssetBundle清单加载失败：" + manifestPath);
+                    RLog.LogError("AssetBundle清单加载失败：" + manifestPath);
                 }
             }
         }
@@ -1051,7 +1051,7 @@ namespace F8Framework.Core
             }
             else
             {
-                LogF8.LogError("AssetBundle清单加载失败：" + manifestPath);
+                RLog.LogError("AssetBundle清单加载失败：" + manifestPath);
             }
 #endif
         }

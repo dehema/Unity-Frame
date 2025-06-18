@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
     /// <summary>
     /// 提供资源管理工具 - 包括加载和卸载。

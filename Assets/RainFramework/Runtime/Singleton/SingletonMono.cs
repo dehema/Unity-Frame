@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
     public class SingletonMono<T> : MonoBehaviour where T : Component
     {

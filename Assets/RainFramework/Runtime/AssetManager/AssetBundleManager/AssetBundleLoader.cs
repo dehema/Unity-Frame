@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
     /// <summary>
     /// 资产捆绑加载程序。
@@ -232,7 +232,7 @@ namespace F8Framework.Core
                     {
                         assetBundleLoadState = LoaderState.FINISHED;
                         string errMsg = string.Format("找不到远程资产捆绑包 {0} ，请检查", assetBundlePath);
-                        LogF8.LogError(errMsg);
+                        RLog.LogError(errMsg);
                     }
                 }
                 else
@@ -243,7 +243,7 @@ namespace F8Framework.Core
                     {
                         assetBundleLoadState = LoaderState.FINISHED;
                         string errMsg = string.Format("找不到本地资产捆绑包 {0} ，请检查", assetBundlePath);
-                        LogF8.LogError(errMsg);
+                        RLog.LogError(errMsg);
                     }
                 }
             }
@@ -551,7 +551,7 @@ namespace F8Framework.Core
                 }
                 else
                 {
-                    LogF8.LogError("与输入的资产类型不一致：" + assetPath);
+                    RLog.LogError("与输入的资产类型不一致：" + assetPath);
                     return null;
                 }
             }
@@ -628,7 +628,7 @@ namespace F8Framework.Core
                         }
                         else
                         {
-                            LogF8.LogError("与输入的资产类型不一致：" + assetPath);
+                            RLog.LogError("与输入的资产类型不一致：" + assetPath);
                             End();
                         }
                     }
@@ -660,7 +660,7 @@ namespace F8Framework.Core
                                 {
                                     assetBundleLoadState = LoaderState.FINISHED;
                                     string errMsg = string.Format("无法加载本地资产捆绑包 {0} ", assetBundlePath);
-                                    LogF8.LogError(errMsg);
+                                    RLog.LogError(errMsg);
                                 }
                                 else
                                 {
@@ -680,7 +680,7 @@ namespace F8Framework.Core
                                 {
                                     assetBundleLoadState = LoaderState.FINISHED;
                                     string errMsg = string.Format("无法加载远程资产捆绑包 {0} ，请重试", assetBundlePath);
-                                    LogF8.LogError(errMsg);
+                                    RLog.LogError(errMsg);
                                 }
                                 else
                                 {
@@ -984,7 +984,7 @@ namespace F8Framework.Core
             if (assetPath == null ||
                 obj == null)
             {
-                LogF8.LogError("加载资产对象Object为空，请检查类型和路径：" + assetPath);
+                RLog.LogError("加载资产对象Object为空，请检查类型和路径：" + assetPath);
                 return;
             }
 

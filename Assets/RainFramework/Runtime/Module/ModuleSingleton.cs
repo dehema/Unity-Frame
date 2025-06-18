@@ -1,6 +1,4 @@
-﻿using F8Framework.Core;
-
-namespace F8Framework.Core
+﻿namespace Rain.Core
 {
 	public abstract class ModuleSingleton<T> where T : class, IModule, new()
 	{
@@ -13,7 +11,7 @@ namespace F8Framework.Core
 				{
 #if UNITY_EDITOR
 					_instance = new T();
-					LogF8.Log($"模块 {typeof(T)} 不是通过模块中心创建并控制（无法轮询Update），仅在编辑器下可以临时使用");
+					RLog.Log($"模块 {typeof(T)} 不是通过模块中心创建并控制（无法轮询Update），仅在编辑器下可以临时使用");
 #else
 					RLog.LogError($"模块 {typeof(T)} 未创建。");
 #endif
@@ -25,7 +23,7 @@ namespace F8Framework.Core
 		protected ModuleSingleton()
 		{
 			if (_instance != null)
-                LogF8.LogError($"模块 {typeof(T)} 实例已创建。");
+                RLog.LogError($"模块 {typeof(T)} 实例已创建。");
 			_instance = this as T;
 		}
 		

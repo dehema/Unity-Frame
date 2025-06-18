@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
     public static partial class ReferencePool
     {
@@ -86,7 +86,7 @@ namespace F8Framework.Core
             {
                 if (typeof(T) != _mReferenceType)
                 {
-                    LogF8.LogError("Type is invalid.");
+                    RLog.LogError("Type is invalid.");
                     return null;
                 }
 
@@ -127,7 +127,7 @@ namespace F8Framework.Core
                 {
                     if (_mEnableStrictCheck && _mReferences.Contains(reference))
                     {
-                        LogF8.LogError("The reference has been released.");
+                        RLog.LogError("The reference has been released.");
                         return;
                     }
 
@@ -142,7 +142,7 @@ namespace F8Framework.Core
             {
                 if (typeof(T) != _mReferenceType)
                 {
-                    LogF8.LogError("Type is invalid.");
+                    RLog.LogError("Type is invalid.");
                     return;
                 }
 

@@ -1,33 +1,33 @@
 ﻿using System.IO;
 using UnityEngine;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
     public class URLSetting
     {
-            public const string AssetBundlesName = "AssetBundles";  // AB包名
-            public const string AssetBundlesPath = "Assets/AssetBundles/"; // 打包AB包根路径
-            public const string AssetBundlesPathLower = "assets/assetbundles/"; // 打包AB包根路径小写
-            public const string ResourcesPath = "Resources/"; // Resources根路径
-            
-            public static string GetAssetBundlesFolder()
-            {
-                    return Application.dataPath + "/" + AssetBundlesName;
-            }
-            
-            public static string GetAssetBundlesOutPath()
-            {
-                    return Application.dataPath + "/../Bundles/" + AssetBundlesName + "/" + GetPlatformName();
-            }
-            
-            public static string GetAssetBundlesStreamPath()
-            {
-                    return Application.dataPath + "/StreamingAssets/" + AssetBundlesName + "/" + GetPlatformName();
-            }
-            
-            public static string GetPlatformName()
-            {
- 
+        public const string AssetBundlesName = "AssetBundles";  // AB包名
+        public const string AssetBundlesPath = "Assets/AssetBundles/"; // 打包AB包根路径
+        public const string AssetBundlesPathLower = "assets/assetbundles/"; // 打包AB包根路径小写
+        public const string ResourcesPath = "Resources/"; // Resources根路径
+
+        public static string GetAssetBundlesFolder()
+        {
+            return Application.dataPath + "/" + AssetBundlesName;
+        }
+
+        public static string GetAssetBundlesOutPath()
+        {
+            return Application.dataPath + "/../Bundles/" + AssetBundlesName + "/" + GetPlatformName();
+        }
+
+        public static string GetAssetBundlesStreamPath()
+        {
+            return Application.dataPath + "/StreamingAssets/" + AssetBundlesName + "/" + GetPlatformName();
+        }
+
+        public static string GetPlatformName()
+        {
+
 #if UNITY_STANDALONE_WIN
                 string strReturenPlatformName = "Windows";
 #elif UNITY_STANDALONE_OSX
@@ -37,15 +37,15 @@ namespace F8Framework.Core
 #elif UNITY_IPHONE || UNITY_IOS
                 string strReturenPlatformName = "iOS";
 #elif UNITY_ANDROID
-                string strReturenPlatformName = "Android";
+            string strReturenPlatformName = "Android";
 #elif UNITY_WEBGL
                 string strReturenPlatformName = "WebGL";
 #else
                 string strReturenPlatformName = "Unknown";
 #endif
-                    return strReturenPlatformName;
-            }
-            
+            return strReturenPlatformName;
+        }
+
         //读取资源的路径
 #if UNITY_EDITOR || UNITY_STANDALONE
         public static string STREAMINGASSETS_URL = "file://" + Application.streamingAssetsPath + "/";
@@ -72,7 +72,7 @@ namespace F8Framework.Core
 #else
         public static string CS_STREAMINGASSETS_URL = Application.streamingAssetsPath + "/";
 #endif
-            
+
         //上报错误地址
         public static string REPORT_ERROR_URL = "";
     }

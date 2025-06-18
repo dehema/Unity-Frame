@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using UnityEngine;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
     // 本地化工具类
     public class Localization : ModuleSingleton<Localization>, IModule
@@ -43,7 +43,7 @@ namespace F8Framework.Core
                 }
                 catch
                 {
-                    LogF8.LogError("缺少本地化表或加载本地化表失败！");
+                    RLog.LogError("缺少本地化表或加载本地化表失败！");
                 }
             }
             else
@@ -82,7 +82,7 @@ namespace F8Framework.Core
             }
             catch
             {
-                LogF8.LogError("缺少本地化表或加载本地化表失败！");
+                RLog.LogError("缺少本地化表或加载本地化表失败！");
             }
             LoadSuccess();
 #endif
@@ -92,7 +92,7 @@ namespace F8Framework.Core
         {
             var tb = Util.Assembly.InvokeMethod("F8DataManager", "GetLocalizedStrings", new object[] { }) as IDictionary;
             
-            LogF8.LogConfig("<color=green>获取本地化表格成功！</color>");
+            RLog.LogConfig("<color=green>获取本地化表格成功！</color>");
             
             foreach (var item in tb.Values)
             {
@@ -101,7 +101,7 @@ namespace F8Framework.Core
                 FieldInfo textIDProperty = itemType.GetField("TextID");
                 if (textIDProperty == null)
                 {
-                    LogF8.LogError("无法获取 TextID 属性，请检查对象类型。");
+                    RLog.LogError("无法获取 TextID 属性，请检查对象类型。");
                     continue;
                 }
 
@@ -154,14 +154,14 @@ namespace F8Framework.Core
                         {
                             // 如果字段的值为 null，你可以选择添加一个默认值，或者进行其他处理
                             list.Add("");
-                            LogF8.LogConfig($"本地化表id：\"<b>{id}</b>\"，字段：\"<b>{textID}</b>\" 的值为空");
+                            RLog.LogConfig($"本地化表id：\"<b>{id}</b>\"，字段：\"<b>{textID}</b>\" 的值为空");
                         }
                     }
                 }
 
                 if (LocalizedStrings.ContainsKey(textID))
                 {
-                    LogF8.LogError($"本地化表id：\"<b>{id}</b>\"，字段：\"<b>{textID}</b>\" 出现重复，请修改。");
+                    RLog.LogError($"本地化表id：\"<b>{id}</b>\"，字段：\"<b>{textID}</b>\" 出现重复，请修改。");
                     continue;
                 }
 
@@ -217,7 +217,7 @@ namespace F8Framework.Core
             var i = LanguageList.FindIndex(s => s.Contains(languageName));
             if (i == -1)
             {
-                LogF8.LogError($"不可用的语言名称: {languageName}");
+                RLog.LogError($"不可用的语言名称: {languageName}");
                 return 0;
             }
             return i;

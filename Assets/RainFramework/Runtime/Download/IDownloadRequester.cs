@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
     /// <summary>
     /// 下载请求器，用于下载前获取文件大小；

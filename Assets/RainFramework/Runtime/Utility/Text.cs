@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
     public static partial class Util
     {

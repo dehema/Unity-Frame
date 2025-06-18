@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Object = UnityEngine.Object;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
     public class EditorLoader : BaseLoader
     {

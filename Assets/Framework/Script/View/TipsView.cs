@@ -48,7 +48,7 @@ public partial class TipsView : BaseView
         }
         if (_cb != null)
         {
-            Timer.Ins.SetTimeOut(ed => { _cb(); }, tweenMoveDuration);
+            //Timer.Ins.SetTimeOut(ed => { _cb(); }, tweenMoveDuration);
         }
     }
 
@@ -83,17 +83,17 @@ public partial class TipsView : BaseView
             return item;
         };
         GameObject item = CreateItem();
-        Timer.Ins.SetTimeOut(() =>
-        {
-            Image bg = GetComponentInChildren<Image>("bg", item.transform);
-            bg.DOFade(0, tweenFadeDuration);
-            Text txt = GetComponentInChildren<Text>("txt", item.transform);
-            txt.DOFade(0, tweenFadeDuration).onComplete = () =>
-            {
-                tipsPool.CollectOne(item);
-                items.RemoveAt(items.Count - 1);
-            };
-        }, showDuration);
+        //Timer.Ins.SetTimeOut(() =>
+        //{
+        //    Image bg = GetComponentInChildren<Image>("bg", item.transform);
+        //    bg.DOFade(0, tweenFadeDuration);
+        //    Text txt = GetComponentInChildren<Text>("txt", item.transform);
+        //    txt.DOFade(0, tweenFadeDuration).onComplete = () =>
+        //    {
+        //        tipsPool.CollectOne(item);
+        //        items.RemoveAt(items.Count - 1);
+        //    };
+        //}, showDuration);
     }
 
     /// <summary>

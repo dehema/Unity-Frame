@@ -1,7 +1,7 @@
 using System.IO;
 using UnityEngine;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
     /// <summary>
     /// 为资产捆绑管理器提供资源类型判断和路由帮助。
@@ -86,12 +86,12 @@ namespace F8Framework.Core
                 case SourceType.REMOTE_ADDRESS:
                     if (string.IsNullOrEmpty(GameConfig.LocalGameVersion.AssetRemoteAddress))
                     {
-                        LogF8.LogError("加载远程包需要配置远程地址：AssetRemoteAddress");
+                        RLog.LogError("加载远程包需要配置远程地址：AssetRemoteAddress");
                     }
                     assetBundlePath = GetRemoteAddress();
                     break;
                 default:
-                    LogF8.LogError("AssetBundle的源类型不能为空");
+                    RLog.LogError("AssetBundle的源类型不能为空");
                     return null;
             }
             

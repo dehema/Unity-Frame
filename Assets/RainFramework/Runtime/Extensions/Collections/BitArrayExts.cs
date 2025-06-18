@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Text;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
     public static class BitArrayExts
     {

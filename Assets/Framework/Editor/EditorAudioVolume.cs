@@ -53,9 +53,9 @@ public class EditorAudioVolume : EditorWindow
     private void OnGUI()
     {
         EditorGUILayout.LabelField("<color=white>------------------- 音效 -------------------</color>", titleLabelStyle, GUILayout.Height(20));
-        AudioGUI(typeof(AudioSound));
+        //AudioGUI(typeof(AudioSound));
         EditorGUILayout.LabelField("<color=white>------------------- 音乐 -------------------</color>", titleLabelStyle, GUILayout.Height(20));
-        AudioGUI(typeof(AudioMusic));
+        //AudioGUI(typeof(AudioMusic));
         if (saveCoroutine != null)
         {
             EditorCoroutineUtility.StopCoroutine(saveCoroutine);
@@ -72,10 +72,10 @@ public class EditorAudioVolume : EditorWindow
     {
         foreach (string audioName in Enum.GetNames(_type))
         {
-            if (audioName != AudioSound.None.ToString())
-            {
-                AudioGUI(audioName, _type);
-            }
+            //if (audioName != AudioSound.None.ToString())
+            //{
+            //    AudioGUI(audioName, _type);
+            //}
         }
     }
 
@@ -109,37 +109,37 @@ public class EditorAudioVolume : EditorWindow
     {
         if (_volume < 0)
             _volume = 1;
-        if (_type == typeof(AudioSound))
-        {
-            if (!isLoadData)
-                volumeData_origin.soundVolume[_audioName] = _volume;
-            volumeData.soundVolume[_audioName] = _volume;
-        }
-        else if (_type == typeof(AudioMusic))
-        {
-            if (!isLoadData)
-                volumeData_origin.musicVolume[_audioName] = _volume;
-            volumeData.musicVolume[_audioName] = _volume;
-        }
+        //if (_type == typeof(AudioSound))
+        //{
+        //    if (!isLoadData)
+        //        volumeData_origin.soundVolume[_audioName] = _volume;
+        //    volumeData.soundVolume[_audioName] = _volume;
+        //}
+        //else if (_type == typeof(AudioMusic))
+        //{
+        //    if (!isLoadData)
+        //        volumeData_origin.musicVolume[_audioName] = _volume;
+        //    volumeData.musicVolume[_audioName] = _volume;
+        //}
     }
 
     public float GetVolume(string _audioName, Type _type)
     {
         float val = -1f;
-        if (_type == typeof(AudioSound))
-        {
-            if (volumeData.soundVolume.ContainsKey(_audioName))
-            {
-                val = volumeData.soundVolume[_audioName];
-            }
-        }
-        else if (_type == typeof(AudioMusic))
-        {
-            if (volumeData.musicVolume.ContainsKey(_audioName))
-            {
-                val = volumeData.musicVolume[_audioName];
-            }
-        }
+        //if (_type == typeof(AudioSound))
+        //{
+        //    if (volumeData.soundVolume.ContainsKey(_audioName))
+        //    {
+        //        val = volumeData.soundVolume[_audioName];
+        //    }
+        //}
+        //else if (_type == typeof(AudioMusic))
+        //{
+        //    if (volumeData.musicVolume.ContainsKey(_audioName))
+        //    {
+        //        val = volumeData.musicVolume[_audioName];
+        //    }
+        //}
         return val;
     }
 

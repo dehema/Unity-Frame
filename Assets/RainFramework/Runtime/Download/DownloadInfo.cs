@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
     [StructLayout(LayoutKind.Auto)]
     public struct DownloadInfo : IEquatable<DownloadInfo>

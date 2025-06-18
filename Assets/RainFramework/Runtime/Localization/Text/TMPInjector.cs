@@ -1,7 +1,7 @@
 ﻿#if LOCALIZER_TMP
 using TMPro;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
 	public class TMPInjector : IInjector
 	{

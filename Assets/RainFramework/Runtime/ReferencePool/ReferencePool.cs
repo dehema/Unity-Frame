@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace F8Framework.Core
+namespace Rain.Core
 {
     /// <summary>
     /// 引用池。
@@ -103,7 +103,7 @@ namespace F8Framework.Core
         {
             if (reference == null)
             {
-                LogF8.LogError("Reference is invalid.");
+                RLog.LogError("Reference is invalid.");
                 return;
             }
 
@@ -182,19 +182,19 @@ namespace F8Framework.Core
 
             if (referenceType == null)
             {
-                LogF8.LogError("Reference type is invalid.");
+                RLog.LogError("Reference type is invalid.");
                 return;
             }
 
             if (!referenceType.IsClass || referenceType.IsAbstract)
             {
-                LogF8.LogError("Reference type is not a non-abstract class type.");
+                RLog.LogError("Reference type is not a non-abstract class type.");
                 return;
             }
 
             if (!typeof(IReference).IsAssignableFrom(referenceType))
             {
-                LogF8.LogError(string.Format("Reference type '{0}' is invalid.", referenceType.FullName));
+                RLog.LogError(string.Format("Reference type '{0}' is invalid.", referenceType.FullName));
                 return;
             }
         }
@@ -203,7 +203,7 @@ namespace F8Framework.Core
         {
             if (referenceType == null)
             {
-                LogF8.LogError("ReferenceType is invalid.");
+                RLog.LogError("ReferenceType is invalid.");
                 return null;
             }
 
