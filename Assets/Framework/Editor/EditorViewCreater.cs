@@ -1,16 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using Newtonsoft.Json;
+using NUnit.Framework;
 using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 using Scene = UnityEngine.SceneManagement.Scene;
 
 public class EditorViewCreater
 {
     static Scene currScene;
-    const string tempViewCreater = "/._tempViewCreater.txt";
     /// <summary>
     /// 创建示例UI
     /// </summary>
@@ -27,6 +30,7 @@ public class EditorViewCreater
         Debug.Log("创建View--->" + _viewName);
     }
 
+    static readonly string fieldNeedExportViewUI = "NeedExportViewUI";
     /// <summary>
     /// 此标记可以让脚本在编译后在调用一次
     /// </summary>
@@ -35,15 +39,68 @@ public class EditorViewCreater
     {
         if (!Application.isEditor || EditorApplication.isPlaying)
             return;
-        string tempFilePath = Directory.GetParent(Application.dataPath).FullName + tempViewCreater;
-        if (!File.Exists(tempFilePath))
-            return;
-        string viewName = File.ReadAllText(tempFilePath);
-        File.Delete(tempFilePath);
-        GameObject prefab = GameObject.Find(viewName);
-        AddScriptAndSavePrefab(viewName, prefab);
-        EditorExportUI.ExportViewUI(prefab);
-        EditorSceneManager.SaveOpenScenes();
+        Dictionary<string, string> labels = GetTempFileLabels();
+        if (labels.ContainsKey(fieldNeedExportViewUI))
+        {
+            RemoveTempFileLabels(fieldNeedExportViewUI);
+            string viewName = labels[fieldNeedExportViewUI];
+            GameObject prefab = GameObject.Find(viewName);
+            AddScriptAndSavePrefab(viewName, prefab);
+            EditorExportUI.ExportViewUI(prefab);
+            EditorSceneManager.SaveOpenScenes();
+        }
+    }
+
+    /// <summary>
+    /// 获取临时标记
+    /// </summary>
+    /// <returns></returns>
+    public static Dictionary<string, string> GetTempFileLabels()
+    {
+        Dictionary<string, string> dict = new Dictionary<string, string>();
+        if (!File.Exists(TempFilePath))
+            return dict;
+        string json = File.ReadAllText(TempFilePath);
+        List<string> labels = new List<string>();
+        dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+        return dict;
+    }
+
+    /// <summary>
+    /// 增加临时标记
+    /// </summary>
+    /// <param name="_dict"></param>
+    public static void AddTempFileLabels(string _key, string _val)
+    {
+        Dictionary<string, string> dict = GetTempFileLabels();
+        dict[_key] = _val;
+        string content = JsonConvert.SerializeObject(dict);
+        File.WriteAllText(TempFilePath, content);
+    }
+
+    public static void RemoveTempFileLabels(string _key)
+    {
+        Dictionary<string, string> dict = GetTempFileLabels();
+        dict.Remove(_key);
+        string content = JsonConvert.SerializeObject(dict);
+        File.WriteAllText(TempFilePath, content);
+    }
+
+    private static string TempFilePath
+    {
+        get
+        {
+            return Path.Combine(Directory.GetParent(Application.dataPath).FullName, "._tempViewCreater.txt");
+        }
+    }
+
+    /// <summary>
+    /// 是否存在临时文件
+    /// </summary>
+    /// <returns></returns>
+    public static bool IsExistsTempFile()
+    {
+        return File.Exists(TempFilePath);
     }
 
     public static Scene CreateViewScene(string _viewName)
@@ -73,9 +130,7 @@ public class EditorViewCreater
         canvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
         canvasScaler.referenceResolution = new Vector2(1920, 1080);
         canvasScaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
-
-        string tempFile = Directory.GetParent(Application.dataPath).FullName + tempViewCreater;
-        File.WriteAllText(tempFile, _viewName);
+        AddTempFileLabels(fieldNeedExportViewUI, _viewName);
         return view;
     }
 
