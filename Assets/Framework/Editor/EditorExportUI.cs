@@ -110,6 +110,7 @@ public class EditorExportUI : EditorWindow
             oldMd5 = GetFileMD5(viewUIPath);
         }
         File.WriteAllText(viewUIPath, scriptContent);
+        AssetDatabase.Refresh();
         EditorGUIUtility.PingObject(AssetDatabase.LoadAssetAtPath<Object>(viewUIPath));
         string newMd5 = GetFileMD5(viewUIPath);
         if (oldMd5 == newMd5)
@@ -151,7 +152,8 @@ public class EditorExportUI : EditorWindow
     /// <returns></returns>
     static GameObject currActiveBaseUIPrefab
     {
-        get {
+        get
+        {
             PrefabStage prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
             if (prefabStage)
             {
@@ -178,6 +180,7 @@ public class EditorExportUI : EditorWindow
         Dictionary<string, string> dict = EditorViewCreater.GetTempFileLabels();
         if (dict.ContainsKey(fieldNeedSerializedObject))
         {
+            EditorViewCreater.RemoveTempFileLabels(fieldNeedSerializedObject);
             GameObject root = currActiveBaseUIPrefab;
             if (root != null && root.name == dict[fieldNeedSerializedObject])
             {
@@ -192,7 +195,6 @@ public class EditorExportUI : EditorWindow
     /// <param name="_uiPrefab"></param>
     static void SetSerializedObject(GameObject _uiPrefab)
     {
-        EditorViewCreater.RemoveTempFileLabels(fieldNeedSerializedObject);
         Debug.Log("开始序列化");
         List<Transform> allRoot = ForeachRoot(_uiPrefab.transform);
         List<Transform> tfList = GetRegularRoot(allRoot);
@@ -414,6 +416,11 @@ public class EditorExportUI : EditorWindow
         return name;
     }
 
+    static bool IsBaseView(GameObject item)
+    {
+        return item.GetComponent<BaseView>() != null;
+    }
+
     /// <summary>
     /// 获取一个节点的全部路径
     /// </summary>
@@ -423,12 +430,14 @@ public class EditorExportUI : EditorWindow
     {
         string rootPath = _trans.gameObject.name;
         Transform rootParent = _trans.transform.parent;
+        Transform rootNode = rootParent;
         while (rootParent != null && rootParent.parent != null)
         {
             rootPath = rootParent.gameObject.name + "/" + rootPath;
             rootParent = rootParent.parent;
+            rootNode = rootParent;
         }
-        if (!isExportView)
+        if (!IsBaseView(rootNode.gameObject))
         {
             int rootLength = uiPrefab.name.Length + 1;
             rootPath = rootPath.Substring(rootLength, rootPath.Length - rootLength);
