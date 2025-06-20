@@ -1,10 +1,10 @@
 using System.Collections;
-using F8Framework.Core;
-using F8Framework.Launcher;
+using Rain.Core;
+using Rain.Launcher;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace F8Framework.Tests
+namespace Rain.Tests
 {
     public class DemoTween : MonoBehaviour
     {
@@ -56,24 +56,24 @@ namespace F8Framework.Tests
             
             // 你也可以这样使用，设置OnUpdate
             // 数字缓动变化
-            BaseTween valueTween = FF8.Tween.ValueTween(0f, 100f, 3f).SetOnUpdateFloat((float v) =>
+            BaseTween valueTween = RA.Tween.ValueTween(0f, 100f, 3f).SetOnUpdateFloat((float v) =>
             {
-                LogF8.Log(v);
+                RLog.Log(v);
             });
             
             // 取消动画，只允许使用ID取消动画，动画基类会回收再利用，但ID唯一递增
             int id2 = valueTween.ID;
-            FF8.Tween.CancelTween(id2);
+            RA.Tween.CancelTween(id2);
             
             // 物体移动
-            BaseTween gameObjectTween = FF8.Tween.Move(gameObject, Vector3.one, 3f).SetOnUpdateVector3((Vector3 v) =>
+            BaseTween gameObjectTween = RA.Tween.Move(gameObject, Vector3.one, 3f).SetOnUpdateVector3((Vector3 v) =>
             {
-                LogF8.Log(v);
+                RLog.Log(v);
             });
                 
             // 设置动画拥有者后，可使用此取消方式
             gameObjectTween.SetOwner(gameObject);
-            FF8.Tween.CancelTween(gameObject);
+            RA.Tween.CancelTween(gameObject);
             gameObject.CancelAllTweens();
             
             // 根据相对坐标移动UI
@@ -94,14 +94,14 @@ namespace F8Framework.Tests
             sequence.Append(valueTween); // 第一个动画
             sequence.Join(gameObjectTween);   // 与第一个动画同时执行
             sequence.Append(valueTween); // 第二个动画完成后执行
-            sequence.Append(() => LogF8.Log("完成了！")); // 动画序列结束后的回调
-            sequence.SetOnComplete(() => LogF8.Log("Sequence 完成"));
+            sequence.Append(() => RLog.Log("完成了！")); // 动画序列结束后的回调
+            sequence.SetOnComplete(() => RLog.Log("Sequence 完成"));
             
             // 设置循环次数，-1代表无限循环
             sequence.SetLoops(3);
             
             // 设置特定时间运行事件或动画
-            sequence.RunAtTime(() => LogF8.Log("半途事件"), 1.5f); // 在1.5秒时执行回调
+            sequence.RunAtTime(() => RLog.Log("半途事件"), 1.5f); // 在1.5秒时执行回调
             sequence.RunAtTime(gameObjectTween, 2.0f); // 在2秒时开始执行特定动画
             
             // 回收Sequence，并停止所有动画

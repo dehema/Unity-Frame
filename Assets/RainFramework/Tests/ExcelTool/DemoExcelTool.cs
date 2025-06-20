@@ -1,11 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using F8Framework.Core;
-using F8Framework.F8ExcelDataClass;
-using F8Framework.Launcher;
+using Rain.Core;
+using Rain.F8ExcelDataClass;
+using Rain.Launcher;
 
-namespace F8Framework.Tests
+namespace Rain.Tests
 {
     public class DemoExcelTool : MonoBehaviour
     {
@@ -13,28 +13,28 @@ namespace F8Framework.Tests
         IEnumerator Start()
         {
             // 指定名字加载
-            Sheet1 sheet1 = FF8.Config.Load<Sheet1>("Sheet1");
-            LogF8.Log(sheet1.Dict[2].name);
+            Sheet1 sheet1 = RA.Config.Load<Sheet1>("Sheet1");
+            RLog.Log(sheet1.Dict[2].name);
             
             // 同步加载全部配置
-            FF8.Config.LoadAll();
+            RA.Config.LoadAll();
 
             // 异步加载全部配置
-            // yield return FF8.Config.LoadAllAsyncIEnumerator();
+            // yield return RA.Config.LoadAllAsyncIEnumerator();
             // 也可以这样
-            foreach (var item in FF8.Config.LoadAllAsync())
+            foreach (var item in RA.Config.LoadAllAsync())
             {
                 yield return item;
             }
         
             // 单个表单个数据
-            LogF8.Log(FF8.Config.GetSheet1ByID(2).name);
+            RLog.Log(RA.Config.GetSheet1ByID(2).name);
         
             // 单个表全部数据
-            foreach (var item in FF8.Config.GetSheet1())
+            foreach (var item in RA.Config.GetSheet1())
             {
-                LogF8.Log(item.Key);
-                LogF8.Log(item.Value.name);
+                RLog.Log(item.Key);
+                RLog.Log(item.Value.name);
             }
         }
 
@@ -48,7 +48,7 @@ namespace F8Framework.Tests
         //     yield return www;
         //     if (www.error != null)
         //     {
-        //         LogF8.Log(www.error);
+        //         RLog.Log(www.error);
         //         yield return null;
         //     }
         //     else
@@ -77,8 +77,8 @@ namespace F8Framework.Tests
         //     }
         //     // 读取Excel文件
         //     ReadExcel.Instance.LoadAllExcelData();
-        //     LogF8.Log(FF8.Config.GetSheet1ByID(1).name);
-        //     LogF8.Log(FF8.Config.GetSheet1());
+        //     RLog.Log(RA.Config.GetSheet1ByID(1).name);
+        //     RLog.Log(RA.Config.GetSheet1());
         // }
         //
         // // 由于安卓资源都在包内，需要先复制到可读写文件夹2
@@ -90,7 +90,7 @@ namespace F8Framework.Tests
         //     yield return www;
         //     if(www.error != null)
         //     {
-        //         LogF8.Log(www.error);
+        //         RLog.Log(www.error);
         //         yield return null;
         //     }
         //     else

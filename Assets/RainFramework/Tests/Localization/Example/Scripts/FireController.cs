@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Timeline;
 
-namespace F8Framework.Tests
+namespace Rain.Tests
 {
 	public class FireController : MonoBehaviour, ITimeControl
 	{

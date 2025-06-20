@@ -1,9 +1,9 @@
 using System;
-using F8Framework.Core;
+using Rain.Core;
 using Mirror.SimpleWeb;
 using UnityEngine;
 
-namespace F8Framework.Tests
+namespace Rain.Tests
 {
     public class ExampleWebClient : MonoBehaviour
     {
@@ -31,10 +31,10 @@ namespace F8Framework.Tests
             TcpConfig tcpConfig = new TcpConfig(_noDelay, _sendTimeout, _receiveTimeout);
             client = SimpleWebClient.Create(_maxMessageSize, _maxMessagePerTick, tcpConfig);
 
-            client.onConnect += () => LogF8.LogNet($"Connected to Server");
-            client.onDisconnect += () => LogF8.LogNet($"Disconnected from Server");
+            client.onConnect += () => RLog.LogNet($"Connected to Server");
+            client.onDisconnect += () => RLog.LogNet($"Disconnected from Server");
             client.onData += OnData;
-            client.onError += (exception) => LogF8.LogNet($"Error because of Server, Error:{exception}");
+            client.onError += (exception) => RLog.LogNet($"Error because of Server, Error:{exception}");
 
             UriBuilder builder = new UriBuilder(_address)
             {
@@ -59,7 +59,7 @@ namespace F8Framework.Tests
 
         private void OnData(ArraySegment<byte> data)
         {
-            LogF8.LogNet($"Data from Server, length:{data.Count}");
+            RLog.LogNet($"Data from Server, length:{data.Count}");
             if (echo)
             {
                 if (client is WebSocketClientStandAlone standAlone)

@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using F8Framework.Core;
+using Rain.Core;
 using UnityEngine;
 
 
-namespace F8Framework.Tests
+namespace Rain.Tests
 {
     public class ShopSampleScrollPage : MonoBehaviour
     {

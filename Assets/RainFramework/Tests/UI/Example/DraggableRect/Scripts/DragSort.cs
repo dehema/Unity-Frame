@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace F8Framework.Tests
+namespace Rain.Tests
 {
     public class DragSort : MonoBehaviour
     {

@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using F8Framework.Core;
+using Rain.Core;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace F8Framework.Tests
+namespace Rain.Tests
 {
     public class InfiniteScrollSample : MonoBehaviour
     {

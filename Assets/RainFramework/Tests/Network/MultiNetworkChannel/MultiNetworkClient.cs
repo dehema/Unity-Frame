@@ -1,10 +1,10 @@
 ﻿using System.Text;
 using UnityEngine;
-using F8Framework.Core;
-using F8Framework.Launcher;
+using Rain.Core;
+using Rain.Launcher;
 using UnityEngine.UI;
 
-namespace F8Framework.Tests
+namespace Rain.Tests
 {
     public class MultiNetworkClient : MonoBehaviour
     {
@@ -34,13 +34,13 @@ namespace F8Framework.Tests
             kcpClientChannel.OnDisconnected += KcpClient_OnDisconnected;
 
             // 可选，开启多线程
-            // FF8.Network.StartThread();
+            // RA.Network.StartThread();
             
             //channel的TickRefresh函数可自定义管理轮询，networkManager的作用是存放通道并调用TickRefresh。
             //由于存在多种网络方案的原因，通道对应的具体事件需要由使用者自定义解析，框架不提供具体数据。
             //这里将client加入networkManager，由networkManager管理通道的轮询
-            FF8.Network.AddChannel(tcpClientChannel);
-            FF8.Network.AddChannel(kcpClientChannel);
+            RA.Network.AddChannel(tcpClientChannel);
+            RA.Network.AddChannel(kcpClientChannel);
             
             btnTcpConnectC2S?.onClick.AddListener(TcpConnectC2S);
             btnTcpDisconnectC2S?.onClick.AddListener(TcpDisconnectC2S);
@@ -78,17 +78,17 @@ namespace F8Framework.Tests
 
         void TcpClient_OnConnected()
         {
-            LogF8.LogNet($"TCP_CLIENT Connected");
+            RLog.LogNet($"TCP_CLIENT Connected");
         }
 
         void TcpClient_OnDataReceived(byte[] data)
         {
-            LogF8.LogNet($"TCP_CLIENT receive data: {Encoding.UTF8.GetString(data)}");
+            RLog.LogNet($"TCP_CLIENT receive data: {Encoding.UTF8.GetString(data)}");
         }
 
         void TcpClient_OnDisconnected()
         {
-            LogF8.LogNet($"TCP_CLIENT Disconnected");
+            RLog.LogNet($"TCP_CLIENT Disconnected");
         }
 
         #endregion
@@ -114,7 +114,7 @@ namespace F8Framework.Tests
 
         void KcpClient_OnConnected()
         {
-            LogF8.LogNet($"KCP_CLIENT Connected");
+            RLog.LogNet($"KCP_CLIENT Connected");
         }
 
         void KcpClient_OnDataReceived(byte[] data)
@@ -123,7 +123,7 @@ namespace F8Framework.Tests
 
         void KcpClient_OnDisconnected()
         {
-            LogF8.LogNet($"KCP_CLIENT Disconnected");
+            RLog.LogNet($"KCP_CLIENT Disconnected");
         }
 
         #endregion

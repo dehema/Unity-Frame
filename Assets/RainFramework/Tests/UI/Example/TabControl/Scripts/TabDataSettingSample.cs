@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using F8Framework.Core;
+using Rain.Core;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace F8Framework.Tests
+namespace Rain.Tests
 {
     public class TabDataSettingSampleData : ITabData
     {
@@ -71,7 +71,7 @@ namespace F8Framework.Tests
             TabDataSettingSampleData data = (TabDataSettingSampleData)selectedTab.GetData();
             if (data != null)
             {
-                LogF8.Log("Selected : " + data.name);
+                RLog.Log("Selected : " + data.name);
             }
             
         }

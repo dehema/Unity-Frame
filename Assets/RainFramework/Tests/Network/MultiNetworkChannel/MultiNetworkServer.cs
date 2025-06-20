@@ -1,10 +1,10 @@
 ﻿using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
-using F8Framework.Core;
-using F8Framework.Launcher;
+using Rain.Core;
+using Rain.Launcher;
 
-namespace F8Framework.Tests
+namespace Rain.Tests
 {
     public class MultiNetworkServer : MonoBehaviour
     {
@@ -30,13 +30,13 @@ namespace F8Framework.Tests
             kcpServerChannel.OnDisconnected += KcpServer_OnDisconnected;
             
             // 可选，开启多线程
-            // FF8.Network.StartThread();
+            // RA.Network.StartThread();
             
             //channel的TickRefresh函数可自定义管理轮询，networkManager的作用是存放通道并调用TickRefresh。
             //由于存在多种网络方案的原因，通道对应的具体事件需要由使用者自定义解析，框架不提供具体数据。
             //这里将server加入networkManager，由networkManager管理通道的轮询
-            FF8.Network.AddChannel(kcpServerChannel);
-            FF8.Network.AddChannel(tcpServerChannel);
+            RA.Network.AddChannel(kcpServerChannel);
+            RA.Network.AddChannel(tcpServerChannel);
 
             btnTcpStartServer?.onClick.AddListener(TcpStartServer);
             btnTcpStopServer?.onClick.AddListener(TcpStopServer);
@@ -59,17 +59,17 @@ namespace F8Framework.Tests
 
         void TcpServer_OnConnected(int conv, string ip)
         {
-            LogF8.LogNet($"TCP_SERVER conv: {conv} Connected, ip: {ip}");
+            RLog.LogNet($"TCP_SERVER conv: {conv} Connected, ip: {ip}");
         }
 
         void TcpServer_OnDataReceived(int conv, byte[] data)
         {
-            LogF8.LogNet($"TCP_SERVER receive data from conv: {conv} . Data: {Encoding.UTF8.GetString(data)}");
+            RLog.LogNet($"TCP_SERVER receive data from conv: {conv} . Data: {Encoding.UTF8.GetString(data)}");
         }
 
         void TcpServer_OnDisconnected(int conv)
         {
-            LogF8.LogNet($"TCP_SERVER conv: {conv} Disconnected");
+            RLog.LogNet($"TCP_SERVER conv: {conv} Disconnected");
         }
 
         #endregion
@@ -88,17 +88,17 @@ namespace F8Framework.Tests
 
         void KcpServer_OnConnected(int conv, string ip)
         {
-            LogF8.LogNet($"KCP_SERVER conv: {conv} Connected, ip: {ip}");
+            RLog.LogNet($"KCP_SERVER conv: {conv} Connected, ip: {ip}");
         }
 
         void KcpServer_OnDataReceived(int conv, byte[] data)
         {
-            LogF8.LogNet($"KCP_SERVER receive data from conv: {conv} . Data: {Encoding.UTF8.GetString(data)}");
+            RLog.LogNet($"KCP_SERVER receive data from conv: {conv} . Data: {Encoding.UTF8.GetString(data)}");
         }
 
         void KcpServer_OnDisconnected(int conv)
         {
-            LogF8.LogNet($"KCP_SERVER conv: {conv} Disconnected");
+            RLog.LogNet($"KCP_SERVER conv: {conv} Disconnected");
         }
 
         #endregion

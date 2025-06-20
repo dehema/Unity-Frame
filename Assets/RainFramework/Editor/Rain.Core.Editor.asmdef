@@ -1,5 +1,5 @@
 {
-    "name": "asmdef.Core.Editor",
+    "name": "Rain.Core.Editor",
     "rootNamespace": "",
     "references": [
         "Unity.TextMeshPro",

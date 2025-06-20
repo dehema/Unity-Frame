@@ -1,11 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-using F8Framework.Core;
-using F8Framework.Launcher;
+using Rain.Core;
+using Rain.Launcher;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace F8Framework.Tests
+namespace Rain.Tests
 {
     public class DemoUIManager : MonoBehaviour
     {
@@ -27,7 +27,7 @@ namespace F8Framework.Tests
         {
             /*--------------------------UI管理功能--------------------------*/
             // 初始化（必须执行，兼容int和枚举作为Key的configs）
-            FF8.UI.Initialize(configs);
+            RA.UI.Initialize(configs);
         
             // 设置UI Canvas属性（如果不懂属性有什么用，可自建Canvas进行试验）
             // null代表设置所有Layer
@@ -36,19 +36,19 @@ namespace F8Framework.Tests
             // RenderMode渲染模式
             // pixelPerfect像素模式
             // camera设置主相机
-            FF8.UI.SetCanvas(null, 1, "Default", RenderMode.ScreenSpaceCamera, false, Camera.main);
+            RA.UI.SetCanvas(null, 1, "Default", RenderMode.ScreenSpaceCamera, false, Camera.main);
         
             // 设置UI CanvasScaler属性（如果不懂属性有什么用，可自建Canvas进行试验）
-            FF8.UI.SetCanvasScaler(null, CanvasScaler.ScaleMode.ConstantPixelSize, scaleFactor: 1f, referencePixelsPerUnit: 100f);
-            FF8.UI.SetCanvasScaler(LayerType.UI, CanvasScaler.ScaleMode.ScaleWithScreenSize, referenceResolution: new Vector2(1920, 1080),
+            RA.UI.SetCanvasScaler(null, CanvasScaler.ScaleMode.ConstantPixelSize, scaleFactor: 1f, referencePixelsPerUnit: 100f);
+            RA.UI.SetCanvasScaler(LayerType.UI, CanvasScaler.ScaleMode.ScaleWithScreenSize, referenceResolution: new Vector2(1920, 1080),
                 CanvasScaler.ScreenMatchMode.MatchWidthOrHeight, matchWidthOrHeight: 0f, referencePixelsPerUnit: 100f);
-            FF8.UI.SetCanvasScaler(LayerType.UI, CanvasScaler.ScaleMode.ConstantPhysicalSize, CanvasScaler.Unit.Points,
+            RA.UI.SetCanvasScaler(LayerType.UI, CanvasScaler.ScaleMode.ConstantPhysicalSize, CanvasScaler.Unit.Points,
                 fallbackScreenDPI: 96f, defaultSpriteDPI: 100f, referencePixelsPerUnit: 100f);
 
             
             /*-------------------------------------同步加载-------------------------------------*/
             // 打开UI，兼容int和枚举，可选参数：data，new UICallbacks()
-            FF8.UI.Open(UIID.UIMain, data, new UICallbacks(
+            RA.UI.Open(UIID.UIMain, data, new UICallbacks(
                 (parameters, id) => // onAdded
                 {
                     
@@ -60,49 +60,49 @@ namespace F8Framework.Tests
                     
                 }));
             // 也可以这样，guid是唯一ID
-            string guid = FF8.UI.Open(1);
+            string guid = RA.UI.Open(1);
             
             
             /*-------------------------------------异步加载-------------------------------------*/
             // async/await方式（无多线程，WebGL也可使用）
-            // await FF8.UI.OpenAsync(UIID.UIMain);
+            // await RA.UI.OpenAsync(UIID.UIMain);
             // 或者
-            // UILoader load = FF8.UI.OpenAsync(UIID.UIMain);
+            // UILoader load = RA.UI.OpenAsync(UIID.UIMain);
             // await load;
             // string guid2 = load.Guid;
             
             // 协程方式
-            yield return FF8.UI.OpenAsync(UIID.UIMain);
+            yield return RA.UI.OpenAsync(UIID.UIMain);
             // 或者
-            UILoader load2 = FF8.UI.OpenAsync(UIID.UIMain);
+            UILoader load2 = RA.UI.OpenAsync(UIID.UIMain);
             yield return load2;
             string guid2 = load2.Guid;
             
             /*-------------------------------------其他功能-------------------------------------*/
             // 打开提示类Notify
-            FF8.UI.ShowNotify(UIID.UIMain, "tip");
-            FF8.UI.ShowNotify(1, "tip");
+            RA.UI.ShowNotify(UIID.UIMain, "tip");
+            RA.UI.ShowNotify(1, "tip");
             // 异步加载
-            // await FF8.UI.ShowNotifyAsync(UIID.UIMain, "tip");
-            // yield return FF8.UI.ShowNotifyAsync(UIID.UIMain, "tip");
+            // await RA.UI.ShowNotifyAsync(UIID.UIMain, "tip");
+            // yield return RA.UI.ShowNotifyAsync(UIID.UIMain, "tip");
             
             // UI是否存在
-            FF8.UI.Has(UIID.UIMain);
-            FF8.UI.Has(1);
+            RA.UI.Has(UIID.UIMain);
+            RA.UI.Has(1);
             
             // 根据UIid获取UI物体列表
-            FF8.UI.GetByUIid(UIID.UIMain);
-            FF8.UI.GetByUIid(1);
+            RA.UI.GetByUIid(UIID.UIMain);
+            RA.UI.GetByUIid(1);
             
             // 根据guid获取UI物体
-            FF8.UI.GetByGuid(guid);
+            RA.UI.GetByGuid(guid);
             
             // 关闭UI，可选参数：isDestroy
-            FF8.UI.Close(UIID.UIMain, true);
-            FF8.UI.Close(1, true);
+            RA.UI.Close(UIID.UIMain, true);
+            RA.UI.Close(1, true);
             
             // 关闭所有UI（除了Notify类），可选参数：isDestroy
-            FF8.UI.Clear(true);
+            RA.UI.Clear(true);
         }
     }
 

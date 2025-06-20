@@ -1,8 +1,8 @@
-﻿using F8Framework.Core;
+﻿using Rain.Core;
 using UnityEngine;
 using System.Collections.Generic;
 
-namespace F8Framework.Tests
+namespace Rain.Tests
 {
     public class TabPageSample : TabPage
     {

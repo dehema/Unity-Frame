@@ -1,7 +1,7 @@
-using F8Framework.Core;
+using Rain.Core;
 using UnityEngine;
 
-namespace F8Framework.Tests
+namespace Rain.Tests
 {
     // 红点示例代码
     public class DemoUIRedDot : MonoBehaviour
@@ -30,15 +30,15 @@ namespace F8Framework.Tests
         {
             // 改变布尔状态
             UIRedDot.Instance.Change(DemoUIRedDot.UIMain_AutoIntensify2, true);
-            LogF8.Log(UIRedDot.Instance.GetState(DemoUIRedDot.UIMain_AutoIntensify3));
+            RLog.Log(UIRedDot.Instance.GetState(DemoUIRedDot.UIMain_AutoIntensify3));
             
             // 改变数量状态
             UIRedDot.Instance.Change(DemoUIRedDot.UIMain_AutoIntensify2, 15);
-            LogF8.Log(UIRedDot.Instance.GetCount(DemoUIRedDot.UIMain_AutoIntensify3));
+            RLog.Log(UIRedDot.Instance.GetCount(DemoUIRedDot.UIMain_AutoIntensify3));
             
             // 改变文本状态
             UIRedDot.Instance.Change(DemoUIRedDot.UIMain_AutoIntensify2, "空闲");
-            LogF8.Log(UIRedDot.Instance.GetTextState(DemoUIRedDot.UIMain_AutoIntensify3));
+            RLog.Log(UIRedDot.Instance.GetTextState(DemoUIRedDot.UIMain_AutoIntensify3));
             
             // 绑定，解绑GameObject
             UIRedDot.Instance.Binding(DemoUIRedDot.UIMain_AutoIntensify2, this.gameObject);

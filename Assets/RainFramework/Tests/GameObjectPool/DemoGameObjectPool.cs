@@ -1,8 +1,8 @@
 using UnityEngine;
-using F8Framework.Core;
-using F8Framework.Launcher;
+using Rain.Core;
+using Rain.Launcher;
 
-namespace F8Framework.Tests
+namespace Rain.Tests
 {
     public class DemoGameObjectPool : MonoBehaviour
     {
@@ -22,40 +22,40 @@ namespace F8Framework.Tests
             /*------------------------------使用GameObjectPool对象池------------------------------*/
 
             // 使用名称或GameObject或者Component创建对象
-            GameObject spawnedClone = FF8.GameObjectPool.Spawn("name");
-            spawnedClone = FF8.GameObjectPool.Spawn(_gameObjectPrefab);
+            GameObject spawnedClone = RA.GameObjectPool.Spawn("name");
+            spawnedClone = RA.GameObjectPool.Spawn(_gameObjectPrefab);
             DemoGameObjectPool component =
-                FF8.GameObjectPool.Spawn(_componentPrefab, Vector3.zero, Quaternion.identity, this.transform);
+                RA.GameObjectPool.Spawn(_componentPrefab, Vector3.zero, Quaternion.identity, this.transform);
 
             // 销毁
-            FF8.GameObjectPool.Despawn(gameObject, delay: 0.5f);
+            RA.GameObjectPool.Despawn(gameObject, delay: 0.5f);
 
             // 粒子特效播放完成后立即销毁
-            FF8.GameObjectPool
+            RA.GameObjectPool
                 .Spawn(_particleSystemPrefab)
                 .DespawnOnComplete();
 
             // 如何获取对象池
-            F8GameObjectPool _pool = FF8.GameObjectPool.GetPoolByPrefab(_gameObjectPrefab);
-            _pool = FF8.GameObjectPool.GetPoolByPrefabName(_gameObjectPrefab.name);
+            F8GameObjectPool _pool = RA.GameObjectPool.GetPoolByPrefab(_gameObjectPrefab);
+            _pool = RA.GameObjectPool.GetPoolByPrefabName(_gameObjectPrefab.name);
 
             // 对每个池执行操作。
-            FF8.GameObjectPool.ForEachPool(LogF8.Log);
+            RA.GameObjectPool.ForEachPool(RLog.Log);
 
             // 对每个克隆执行操作。
-            FF8.GameObjectPool.ForEachClone(LogF8.Log);
+            RA.GameObjectPool.ForEachClone(RLog.Log);
 
             // 尝试获取克隆的状态（已生成 / 已回收 / 已生成超过容量）。
-            PoolableStatus cloneStatus = FF8.GameObjectPool.GetCloneStatus(spawnedClone);
+            PoolableStatus cloneStatus = RA.GameObjectPool.GetCloneStatus(spawnedClone);
 
             // 游戏对象是否是克隆（使用 GameObjectPool 生成）？
-            bool isClone = FF8.GameObjectPool.IsClone(spawnedClone);
+            bool isClone = RA.GameObjectPool.IsClone(spawnedClone);
 
             // 如果要销毁克隆但不回收克隆，请使用此方法以避免错误！
-            FF8.GameObjectPool.DestroyClone(spawnedClone);
+            RA.GameObjectPool.DestroyClone(spawnedClone);
 
             // 销毁所有池。
-            FF8.GameObjectPool.DestroyAllPools(immediately: false);
+            RA.GameObjectPool.DestroyAllPools(immediately: false);
 
 
 
@@ -85,13 +85,13 @@ namespace F8Framework.Tests
             _pool.SetWarningsActive(true);
 
             // 对池中的每个克隆执行操作。
-            _pool.ForEachClone(LogF8.Log);
+            _pool.ForEachClone(RLog.Log);
 
             // 对池中的每个已生成的克隆执行操作。
-            _pool.ForEachSpawnedClone(LogF8.Log);
+            _pool.ForEachSpawnedClone(RLog.Log);
 
             // 对池中的每个已回收的克隆执行操作。
-            _pool.ForEachDespawnedClone(LogF8.Log);
+            _pool.ForEachDespawnedClone(RLog.Log);
 
             // 销毁已生成的克隆。
             _pool.DestroySpawnedClones();

@@ -1,10 +1,10 @@
 using System;
 using System.IO;
-using F8Framework.Core;
-using F8Framework.Launcher;
+using Rain.Core;
+using Rain.Launcher;
 using UnityEngine;
 
-namespace F8Framework.Tests
+namespace Rain.Tests
 {
     public class DemoDownload : MonoBehaviour
     {
@@ -17,7 +17,7 @@ namespace F8Framework.Tests
         void Start()
         {
             // 创建下载器
-            downloader = FF8.Download.CreateDownloader("Download", new Downloader());
+            downloader = RA.Download.CreateDownloader("Download", new Downloader());
 
             // 设置超时时间，默认为无超时时间
             downloader.DownloadTimeout = 30;
@@ -44,7 +44,7 @@ namespace F8Framework.Tests
             downloader.LaunchDownload();
             
             // 获取URL中文件的总大小，部分下载任务本身仅知道下载连接，无法获取需要下载的二进制长度
-            FF8.Download.GetUrlFilesSizeAsync("", l => LogF8.Log(l));
+            RA.Download.GetUrlFilesSizeAsync("", l => RLog.Log(l));
             
             // 取消下载
             downloader.CancelDownload();
@@ -53,7 +53,7 @@ namespace F8Framework.Tests
         // 开始下载
         void OnDownloadStart(DownloadStartEventArgs eventArgs)
         {
-            LogF8.Log(eventArgs.DownloadInfo.DownloadUrl);
+            RLog.Log(eventArgs.DownloadInfo.DownloadUrl);
         }
         
         void OnDownloadOverall(DonwloadUpdateEventArgs eventArgs)
@@ -64,25 +64,25 @@ namespace F8Framework.Tests
 
             // 计算进度百分比
             float progress = currentTaskIndex / taskCount * 100f;
-            // LogF8.Log(progress);
+            // RLog.Log(progress);
         }
         
         // 下载成功
         void OnDownloadSucess(DownloadSuccessEventArgs eventArgs)
         {
-            LogF8.Log($"DownloadSuccess {eventArgs.DownloadInfo.DownloadUrl}");
+            RLog.Log($"DownloadSuccess {eventArgs.DownloadInfo.DownloadUrl}");
         }
         
         // 下载失败
         void OnDownloadFailure(DownloadFailureEventArgs eventArgs)
         {
-            LogF8.LogError($"DownloadFailure {eventArgs.DownloadInfo.DownloadUrl}\n{eventArgs.ErrorMessage}");
+            RLog.LogError($"DownloadFailure {eventArgs.DownloadInfo.DownloadUrl}\n{eventArgs.ErrorMessage}");
         }
         
         // 所有下载完成
         void OnDownloadFinish(DownloadTasksCompletedEventArgs eventArgs)
         {
-            LogF8.Log($"DownloadFinish {eventArgs.TimeSpan}");
+            RLog.Log($"DownloadFinish {eventArgs.TimeSpan}");
         }
     }
 }

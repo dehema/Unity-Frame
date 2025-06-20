@@ -1,39 +1,39 @@
 using System;
-using F8Framework.Core;
-using F8Framework.Launcher;
+using Rain.Core;
+using Rain.Launcher;
 using UnityEngine;
 
-namespace F8Framework.Tests
+namespace Rain.Tests
 {
     public class DemoInput : MonoBehaviour
     {
         void Start()
         {
             // 切换输入设备（不会清理回调，方便热切换输入设备）
-            FF8.Input.SwitchDevice(new StandardInputDevice());
+            RA.Input.SwitchDevice(new StandardInputDevice());
 
             // 启用或暂停输入
-            FF8.Input.IsEnableInputDevice = false;
+            RA.Input.IsEnableInputDevice = false;
             
             // 设置按钮回调，Started开始按按钮，Performed按下按钮，Canceled结束按钮
-            FF8.Input.AddButtonStarted(InputButtonType.MouseLeft, MouseLeft);
-            FF8.Input.AddButtonPerformed(InputButtonType.MouseLeft, MouseLeft);
-            FF8.Input.AddButtonCanceled(InputButtonType.MouseLeft, MouseLeft);
+            RA.Input.AddButtonStarted(InputButtonType.MouseLeft, MouseLeft);
+            RA.Input.AddButtonPerformed(InputButtonType.MouseLeft, MouseLeft);
+            RA.Input.AddButtonCanceled(InputButtonType.MouseLeft, MouseLeft);
             
-            FF8.Input.AddAxisValueChanged(InputAxisType.MouseX, MouseX);
+            RA.Input.AddAxisValueChanged(InputAxisType.MouseX, MouseX);
             
             // 移除按钮回调
-            FF8.Input.RemoveButtonStarted(InputButtonType.MouseLeft, MouseLeft);
-            FF8.Input.RemoveButtonPerformed(InputButtonType.MouseLeft, MouseLeft);
-            FF8.Input.RemoveButtonCanceled(InputButtonType.MouseLeft, MouseLeft);
+            RA.Input.RemoveButtonStarted(InputButtonType.MouseLeft, MouseLeft);
+            RA.Input.RemoveButtonPerformed(InputButtonType.MouseLeft, MouseLeft);
+            RA.Input.RemoveButtonCanceled(InputButtonType.MouseLeft, MouseLeft);
 
-            FF8.Input.RemoveAxisValueChanged(InputAxisType.MouseX, MouseX);
+            RA.Input.RemoveAxisValueChanged(InputAxisType.MouseX, MouseX);
             
             // 移除所有输入回调
-            FF8.Input.ClearAllAction();
+            RA.Input.ClearAllAction();
             
             // 移除所有输入状态
-            FF8.Input.ResetAll();
+            RA.Input.ResetAll();
         }
 
         // 鼠标左键回调
@@ -50,34 +50,34 @@ namespace F8Framework.Tests
         
         void Update()
         {
-            if (FF8.Input.AnyKeyDown)
+            if (RA.Input.AnyKeyDown)
             {
-                LogF8.Log("任意键按下");
+                RLog.Log("任意键按下");
             }
 
-            if (FF8.Input.GetKeyDown(KeyCode.LeftControl, KeyCode.LeftAlt, KeyCode.M))
+            if (RA.Input.GetKeyDown(KeyCode.LeftControl, KeyCode.LeftAlt, KeyCode.M))
             {
-                LogF8.Log("按下组合键Control+Alt+M");
+                RLog.Log("按下组合键Control+Alt+M");
             }
 
-            if (FF8.Input.GetButtonDown(InputButtonType.MouseLeft))
+            if (RA.Input.GetButtonDown(InputButtonType.MouseLeft))
             {
-                LogF8.Log("鼠标左键按下");
+                RLog.Log("鼠标左键按下");
             }
 
-            if (FF8.Input.GetButton(InputButtonType.MouseRight))
+            if (RA.Input.GetButton(InputButtonType.MouseRight))
             {
-                LogF8.Log("鼠标右键按住");
+                RLog.Log("鼠标右键按住");
             }
 
-            if (FF8.Input.GetButtonDown(InputButtonType.MouseLeftDoubleClick))
+            if (RA.Input.GetButtonDown(InputButtonType.MouseLeftDoubleClick))
             {
-                LogF8.Log("鼠标左键双击");
+                RLog.Log("鼠标左键双击");
             }
 
-            LogF8.Log("滚轮：" + FF8.Input.GetAxis(InputAxisType.MouseScrollWheel));
-            LogF8.Log("水平轴线值：" + FF8.Input.GetAxis(InputAxisType.Horizontal));
-            LogF8.Log("垂直轴线值：" + FF8.Input.GetAxis(InputAxisType.Vertical));
+            RLog.Log("滚轮：" + RA.Input.GetAxis(InputAxisType.MouseScrollWheel));
+            RLog.Log("水平轴线值：" + RA.Input.GetAxis(InputAxisType.Horizontal));
+            RLog.Log("垂直轴线值：" + RA.Input.GetAxis(InputAxisType.Vertical));
         }
     }
 }

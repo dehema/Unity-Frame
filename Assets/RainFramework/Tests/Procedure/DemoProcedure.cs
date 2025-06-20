@@ -1,8 +1,8 @@
-using F8Framework.Core;
-using F8Framework.Launcher;
+using Rain.Core;
+using Rain.Launcher;
 using UnityEngine;
 
-namespace F8Framework.Tests
+namespace Rain.Tests
 {
     public class DemoProcedure : MonoBehaviour
     {
@@ -10,25 +10,25 @@ namespace F8Framework.Tests
         {
             // 添加流程节点
             // 可选（会在初始化模块时自动搜索ProcedureNode的子类添加）
-            FF8.Procedure.AddProcedureNodes(new DemoInitState());
+            RA.Procedure.AddProcedureNodes(new DemoInitState());
 
             // 运行指定类型的流程节点
-            FF8.Procedure.RunProcedureNode<DemoInitState>();
+            RA.Procedure.RunProcedureNode<DemoInitState>();
 
             // 移除指定类型的流程节点
-            FF8.Procedure.RemoveProcedureNode<DemoInitState>();
+            RA.Procedure.RemoveProcedureNode<DemoInitState>();
 
             // 检查是否存在指定类型的流程节点
-            FF8.Procedure.HasProcedureNode<DemoInitState>();
+            RA.Procedure.HasProcedureNode<DemoInitState>();
 
             // 获取指定类型的流程节点
-            FF8.Procedure.PeekProcedureNode(out DemoInitState initState);
+            RA.Procedure.PeekProcedureNode(out DemoInitState initState);
 
             // 获取当前流程节点
-            ProcedureNode procedureNode = FF8.Procedure.CurrentProcedureNode;
+            ProcedureNode procedureNode = RA.Procedure.CurrentProcedureNode;
 
             // 获取流程节点的数量
-            int procedureNodeCount = FF8.Procedure.ProcedureNodeCount;
+            int procedureNodeCount = RA.Procedure.ProcedureNodeCount;
         }
     }
 

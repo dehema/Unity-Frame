@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using F8Framework.Core;
-using F8Framework.Launcher;
+using Rain.Core;
+using Rain.Launcher;
 
-namespace F8Framework.Tests
+namespace Rain.Tests
 {
     public class DemoFSM : SingletonMono<DemoFSM>
     {
@@ -24,7 +24,7 @@ namespace F8Framework.Tests
             enterState.AddSwitch(enterSwitch, typeof(ExitRangeState));
 
             // 创建有限状态机
-            IFSM<Transform> fsmA = FF8.FSM.CreateFSM<Transform>("FSMTesterA", objectA, "FSMGroupName", exitState, enterState);
+            IFSM<Transform> fsmA = RA.FSM.CreateFSM<Transform>("FSMTesterA", objectA, "FSMGroupName", exitState, enterState);
             fsmA.DefaultState = exitState;
             fsmA.ChangeToDefaultState();
 
@@ -34,31 +34,31 @@ namespace F8Framework.Tests
             
             /*-------------------------------------其他功能-------------------------------------*/
             // 获取 FSM
-            FF8.FSM.GetFSM<Transform>("FSMTesterA");
+            RA.FSM.GetFSM<Transform>("FSMTesterA");
             
             // 是否存在指定名称的 FSM
-            FF8.FSM.HasFSM<Transform>("FSMTesterA");
+            RA.FSM.HasFSM<Transform>("FSMTesterA");
             
             // 设置 FSM 群组
-            FF8.FSM.SetFSMGroup<Transform>("FSMTesterA", "FSMGroupName");
+            RA.FSM.SetFSMGroup<Transform>("FSMTesterA", "FSMGroupName");
             
             // 获取所有 FSM
-            IList<FSMBase> fsms = FF8.FSM.GetAllFSMs();
+            IList<FSMBase> fsms = RA.FSM.GetAllFSMs();
             
             // 是否存在 FSM 群组
-            bool hasFSMGroup1 = FF8.FSM.HasFSMGroup("FSMGroupName");
+            bool hasFSMGroup1 = RA.FSM.HasFSMGroup("FSMGroupName");
             
             // 获取 FSM 群组
-            bool hasFSMGroup2 = FF8.FSM.PeekFSMGroup("FSMGroupName", out var fsmGroup);
+            bool hasFSMGroup2 = RA.FSM.PeekFSMGroup("FSMGroupName", out var fsmGroup);
             
             // 移除 FSM 群组
-            FF8.FSM.RemoveFSMGroup("FSMGroupName");
+            RA.FSM.RemoveFSMGroup("FSMGroupName");
             
             // 销毁 FSM
-            FF8.FSM.DestoryFSM<Transform>("FSMTesterA");
+            RA.FSM.DestoryFSM<Transform>("FSMTesterA");
             
             // 销毁所有 FSM
-            FF8.FSM.DestoryAllFSM();
+            RA.FSM.DestoryAllFSM();
         }
     }
 

@@ -1,7 +1,7 @@
-using F8Framework.Core;
+using Rain.Core;
 using UnityEngine;
 
-namespace F8Framework.Tests
+namespace Rain.Tests
 {
     public class DemoModuleCenterMono : MonoBehaviour
     {
@@ -12,13 +12,13 @@ namespace F8Framework.Tests
 
             // 创建模块，（参数可选，优先级越小越早轮询）
             int priority = 100;
-            ModuleCenter.CreateModule<TimerManager>(priority);
+            ModuleCenter.CreateModule<TimerMgr>(priority);
 
             // 通过ModuleCenter调用模块方法
-            ModuleCenter.GetModule<TimerManager>().GetServerTime();
+            ModuleCenter.GetModule<TimerMgr>().GetServerTime();
 
             // 通过获取实例调用模块方法
-            TimerManager.Instance.GetServerTime();
+            TimerMgr.Instance.GetServerTime();
         }
     }
 

@@ -1,8 +1,8 @@
 ﻿using System.Collections;
-using F8Framework.Core;
+using Rain.Core;
 using UnityEngine;
 
-namespace F8Framework.Tests
+namespace Rain.Tests
 {
     public class LogSample : MonoBehaviour
     {
@@ -17,7 +17,7 @@ namespace F8Framework.Tests
             Function.Instance.AddCommand(this, "SendWarningLog");
             Function.Instance.AddCheatKeyCallback((cheatKey) =>
             {
-                LogF8.Log("Call cheat key callback with : " + cheatKey);
+                RLog.Log("Call cheat key callback with : " + cheatKey);
             });
 
             StartCoroutine(SendLog());
@@ -30,7 +30,7 @@ namespace F8Framework.Tests
             {
                 yield return new WaitForSeconds(5.0f);
 
-                LogF8.Log("***** Sample Send Log : " + count++.ToString());
+                RLog.Log("***** Sample Send Log : " + count++.ToString());
             }
         }
 
@@ -51,47 +51,47 @@ namespace F8Framework.Tests
 
         private void TestLog(int index)
         {
-            LogF8.Log("*TestLog() : " + index.ToString());
-            LogF8.Log("category1 log");
+            RLog.Log("*TestLog() : " + index.ToString());
+            RLog.Log("category1 log");
 
-            LogF8.Log(LogViewer.Instance.MakeLogWithCategory("Test message with category", "TestCategory"));
-            LogF8.Log("$(category)TempCategory$(category");
-            LogF8.Log("$(category)TempCategory$(category)");
-            LogF8.Log("$(category)TempCategory$(");
-            LogF8.Log("$(category)TempCategory$(category) Test");
+            RLog.Log(LogViewer.Instance.MakeLogWithCategory("Test message with category", "TestCategory"));
+            RLog.Log("$(category)TempCategory$(category");
+            RLog.Log("$(category)TempCategory$(category)");
+            RLog.Log("$(category)TempCategory$(");
+            RLog.Log("$(category)TempCategory$(category) Test");
 
-            LogF8.Log(SystemInformation.Instance.ToString());
+            RLog.Log(SystemInformation.Instance.ToString());
         }
 
         private void TestCommand(string text)
         {
-            LogF8.Log("TestCommand : " + text);
+            RLog.Log("TestCommand : " + text);
         }
 
         private void TestCategory(string category1, string category2)
         {
-            LogF8.Log(LogViewer.Instance.MakeLogWithCategory("Log with category(" + category1 + ")", category1));
-            LogF8.Log(LogViewer.Instance.MakeLogWithCategory("Log with category(" + category2 + ")", category2));
+            RLog.Log(LogViewer.Instance.MakeLogWithCategory("Log with category(" + category1 + ")", category1));
+            RLog.Log(LogViewer.Instance.MakeLogWithCategory("Log with category(" + category2 + ")", category2));
         }
 
         public void SendExceptionLog()
         {
-            LogF8.LogException(new System.Exception("Exception log"));
+            RLog.LogException(new System.Exception("Exception log"));
         }
 
         private void SendAssertLog()
         {
-            LogF8.LogAssertion("Assert log");
+            RLog.LogAssertion("Assert log");
         }
 
         private void SendErrorLog()
         {
-            LogF8.LogError("Error log");
+            RLog.LogError("Error log");
         }
 
         private void SendWarningLog()
         {
-            LogF8.LogWarning("Warning log");
+            RLog.LogWarning("Warning log");
         }
     }
 }

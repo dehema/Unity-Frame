@@ -2,11 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Authentication;
-using F8Framework.Core;
+using Rain.Core;
 using Mirror.SimpleWeb;
 using UnityEngine;
 
-namespace F8Framework.Tests
+namespace Rain.Tests
 {
     public class ExampleWebServer : MonoBehaviour
     {
@@ -38,10 +38,10 @@ namespace F8Framework.Tests
             SslConfig sslConfig = SslConfigLoader.Load(sslEnabled, sslCertJson, sslProtocols);
             server = new SimpleWebServer(_maxMessagePerTick, tcpConfig, _maxMessageSize, _maxHandShakeSize, sslConfig);
 
-            server.onConnect += (id, ip) => { connection = true; LogF8.LogNet($"New Client connected, id:{id}, ip:{ip}"); };
-            server.onDisconnect += (id) => LogF8.LogNet($"Client disconnected, id:{id}");
+            server.onConnect += (id, ip) => { connection = true; RLog.LogNet($"New Client connected, id:{id}, ip:{ip}"); };
+            server.onDisconnect += (id) => RLog.LogNet($"Client disconnected, id:{id}");
             server.onData += OnData;
-            server.onError += (id, exception) => LogF8.LogNet($"Error because of Client, id:{id}, Error:{exception}");
+            server.onError += (id, exception) => RLog.LogNet($"Error because of Client, id:{id}, Error:{exception}");
 
             // add events then start
             server.Start(checked((ushort)_port));
@@ -64,7 +64,7 @@ namespace F8Framework.Tests
 
         private void OnData(int id, ArraySegment<byte> data)
         {
-            LogF8.LogNet($"Data from Client, id:{id}, length:{data.Count}");
+            RLog.LogNet($"Data from Client, id:{id}, length:{data.Count}");
 
             byte[] received = data.Array;
             int length = data.Count;

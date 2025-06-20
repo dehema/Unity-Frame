@@ -2,7 +2,7 @@
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace F8Framework.Tests
+namespace Rain.Tests
 {
 	public class ScaleRandomizer : MonoBehaviour
 	{

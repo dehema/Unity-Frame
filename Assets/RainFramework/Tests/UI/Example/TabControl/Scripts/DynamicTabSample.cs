@@ -1,120 +1,118 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using Rain.Tests;
 
-namespace F8Framework.Tests
+public class DynamicTabSample : MonoBehaviour
 {
-    public class DynamicTabSample : MonoBehaviour
+    public InputField categoryName;
+
+    public InputField itemName;
+    public InputField itemDescript;
+
+    public Text selectIndexText;
+    public int selectIndex;
+
+    public CategoryGroupData data = new CategoryGroupData();
+
+    public DynamicTabPage sample;
+
+    private void Start()
     {
-        public InputField categoryName;
+        sample.SetData(data);
+    }
 
-        public InputField itemName;
-        public InputField itemDescript;
+    public void CreateCategory()
+    {
+        ItemGroupData add = new ItemGroupData();
+        add.name = categoryName.text;
 
-        public Text selectIndexText;
-        public int selectIndex;
+        data.category.Add(add);
 
-        public CategoryGroupData data = new CategoryGroupData();
+        sample.SetData(data);
 
-        public DynamicTabPage sample;
+        sample.UpdatePage();
+    }
 
-        private void Start()
+    public void RemoveCategory()
+    {
+        int index = sample.tabController.GetSelectedIndex();
+        if (index >= 0 && index < data.category.Count)
         {
-            sample.SetData(data);
+            data.category.RemoveAt(index);
         }
 
-        public void CreateCategory()
+        sample.SetData(data);
+
+        sample.UpdatePage();
+    }
+
+    public ItemGroupData GetCurrentCategoryData()
+    {
+        int index = sample.tabController.GetSelectedIndex();
+        if (index >= 0 && index < data.category.Count)
         {
-            ItemGroupData add = new ItemGroupData();
-            add.name = categoryName.text;
-
-            data.category.Add(add);
-
-            sample.SetData(data);
-
-            sample.UpdatePage();
+            return data.category[index];
         }
 
-        public void RemoveCategory()
+        return null;
+    }
+
+
+    public void AddItem()
+    {
+        ItemGroupData categoryData = GetCurrentCategoryData();
+        if (categoryData != null)
         {
-            int index = sample.tabController.GetSelectedIndex();
-            if (index >= 0 && index < data.category.Count)
+            ItemData addItem = new ItemData();
+            addItem.name = itemName.text;
+            addItem.description = itemDescript.text;
+            addItem.buttonText = "select";
+            addItem.buttonEvent = SelectItemIndex;
+
+            categoryData.itemList.Add(addItem);
+
+            ShopSampleScrollPage page = sample.GetSelectedScrollPage();
+            if (page != null)
             {
-                data.category.RemoveAt(index);
+                page.AddData(addItem);
             }
-
-            sample.SetData(data);
-
-            sample.UpdatePage();
         }
+    }
 
-        public ItemGroupData GetCurrentCategoryData()
-        {
-            int index = sample.tabController.GetSelectedIndex();
-            if (index >= 0 && index < data.category.Count)
-            {
-                return data.category[index];
-            }
-
-            return null;
-        }
-
-
-        public void AddItem()
+    public void RemoveItem()
+    {
+        if (selectIndex != -1)
         {
             ItemGroupData categoryData = GetCurrentCategoryData();
             if (categoryData != null)
             {
-                ItemData addItem = new ItemData();
-                addItem.name = itemName.text;
-                addItem.description = itemDescript.text;
-                addItem.buttonText = "select";
-                addItem.buttonEvent = SelectItemIndex;
-
-                categoryData.itemList.Add(addItem);
+                if (selectIndex < categoryData.itemList.Count)
+                {
+                    categoryData.itemList.RemoveAt(selectIndex);
+                }
 
                 ShopSampleScrollPage page = sample.GetSelectedScrollPage();
                 if (page != null)
                 {
-                    page.AddData(addItem);
+                    page.RemoveData(selectIndex);
                 }
+
+                SelectItemIndex(-1);
             }
         }
+    }
 
-        public void RemoveItem()
+    public void SelectItemIndex(int index)
+    {
+        selectIndex = index;
+        if (selectIndex == -1)
         {
-            if (selectIndex != -1)
-            {
-                ItemGroupData categoryData = GetCurrentCategoryData();
-                if (categoryData != null)
-                {
-                    if (selectIndex < categoryData.itemList.Count)
-                    {
-                        categoryData.itemList.RemoveAt(selectIndex);
-                    }
-
-                    ShopSampleScrollPage page = sample.GetSelectedScrollPage();
-                    if (page != null)
-                    {
-                        page.RemoveData(selectIndex);
-                    }
-
-                    SelectItemIndex(-1);
-                }
-            }
+            selectIndexText.text = "None Selected";
         }
-
-        public void SelectItemIndex(int index)
+        else
         {
-            selectIndex = index;
-            if (selectIndex == -1)
-            {
-                selectIndexText.text = "None Selected";
-            }
-            else
-            {
-                selectIndexText.text = "Selected Index : " + selectIndex;
-            }
+            selectIndexText.text = "Selected Index : " + selectIndex;
         }
     }
 }
