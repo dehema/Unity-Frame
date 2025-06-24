@@ -108,3 +108,7 @@ view:
         comment: 战斗失败
         layer: PopUI
         bgColor: "#000000B0"
+    UIControlDemoView:
+        comment: UI示例
+        layer: NormalUI
+        bgColor: "#000000ff"

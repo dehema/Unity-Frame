@@ -37,11 +37,11 @@ public class GameMgr : MonoBehaviour
 
 
         //新模块
-        ModuleCenter.Initialize(this);
-        RA.Timer = ModuleCenter.CreateModule<TimerMgr>();
-        RA.Message = ModuleCenter.CreateModule<MessageManager>();
-        RA.Audio = ModuleCenter.CreateModule<AudioManager>();
-        RA.Asset = ModuleCenter.CreateModule<AssetManager>();
+        //ModuleCenter.Initialize(this);
+        //RA.Timer = ModuleCenter.CreateModule<TimerMgr>();
+        //RA.Message = ModuleCenter.CreateModule<MessageManager>();
+        //RA.Audio = ModuleCenter.CreateModule<AudioManager>();
+        //RA.Asset = ModuleCenter.CreateModule<AssetManager>();
 
         //AudioClip clip = RA.Asset.Load<AudioClip>("audio/Electronic high shot");
         //AudioManager.Ins.PlayAudioEffect(clip);
@@ -51,18 +51,18 @@ public class GameMgr : MonoBehaviour
     {
         ModuleCenter.Update();
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            GameObject testprefab = RA.Asset.Load<GameObject>("testprefab");
-            if (testprefab)
-            {
-                GameObject.Instantiate(testprefab);
-            }
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    GameObject testprefab = RA.Asset.Load<GameObject>("testprefab");
+        //    if (testprefab)
+        //    {
+        //        GameObject.Instantiate(testprefab);
+        //    }
 
-            AudioManager.Ins.PlayAudioEffect("Electronic high shot");
+        //    AudioManager.Ins.PlayAudioEffect("Electronic high shot");
 
 
-        }
+        //}
     }
 
     public void StartGame()
