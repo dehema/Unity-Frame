@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Rain.Core;
 
 public partial class UIControlDemoView : BaseView
 {
@@ -17,6 +18,8 @@ public partial class UIControlDemoView : BaseView
         [SerializeField] public Dropdown deMenu_Dropdown;
         [SerializeField] public GameObject btClose;
         [SerializeField] public Button btClose_Button;
+        [SerializeField] public GameObject scroll;
+        [SerializeField] public InfiniteScroll scroll_InfiniteScroll;
     }
 
     [Header("自动序列化组件")]

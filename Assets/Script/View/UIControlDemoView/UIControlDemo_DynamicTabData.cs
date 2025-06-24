@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace Rain.UIControlDemo
 {
-
     public class UIControlDemo_DynamicTabData : ITabData
     {
         public string name;
@@ -15,30 +14,28 @@ namespace Rain.UIControlDemo
     public class UIControlDemo_DynamicTabItem : ITabData
     {
         public string name;
-        public bool isVertical = true;
-        public List<UIControlDemo_DynamicTabPageItemData> itemList = new List<UIControlDemo_DynamicTabPageItemData>();
+        public List<UIControlDemo_DynamicContainerItemData> itemList = new List<UIControlDemo_DynamicContainerItemData>();
 
         public void MakeRandomItem(int from, int to)
         {
-            isVertical = Random.Range(0, 2) == 0;
             for (int i = 0; i < Random.Range(from, to); i++)
             {
-                UIControlDemo_DynamicTabPageItemData item = new UIControlDemo_DynamicTabPageItemData();
-                item.name = "Item " + i;
-                item.description = "desc " + i;
-
-                item.buttonText = i.ToString();
-
-                itemList.Add(item);
+                AddItem();
             }
         }
-    }
 
-    public class UIControlDemo_DynamicTabPageItemData
-    {
-        public string name;
-        public string description;
-        public string buttonText;
-        public System.Action<int> buttonEvent;
+        public void AddItem()
+        {
+            UIControlDemo_DynamicContainerItemData item = new UIControlDemo_DynamicContainerItemData();
+            item.name = $"Item {itemList.Count}";
+            item.buttonEvent = (i) => { Debug.Log($"onclick {i}"); };
+            itemList.Add(item);
+        }
+
+        public void RemoveItem()
+        {
+            if (itemList.Count > 0)
+                itemList.RemoveAt(itemList.Count - 1);
+        }
     }
 }

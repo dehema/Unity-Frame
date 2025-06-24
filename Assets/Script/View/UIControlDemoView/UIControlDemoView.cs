@@ -6,10 +6,8 @@ using UnityEngine.UI;
 
 public partial class UIControlDemoView : BaseView
 {
-    [Tooltip("控件")]
+    [Tooltip("控件列表")]
     public List<GameObject> uiControlList = new List<GameObject>();
-    [Tooltip("滚动条")]
-    public InfiniteScroll scroll;
 
     public override void Init(params object[] _params)
     {
@@ -28,7 +26,7 @@ public partial class UIControlDemoView : BaseView
         ui.deMenu_Dropdown.AddOptions(optionList);
         ui.deMenu_Dropdown.onValueChanged.AddListener((option) =>
         {
-            scroll.MoveTo(option, InfiniteScroll.MoveToType.MOVE_TO_TOP, time: 0.6f);
+            ui.scroll_InfiniteScroll.MoveTo(option, InfiniteScroll.MoveToType.MOVE_TO_TOP, time: 0.6f);
         });
     }
 }
