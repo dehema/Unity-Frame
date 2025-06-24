@@ -5,9 +5,16 @@ using UnityEngine.UI;
 
 public partial class #ScriptName# : #Superclass#
 {
-#UIModelContent#
+    [System.Serializable]
+    struct SerializableUIComponents
+    {
+#UIModelContent#    }
+
+    [Header("自动序列化组件")]
+    [SerializeField] private SerializableUIComponents ui;
+
     internal override void _LoadUI()    
     {
         base._LoadUI();
-#Content#    }
+    #Content#}
 }

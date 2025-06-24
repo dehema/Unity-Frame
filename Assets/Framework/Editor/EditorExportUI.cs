@@ -15,6 +15,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 using static UnityEditor.Progress;
+using Component = UnityEngine.Component;
 using Object = UnityEngine.Object;
 
 public class EditorExportUI : EditorWindow
@@ -56,7 +57,7 @@ public class EditorExportUI : EditorWindow
         List<Transform> tfList = GetRegularRoot(allRoot);
         string scriptContent = GetUIScriptContent(tfList);
         string uiModelContent = GetUIModelContent(tfList);
-        string folderPath = string.Empty;
+        string viewScriptFolderPath = string.Empty;
         //父类名称
         string superClassName = isExportView ? "BaseView" : "BaseUI";
         //获取View脚本路径
@@ -73,19 +74,17 @@ public class EditorExportUI : EditorWindow
             string scriptPath = AssetDatabase.GUIDToAssetPath(item);
             if (scriptPath.Contains("/" + viewName + ".cs"))
             {
-                folderPath = scriptPath.Replace(viewName + ".cs", string.Empty);
+                viewScriptFolderPath = scriptPath.Replace(viewName + ".cs", string.Empty);
                 break;
             }
         }
-        //else
-        //{
-        //    folderPath = $"{Application.dataPath}/Script/Item/";
-        //}
-        if (string.IsNullOrEmpty(folderPath))
+        if (string.IsNullOrEmpty(viewScriptFolderPath))
         {
             EditorUtility.DisplayDialog("错误", "找不到与View预制体同名脚本", "ok");
             return;
         }
+        if (!Directory.Exists(viewScriptFolderPath))
+            Directory.CreateDirectory(viewScriptFolderPath);
         string tempViewUIContent = string.Empty;
         if (isExportView)
         {
@@ -100,17 +99,19 @@ public class EditorExportUI : EditorWindow
             tempViewUIContent = File.ReadAllText(GetExportUIWidgetTemplatePath());
         }
         tempViewUIContent = tempViewUIContent.Replace("#ScriptName#", viewName);
-        scriptContent = tempViewUIContent.Replace("#Content#", scriptContent);
-        scriptContent = scriptContent.Replace("#UIModelContent#", uiModelContent);
-        scriptContent = scriptContent.Replace("#Superclass#", superClassName);
-        string viewUIPath = folderPath + viewName + "_UI.cs";
+        //替换_LoadUI函数里find相关代码
+        string content = tempViewUIContent;
+        //scriptContent = tempViewUIContent.Replace("#Content#", scriptContent);
+        content = content.Replace("#Content#", "");
+        content = content.Replace("#UIModelContent#", uiModelContent);
+        content = content.Replace("#Superclass#", superClassName);
+        string viewUIPath = Path.Combine(viewScriptFolderPath, viewName + "_UI.cs");
         string oldMd5 = "";
         if (File.Exists(viewUIPath))
         {
             oldMd5 = GetFileMD5(viewUIPath);
         }
-        File.WriteAllText(viewUIPath, scriptContent);
-        AssetDatabase.Refresh();
+        File.WriteAllText(viewUIPath, content);
         EditorGUIUtility.PingObject(AssetDatabase.LoadAssetAtPath<Object>(viewUIPath));
         string newMd5 = GetFileMD5(viewUIPath);
         if (oldMd5 == newMd5)
@@ -209,24 +210,31 @@ public class EditorExportUI : EditorWindow
             return;
         }
         serializedObj.Update();
+        SerializedProperty uiProperty = serializedObj.FindProperty("ui");
+        if (uiProperty == null)
+        {
+            Debug.Log("找不到ui结构体");
+            return;
+        }
         foreach (var item in dic)
         {
             string rootName = item.Key;
             List<string> componentNames = item.Value;
-            SerializedProperty rootField = serializedObj.FindProperty(rootName);
-            string rootFullName = GetRootFullName(rootName, componentNames);
+            SerializedProperty rootField = uiProperty.FindPropertyRelative(rootName);
             if (rootField == null)
             {
                 Debug.Log("找不到序列化对象，跳出");
                 continue;
             }
+            string rootFullName = GetRootFullName(rootName, componentNames);
             GameObject goRoot = _uiPrefab.transform.FindRecursive(rootFullName).gameObject;
             rootField.objectReferenceValue = goRoot;
             foreach (var componentName in componentNames)
             {
                 string componentRootName = rootName + "_" + componentName;
-                SerializedProperty componentField = serializedObj.FindProperty(componentRootName);
-                componentField.objectReferenceValue = goRoot.GetComponent(GetComponentFullName(componentName));
+                SerializedProperty componentField = uiProperty.FindPropertyRelative(componentRootName);
+                Component component = goRoot.GetComponent(GetComponentFullName(componentName));
+                componentField.objectReferenceValue = component;
             }
         }
         // 应用更改
@@ -351,13 +359,11 @@ public class EditorExportUI : EditorWindow
         foreach (var item in dic)
         {
             string goName = item.Key;
-            //scriptStr.Append($"    [HideInInspector]\n");
-            scriptStr.Append($"    [SerializeField]\n");
-            scriptStr.Append($"    public GameObject {goName};\n");
+            scriptStr.Append($"        [SerializeField] public GameObject {goName};\n");
             foreach (string _componentName in item.Value)
             {
                 string componentFullName = GetComponentFullName(_componentName);
-                scriptStr.Append($"    public {componentFullName} {goName + "_" + _componentName};\n");
+                scriptStr.Append($"        [SerializeField] public {componentFullName} {goName + "_" + _componentName};\n");
             }
         }
         return scriptStr.ToString();

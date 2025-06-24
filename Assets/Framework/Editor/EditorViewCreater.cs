@@ -165,10 +165,10 @@ public class EditorViewCreater
     //创建脚本
     public static bool CreateViewScript(string _viewName)
     {
-        string dirPath = Application.dataPath + "/Script/View/";
+        string dirPath = Path.Combine(Application.dataPath, "Script", "View", _viewName);
         if (!Directory.Exists(dirPath))
             Directory.CreateDirectory(dirPath);
-        string viewPath = dirPath + $"{_viewName}.cs";
+        string viewPath = Path.Combine(dirPath, $"{_viewName}.cs");
         if (File.Exists(viewPath))
         {
             EditorUtility.DisplayDialog("错误", $"已存在同名脚本--->{viewPath}", "ok");
