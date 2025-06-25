@@ -11,7 +11,7 @@ public class UIMgr : MonoBehaviour
     public const int _viewOrderInLayerInterval = 5; //每个视图的间隔
     public const int _layerInterval = 400; //每个层级之间的间隔
     const int _layerMax = 32767;
-    public const string uiPrefabPath = "View/";
+    public const string uiPrefabPath = "Prefab/View/";
     public static UIMgr Ins
     {
         get
@@ -73,7 +73,7 @@ public class UIMgr : MonoBehaviour
         else
         {
             ///第一次创建
-            view = Instantiate(Resources.Load<GameObject>(uiPrefabPath + _viewName));
+            view = Instantiate(Resources.Load<GameObject>(uiPrefabPath + _viewName + "/" + _viewName));
             view.name = _viewName;
             baseView = view.GetComponent<BaseView>();
             baseView.viewConfig = allViewConfig.view[_viewName];

@@ -18,8 +18,7 @@ public partial class UIControlDemoView : BaseView
         [SerializeField] public Dropdown deMenu_Dropdown;
         [SerializeField] public GameObject btClose;
         [SerializeField] public Button btClose_Button;
-        [SerializeField] public GameObject scroll;
-        [SerializeField] public InfiniteScroll scroll_InfiniteScroll;
+        [SerializeField] public GameObject controlParent;
     }
 
     [Header("自动序列化组件")]

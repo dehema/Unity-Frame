@@ -9,7 +9,7 @@ namespace Rain.UIControlDemo
     public class UIControlDemo_DynamicTab : MonoBehaviour
     {
         public TabController tabController;
-        public TabPage horizontalScrollPage;
+        public TabPage dynamicScrollPage;
         //∑÷“≥±Í«©
         public Tab tabOriginalPrefab;
 
@@ -51,7 +51,7 @@ namespace Rain.UIControlDemo
             {
                 Tab tab = null;
                 TabPage page = null;
-                page = horizontalScrollPage;
+                page = dynamicScrollPage;
                 //page = verticalScrollPage;
 
                 if (i < tabController.GetTabCount())
@@ -76,7 +76,6 @@ namespace Rain.UIControlDemo
             if (selectedTab != null)
             {
                 selectedTab.NotifyPage();
-
                 if (selectedTab.GetActive() == false)
                 {
                     tabController.SelectFirstTab();
