@@ -1,5 +1,5 @@
 
-namespace Rain.Core
+namespace Rain.UI
 {
     public class LayerGuide : LayerUI
     {

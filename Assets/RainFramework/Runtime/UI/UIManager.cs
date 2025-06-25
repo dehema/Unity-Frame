@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
+using Rain.Core;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace Rain.Core
+namespace Rain.UI
 {
     public enum LayerType : byte
     {

@@ -1,7 +1,8 @@
 using System;
+using Rain.Core;
 using UnityEngine;
 
-namespace Rain.Core
+namespace Rain.UI
 {
     public class UICallbacks
     {
@@ -35,7 +36,7 @@ namespace Rain.Core
         public bool Valid;
         public GameObject Go;
         public DelegateComponent DelegateComponent;
-        public BaseView BaseView;
+        public F8BaseView BaseView;
         public UILoader UILoader;
     }
 }

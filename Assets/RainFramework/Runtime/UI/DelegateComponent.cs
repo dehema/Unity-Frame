@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Rain.Core
+namespace Rain.UI
 {
     public class DelegateComponent : MonoBehaviour
     {

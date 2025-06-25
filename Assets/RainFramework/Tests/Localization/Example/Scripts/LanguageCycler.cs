@@ -2,6 +2,7 @@
 using Rain.Core;
 using Rain.F8ExcelDataClass;
 using Rain.Launcher;
+using Rain.UI;
 using UnityEngine;
 
 namespace Rain.Tests
@@ -33,7 +34,7 @@ namespace Rain.Tests
 #endif
 			RA.Config = ModuleCenter.CreateModule<F8DataManager>();
 			RA.Audio = ModuleCenter.CreateModule<AudioManager>();
-			RA.Tween = ModuleCenter.CreateModule<Tween>();
+			RA.Tween = ModuleCenter.CreateModule<F8Tween>();
 			RA.UI = ModuleCenter.CreateModule<UIManager>();
 #if UNITY_WEBGL
             yield return F8DataManager.Instance.LoadLocalizedStringsIEnumerator(); // WebGL专用

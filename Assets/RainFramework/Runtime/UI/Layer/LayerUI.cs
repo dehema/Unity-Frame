@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using Rain.Core;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Rain.Core
+namespace Rain.UI
 {
     public class LayerUI : MonoBehaviour
     {
@@ -151,7 +152,7 @@ namespace Rain.Core
                 
                 DelegateComponent comp = childNode.AddComponent<DelegateComponent>();
                 viewParams.DelegateComponent = comp;
-                viewParams.BaseView = childNode.GetComponent<BaseView>();
+                viewParams.BaseView = childNode.GetComponent<F8BaseView>();
                 comp.ViewParams = viewParams;
                 
                 viewParams.UILoader = new UILoader();
@@ -180,7 +181,7 @@ namespace Rain.Core
                 
                     DelegateComponent comp = childNode.AddComponent<DelegateComponent>();
                     viewParams.DelegateComponent = comp;
-                    viewParams.BaseView = childNode.GetComponent<BaseView>();
+                    viewParams.BaseView = childNode.GetComponent<F8BaseView>();
                     comp.ViewParams = viewParams;
                     CreateNode(viewParams);
                     viewParams.UILoader.UILoadSuccess();

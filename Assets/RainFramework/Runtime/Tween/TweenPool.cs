@@ -81,7 +81,7 @@ namespace Rain.Core
             {
                 tween = new ValueTween(start, end, t, GenerateId());
             }
-            Tween.Instance.tweens.Add(tween);
+            F8Tween.Instance.tweens.Add(tween);
             return tween;
         }
 
@@ -98,7 +98,7 @@ namespace Rain.Core
             {
                 tween = new Vector3Tween(from, to, time, GenerateId());
             }
-            Tween.Instance.tweens.Add(tween);
+            F8Tween.Instance.tweens.Add(tween);
             return tween;
         }
 
@@ -115,7 +115,7 @@ namespace Rain.Core
             {
                 tween = new Vector2Tween(from, to, t, GenerateId());
             }
-            Tween.Instance.tweens.Add(tween);
+            F8Tween.Instance.tweens.Add(tween);
             return tween;
         }
 
@@ -132,7 +132,7 @@ namespace Rain.Core
             {
                 tween = new ColorTween(from, to, t, GenerateId());
             }
-            Tween.Instance.tweens.Add(tween);
+            F8Tween.Instance.tweens.Add(tween);
             return tween;
         }
 
@@ -149,13 +149,13 @@ namespace Rain.Core
             {
                 tween = new QuaternionTween(from, to, t, GenerateId());
             }
-            Tween.Instance.tweens.Add(tween);
+            F8Tween.Instance.tweens.Add(tween);
             return tween;
         }
 
         public static void RemoveTween(BaseTween tween)
         {
-            Tween.Instance.tweens.Remove(tween);
+            F8Tween.Instance.tweens.Remove(tween);
         }
     }
 }

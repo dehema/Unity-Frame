@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Rain.Core.Editor
+namespace Rain.UI.Editor
 {
     [CustomEditor(typeof(ComponentBind), true)]  // 添加 true 参数以启用绘制基类的属性
     public class ComponentBindEditor : UnityEditor.Editor

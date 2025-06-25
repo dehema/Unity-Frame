@@ -129,11 +129,11 @@ namespace Rain.Core
         public void OnTermination()
         {
             StopAll();
-            Tween.Instance.CancelTween(_audioMusic.AudioTween);
-            Tween.Instance.CancelTween(_audioMusicVoice.AudioTween);
-            Tween.Instance.CancelTween(_audioMusicBtnClick.AudioTween);
-            Tween.Instance.CancelTween(_audioMusicUISound.AudioTween);
-            Tween.Instance.CancelTween(_audioMusicAudioEffect.AudioTween);
+            F8Tween.Instance.CancelTween(_audioMusic.AudioTween);
+            F8Tween.Instance.CancelTween(_audioMusicVoice.AudioTween);
+            F8Tween.Instance.CancelTween(_audioMusicBtnClick.AudioTween);
+            F8Tween.Instance.CancelTween(_audioMusicUISound.AudioTween);
+            F8Tween.Instance.CancelTween(_audioMusicAudioEffect.AudioTween);
 
             Destroy(gameObject);
         }

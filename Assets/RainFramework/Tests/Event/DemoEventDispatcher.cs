@@ -1,5 +1,6 @@
 using System;
 using Rain.Core;
+using Rain.UI;
 using UnityEngine;
 
 namespace Rain.Tests

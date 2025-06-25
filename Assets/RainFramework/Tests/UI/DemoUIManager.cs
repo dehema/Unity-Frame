@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Rain.Core;
 using Rain.Launcher;
+using Rain.UI;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -107,7 +108,7 @@ namespace Rain.Tests
     }
 
     // 提供UI界面基类，BaseView
-    public class UIMain : BaseView
+    public class UIMain : F8BaseView
     {
         // Awake
         protected override void OnAwake()

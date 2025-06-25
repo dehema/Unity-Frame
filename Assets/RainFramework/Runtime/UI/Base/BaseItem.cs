@@ -1,6 +1,6 @@
 using System;
 
-namespace Rain.Core
+namespace Rain.UI
 {
     public class BaseItem : ComponentBind
     {

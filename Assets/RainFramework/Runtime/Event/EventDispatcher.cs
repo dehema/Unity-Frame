@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Rain.Core;
 
-namespace Rain.Core
+namespace Rain.UI
 {
     public class EventDispatcher : IMessageManager
     {

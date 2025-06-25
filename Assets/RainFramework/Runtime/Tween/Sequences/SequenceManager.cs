@@ -24,13 +24,13 @@ namespace Rain.Core
 			}
 
 			sequence.Recycle = sequence.KillSequence;
-			Tween.Instance.OnUpdateAction += sequence.Update;
+			F8Tween.Instance.OnUpdateAction += sequence.Update;
 			return sequence;
 		}
 
 		public static void KillSequence(this Sequence sequence)
 		{
-			Tween.Instance.OnUpdateAction -= sequence.Update;
+			F8Tween.Instance.OnUpdateAction -= sequence.Update;
 			sequence.Reset();
 			sequencePool.Push(sequence);
 		}

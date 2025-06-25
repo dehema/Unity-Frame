@@ -1,5 +1,7 @@
 
-namespace Rain.Core
+using Rain.Core;
+
+namespace Rain.UI
 {
     public class UILoader : BaseLoader
     {

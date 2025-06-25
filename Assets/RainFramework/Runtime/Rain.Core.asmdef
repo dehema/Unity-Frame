@@ -10,7 +10,7 @@
         "kcp2k",
         "Telepathy",
         "SimpleWebTransport",
-        "HybridCLR.Runtime"
+        "DOTween.Modules"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
