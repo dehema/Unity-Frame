@@ -10,3 +10,5 @@ obj
 *.dwlt
 Assets/StreamingAssets/AssetBundles
 HybridCLRData
+HybridCLRData/hybridclr_repo
+HybridCLRData/il2cpp_plus_repo
