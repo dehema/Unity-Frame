@@ -14,7 +14,7 @@ namespace Rain.Core
         /// <returns>是否存在</returns>
         protected bool IsExistVirtualAxis(string name)
         {
-            return InputManager.Instance.IsExistVirtualAxis(name);
+            return InputManager.Ins.IsExistVirtualAxis(name);
         }
         
         /// <summary>
@@ -24,7 +24,7 @@ namespace Rain.Core
         /// <returns>是否存在</returns>
         protected bool IsExistVirtualButton(string name)
         {
-            return InputManager.Instance.IsExistVirtualButton(name);
+            return InputManager.Ins.IsExistVirtualButton(name);
         }
         
         /// <summary>
@@ -33,7 +33,7 @@ namespace Rain.Core
         /// <param name="name">轴线名称</param>
         protected void RegisterVirtualAxis(string name)
         {
-            InputManager.Instance.RegisterVirtualAxis(name);
+            InputManager.Ins.RegisterVirtualAxis(name);
         }
         
         /// <summary>
@@ -42,7 +42,7 @@ namespace Rain.Core
         /// <param name="name">按钮名称</param>
         protected void RegisterVirtualButton(string name)
         {
-            InputManager.Instance.RegisterVirtualButton(name);
+            InputManager.Ins.RegisterVirtualButton(name);
         }
         
         /// <summary>
@@ -51,7 +51,7 @@ namespace Rain.Core
         /// <param name="name">轴线名称</param>
         protected void UnRegisterVirtualAxis(string name)
         {
-            InputManager.Instance.UnRegisterVirtualAxis(name);
+            InputManager.Ins.UnRegisterVirtualAxis(name);
         }
         
         /// <summary>
@@ -60,7 +60,7 @@ namespace Rain.Core
         /// <param name="name">按钮名称</param>
         protected void UnRegisterVirtualButton(string name)
         {
-            InputManager.Instance.UnRegisterVirtualButton(name);
+            InputManager.Ins.UnRegisterVirtualButton(name);
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace Rain.Core
         /// <param name="z">z值</param>
         protected void SetVirtualMousePosition(float x, float y, float z)
         {
-            InputManager.Instance.SetVirtualMousePosition(new Vector3(x, y, z));
+            InputManager.Ins.SetVirtualMousePosition(new Vector3(x, y, z));
         }
         
         /// <summary>
@@ -80,7 +80,7 @@ namespace Rain.Core
         /// <param name="value">鼠标位置</param>
         protected void SetVirtualMousePosition(Vector3 value)
         {
-            InputManager.Instance.SetVirtualMousePosition(value);
+            InputManager.Ins.SetVirtualMousePosition(value);
         }
         
         /// <summary>
@@ -89,7 +89,7 @@ namespace Rain.Core
         /// <param name="name">按钮名称</param>
         protected void SetButtonStart(string name)
         {
-            InputManager.Instance.SetButtonStart(name);
+            InputManager.Ins.SetButtonStart(name);
         }
         
         /// <summary>
@@ -98,7 +98,7 @@ namespace Rain.Core
         /// <param name="name">按钮名称</param>
         protected void SetButtonDown(string name)
         {
-            InputManager.Instance.SetButtonDown(name);
+            InputManager.Ins.SetButtonDown(name);
         }
         
         /// <summary>
@@ -107,7 +107,7 @@ namespace Rain.Core
         /// <param name="name">按钮名称</param>
         protected void SetButtonUp(string name)
         {
-            InputManager.Instance.SetButtonUp(name);
+            InputManager.Ins.SetButtonUp(name);
         }
         
         /// <summary>
@@ -116,7 +116,7 @@ namespace Rain.Core
         /// <param name="name">轴线名称</param>
         protected void SetAxisPositive(string name)
         {
-            InputManager.Instance.SetAxisPositive(name);
+            InputManager.Ins.SetAxisPositive(name);
         }
         
         /// <summary>
@@ -125,7 +125,7 @@ namespace Rain.Core
         /// <param name="name">轴线名称</param>
         protected void SetAxisNegative(string name)
         {
-            InputManager.Instance.SetAxisNegative(name);
+            InputManager.Ins.SetAxisNegative(name);
         }
         
         /// <summary>
@@ -134,7 +134,7 @@ namespace Rain.Core
         /// <param name="name">轴线名称</param>
         protected void SetAxisZero(string name)
         {
-            InputManager.Instance.SetAxisZero(name);
+            InputManager.Ins.SetAxisZero(name);
         }
         
         /// <summary>
@@ -144,7 +144,7 @@ namespace Rain.Core
         /// <param name="value">值</param>
         protected void SetAxis(string name, float value)
         {
-            InputManager.Instance.SetAxis(name, value);
+            InputManager.Ins.SetAxis(name, value);
         }
 
         /// <summary>

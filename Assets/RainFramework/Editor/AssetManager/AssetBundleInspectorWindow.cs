@@ -149,7 +149,7 @@ namespace Rain.Core.Editor
         private void DrawResourcesList()
         {
             // 获取Resources加载器数据
-            resourceLoaders = ResourcesManager.Instance.GetResourceLoaders();
+            resourceLoaders = ResourcesManager.Ins.GetResourceLoaders();
             if (resourceLoaders == null || resourceLoaders.Count == 0)
             {
                 EditorGUILayout.HelpBox("没有通过Resources加载的资源", MessageType.Info);
@@ -519,7 +519,7 @@ namespace Rain.Core.Editor
         
         private void DrawAssetBundleList()
         {
-            assetBundleLoaders = AssetBundleManager.Instance.GetAssetBundleLoaders();
+            assetBundleLoaders = AssetBundleManager.Ins.GetAssetBundleLoaders();
             if (assetBundleLoaders == null)
             {
                 return;

@@ -26,7 +26,7 @@ namespace Rain.Core
             if (_isSetup)
                 RLog.LogError("池对象已经设置！");
 #endif
-            GameObjectPool.Instance.ClonesMap.Add(_gameObject, this);
+            GameObjectPool.Ins.ClonesMap.Add(_gameObject, this);
             _status = PoolableStatus.Despawned;
             _isSetup = true;
         }
@@ -37,14 +37,14 @@ namespace Rain.Core
             if (_isSetup)
                 RLog.LogError("池对象已经设置！");
 #endif
-            GameObjectPool.Instance.ClonesMap.Add(_gameObject, this);
+            GameObjectPool.Ins.ClonesMap.Add(_gameObject, this);
             _status = PoolableStatus.SpawnedOverCapacity;
             _isSetup = true;
         }
 
         internal void Dispose(bool immediately)
         {
-            GameObjectPool.Instance.ClonesMap.Remove(_gameObject);
+            GameObjectPool.Ins.ClonesMap.Remove(_gameObject);
             
             if (immediately)
                 Object.DestroyImmediate(_gameObject);

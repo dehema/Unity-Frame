@@ -8,7 +8,7 @@ namespace Rain.Core
 
 		protected virtual void Awake()
 		{
-			Localization.Instance.AddLocalizer(this);
+			Localization.Ins.AddLocalizer(this);
 			Prepare();
 		}
 
@@ -29,7 +29,7 @@ namespace Rain.Core
 
 		protected virtual void OnDestroy()
 		{
-			Localization.Instance.RemoveLocalizer(this);
+			Localization.Ins.RemoveLocalizer(this);
 		}
 	}
 }

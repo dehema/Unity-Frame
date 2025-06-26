@@ -44,7 +44,7 @@ namespace Rain.Core
             }
             else
             {
-                AssetManager.Instance.LoadAsync<AudioClip>(url, (asset) =>
+                AssetManager.Ins.LoadAsync<AudioClip>(url, (asset) =>
                 {
                     _effects[url] = asset;
 
@@ -67,7 +67,7 @@ namespace Rain.Core
         public void PlayClipAtPoint(string url, AudioClip clip, Vector3 position, [DefaultValue("1.0F")] float volume, [DefaultValue("1.0F")] float spatialBlend,
             Action callback = null, AudioMixerGroup audioEffectMixerGroup = null, bool isRandom = false)
         {
-            GameObject gameObject = GameObjectPool.Instance.Spawn(OneShotAudio);
+            GameObject gameObject = GameObjectPool.Ins.Spawn(OneShotAudio);
             gameObject.transform.position = position;
             AudioSource audioSource = gameObject.GetComponent<AudioSource>();
             audioSource.clip = clip;
@@ -80,9 +80,9 @@ namespace Rain.Core
             audioSource.Play();
 
             float time = clip.length * ((double)Time.timeScale < 0.009999999776482582 ? 0.01f : Time.timeScale);
-            TimerMgr.Instance.AddTimer(this, 1f, time, 1, null, () =>
+            TimerMgr.Ins.AddTimer(this, 1f, time, 1, null, () =>
             {
-                GameObjectPool.Instance.Despawn(gameObject);
+                GameObjectPool.Ins.Despawn(gameObject);
                 if (_effectsNum.TryGetValue(url, out int num))
                 {
                     _effectsNum[url] = num - 1;
@@ -96,7 +96,7 @@ namespace Rain.Core
         {
             foreach (var item in _effects)
             {
-                AssetManager.Instance.Unload(item.Key, unloadAllLoadedObjects);
+                AssetManager.Ins.Unload(item.Key, unloadAllLoadedObjects);
             }
             _effects.Clear();
             _effectsNum.Clear();

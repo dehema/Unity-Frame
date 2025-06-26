@@ -992,7 +992,7 @@ namespace Rain.Core
                 yield break;
 #if UNITY_EDITOR
             manifestPath = Path.IsPathRooted(manifestPath) ? "file://" + manifestPath : manifestPath;
-            if (AssetManager.Instance.IsEditorMode)
+            if (AssetManager.Ins.IsEditorMode)
                 yield break;
 #endif
             if (FileTools.IsLegalURI(manifestPath))
@@ -1034,7 +1034,7 @@ namespace Rain.Core
             if (AssetBundleMap.Mappings.Count == 0)
                 return;
 #if UNITY_EDITOR
-            if (AssetManager.Instance.IsEditorMode)
+            if (AssetManager.Ins.IsEditorMode)
                 return;
 #endif
             string manifestPath = GetAssetBundlePathByAbName(URLSetting.GetPlatformName());

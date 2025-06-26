@@ -23,18 +23,18 @@ namespace Rain.Core.Editor
 		{
 			// base.OnInspectorGUI();
 
-			Localization.Instance.LoadInEditor();
+			Localization.Ins.LoadInEditor();
 			serializedObject.Update();
 
-			var langCount = Localization.Instance.LanguageList.Count;
+			var langCount = Localization.Ins.LanguageList.Count;
 
 			UpdateAudioClipInspector(langCount);
 
 			serializedObject.ApplyModifiedProperties();
 			
 			GUI.skin.GetStyle("HelpBox").richText = true;
-			Localization.Instance.LoadInEditor();
-			var keys = Localization.Instance.GetAllIds();
+			Localization.Ins.LoadInEditor();
+			var keys = Localization.Ins.GetAllIds();
 
 			if (keys.Count == 0)
 			{
@@ -51,7 +51,7 @@ namespace Rain.Core.Editor
 				return;
 			}
 
-			var dict = Localization.Instance.GetDictionaryFromId(localizer.localizedTextID);
+			var dict = Localization.Ins.GetDictionaryFromId(localizer.localizedTextID);
 			if (dict != null)
 			{
 				var helpText = dict.Aggregate("", (current, item) => current + $"{item.Key}: {item.Value}\n");
@@ -118,7 +118,7 @@ namespace Rain.Core.Editor
 
 			for (var i = 0; i < langCount; i++)
 			{
-				var clip = EditorGUILayout.ObjectField(Localization.Instance.LanguageList[i], localizer.clips[i], typeof(AudioClip), false) as AudioClip;
+				var clip = EditorGUILayout.ObjectField(Localization.Ins.LanguageList[i], localizer.clips[i], typeof(AudioClip), false) as AudioClip;
 				if (localizer.clips[i] != clip)
 				{
 					localizer.clips[i] = clip;

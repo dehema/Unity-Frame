@@ -11,7 +11,7 @@ namespace Rain.Core
         /// <returns>A particle system to despawn on complete.</returns>
         public static ParticleSystem DespawnOnComplete(this ParticleSystem particleSystem)
         {
-            GameObjectPool.Instance.Despawn(particleSystem.gameObject, particleSystem.main.duration);
+            GameObjectPool.Ins.Despawn(particleSystem.gameObject, particleSystem.main.duration);
             return particleSystem;
         }
     }

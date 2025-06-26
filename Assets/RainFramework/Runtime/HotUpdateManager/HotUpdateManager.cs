@@ -190,7 +190,7 @@ namespace Rain.Core
             }
             
             // 创建热更下载器
-            hotUpdateDownloader = DownloadManager.Instance.CreateDownloader("hotUpdateDownloader", new Downloader());
+            hotUpdateDownloader = DownloadManager.Ins.CreateDownloader("hotUpdateDownloader", new Downloader());
             
             // 设置热更下载器回调
             hotUpdateDownloader.OnDownloadSuccess += (eventArgs) =>
@@ -253,7 +253,7 @@ namespace Rain.Core
                         Util.LitJson.ToJson(AssetBundleMap.Mappings));
                 }
                 
-                AssetBundleManager.Instance.LoadAssetBundleManifestSync();
+                AssetBundleManager.Ins.LoadAssetBundleManifestSync();
             }
             // 下载器开始下载
             hotUpdateDownloader.LaunchDownload();
@@ -297,7 +297,7 @@ namespace Rain.Core
             List<string> downloadPaths = new List<string>(subPackages.Count);
             
             // 创建分包下载器
-            packageDownloader = DownloadManager.Instance.CreateDownloader("packageDownloader", new Downloader());
+            packageDownloader = DownloadManager.Ins.CreateDownloader("packageDownloader", new Downloader());
             
             // 设置分包下载器回调
             packageDownloader.OnDownloadSuccess += (eventArgs) =>

@@ -18,7 +18,7 @@ namespace Rain.Tests
             ModuleCenter.GetModule<TimerMgr>().GetServerTime();
 
             // 通过获取实例调用模块方法
-            TimerMgr.Instance.GetServerTime();
+            TimerMgr.Ins.GetServerTime();
         }
     }
 

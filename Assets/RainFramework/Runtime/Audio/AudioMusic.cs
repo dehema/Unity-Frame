@@ -45,7 +45,7 @@ namespace Rain.Core
             }
             else
             {
-                AssetManager.Instance.LoadAsync<AudioClip>(url, (asset) =>
+                AssetManager.Ins.LoadAsync<AudioClip>(url, (asset) =>
                 {
                     _audios[url] = asset;
 
@@ -73,7 +73,7 @@ namespace Rain.Core
             {
                 float tempVolume = MusicSource.volume;
                 MusicSource.volume = 0f;
-                AudioTween = F8Tween.Instance.ValueTween(0f, tempVolume, fadeDuration)
+                AudioTween = F8Tween.Ins.ValueTween(0f, tempVolume, fadeDuration)
                     .SetOnUpdateFloat((float v) => { MusicSource.volume = v; }).ID;
             }
         }
@@ -96,7 +96,7 @@ namespace Rain.Core
         {
             foreach (var item in _audios)
             {
-                AssetManager.Instance.Unload(item.Key, unloadAllLoadedObjects);
+                AssetManager.Ins.Unload(item.Key, unloadAllLoadedObjects);
             }
             _audios.Clear();
         }

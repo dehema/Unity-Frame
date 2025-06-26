@@ -13,12 +13,12 @@ namespace Rain.Core
 #if DEBUG
         private void Start()
         {
-            if (GameObjectPool.Instance.IsClone(gameObject) == false)
+            if (GameObjectPool.Ins.IsClone(gameObject) == false)
             {
                 RLog.LogError("您已将一个取消生成计时器添加到不是克隆的游戏对象！", this);
             }
             
-            if (GameObjectPool.Instance.TryGetPoolByClone(gameObject, out F8GameObjectPool pool))
+            if (GameObjectPool.Ins.TryGetPoolByClone(gameObject, out F8GameObjectPool pool))
             {
                 if (pool.BehaviourOnCapacityReached == BehaviourOnCapacityReached.Recycle)
                 {
@@ -65,7 +65,7 @@ namespace Rain.Core
         {
             if (IsDespawnMoment(deltaTime))
             {
-                GameObjectPool.Instance.Despawn(gameObject);
+                GameObjectPool.Ins.Despawn(gameObject);
             }
         }
 

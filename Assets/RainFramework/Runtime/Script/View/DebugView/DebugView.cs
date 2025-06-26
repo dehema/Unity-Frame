@@ -21,7 +21,7 @@ public partial class DebugView : BaseView
     public void OnClickStartGame()
     {
         btStartGame_Button.interactable = false;
-        GameMgr.Ins.StartGame();
+        SceneMgr.Ins.ChangeScene(SceneID.FPSDemo);
         Close();
     }
 

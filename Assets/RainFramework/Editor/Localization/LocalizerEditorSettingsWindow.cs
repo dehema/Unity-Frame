@@ -46,11 +46,11 @@ namespace Rain.Core.Editor
 			index = EditorGUILayout.Popup(index, options);
 			if (options[index] != LocalizationSettings.LoadLanguageSettings())
 			{
-				Localization.Instance.CurrentLanguageName = options[index];
+				Localization.Ins.CurrentLanguageName = options[index];
 				LocalizationSettings.SaveLanguageSettings();
 				if (Application.isPlaying)
 				{
-					Localization.Instance.InjectAll();
+					Localization.Ins.InjectAll();
 				}
 			}
 

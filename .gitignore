@@ -8,3 +8,5 @@ Temp
 obj
 .vs
 *.dwlt
+Assets/StreamingAssets/AssetBundles
+HybridCLRData

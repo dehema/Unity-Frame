@@ -3,7 +3,7 @@
 	public abstract class ModuleSingleton<T> where T : class, IModule, new()
 	{
 		private static T _instance;
-		public static T Instance
+		public static T Ins
 		{
 			get
 			{

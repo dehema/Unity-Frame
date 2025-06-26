@@ -86,7 +86,7 @@ namespace Rain.Core
             Clear(true);
             this.assetBundlePath = assetBundlePath;
             this.abName = GetSubPath(this.assetBundlePath);
-            this.hash128 = AssetBundleManager.Instance.GetAssetBundleHash(this.abName);
+            this.hash128 = AssetBundleManager.Ins.GetAssetBundleHash(this.abName);
         }
         
         public override T GetAssetObject<T>(string subAssetName = null)

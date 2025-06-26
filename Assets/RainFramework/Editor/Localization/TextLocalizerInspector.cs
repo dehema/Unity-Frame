@@ -20,8 +20,8 @@ namespace Rain.Core.Editor
 			base.OnInspectorGUI();
 
 			GUI.skin.GetStyle("HelpBox").richText = true;
-			Localization.Instance.LoadInEditor();
-			var keys = Localization.Instance.GetAllIds();
+			Localization.Ins.LoadInEditor();
+			var keys = Localization.Ins.GetAllIds();
 
 			if (keys.Count == 0)
 			{
@@ -38,7 +38,7 @@ namespace Rain.Core.Editor
 				return;
 			}
 
-			var dict = Localization.Instance.GetDictionaryFromId(localizer.textId);
+			var dict = Localization.Ins.GetDictionaryFromId(localizer.textId);
 			if (dict != null)
 			{
 				var helpText = dict.Aggregate("", (current, item) => current + $"{item.Key}: {item.Value}\n");

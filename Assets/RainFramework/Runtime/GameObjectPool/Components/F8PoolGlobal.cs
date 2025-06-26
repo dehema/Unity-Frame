@@ -65,10 +65,10 @@ namespace Rain.Core
         {
             if (Application.isPlaying)
             {
-                GameObjectPool.Instance.s_f8PoolMode = _f8PoolMode;
-                GameObjectPool.Instance.s_checkForPrefab = _checkForPrefab;
-                GameObjectPool.Instance.s_checkClonesForNull = _checkClonesForNull;
-                GameObjectPool.Instance.s_despawnPersistentClonesOnDestroy = _despawnPersistentClonesOnDestroy;
+                GameObjectPool.Ins.s_f8PoolMode = _f8PoolMode;
+                GameObjectPool.Ins.s_checkForPrefab = _checkForPrefab;
+                GameObjectPool.Ins.s_checkClonesForNull = _checkClonesForNull;
+                GameObjectPool.Ins.s_despawnPersistentClonesOnDestroy = _despawnPersistentClonesOnDestroy;
             }
         }
 #endif
@@ -105,11 +105,11 @@ namespace Rain.Core
 
         public void OnTermination()
         {
-            GameObjectPool.Instance.ResetPool();
+            GameObjectPool.Ins.ResetPool();
 
-            if (_clearEventsOnDestroy || GameObjectPool.Instance.s_isApplicationQuitting)
+            if (_clearEventsOnDestroy || GameObjectPool.Ins.s_isApplicationQuitting)
             {
-                GameObjectPool.Instance.GameObjectInstantiated.Clear();
+                GameObjectPool.Ins.GameObjectInstantiated.Clear();
             }
             
             Destroy(gameObject);
@@ -122,26 +122,26 @@ namespace Rain.Core
 
         private void OnApplicationQuit()
         {
-            GameObjectPool.Instance.s_isApplicationQuitting = true;
+            GameObjectPool.Ins.s_isApplicationQuitting = true;
         }
 
         private void Initialize()
         {
 #if DEBUG
-            if (GameObjectPool.Instance.s_instance != null && GameObjectPool.Instance.s_instance != this)
+            if (GameObjectPool.Ins.s_instance != null && GameObjectPool.Ins.s_instance != this)
                 RLog.LogError($"场景中的 {nameof(GameObjectPool)} 实例数量大于一个！");
 
             if (enabled == false)
                 RLog.LogEntity($"<{nameof(F8PoolGlobal)}> 实例已禁用！" +
                                 "因此，某些功能可能无法正常工作！", this);
 #endif
-            GameObjectPool.Instance.s_isApplicationQuitting = false;
-            GameObjectPool.Instance.s_instance = this;
-            GameObjectPool.Instance.s_hasTheF8PoolInitialized = true;
-            GameObjectPool.Instance.s_f8PoolMode = _f8PoolMode;
-            GameObjectPool.Instance.s_checkForPrefab = _checkForPrefab;
-            GameObjectPool.Instance.s_checkClonesForNull = _checkClonesForNull;
-            GameObjectPool.Instance.s_despawnPersistentClonesOnDestroy = _despawnPersistentClonesOnDestroy;
+            GameObjectPool.Ins.s_isApplicationQuitting = false;
+            GameObjectPool.Ins.s_instance = this;
+            GameObjectPool.Ins.s_hasTheF8PoolInitialized = true;
+            GameObjectPool.Ins.s_f8PoolMode = _f8PoolMode;
+            GameObjectPool.Ins.s_checkForPrefab = _checkForPrefab;
+            GameObjectPool.Ins.s_checkClonesForNull = _checkClonesForNull;
+            GameObjectPool.Ins.s_despawnPersistentClonesOnDestroy = _despawnPersistentClonesOnDestroy;
         }
 
         private void PreloadPools(PreloadType requiredType)
@@ -149,18 +149,18 @@ namespace Rain.Core
             if (requiredType != preloadPoolsType)
                 return;
             
-            GameObjectPool.Instance.InstallPools(poolsPreset);
+            GameObjectPool.Ins.InstallPools(poolsPreset);
         }
 
         private void HandleDespawnRequests(float deltaTime)
         {
-            for (int i = 0; i < GameObjectPool.Instance.DespawnRequests._count; i++)
+            for (int i = 0; i < GameObjectPool.Ins.DespawnRequests._count; i++)
             {
-                ref DespawnRequest request = ref GameObjectPool.Instance.DespawnRequests._components[i];
+                ref DespawnRequest request = ref GameObjectPool.Ins.DespawnRequests._components[i];
 
                 if (request.Poolable._status == PoolableStatus.Despawned)
                 {
-                    GameObjectPool.Instance.DespawnRequests.RemoveUnorderedAt(i);
+                    GameObjectPool.Ins.DespawnRequests.RemoveUnorderedAt(i);
                     continue;
                 }
                 
@@ -168,8 +168,8 @@ namespace Rain.Core
                 
                 if (request.TimeToDespawn <= 0f)
                 {
-                    GameObjectPool.Instance.DespawnImmediate(request.Poolable);
-                    GameObjectPool.Instance.DespawnRequests.RemoveUnorderedAt(i);
+                    GameObjectPool.Ins.DespawnImmediate(request.Poolable);
+                    GameObjectPool.Ins.DespawnRequests.RemoveUnorderedAt(i);
                 }
             }
         }

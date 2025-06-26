@@ -1,9 +1,10 @@
 {
     "name": "Rain.Editor",
     "rootNamespace": "",
-    "references": [
+    "references": [],
+    "includePlatforms": [
+        "Editor"
     ],
-    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

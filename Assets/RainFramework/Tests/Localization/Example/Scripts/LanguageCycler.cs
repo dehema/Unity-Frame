@@ -72,7 +72,7 @@ namespace Rain.Tests
 
 		public void Cycle()
 		{
-			Localization.Instance.ActivateNextLanguage();
+			Localization.Ins.ActivateNextLanguage();
 		}
 	}
 }

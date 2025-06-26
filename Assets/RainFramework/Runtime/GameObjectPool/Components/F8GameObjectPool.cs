@@ -161,7 +161,7 @@ namespace Rain.Core
         /// <summary>
         /// Has this pool registered as persistent?
         /// </summary>
-        public bool HasRegisteredAsPersistent => GameObjectPool.Instance.HasPoolRegisteredAsPersistent(this);
+        public bool HasRegisteredAsPersistent => GameObjectPool.Ins.HasPoolRegisteredAsPersistent(this);
 
         /// <summary>
         /// The actions will be performed on a game object spawned by this pool.
@@ -409,7 +409,7 @@ namespace Rain.Core
         public void DestroyPool()
         {
             Clear();
-            GameObjectPool.Instance.UnregisterPool(this);
+            GameObjectPool.Ins.UnregisterPool(this);
             Destroy(gameObject);
         }
 
@@ -419,7 +419,7 @@ namespace Rain.Core
         public void DestroyPoolImmediate()
         {
             Clear();
-            GameObjectPool.Instance.UnregisterPool(this);
+            GameObjectPool.Ins.UnregisterPool(this);
             DestroyImmediate(gameObject);
         }
         
@@ -501,7 +501,7 @@ namespace Rain.Core
 
             for (int i = 0; i < _poolablesTemp._count; i++)
             {
-                GameObjectPool.Instance.DespawnImmediate(_poolablesTemp._components[i]);
+                GameObjectPool.Ins.DespawnImmediate(_poolablesTemp._components[i]);
             }
 
             if (_poolablesTemp._count > 0)
@@ -523,7 +523,7 @@ namespace Rain.Core
                 return false;
             }
             
-            if (GameObjectPool.Instance.s_checkForPrefab)
+            if (GameObjectPool.Ins.s_checkForPrefab)
             {
                 if (CheckForPrefab(prefab) == false)
                 {
@@ -551,7 +551,7 @@ namespace Rain.Core
                 SetupPreloadedClones();
             }
             
-            GameObjectPool.Instance.RegisterPool(this);
+            GameObjectPool.Ins.RegisterPool(this);
             
             _isSetup = true;
             return true;
@@ -820,7 +820,7 @@ namespace Rain.Core
         
         private bool TryRegisterPoolAsPersistent()
         {
-            if (GameObjectPool.Instance.HasPoolRegisteredAsPersistent(this) == false)
+            if (GameObjectPool.Ins.HasPoolRegisteredAsPersistent(this) == false)
             {
 #if DEBUG
                 if (_cachedTransform.parent != null)
@@ -833,7 +833,7 @@ namespace Rain.Core
 #endif
                 _dontDestroyOnLoad = true;
                 DontDestroyOnLoad(gameObject);
-                GameObjectPool.Instance.RegisterPersistentPool(this);
+                GameObjectPool.Ins.RegisterPersistentPool(this);
                 return true;
             }
             
@@ -996,7 +996,7 @@ namespace Rain.Core
                 poolable._transform.SetParent(_isSetup ? _cachedTransform : transform, false);
             }
 
-            GameObjectPool.Instance.GameObjectInstantiated.RaiseEvent(newGameObject);
+            GameObjectPool.Ins.GameObjectInstantiated.RaiseEvent(newGameObject);
             RaiseGameObjectInstantiatedCallback(newGameObject);
             return poolable;
         }

@@ -16,13 +16,13 @@ namespace Rain.Core
 			if (json == "")
 			{
 				// 根据系统语言设置
-				Localization.Instance.CurrentLanguageName = Application.systemLanguage.ToString();
+				Localization.Ins.CurrentLanguageName = Application.systemLanguage.ToString();
 				return Application.systemLanguage.ToString();
 			}
 			else
 			{
 				var definition = JsonUtility.FromJson<Definition>(json);
-				Localization.Instance.CurrentLanguageName = definition.currentLanguageName;
+				Localization.Ins.CurrentLanguageName = definition.currentLanguageName;
 				return definition.currentLanguageName;
 			}
 #else
@@ -42,7 +42,7 @@ namespace Rain.Core
 		public static void SaveLanguageSettings()
 		{
 #if UNITY_EDITOR
-			var definition = new Definition { currentLanguageName = Localization.Instance.CurrentLanguageName };
+			var definition = new Definition { currentLanguageName = Localization.Ins.CurrentLanguageName };
 			var json = JsonUtility.ToJson(definition);
 			UnityEditor.EditorPrefs.SetString(Application.dataPath.GetHashCode() + LocalizationConst.CurrentLanguageKey, json);
 #else

@@ -52,19 +52,19 @@ namespace Rain.Core
 			// for Timeline Preview
 			if (!Application.isPlaying)
 			{
-				Localization.Instance.Load();
+				Localization.Ins.Load();
 				Prepare();
 			}
 #endif
 
-			if (!Localization.Instance.Has(textId))
+			if (!Localization.Ins.Has(textId))
 			{
 				if (Application.isPlaying) RLog.LogError($"Text ID: {textId} 不可用。");
 				return false;
 			}
 
 			this.textId = textId;
-			var text = Localization.Instance.GetTextFromId(textId);
+			var text = Localization.Ins.GetTextFromId(textId);
 			injector.Inject(text, this);
 			return true;
 		}

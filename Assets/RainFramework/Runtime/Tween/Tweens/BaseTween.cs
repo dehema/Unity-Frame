@@ -242,7 +242,7 @@ namespace Rain.Core
         public BaseTween SetOwner(GameObject owner)
         {
             this.owner = owner;
-            F8Tween.Instance.ProcessConnection(this);
+            F8Tween.Ins.ProcessConnection(this);
             return this;
         }
 

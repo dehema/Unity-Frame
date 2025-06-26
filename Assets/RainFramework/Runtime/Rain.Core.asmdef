@@ -1,5 +1,5 @@
 {
-    "name": "Rain.Core", 
+    "name": "Rain.Core",
     "rootNamespace": "",
     "references": [
         "Unity.TextMeshPro",

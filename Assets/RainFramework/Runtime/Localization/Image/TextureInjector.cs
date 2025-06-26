@@ -23,7 +23,7 @@ namespace Rain.Core
 			}
 			else if (localizedData is string textIDValue)
 			{
-				AssetManager.Instance.LoadAsync(textIDValue, (asset) =>
+				AssetManager.Ins.LoadAsync(textIDValue, (asset) =>
 				{
 					if (asset is Sprite sprite)
 					{
