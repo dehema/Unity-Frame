@@ -18,11 +18,11 @@ public class JsonToolEditor : EditorWindow
     // 用于强制刷新的变量
     private bool needsRepaint = false;
 
-    [MenuItem("开发工具/json工具")]
+    [MenuItem("开发工具/Json工具")]
     public static void ShowWindow()
     {
         // 创建窗口并获取Game窗口作为参考
-        JsonToolEditor window = EditorWindow.GetWindow<JsonToolEditor>("JSON工具", typeof(EditorWindow).Assembly.GetType("UnityEditor.GameView"));
+        JsonToolEditor window = EditorWindow.GetWindow<JsonToolEditor>("Json工具", typeof(EditorWindow).Assembly.GetType("UnityEditor.ConsoleWindow"));
         window.minSize = new Vector2(700, 700);
         window.LoadConfig();
     }
@@ -244,6 +244,7 @@ public class JsonToolEditor : EditorWindow
             }
             else
             {
+                packageConfigData = new PackageConfigData();
                 Debug.LogWarning("未找到 package.json 文件: " + packageJsonPath);
                 return;
             }

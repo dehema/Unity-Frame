@@ -198,8 +198,8 @@
         "com.unity.modules.imgui": "1.0.0"
       }
     },
-    "wm.jsontool": {
-      "version": "file:wm.jsonTool.0.0.1",
+    "rain.jsontool": {
+      "version": "file:rain.jsonTool.0.0.1",
       "depth": 0,
       "source": "embedded",
       "dependencies": {

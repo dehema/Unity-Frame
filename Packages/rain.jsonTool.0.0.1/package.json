@@ -1,9 +1,9 @@
 {
-    "name": "wm.jsontool",
-    "displayName": "wm.jsonTool",
+    "name": "rain.jsontool",
+    "displayName": "rain.jsonTool",
     "version": "0.0.1",
     "unity": "2022.3",
-    "unityRelease": "43f1",
+    "unityRelease": "59f1",
     "description": "导excel表数据，自动生成映射类",
     "keywords": ["Test","Package"],
     "author": "dehema",

@@ -13,8 +13,6 @@ public class ConfigMgr : MonoSingleton<ConfigMgr>
     public AllUnitConfig allUnitConfig;
     public AllCityConfig allCityConfig;
     public WorldConfig worldConfig;
-    public AllFactionConfig factionConfig;
-    public HeroConfig heroConfig;
 
     public void Init()
     {
@@ -27,8 +25,6 @@ public class ConfigMgr : MonoSingleton<ConfigMgr>
         allUnitConfig = LoadConfig<AllUnitConfig>("Unit");
         allCityConfig = LoadConfig<AllCityConfig>("City");
         worldConfig = LoadConfig<WorldConfig>("World");
-        factionConfig = LoadConfig<AllFactionConfig>("Faction");
-        heroConfig = LoadConfig<HeroConfig>("Hero");
         AllLoadComplete();
     }
 
@@ -104,14 +100,5 @@ public class ConfigMgr : MonoSingleton<ConfigMgr>
     public UnitConfig GetUnitConfig(int _unitID)
     {
         return allUnitConfig.unit[_unitID];
-    }
-
-    /// <summary>
-    /// 获取派系配置
-    /// </summary>
-    /// <returns></returns>
-    public FactionConfig GetFactionConfig(int _factionID)
-    {
-        return factionConfig.faction[_factionID];
     }
 }

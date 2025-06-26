@@ -30,12 +30,10 @@ namespace Rain.UI.Editor
         }
 
         [MenuItem("开发工具/开发工具")]
-        static void OpenMainWindow()
+        static void ShowWindow()
         {
-            EditorDevTools window = GetWindow<EditorDevTools>();
-            window.titleContent = new GUIContent("Rain Development Tools");
-            window.position = new Rect(400, 100, 640, 480);
-            window.Show();
+            EditorDevTools window = GetWindow<EditorDevTools>("Rain开发工具", typeof(EditorWindow).Assembly.GetType("UnityEditor.ConsoleWindow"));
+            window.minSize = new Vector2(700, 700);
         }
 
         public static string GetEditorScriptPath()
