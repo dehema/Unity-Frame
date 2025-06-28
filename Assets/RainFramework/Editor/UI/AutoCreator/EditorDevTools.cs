@@ -346,22 +346,22 @@ namespace Rain.UI.Editor
             SceneVisibilityManager.instance.Show(go, true);
         }
 
-        [MenuItem("GameObject/BM工具/只显示最后一个NormalUI", priority = 1)]
+        [MenuItem("GameObject/BM工具/只显示最后一个NormalUI普通页面", priority = 1)]
         public static void OnlyShowLastNormalUI()
         {
-            OnlyShowLastUI(ViewLayer.NormalUI.ToString());
+            OnlyShowLastUI(ViewLayer.NormalLayer.ToString());
         }
 
-        [MenuItem("GameObject/BM工具/只显示最后一个PopUpUI", priority = 2)]
+        [MenuItem("GameObject/BM工具/只显示最后一个Dialog弹窗", priority = 2)]
         public static void OnlyShowLastPopUI()
         {
-            OnlyShowLastUI(ViewLayer.PopUI.ToString());
+            OnlyShowLastUI(ViewLayer.DialogLayer.ToString());
         }
 
-        [MenuItem("GameObject/BM工具/只显示最后一个TipsUI", priority = 3)]
+        [MenuItem("GameObject/BM工具/只显示最后一个Tips消息", priority = 3)]
         public static void OnlyShowLastTipsUI()
         {
-            OnlyShowLastUI(ViewLayer.TipsUI.ToString());
+            OnlyShowLastUI(ViewLayer.TipsLayer.ToString());
         }
 
         public static void OnlyShowLastUI(string _rootName)
@@ -562,7 +562,7 @@ namespace Rain.UI.Editor
         {
             get
             {
-                return Application.dataPath + "/RainFramework/Editor/UI/AutoCreator/UIView.yaml";
+                return Application.dataPath + "/AssetBundles/Art/Resources/Config/UIViewConfig.yaml";
             }
         }
 
@@ -613,7 +613,7 @@ namespace Rain.UI.Editor
                   .WithNamingConvention(CamelCaseNamingConvention.Instance)
                   .Build();
             UIViewConfig UIViewConfig = deserializer.Deserialize<UIViewConfig>(config);
-            Utility.Dump(UIViewConfig);
+            Utility.Log(UIViewConfig);
             //创建模板
             string template = File.ReadAllText(UIViewTemplatePath);
             Template temp = Template.Parse(template);

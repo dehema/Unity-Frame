@@ -4,7 +4,7 @@ namespace Rain.UI
 {
     public class UIViewConfig
     {
-        public Dictionary<string, ViewLayerModel> layer;
-        public Dictionary<string, ViewConfigModel> view;
+        public Dictionary<string, LayerConfig> layer;
+        public Dictionary<string, ViewConfig> view;
     }
 }

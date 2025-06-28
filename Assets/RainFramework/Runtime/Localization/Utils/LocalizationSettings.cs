@@ -26,16 +26,16 @@ namespace Rain.Core
 				return definition.currentLanguageName;
 			}
 #else
-			Definition definition = StorageManager.Instance.GetObject<Definition>(LocalizationConst.CurrentLanguageKey, true);
+			Definition definition = StorageManager.Ins.GetObject<Definition>(LocalizationConst.CurrentLanguageKey, true);
 			if (definition == null)
 			{
-				Localization.Instance.CurrentLanguageName = Application.systemLanguage.ToString();
+				Localization.Ins.CurrentLanguageName = Application.systemLanguage.ToString();
 			}
 			else
 			{
-				Localization.Instance.CurrentLanguageName = definition.currentLanguageName;
+				Localization.Ins.CurrentLanguageName = definition.currentLanguageName;
 			}
-			return Localization.Instance.CurrentLanguageName;
+			return Localization.Ins.CurrentLanguageName;
 #endif
 		}
 
@@ -46,9 +46,9 @@ namespace Rain.Core
 			var json = JsonUtility.ToJson(definition);
 			UnityEditor.EditorPrefs.SetString(Application.dataPath.GetHashCode() + LocalizationConst.CurrentLanguageKey, json);
 #else
-			var definition = new Definition { currentLanguageName = Localization.Instance.CurrentLanguageName };
-			StorageManager.Instance.SetObject<Definition>(LocalizationConst.CurrentLanguageKey, definition, true);
+			var definition = new Definition { currentLanguageName = Localization.Ins.CurrentLanguageName };
+			StorageManager.Ins.SetObject<Definition>(LocalizationConst.CurrentLanguageKey, definition, true);
 #endif
-		}
-	}
+        }
+    }
 }

@@ -9,13 +9,14 @@ public partial class DebugView : BaseView
 {
     ObjPool btUIPool;
 
-    public override void Init(params object[] _params)
+    public override void Init(object[] _params = null)
     {
         base.Init(_params);
         InitUIPool();
         viewList_Rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, canvas.pixelRect.height / 2 - 140);
         btStartGame_Button.SetButton(OnClickStartGame);
         btTips_Button.SetButton(() => { Utility.PopTips(DateTime.Now.ToString()); });
+        Utility.Log(_params);
     }
 
     public void OnClickStartGame()
@@ -28,7 +29,8 @@ public partial class DebugView : BaseView
     private void InitUIPool()
     {
         btUIPool = PoolMgr.Ins.CreatePool(btUIItem);
-        foreach (var uiConfig in UIMgr.Ins.allViewConfig.view)
+        UIViewConfig allViewConfig = ConfigMgr.Ins.uiViewConfig;
+        foreach (var uiConfig in allViewConfig.view)
         {
             string uiName = uiConfig.Key;
             GameObject item = btUIPool.Get();
@@ -51,7 +53,7 @@ public partial class DebugView : BaseView
         }
     }
 
-    private string GetUINameInChinese(KeyValuePair<string, ViewConfigModel> _config)
+    private string GetUINameInChinese(KeyValuePair<string, ViewConfig> _config)
     {
         string name = _config.Value.comment;
         if (string.IsNullOrEmpty(name))

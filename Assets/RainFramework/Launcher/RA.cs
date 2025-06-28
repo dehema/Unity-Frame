@@ -35,6 +35,7 @@ namespace Rain.Launcher
         private static F8Tween _tween;
         // UI界面管理-->使用了资产模块
         private static UIManager _ui;
+        private static UIMgr _uiMgr;
         // 本地化-->使用了配置模块-->使用了资产模块
         private static Localization _localization;
         // SDK管理-->使用了消息模块
@@ -248,6 +249,21 @@ namespace Rain.Launcher
             {
                 if (_ui == null)
                     _ui = value;
+            }
+        }
+
+        public static UIMgr UIMgr
+        {
+            get
+            {
+                if (_uiMgr == null)
+                    _uiMgr = ModuleCenter.CreateModule<UIMgr>();
+                return _uiMgr;
+            }
+            set
+            {
+                if (_uiMgr == null)
+                    _uiMgr = value;
             }
         }
 

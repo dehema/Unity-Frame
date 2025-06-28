@@ -1,14 +1,14 @@
-﻿Library
+﻿Assets/StreamingAssets/build_info
+Assets/StreamingAssets/AssetBundles
+Library
 *.vsconfig
 *.csproj
 Logs
 Unity-Frame.sln
-Assets/StreamingAssets/build_info
 Temp
 obj
 .vs
 *.dwlt
-Assets/StreamingAssets/AssetBundles
 HybridCLRData
 HybridCLRData/hybridclr_repo
 HybridCLRData/il2cpp_plus_repo

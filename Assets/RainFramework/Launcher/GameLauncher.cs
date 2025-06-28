@@ -10,36 +10,45 @@ namespace Rain.Launcher
     {
         IEnumerator Start()
         {
+            Application.targetFrameRate = 60;
             // 初始化模块中心
             ModuleCenter.Initialize(this);
 
             // 初始化版本
-            RA.HotUpdate = ModuleCenter.CreateModule<HotUpdateManager>();
+            //RA.HotUpdate = ModuleCenter.CreateModule<HotUpdateManager>();
 
-            // 按顺序创建模块，可按需添加
-            RA.Message = ModuleCenter.CreateModule<MessageManager>();
-            RA.Input = ModuleCenter.CreateModule<InputManager>(new DefaultInputHelper());
-            RA.Storage = ModuleCenter.CreateModule<StorageManager>();
-            RA.Timer = ModuleCenter.CreateModule<TimerMgr>();
-            RA.Procedure = ModuleCenter.CreateModule<ProcedureManager>();
-            RA.Network = ModuleCenter.CreateModule<NetworkManager>();
-            RA.FSM = ModuleCenter.CreateModule<FSMManager>();
-            RA.GameObjectPool = ModuleCenter.CreateModule<GameObjectPool>();
-            RA.Asset = ModuleCenter.CreateModule<AssetManager>();
+            //// 按顺序创建模块，可按需添加
+            //RA.Message = ModuleCenter.CreateModule<MessageManager>();
+            //RA.Input = ModuleCenter.CreateModule<InputManager>(new DefaultInputHelper());
+            //RA.Storage = ModuleCenter.CreateModule<StorageManager>();
+            //RA.Timer = ModuleCenter.CreateModule<TimerMgr>();
+            //RA.Procedure = ModuleCenter.CreateModule<ProcedureManager>();
+            //RA.Network = ModuleCenter.CreateModule<NetworkManager>();
+            //RA.FSM = ModuleCenter.CreateModule<FSMManager>();
+            //RA.GameObjectPool = ModuleCenter.CreateModule<GameObjectPool>();
+            //RA.Asset = ModuleCenter.CreateModule<AssetManager>();
 #if UNITY_WEBGL
             yield return AssetBundleManager.Instance.LoadAssetBundleManifest(); // WebGL专用，如果游戏中没有使用任何AB包加载资源，可以删除此方法的调用！
 #endif
-            RA.Config = ModuleCenter.CreateModule<F8DataManager>();
-            RA.Audio = ModuleCenter.CreateModule<AudioManager>();
-            RA.Tween = ModuleCenter.CreateModule<F8Tween>();
-            RA.UI = ModuleCenter.CreateModule<UIManager>();
+            //RA.Config = ModuleCenter.CreateModule<F8DataManager>();
+            //RA.Audio = ModuleCenter.CreateModule<AudioManager>();
+            //RA.Tween = ModuleCenter.CreateModule<F8Tween>();
+            //RA.UI = ModuleCenter.CreateModule<UIManager>();
+            RA.UIMgr = ModuleCenter.CreateModule<UIMgr>();
 #if UNITY_WEBGL
             yield return F8DataManager.Instance.LoadLocalizedStringsIEnumerator(); // WebGL专用
 #endif
-            RA.Local = ModuleCenter.CreateModule<Localization>();
-            RA.SDK = ModuleCenter.CreateModule<SDKManager>();
-            RA.Download = ModuleCenter.CreateModule<DownloadManager>();
-            RA.LogWriter = ModuleCenter.CreateModule<F8LogWriter>();
+            //RA.Local = ModuleCenter.CreateModule<Localization>();
+            //RA.SDK = ModuleCenter.CreateModule<SDKManager>();
+            //RA.Download = ModuleCenter.CreateModule<DownloadManager>();
+            //RA.LogWriter = ModuleCenter.CreateModule<F8LogWriter>();
+
+            ConfigMgr.Ins.Init();
+            ConfigMgr.Ins.LoadAllConfig();
+            DataMgr.Ins.Load();
+            LangMgr.Ins.Init();
+            UIMgr.Ins.Init(ConfigMgr.Ins.uiViewConfig);
+
 
             StartGame();
             yield break;
@@ -48,7 +57,21 @@ namespace Rain.Launcher
         // 开始游戏
         public void StartGame()
         {
-            
+
+            if (Application.isEditor)
+            {
+                Application.runInBackground = true;
+            }
+            if (Application.isEditor)
+            {
+                UIMgr.Ins.OpenViewAsync<DebugView>(new object[3] { 123, true, "hello world" }, () => { Debug.Log("DebugView生成完毕"); });
+                Utility.Log("hello world");
+            }
+            else
+            {
+                SceneMgr.Ins.ChangeScene(SceneID.FPSDemo);
+            }
+
         }
 
         void Update()
@@ -67,6 +90,14 @@ namespace Rain.Launcher
         {
             // 更新模块
             ModuleCenter.FixedUpdate();
+        }
+
+        private void OnApplicationPause(bool pause)
+        {
+            if (!pause && !Application.isEditor)
+            {
+                DataMgr.Ins.SaveGameData();
+            }
         }
     }
 }

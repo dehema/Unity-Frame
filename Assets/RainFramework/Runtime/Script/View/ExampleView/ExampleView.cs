@@ -37,10 +37,6 @@ public partial class ExampleView : ExampleViewParent
         //SetTimeOut(th => { Debug.LogError("This is a view timer!"); }, 2);
         //Timer.Ins.SetTimeOut(() => { Debug.LogError("This is a common timer!"); }, 2);
         DataBind(DataMgr.Ins.playerData.gold, dm => { goldNum_Text.text = dm.value.ToString(); });
-        Utility.Dump(Utility.GetSetting("key1"));
-        Utility.Dump(Utility.GetSetting<int>("key2"));
-        Utility.Dump(Utility.GetSetting<int[]>("key3"));
-        Utility.Dump(Utility.GetSetting<Dictionary<int, int>>("key4"));
     }
 
     public override void OnClose(Action _cb)

@@ -13,6 +13,7 @@ public class ConfigMgr : MonoSingleton<ConfigMgr>
     public AllUnitConfig allUnitConfig;
     public AllCityConfig allCityConfig;
     public WorldConfig worldConfig;
+    public UIViewConfig uiViewConfig;
 
     public void Init()
     {
@@ -20,6 +21,7 @@ public class ConfigMgr : MonoSingleton<ConfigMgr>
 
     public void LoadAllConfig(bool _localConfig = true)
     {
+        uiViewConfig = LoadViewConfig(); ;
         imageTextMix = LoadConfig<ImageTextMixConfig>("ImageTextMix");
         settingConfig = LoadConfig<GameSettingConfig>("Setting");
         allUnitConfig = LoadConfig<AllUnitConfig>("Unit");
@@ -71,17 +73,25 @@ public class ConfigMgr : MonoSingleton<ConfigMgr>
     /// 读取UI配置
     /// </summary>
     /// <returns></returns>
-    public UIViewConfig LoadUIConfig()
+    public UIViewConfig LoadViewConfig()
     {
-        Utility.Log("开始读取UI配置");
+        if (uiViewConfig != null)
+        {
+            return uiViewConfig;
+        }
+        Debug.Log("开始读取UI配置");
         string configPath = UIViewConfigPath;
         string config = Resources.Load<TextAsset>(configPath).text;
         var deserializer = new DeserializerBuilder()
               .WithNamingConvention(CamelCaseNamingConvention.Instance)
               .Build();
-        Utility.Dump(config);
-        UIViewConfig UIViewConfig = deserializer.Deserialize<UIViewConfig>(config);
-        return UIViewConfig;
+        Utility.Log(config);
+        uiViewConfig = deserializer.Deserialize<UIViewConfig>(config);
+        foreach (var item in uiViewConfig.view)
+        {
+            item.Value.viewName = item.Key;
+        }
+        return uiViewConfig;
     }
 
     /// <summary>

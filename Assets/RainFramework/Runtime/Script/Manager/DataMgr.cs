@@ -34,7 +34,7 @@ public class DataMgr : Singleton<DataMgr>
         else
         {
             Dictionary<string, object> dict = JsonConvert.DeserializeObject<Dictionary<string, object>>(playerDataStr);
-            Utility.Dump("-------------------------------玩家数据--------------------------------");
+            Debug.Log("-------------------------------玩家数据--------------------------------");
             playerData.SetVal(dict);
         }
         InitGameData();

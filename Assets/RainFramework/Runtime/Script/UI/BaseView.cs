@@ -17,14 +17,14 @@ namespace Rain.UI
         public Canvas canvas { get { if (_canvas == null) _canvas = GetComponent<Canvas>(); return _canvas; } }
         [HideInInspector]
         public CanvasGroup canvasGroup;
-        public ViewConfigModel viewConfig;
+        public ViewConfig viewConfig;
         private Image __imgBg;
         private RectTransform __content;
 
-        public virtual void Init(params object[] _params)
+        public virtual void Init(object[] _params = null)
         {
             _viewName = GetType().ToString();
-            Utility.Log(_viewName + ".Init()", gameObject);
+            Utility.Log(_viewName + ".Init()");
             //canvas
             canvas.renderMode = RenderMode.ScreenSpaceCamera;
             canvas.worldCamera = Camera.main;
@@ -63,7 +63,7 @@ namespace Rain.UI
             }
         }
 
-        public virtual void OnOpen(params object[] _params)
+        public virtual void OnOpen(object[] _params = null)
         {
             //Utility.Log(_viewName + ".OnOpen()", gameObject);
             if (viewConfig.showMethod == ViewShowMethod.pop)
