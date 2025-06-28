@@ -558,27 +558,36 @@ namespace Rain.UI.Editor
         /// 获取UIView配置Yaml文件路径
         /// </summary>
         /// <returns></returns>
-        public string GetUIViewConfigPath()
+        public string UIViewConfigPath
         {
-            return Application.dataPath + "/Framework/Resources/Config/UIView.yaml";
+            get
+            {
+                return Application.dataPath + "/RainFramework/Editor/UI/AutoCreator/UIView.yaml";
+            }
         }
 
         /// <summary>
         /// 获取UIView配置Yaml文件路径
         /// </summary>
         /// <returns></returns>
-        public string GetUIViewTemplatePath()
+        public string UIViewTemplatePath
         {
-            return Application.dataPath + "/Framework/Script/Config/UIViewGenTemplate.txt";
+            get
+            {
+                return Application.dataPath + "/RainFramework/Editor/UI/AutoCreator/UIViewGenTemplate.txt";
+            }
         }
 
         /// <summary>
         /// 获取UIView配置Yaml文件路径
         /// </summary>
         /// <returns></returns>
-        public string GetUIViewUIViewGenPath()
+        public string UIViewUIViewGenPath
         {
-            return Application.dataPath + "/Framework/Script/Config/UIViewGen.cs";
+            get
+            {
+                return Application.dataPath + "/RainFramework/Runtime/Script/Config/UIViewGen.cs";
+            }
         }
 
         /// <summary>
@@ -586,7 +595,7 @@ namespace Rain.UI.Editor
         /// </summary>
         public void OpenUIViewConfig()
         {
-            EditorUtility.OpenWithDefaultApp(GetUIViewConfigPath());
+            EditorUtility.OpenWithDefaultApp(UIViewConfigPath);
         }
 
         /// <summary>
@@ -594,20 +603,19 @@ namespace Rain.UI.Editor
         /// </summary>
         public void ExportViewConfig()
         {
-            string configPath = GetUIViewConfigPath();
-            if (!File.Exists(configPath))
+            if (!File.Exists(UIViewConfigPath))
             {
                 Debug.LogError("找不到UIView.yaml文件");
                 return;
             }
-            string config = File.ReadAllText(configPath);
+            string config = File.ReadAllText(UIViewConfigPath);
             var deserializer = new DeserializerBuilder()
                   .WithNamingConvention(CamelCaseNamingConvention.Instance)
                   .Build();
             UIViewConfig UIViewConfig = deserializer.Deserialize<UIViewConfig>(config);
             Utility.Dump(UIViewConfig);
             //创建模板
-            string template = File.ReadAllText(GetUIViewTemplatePath());
+            string template = File.ReadAllText(UIViewTemplatePath);
             Template temp = Template.Parse(template);
             List<object> layerConfigList = new List<object>();
             foreach (var item in UIViewConfig.layer)
@@ -621,7 +629,7 @@ namespace Rain.UI.Editor
             }
             Hash hash = Hash.FromAnonymousObject(new { layer = layerConfigList, view = viewList });
             string result = temp.Render(hash);
-            File.WriteAllText(GetUIViewUIViewGenPath(), result);
+            File.WriteAllText(UIViewUIViewGenPath, result);
             AssetDatabase.Refresh();
         }
     }

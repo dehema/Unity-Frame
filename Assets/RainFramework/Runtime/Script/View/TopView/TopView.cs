@@ -34,29 +34,29 @@ public partial class TopView : BaseView
             UIUtility.DONumVal(oldGold, DataMgr.Ins.playerData.gold.Value, _num =>
             {
                 int num = (int)_num;
-                goldNum_Text.text = Utility.GetValByThousands(num);
+                ui.goldNum_Text.text = Utility.GetValByThousands(num);
                 oldGold = num;
             });
         });
-        DataMgr.Ins.playerData.level.Bind(dm => { txtLevel_Text.text = dm.value.ToString(); });
+        DataMgr.Ins.playerData.level.Bind(dm => { ui.txtLevel_Text.text = dm.value.ToString(); });
         DataMgr.Ins.playerData.exp.Bind(dm =>
         {
             int num = (int)dm.value;
             int nextExp = 1000;
-            txtExp_Text.text = $"{num}/{nextExp}";
+            ui.txtExp_Text.text = $"{num}/{nextExp}";
             if (num > oldExp)
             {
-                expSlider_Slider.DOValue(num / (float)nextExp, 1);
+                ui.expSlider_Slider.DOValue(num / (float)nextExp, 1);
             }
             else
             {
-                expSlider_Slider.value = num / (float)nextExp;
+                ui.expSlider_Slider.value = num / (float)nextExp;
             }
             oldExp = num;
         });
         DataMgr.Ins.playerData.playerName.Bind(dm =>
         {
-            txtName_Text.text = dm.value.ToString();
+            ui.txtName_Text.text = dm.value.ToString();
         });
     }
 
@@ -65,11 +65,11 @@ public partial class TopView : BaseView
         isShow = _isShow;
         if (isShow)
         {
-            top_Rect.DOAnchorPos(Vector2.zero, showDuration);
+            ui.top_Rect.DOAnchorPos(Vector2.zero, showDuration);
         }
         else
         {
-            top_Rect.DOAnchorPos(new Vector2(0, top_Rect.rect.height), showDuration).onComplete = () =>
+            ui.top_Rect.DOAnchorPos(new Vector2(0, ui.top_Rect.rect.height), showDuration).onComplete = () =>
             {
                 _closeCB?.Invoke();
             };

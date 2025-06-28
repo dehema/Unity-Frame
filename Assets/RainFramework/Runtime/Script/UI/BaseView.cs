@@ -165,5 +165,10 @@ namespace Rain.UI
                 item.UnBind();
             }
         }
+
+        public bool IsShow
+        {
+            get { return isActiveAndEnabled; }
+        }
     }
 }

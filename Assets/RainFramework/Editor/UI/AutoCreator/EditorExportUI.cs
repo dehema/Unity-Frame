@@ -83,15 +83,15 @@ namespace Rain.UI.Editor
             string tempViewUIContent = string.Empty;
             if (isExportView)
             {
-                tempViewUIContent = File.ReadAllText(GetExportViewScriptTemplatePath());
+                tempViewUIContent = File.ReadAllText(ExportViewScriptTemplatePath);
             }
             else if (superClassName == "PoolItemBase")
             {
-                tempViewUIContent = File.ReadAllText(GetExportPoolItemBaseTemplatePath());
+                tempViewUIContent = File.ReadAllText(ExportPoolItemBaseTemplatePath);
             }
             else
             {
-                tempViewUIContent = File.ReadAllText(GetExportUIWidgetTemplatePath());
+                tempViewUIContent = File.ReadAllText(ExportUIWidgetTemplatePath);
             }
             tempViewUIContent = tempViewUIContent.Replace("#ScriptName#", viewName);
             //替换_LoadUI函数里find相关代码
@@ -258,27 +258,36 @@ namespace Rain.UI.Editor
         /// 获取自动导出View上所有UI模板脚本
         /// </summary>
         /// <returns></returns>
-        public static string GetExportViewScriptTemplatePath()
+        public static string ExportViewScriptTemplatePath
         {
-            return Application.dataPath + "/Framework/Script/View/ExportViewScriptTemplate.txt";
+            get
+            {
+                return Application.dataPath + "/RainFramework/Editor/UI/AutoCreator/ExportViewScriptTemplate.txt";
+            }
         }
 
         /// <summary>
         /// 获取自动导出Prefab上所有UI模板脚本
         /// </summary>
         /// <returns></returns>
-        public static string GetExportUIWidgetTemplatePath()
+        public static string ExportUIWidgetTemplatePath
         {
-            return Application.dataPath + "/Framework/Script/View/ExportUIWidgetTemplate.txt";
+            get
+            {
+                return Application.dataPath + "/RainFramework/Editor/UI/AutoCreator/ExportUIWidgetTemplate.txt";
+            }
         }
 
         /// <summary>
         /// 获取自动导出对象池Item上所有UI模板脚本
         /// </summary>
         /// <returns></returns>
-        public static string GetExportPoolItemBaseTemplatePath()
+        public static string ExportPoolItemBaseTemplatePath
         {
-            return Application.dataPath + "/Framework/Script/View/ExportPoolItemBaseTemplate.txt";
+            get
+            {
+                return Application.dataPath + "/RainFramework/Editor/UI/AutoCreator/ExportPoolItemBaseTemplate.txt";
+            }
         }
 
         /// <summary>

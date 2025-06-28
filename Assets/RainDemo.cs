@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Rain.Core;
 using UnityEngine.UI;
+using static Rain.Core.AssetManager;
 
 public class RainDemo : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class RainDemo : MonoBehaviour
     void Start()
     {
         imgBuild = transform.Find("imgBuild").GetComponent<Image>();
-        Sprite sprite = AssetManager.Ins.Load<Sprite>("UI/Building/beastmen_centigors1");
+        Sprite sprite = AssetManager.Ins.Load<Sprite>("beastmen_centigors1");
         //Sprite sprite = Resources.Load<Sprite>("UI/Building/beastmen_centigors1");
         imgBuild.sprite = sprite;
         //ÐÂÄ£¿é

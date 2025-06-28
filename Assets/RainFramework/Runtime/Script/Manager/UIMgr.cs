@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Rain.Core;
 using UnityEngine;
 
@@ -54,45 +54,92 @@ namespace Rain.UI
             return OpenView(viewName, _params) as T;
         }
 
+        /// <summary>
+        /// 打开指定名称的UI视图
+        /// </summary>
+        /// <param name="_viewName">视图名称</param>
+        /// <param name="_params">传递给视图的参数</param>
+        /// <returns>打开的UI视图</returns>
         public BaseUI OpenView(string _viewName, params object[] _params)
         {
-            //Utility.Log("UIMgr.打开UI:" + _viewName);
-            if (allShowView.ContainsKey(_viewName))
+            // 尝试获取已存在的视图
+            BaseView view = null;
+            allView.TryGetValue(_viewName, out view);
+
+            // 如果视图已存在且正在显示，则直接返回
+            if (view != null && view.IsShow)
             {
-                //Utility.Log("重复打开UI:" + _viewName);
-                BaseView _baseView = allShowView[_viewName];
-                _baseView.gameObject.SetActive(true);
-                _baseView.OnOpen(_params);
-                return _baseView;
+                return view;
             }
-            GameObject view;
-            BaseView baseView;
-            if (allView.ContainsKey(_viewName))
+
+            // 如果视图不存在，则创建新视图
+            if (view == null)
             {
-                view = allView[_viewName].gameObject;
-                baseView = view.GetComponent<BaseView>();
-                baseView.gameObject.SetActive(true);
+                try
+                {
+                    // 构建预制体路径并加载
+                    string prefabPath = $"{uiPrefabPath}{_viewName}/{_viewName}";
+                    GameObject prefab = Resources.Load<GameObject>(prefabPath);
+                    
+                    if (prefab == null)
+                    {
+                        Debug.LogError($"无法加载UI预制体: {prefabPath}");
+                        return null;
+                    }
+                    
+                    // 实例化并设置视图
+                    GameObject viewGo = Instantiate(prefab);
+                    viewGo.name = _viewName;
+                    
+                    view = viewGo.GetComponent<BaseView>();
+                    if (view == null)
+                    {
+                        Debug.LogError($"UI预制体 {_viewName} 没有挂载BaseView组件");
+                        Destroy(viewGo);
+                        return null;
+                    }
+                    
+                    // 设置视图配置和父节点
+                    if (allViewConfig.view.TryGetValue(_viewName, out var config))
+                    {
+                        view.viewConfig = config;
+                        view.transform.SetParent(layerRoots[view.viewConfig.layer]);
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"未找到视图 {_viewName} 的配置");
+                    }
+                    
+                    // 添加到视图字典
+                    allView[_viewName] = view;
+                    view.Init(_params);
+                }
+                catch (System.Exception e)
+                {
+                    Debug.LogError($"创建UI视图 {_viewName} 时发生错误: {e.Message}");
+                    return null;
+                }
             }
             else
             {
-                ///第一次创建
-                view = Instantiate(Resources.Load<GameObject>(uiPrefabPath + _viewName + "/" + _viewName));
-                view.name = _viewName;
-                baseView = view.GetComponent<BaseView>();
-                baseView.viewConfig = allViewConfig.view[_viewName];
-                baseView.transform.SetParent(layerRoots[baseView.viewConfig.layer]);
+                // 如果视图已存在但未显示，则激活它
+                view.gameObject.SetActive(true);
             }
-            baseView.canvas.sortingOrder = _layerMax;
-            baseView.transform.SetAsLastSibling();
-            allShowView[_viewName] = baseView;
+
+            // 设置排序顺序和层级
+            view.canvas.sortingOrder = _layerMax;
+            view.transform.SetAsLastSibling();
+            
+            // 添加到显示中的视图字典
+            allShowView[_viewName] = view;
+            
+            // 刷新所有视图层级
             RefreshAllViewLayer();
-            if (!allView.ContainsKey(_viewName))
-            {
-                allView[_viewName] = baseView;
-                baseView.Init(_params);
-            }
-            baseView.OnOpen(_params);
-            return baseView;
+            
+            // 调用视图的打开方法
+            view.OnOpen(_params);
+            
+            return view;
         }
 
         public void CloseView<T>() where T : BaseView

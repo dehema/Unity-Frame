@@ -59,12 +59,12 @@ public class ConfigMgr : MonoSingleton<ConfigMgr>
     }
 
     /// <summary>
-    /// 获取UIView配置Yaml文件路径
+    /// 获取UIView配置Json文件路径
     /// </summary>
     /// <returns></returns>
-    public string GetUIViewConfigPath()
+    public string UIViewConfigPath
     {
-        return "Config/UIView";
+        get { return "Config/UIViewConfig"; }
     }
 
     /// <summary>
@@ -74,7 +74,7 @@ public class ConfigMgr : MonoSingleton<ConfigMgr>
     public UIViewConfig LoadUIConfig()
     {
         Utility.Log("开始读取UI配置");
-        string configPath = GetUIViewConfigPath();
+        string configPath = UIViewConfigPath;
         string config = Resources.Load<TextAsset>(configPath).text;
         var deserializer = new DeserializerBuilder()
               .WithNamingConvention(CamelCaseNamingConvention.Instance)

@@ -20,6 +20,7 @@ public class GameMgr : MonoBehaviour
         RA.Message = ModuleCenter.CreateModule<MessageManager>();
         RA.Audio = ModuleCenter.CreateModule<AudioManager>();
         RA.Asset = ModuleCenter.CreateModule<AssetManager>();
+        RA.UI = ModuleCenter.CreateModule<UIManager>();
     }
 
     private void Start()
@@ -43,7 +44,7 @@ public class GameMgr : MonoBehaviour
             StartGame();
         }
 
-
+        //RA.UI.Open()
     }
 
     private void Update()
