@@ -114,12 +114,20 @@ namespace Rain.UI.Editor
 
         public static GameObject CreateViewPrefab(string _viewName)
         {
-            if (Resources.Load<GameObject>(UIMgr.uiPrefabPath + _viewName))
+            string prefabPath = $"View/{_viewName}/{_viewName}";
+            if (Resources.Load<GameObject>(prefabPath))
             {
-                EditorUtility.DisplayDialog("错误", $"已存在同名预制体--->{UIMgr.uiPrefabPath + _viewName}", "ok");
+                EditorUtility.DisplayDialog("错误", $"已存在同名预制体--->{prefabPath}", "ok");
                 return null;
             }
-            GameObject view = PrefabUtility.InstantiatePrefab(Resources.Load<GameObject>(UIMgr.uiPrefabPath + "TemplateView")) as GameObject;
+            const string TemplateViewPath = "View/TemplateView/TemplateView";
+            GameObject originPrefab = Resources.Load<GameObject>(TemplateViewPath);
+            if (originPrefab == null)
+            {
+                EditorUtility.DisplayDialog("错误", $"该路径下找不到预制体TemplateView.prefab--->{TemplateViewPath}", "ok");
+                return null;
+            }
+            GameObject view = PrefabUtility.InstantiatePrefab(originPrefab) as GameObject;
             PrefabUtility.UnpackPrefabInstance(view, PrefabUnpackMode.OutermostRoot, InteractionMode.AutomatedAction);
             view.name = _viewName;
             view.transform.SetAsLastSibling();
@@ -127,8 +135,7 @@ namespace Rain.UI.Editor
             canvas.renderMode = RenderMode.ScreenSpaceCamera;
             canvas.worldCamera = Camera.main;
             CanvasScaler canvasScaler = view.GetComponent<CanvasScaler>();
-            canvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
-            canvasScaler.referenceResolution = new Vector2(1920, 1080);
+            canvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ConstantPixelSize;
             canvasScaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
             AddTempFileLabels(fieldNeedExportViewUI, _viewName);
             return view;
@@ -138,7 +145,7 @@ namespace Rain.UI.Editor
         {
             try
             {
-                _view.AddComponent(Type.GetType($"{_viewName}, Assembly-CSharp"));
+                _view.AddComponent(Type.GetType($"{_viewName}, Rain.UI"));
             }
             catch (Exception)
             {
@@ -147,8 +154,7 @@ namespace Rain.UI.Editor
             }
             string sceneName = EditorSceneManager.GetActiveScene().name;
             GameObject viewGo = GameObject.Find(sceneName);
-            string relativePath = "/Resources/View/";
-            string dirPath = Application.dataPath + relativePath;
+            string dirPath = Application.dataPath + $"/AssetBundles/Art/Resources/View/{_viewName}/";
             if (!Directory.Exists(dirPath))
                 Directory.CreateDirectory(dirPath);
             string prefabPath = dirPath + sceneName + ".prefab";
@@ -165,7 +171,7 @@ namespace Rain.UI.Editor
         //创建脚本
         public static bool CreateViewScript(string _viewName)
         {
-            string dirPath = Path.Combine(Application.dataPath, "Script", "View", _viewName);
+            string dirPath = Path.Combine(Application.dataPath, "HotUpdateScripts/UI/View", _viewName);
             if (!Directory.Exists(dirPath))
                 Directory.CreateDirectory(dirPath);
             string viewPath = Path.Combine(dirPath, $"{_viewName}.cs");
@@ -211,7 +217,7 @@ namespace Rain.UI.Editor
         /// <returns></returns>
         public static string GetAutoCreateViewTemplatePath()
         {
-            return Application.dataPath + "/Framework/Script/View/AutoCreateViewTemplate.txt";
+            return Application.dataPath + "/RainFramework/Editor/UI/AutoCreator/AutoCreateViewTemplate.txt";
         }
     }
 }

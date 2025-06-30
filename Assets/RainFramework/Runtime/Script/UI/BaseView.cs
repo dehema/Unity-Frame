@@ -21,7 +21,7 @@ namespace Rain.UI
         private Image __imgBg;
         private RectTransform __content;
 
-        public virtual void Init(object[] _params = null)
+        public virtual void Init(IViewParams viewParams = null)
         {
             _viewName = GetType().ToString();
             Utility.Log(_viewName + ".Init()");
@@ -44,7 +44,6 @@ namespace Rain.UI
                 Button bt = __imgBg.GetComponent<Button>();
                 Tools.Ins.SetButton(bt, Close);
             }
-            _LoadUI();
         }
 
         internal CanvasGroup CanvasGroup
@@ -63,7 +62,7 @@ namespace Rain.UI
             }
         }
 
-        public virtual void OnOpen(object[] _params = null)
+        public virtual void OnOpen(IViewParams viewParams = null)
         {
             //Utility.Log(_viewName + ".OnOpen()", gameObject);
             if (viewConfig.showMethod == ViewShowMethod.pop)
@@ -101,12 +100,6 @@ namespace Rain.UI
         public void Close()
         {
             UIMgr.Ins.CloseView(_viewName);
-        }
-
-
-        internal virtual void _LoadUI()
-        {
-
         }
 
         /// <summary>

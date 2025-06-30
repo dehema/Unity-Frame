@@ -13,9 +13,4 @@ public partial class #ScriptName# : #Superclass#
 
     [Header("自动序列化组件")]
     [SerializeField] private SerializableUIComponents ui;
-
-    internal override void _LoadUI()    
-    {
-        base._LoadUI();
-    #Content#}
 }

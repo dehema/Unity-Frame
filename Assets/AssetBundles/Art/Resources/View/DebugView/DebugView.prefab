@@ -574,22 +574,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _viewName: 
   canvasGroup: {fileID: 0}
-  bg: {fileID: 0}
-  bg_Image: {fileID: 0}
-  bg_Button: {fileID: 0}
-  content: {fileID: 0}
-  content_Rect: {fileID: 0}
-  viewList: {fileID: 0}
-  viewList_Rect: {fileID: 0}
-  btUIItem: {fileID: 0}
-  closeAfterOpenView: {fileID: 0}
-  closeAfterOpenView_Toggle: {fileID: 0}
-  btStartGame: {fileID: 0}
-  btStartGame_Button: {fileID: 0}
-  btTips: {fileID: 0}
-  btTips_Button: {fileID: 0}
-  btEnterBattleField: {fileID: 0}
-  btEnterBattleField_Button: {fileID: 0}
+  ui:
+    bg: {fileID: 7266355615985632762}
+    bg_Image: {fileID: 2121380856191040803}
+    bg_Button: {fileID: 7067289874190833200}
+    content: {fileID: 4447781834842513245}
+    content_Rect: {fileID: 5929045175351109647}
+    viewList: {fileID: 8487003693736148045}
+    viewList_Rect: {fileID: 3224445259317070576}
+    btUIItem: {fileID: 3743322548111081522}
+    closeAfterOpenView: {fileID: 1844690094451600919}
+    closeAfterOpenView_Toggle: {fileID: 2494438506053475400}
+    btStartGame: {fileID: 4363052684424988446}
+    btStartGame_Button: {fileID: 7498734131401322209}
+    btTips: {fileID: 5941202508781440887}
+    btTips_Button: {fileID: 5426322543912255726}
+    btEnterBattleField: {fileID: 71455484538688749}
+    btEnterBattleField_Button: {fileID: 1129926815953943699}
 --- !u!223 &156559871119740553
 Canvas:
   m_ObjectHideFlags: 0

@@ -31,7 +31,7 @@ namespace Rain.Core
         /// <param name="subAssetName">子资产名称。</param>
         /// <param name="isLoadAll">是否加载全部资产</param>
         /// <returns>要完成扩展的对象列表。</returns>
-        public AssetBundle Load(string assetName, System.Type assetType, ref AssetManager.AssetInfo info, string subAssetName = null, bool isLoadAll = false)
+        public AssetBundle Load(string assetName, System.Type assetType, ref AssetMgr.AssetInfo info, string subAssetName = null, bool isLoadAll = false)
         {
             AssetBundle result;
 
@@ -93,7 +93,7 @@ namespace Rain.Core
         public AssetBundleLoader LoadAsync(
             string assetName,
             System.Type assetType,
-            AssetManager.AssetInfo info,
+            AssetMgr.AssetInfo info,
             string subAssetName = null,
             AssetBundleLoader.OnLoadFinished loadCallback = null,
             bool isLoadAll = false)
@@ -152,7 +152,7 @@ namespace Rain.Core
             return lastLoader;
         }
 
-        public IEnumerator LoadAsyncCoroutine(string assetName, System.Type assetType, AssetManager.AssetInfo info, string subAssetName = null, bool isLoadAll = false)
+        public IEnumerator LoadAsyncCoroutine(string assetName, System.Type assetType, AssetMgr.AssetInfo info, string subAssetName = null, bool isLoadAll = false)
         {
             List<string> assetBundlePaths = new List<string>(GetDependenciedAssetBundles(info.AbName));
 
@@ -892,7 +892,7 @@ namespace Rain.Core
             {
                 fullPath = AssetBundleHelper.GetAssetBundleFullName(null, AssetBundleHelper.SourceType.PACKAGE_PATH);
             }
-            else if (AssetManager.ForceRemoteAssetBundle)
+            else if (AssetMgr.ForceRemoteAssetBundle)
             {
                 fullPath = AssetBundleHelper.GetAssetBundleFullName(null, AssetBundleHelper.SourceType.REMOTE_ADDRESS);
             }
@@ -921,7 +921,7 @@ namespace Rain.Core
             {
                 fullPath = AssetBundleHelper.GetAssetBundleFullName(abName, AssetBundleHelper.SourceType.PACKAGE_PATH);
             }
-            else if (AssetManager.ForceRemoteAssetBundle)
+            else if (AssetMgr.ForceRemoteAssetBundle)
             {
                 fullPath = AssetBundleHelper.GetAssetBundleFullName(abName, AssetBundleHelper.SourceType.REMOTE_ADDRESS);
             }
@@ -992,7 +992,7 @@ namespace Rain.Core
                 yield break;
 #if UNITY_EDITOR
             manifestPath = Path.IsPathRooted(manifestPath) ? "file://" + manifestPath : manifestPath;
-            if (AssetManager.Ins.IsEditorMode)
+            if (AssetMgr.Ins.IsEditorMode)
                 yield break;
 #endif
             if (FileTools.IsLegalURI(manifestPath))
@@ -1034,7 +1034,7 @@ namespace Rain.Core
             if (AssetBundleMap.Mappings.Count == 0)
                 return;
 #if UNITY_EDITOR
-            if (AssetManager.Ins.IsEditorMode)
+            if (AssetMgr.Ins.IsEditorMode)
                 return;
 #endif
             string manifestPath = GetAssetBundlePathByAbName(URLSetting.GetPlatformName());

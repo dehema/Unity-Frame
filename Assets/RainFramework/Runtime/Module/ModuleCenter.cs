@@ -246,6 +246,7 @@ namespace Rain.Core
             // 检查类型是否是 MonoBehaviour 的子类
             if (typeof(MonoBehaviour).IsAssignableFrom(typeof(T)))
             {
+                //创建与脚本同名的对象，并挂载
                 GameObject obj = new GameObject(typeof(T).Name, typeof(T));
                 module = obj.GetComponent<T>();
             }

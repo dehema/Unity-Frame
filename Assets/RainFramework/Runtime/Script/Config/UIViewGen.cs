@@ -35,4 +35,5 @@ public class ViewName
 	public const string BattleVictoryView = "BattleVictoryView";
 	public const string BattleDefeatView = "BattleDefeatView";
 	public const string UIControlDemoView = "UIControlDemoView";
+	public const string DemoView = "DemoView";
 }

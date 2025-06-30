@@ -145,7 +145,7 @@ namespace Rain.UI
             }
             else
             {
-                GameObject res = AssetManager.Ins.Load<GameObject>(viewParams.PrefabPath);
+                GameObject res = AssetMgr.Ins.Load<GameObject>(viewParams.PrefabPath);
                 GameObject childNode = Instantiate(res, gameObject.transform, false);
                 childNode.name = viewParams.PrefabPath;
                 viewParams.Go = childNode;
@@ -173,7 +173,7 @@ namespace Rain.UI
             {
                 viewParams.UILoader = new UILoader();
                 viewParams.UILoader.Guid = viewParams.Guid;
-                AssetManager.Ins.LoadAsync<GameObject>(viewParams.PrefabPath, (res) =>
+                AssetMgr.Ins.LoadAsync<GameObject>(viewParams.PrefabPath, (res) =>
                 {
                     GameObject childNode = Instantiate(res, gameObject.transform, false);
                     childNode.name = viewParams.PrefabPath;

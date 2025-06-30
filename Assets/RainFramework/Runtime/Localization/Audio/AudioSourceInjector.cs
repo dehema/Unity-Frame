@@ -24,7 +24,7 @@ namespace Rain.Core
 			}
 			else if (localizedData is string textIDValue)
 			{
-				AssetManager.Ins.LoadAsync<AudioClip>(textIDValue, Play);
+				AssetMgr.Ins.LoadAsync<AudioClip>(textIDValue, Play);
 			}
 			
 			void Play(AudioClip clip)

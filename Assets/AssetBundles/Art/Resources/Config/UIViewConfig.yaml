@@ -109,6 +109,15 @@ view:
         layer: DialogLayer
         bgColor: "#000000B0"
     UIControlDemoView:
+        comment: UI组件示例
+        layer: NormalLayer
+        bgColor: "#000000ff"
+    DemoView:
         comment: UI示例
         layer: NormalLayer
         bgColor: "#000000ff"
+    CardMatchGameView:
+        comment: 翻卡牌
+        layer: NormalLayer
+        bgColor: "#000000ff"
+        

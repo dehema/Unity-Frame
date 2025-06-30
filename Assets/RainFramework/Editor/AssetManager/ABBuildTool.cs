@@ -331,7 +331,7 @@ namespace Rain.Core.Editor
                             .Select(path => Path.GetFileNameWithoutExtension(path))
                             .ToArray();
 
-                        fileNameWithoutExtension += AssetManager.DirSuffix;
+                        fileNameWithoutExtension += AssetMgr.DirSuffix;
 
                         if (tempNames.Contains(fileNameWithoutExtension))
                         {
@@ -447,7 +447,7 @@ namespace Rain.Core.Editor
                             .Select(path => Path.GetFileNameWithoutExtension(path))
                             .ToArray();
 
-                        fileNameWithoutExtension += AssetManager.DirSuffix;
+                        fileNameWithoutExtension += AssetMgr.DirSuffix;
 
                         if (tempNames.Contains(fileNameWithoutExtension))
                         {

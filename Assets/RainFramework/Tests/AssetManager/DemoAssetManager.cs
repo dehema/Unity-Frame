@@ -24,7 +24,7 @@ namespace Rain.Tests
             // assetName：资产名
             // subAssetName：子资产名，使用Multiple模式的Sprite图片则可使用
             // 指定加载模式REMOTE_ASSET_BUNDLE，加载远程AssetBundle资产，需要配置AssetRemoteAddress = "http://127.0.0.1:6789/remote"
-            Sprite sprite = RA.Asset.Load<Sprite>("PackForest01", "PackForest01_12", AssetManager.AssetAccessMode.REMOTE_ASSET_BUNDLE);
+            Sprite sprite = RA.Asset.Load<Sprite>("PackForest01", "PackForest01_12", AssetMgr.AssetAccessMode.REMOTE_ASSET_BUNDLE);
             
             // 加载此资源的全部资产
             RA.Asset.LoadAll("Cube");

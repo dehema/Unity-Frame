@@ -12,25 +12,6 @@ namespace Rain.Core
         {
         }
 
-        public Image GetResImage(ResType _resType)
-        {
-            TopView gamePanel = UIMgr.Ins.GetView<TopView>();
-            Image image = null;
-            switch (_resType)
-            {
-                case ResType.gold:
-                    //image = gamePanel.iconGold_Image;
-                    break;
-                case ResType.cash:
-                    //image = gamePanel.iconCash_Image;
-                    break;
-                case ResType.amazon:
-                    //image = gamePanel.iconAmazon_Image;
-                    break;
-            }
-            return image;
-        }
-
         /// <summary>
         /// 增加奖励
         /// </summary>  

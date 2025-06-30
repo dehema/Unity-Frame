@@ -3,7 +3,8 @@
     "rootNamespace": "",
     "references": [
         "Rain.Core",
-        "Rain.F8ExcelDataClass"
+        "Rain.F8ExcelDataClass",
+        "Rain.Common"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

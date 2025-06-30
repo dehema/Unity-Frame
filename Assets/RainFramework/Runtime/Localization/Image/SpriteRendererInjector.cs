@@ -21,7 +21,7 @@ namespace Rain.Core
             }
             else if (localizedData is string textIDValue)
             {
-                AssetManager.Ins.LoadAsync(textIDValue, typeof(Sprite), (asset) =>
+                AssetMgr.Ins.LoadAsync(textIDValue, typeof(Sprite), (asset) =>
                 {
                     if (asset is Texture2D texture)
                     {

@@ -127,12 +127,12 @@ namespace Rain.F8ExcelDataClass
 		[Preserve]
 		public T Load<T>(string name)
 		{
-			TextAsset textAsset = AssetManager.Ins.Load<TextAsset>(name);
+			TextAsset textAsset = AssetMgr.Ins.Load<TextAsset>(name);
 			if (textAsset == null)
 			{
 				return default(T);
 			}
-			AssetManager.Ins.Unload(name, false);
+			AssetMgr.Ins.Unload(name, false);
 			T obj = Util.LitJson.ToObject<T>(textAsset.text);
 			return obj;
 		}
@@ -140,12 +140,12 @@ namespace Rain.F8ExcelDataClass
 		[Preserve]
 		public IEnumerator LoadAsync<T>(string name, Action<T> callback)
 		{
-			var load = AssetManager.Ins.LoadAsyncCoroutine<TextAsset>(name);
+			var load = AssetMgr.Ins.LoadAsyncCoroutine<TextAsset>(name);
 			yield return load;
-			TextAsset textAsset = AssetManager.Ins.GetAssetObject<TextAsset>(name);
+			TextAsset textAsset = AssetMgr.Ins.GetAssetObject<TextAsset>(name);
 			if (textAsset != null)
 			{
-				AssetManager.Ins.Unload(name, false);
+				AssetMgr.Ins.Unload(name, false);
 				T obj = Util.LitJson.ToObject<T>(textAsset.text);
 				callback(obj);
 			}

@@ -55,7 +55,7 @@ namespace Rain.Core
 #endif
 			else if (localizedData is string textIDValue)
 			{
-				AssetManager.Ins.LoadAsync(textIDValue, (asset) =>
+				AssetMgr.Ins.LoadAsync(textIDValue, (asset) =>
 				{
 					if (asset is Font loadFont)
 					{

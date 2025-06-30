@@ -26,11 +26,11 @@ namespace Rain.Launcher
         // 游戏对象池
         private static GameObjectPool _gameObjectPool;
         // 资产管理
-        private static AssetManager _asset;
+        private static AssetMgr _asset;
         // 读取配置表-->使用了资产模块
         private static F8DataManager _config;
         // 音频管理-->使用了资产模块-->使用了游戏对象池模块-->使用了补间动画模块-->使用了时间模块
-        private static AudioManager _audio;
+        private static AudioMgr _audio;
         // 补间动画
         private static F8Tween _tween;
         // UI界面管理-->使用了资产模块
@@ -177,12 +177,12 @@ namespace Rain.Launcher
             }
         }
 
-        public static AssetManager Asset
+        public static AssetMgr Asset
         {
             get
             {
                 if (_asset == null)
-                    _asset = ModuleCenter.CreateModule<AssetManager>();
+                    _asset = ModuleCenter.CreateModule<AssetMgr>();
                 return _asset;
             }
             set
@@ -207,12 +207,12 @@ namespace Rain.Launcher
             }
         }
 
-        public static AudioManager Audio
+        public static AudioMgr Audio
         {
             get
             {
                 if (_audio == null)
-                    _audio = ModuleCenter.CreateModule<AudioManager>();
+                    _audio = ModuleCenter.CreateModule<AudioMgr>();
                 return _audio;
             }
             set

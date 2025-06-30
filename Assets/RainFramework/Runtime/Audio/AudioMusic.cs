@@ -45,7 +45,7 @@ namespace Rain.Core
             }
             else
             {
-                AssetManager.Ins.LoadAsync<AudioClip>(url, (asset) =>
+                AssetMgr.Ins.LoadAsync<AudioClip>(url, (asset) =>
                 {
                     _audios[url] = asset;
 
@@ -96,7 +96,7 @@ namespace Rain.Core
         {
             foreach (var item in _audios)
             {
-                AssetManager.Ins.Unload(item.Key, unloadAllLoadedObjects);
+                AssetMgr.Ins.Unload(item.Key, unloadAllLoadedObjects);
             }
             _audios.Clear();
         }

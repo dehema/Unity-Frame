@@ -5,6 +5,9 @@ using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
 using System.Text;
+using DG.Tweening.Core;
+using DG.Tweening.Plugins.Options;
+using DG.Tweening;
 using Newtonsoft.Json;
 using Rain.UI;
 using UnityEngine;
@@ -151,15 +154,6 @@ namespace Rain.Core
             {
                 item.GetComponent<ParticleSystemRenderer>().sortingOrder = _layer;
             }
-        }
-
-        /// <summary>
-        /// 弹提示
-        /// </summary>
-        /// <param name="_"></param>
-        public static void PopTips(string _tips)
-        {
-            UIMgr.Ins.OpenView<TipsView>().Tips(_tips);
         }
 
         /// <summary>
@@ -356,6 +350,26 @@ namespace Rain.Core
                 }
             }
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// 数值tween动画
+        /// </summary>
+        /// <param name="_startVal"></param>
+        /// <param name="_endVal"></param>
+        /// <param name="_updateCB"></param>
+        /// <param name="_duration"></param>
+        /// <returns></returns>
+        public static TweenerCore<float, float, FloatOptions> DONumVal(float _startVal, float _endVal, Action<float> _updateCB, float _duration = 1)
+        {
+            float _num = _startVal;
+            var Tween = DOTween.To(() => _num, x => _num = x, _endVal, _duration);
+            Tween.onUpdate = () =>
+            {
+                //Debug.LogError(_num);
+                _updateCB(_num);
+            };
+            return Tween;
         }
     }
 }

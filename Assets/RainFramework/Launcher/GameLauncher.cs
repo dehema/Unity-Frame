@@ -1,8 +1,8 @@
 using System.Collections;
-using Rain.F8ExcelDataClass;
 using Rain.Core;
 using UnityEngine;
 using Rain.UI;
+using System;
 
 namespace Rain.Launcher
 {
@@ -18,7 +18,7 @@ namespace Rain.Launcher
             //RA.HotUpdate = ModuleCenter.CreateModule<HotUpdateManager>();
 
             //// 按顺序创建模块，可按需添加
-            //RA.Message = ModuleCenter.CreateModule<MessageManager>();
+            RA.Message = ModuleCenter.CreateModule<MessageManager>();
             //RA.Input = ModuleCenter.CreateModule<InputManager>(new DefaultInputHelper());
             //RA.Storage = ModuleCenter.CreateModule<StorageManager>();
             //RA.Timer = ModuleCenter.CreateModule<TimerMgr>();
@@ -31,7 +31,7 @@ namespace Rain.Launcher
             yield return AssetBundleManager.Instance.LoadAssetBundleManifest(); // WebGL专用，如果游戏中没有使用任何AB包加载资源，可以删除此方法的调用！
 #endif
             //RA.Config = ModuleCenter.CreateModule<F8DataManager>();
-            //RA.Audio = ModuleCenter.CreateModule<AudioManager>();
+            RA.Audio = ModuleCenter.CreateModule<AudioMgr>();
             //RA.Tween = ModuleCenter.CreateModule<F8Tween>();
             //RA.UI = ModuleCenter.CreateModule<UIManager>();
             RA.UIMgr = ModuleCenter.CreateModule<UIMgr>();
@@ -48,7 +48,7 @@ namespace Rain.Launcher
             DataMgr.Ins.Load();
             LangMgr.Ins.Init();
             UIMgr.Ins.Init(ConfigMgr.Ins.uiViewConfig);
-
+            // 游戏初始化逻辑...
 
             StartGame();
             yield break;
@@ -64,7 +64,7 @@ namespace Rain.Launcher
             }
             if (Application.isEditor)
             {
-                UIMgr.Ins.OpenViewAsync<DebugView>(new object[3] { 123, true, "hello world" }, () => { Debug.Log("DebugView生成完毕"); });
+                UIMgr.Ins.OpenViewAsync(ViewName.DebugView);
                 Utility.Log("hello world");
             }
             else

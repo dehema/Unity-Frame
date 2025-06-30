@@ -13,7 +13,7 @@ using Object = UnityEngine.Object;
 
 namespace Rain.UI.Editor
 {
-    public class EditorExportUI : EditorWindow
+    public class EditorExportUI
     {
         static GameObject uiPrefab;
         /// <summary>
@@ -50,7 +50,6 @@ namespace Rain.UI.Editor
             //Debug.Log(viewName, root);
             List<Transform> allRoot = ForeachRoot(uiPrefab.transform);
             List<Transform> tfList = GetRegularRoot(allRoot);
-            string scriptContent = GetUIScriptContent(tfList);
             string uiModelContent = GetUIModelContent(tfList);
             string viewScriptFolderPath = string.Empty;
             //父类名称
@@ -96,7 +95,6 @@ namespace Rain.UI.Editor
             tempViewUIContent = tempViewUIContent.Replace("#ScriptName#", viewName);
             //替换_LoadUI函数里find相关代码
             string content = tempViewUIContent;
-            //scriptContent = tempViewUIContent.Replace("#Content#", scriptContent);
             content = content.Replace("#Content#", "");
             content = content.Replace("#UIModelContent#", uiModelContent);
             content = content.Replace("#Superclass#", superClassName);
@@ -194,7 +192,6 @@ namespace Rain.UI.Editor
             Debug.Log("开始序列化");
             List<Transform> allRoot = ForeachRoot(_uiPrefab.transform);
             List<Transform> tfList = GetRegularRoot(allRoot);
-            string scriptContent = GetUIScriptContent(tfList);
             string uiModelContent = GetUIModelContent(tfList);
             Dictionary<string, List<string>> dic = GetRootAndComponentsName(tfList);
             BaseUI baseUI = _uiPrefab.GetComponent<BaseUI>();
@@ -311,44 +308,6 @@ namespace Rain.UI.Editor
                 tfList.Add(item);
             }
             return tfList;
-        }
-
-        /// <summary>
-        /// 获取ViewUI脚本的内容
-        /// </summary>
-        /// <param name="_tfList"></param>
-        /// <returns></returns>
-        public static string GetUIScriptContent(List<Transform> _tfList)
-        {
-            StringBuilder scriptStr = new StringBuilder();
-            foreach (var item in _tfList)
-            {
-                string name = item.name;
-                string goName = name.Replace("$", string.Empty).Split('#')[0];
-                //处理某个节点
-                string rootPath = GetRootFullPath(item.transform);
-                scriptStr.Append($"        {goName} = transform.Find(\"{rootPath}\").gameObject;\n");
-                if (name.Contains("#"))
-                {
-                    string components = name.Replace("$", string.Empty).Split('#')[1];
-                    foreach (var componentName in components.Split(','))
-                    {
-                        string componentFullName = GetComponentFullName(componentName);
-                        if (item.GetComponent(componentFullName) == null)
-                        {
-                            EditorGUIUtility.PingObject(item);
-                            EditorUtility.DisplayDialog("错误", $"物体{goName}找不到组件{componentFullName}", "ok");
-                        }
-                        else
-                        {
-                            scriptStr.Append($"        {goName + "_" + componentName} = {goName}.GetComponent<{componentFullName}>();\n");
-                            //Debug.Log(component, componentRoot);
-                        }
-                    }
-                }
-            }
-            //Debug.Log(scriptStr.ToString());
-            return scriptStr.ToString();
         }
 
         /// <summary>

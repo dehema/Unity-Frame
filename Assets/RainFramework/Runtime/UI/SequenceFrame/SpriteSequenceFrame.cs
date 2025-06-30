@@ -114,11 +114,11 @@ namespace Rain.Core
         {
             if (image)
             {
-                image.sprite = sprites.Length > 0 ? sprites[currentFrame % aniNum] : AssetManager.Ins.Load<Sprite>(atlasName, spriteNames[currentFrame % aniNum]);
+                image.sprite = sprites.Length > 0 ? sprites[currentFrame % aniNum] : AssetMgr.Ins.Load<Sprite>(atlasName, spriteNames[currentFrame % aniNum]);
             }
             else if (spriteRenderer)
             {
-                spriteRenderer.sprite = sprites.Length > 0 ? sprites[currentFrame % aniNum] : AssetManager.Ins.Load<Sprite>(atlasName, spriteNames[currentFrame % aniNum]);
+                spriteRenderer.sprite = sprites.Length > 0 ? sprites[currentFrame % aniNum] : AssetMgr.Ins.Load<Sprite>(atlasName, spriteNames[currentFrame % aniNum]);
             }
         }
     }

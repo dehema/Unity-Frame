@@ -27,12 +27,12 @@ namespace Rain.Tests
             RA.Network = ModuleCenter.CreateModule<NetworkManager>();
             RA.FSM = ModuleCenter.CreateModule<FSMManager>();
             RA.GameObjectPool = ModuleCenter.CreateModule<GameObjectPool>();
-            RA.Asset = ModuleCenter.CreateModule<AssetManager>();
+            RA.Asset = ModuleCenter.CreateModule<AssetMgr>();
 #if UNITY_WEBGL
             yield return AssetBundleManager.Instance.LoadAssetBundleManifest(); // WebGL专用，如果游戏中没有使用任何AB包加载资源，可以删除此方法的调用！
 #endif
             RA.Config = ModuleCenter.CreateModule<F8DataManager>();
-            RA.Audio = ModuleCenter.CreateModule<AudioManager>();
+            RA.Audio = ModuleCenter.CreateModule<AudioMgr>();
             RA.Tween = ModuleCenter.CreateModule<F8Tween>();
             RA.UI = ModuleCenter.CreateModule<UIManager>();
 #if UNITY_WEBGL
