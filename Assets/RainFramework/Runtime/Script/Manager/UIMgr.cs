@@ -94,6 +94,14 @@ namespace Rain.UI
                 return view;
             }
 
+            // 获取视图配置
+            ViewConfig viewConfig = GetViewConfig(_viewName);
+            if (viewConfig == null)
+            {
+                Debug.LogError($"无法获取视图配置: {_viewName}");
+                return null;
+            }
+
             // 如果视图不存在，则创建新视图
             if (view == null)
             {
@@ -104,14 +112,6 @@ namespace Rain.UI
                 if (prefab == null)
                 {
                     Debug.LogError($"无法加载UI预制体: {prefabPath}");
-                    return null;
-                }
-
-                // 获取视图配置
-                ViewConfig viewConfig = GetViewConfig(_viewName);
-                if (viewConfig == null)
-                {
-                    Debug.LogError($"无法获取视图配置: {_viewName}");
                     return null;
                 }
 
@@ -135,7 +135,7 @@ namespace Rain.UI
             view.transform.SetAsLastSibling();
 
             // 刷新所有视图层级
-            RefreshAllViewLayer();
+            RefreshViewLayer(viewConfig.layer);
 
             // 调用视图的打开方法
             view.OnOpen(viewParams);
@@ -295,36 +295,78 @@ namespace Rain.UI
         /// </summary>
         public void RefreshAllViewLayer()
         {
-            List<List<BaseView>> views = new List<List<BaseView>>();
-            Dictionary<string, int> layerIndexDict = new Dictionary<string, int>();
-            //从配置中遍历所有的UI
+            // 初始化层级数据结构
+            var layerGroups = new Dictionary<string, List<BaseView>>(_uiViewConfig.layer.Count);
+            
+            // 初始化每个层级的列表
             foreach (var layer in _uiViewConfig.layer)
             {
-                views.Add(new List<BaseView>());
-                layerIndexDict[layer.Key] = layerIndexDict.Count;
+                layerGroups[layer.Key] = new List<BaseView>();
             }
-            //遍历所有打开的UI
-            foreach (var view in _allView)
+            
+            // 收集所有显示中的UI
+            foreach (var view in _allView.Values)
             {
-                if (view.Value.IsShow)
-                    views[layerIndexDict[view.Value.viewConfig.layer]].Add(view.Value);
-            }
-            foreach (List<BaseView> item in views)
-            {
-                item.Sort((a, b) => { return a.canvas.sortingOrder < b.canvas.sortingOrder ? -1 : 1; });
-            }
-            foreach (List<BaseView> item in views)
-            {
-                int _layer = 0;
-                if (item.Count > 0)
+                if (view.IsShow && layerGroups.TryGetValue(view.viewConfig.layer, out var layerList))
                 {
-                    _layer = _uiViewConfig.layer[item[0].viewConfig.layer].order * LAYER_INTERVAL;
+                    layerList.Add(view);
                 }
-                for (int i = 0; i < item.Count; i++)
+            }
+            
+            // 对每个层级的UI进行排序并设置排序顺序
+            foreach (var kvp in layerGroups)
+            {
+                RefreshViewLayerOrder(kvp.Key, kvp.Value);
+            }
+        }
+        
+        /// <summary>
+        /// 对指定层级的UI进行重新排序
+        /// </summary>
+        /// <param name="layerKey">层级名称</param>
+        public void RefreshViewLayer(string layerKey)
+        {
+            // 验证层级是否存在
+            if (!_uiViewConfig.layer.ContainsKey(layerKey))
+            {
+                Debug.LogWarning($"尝试刷新不存在的UI层级: {layerKey}");
+                return;
+            }
+            
+            // 收集指定层级的所有显示中的UI
+            List<BaseView> views = new List<BaseView>();
+            foreach (var view in _allView.Values)
+            {
+                if (view.IsShow && view.viewConfig.layer == layerKey)
                 {
-                    BaseView baseView = item[i];
-                    baseView.canvas.sortingOrder = _layer + i * VIEW_ORDER_IN_LAYER_INTERVAL;
+                    views.Add(view);
                 }
+            }
+            
+            // 对收集到的UI进行排序
+            RefreshViewLayerOrder(layerKey, views);
+        }
+        
+        /// <summary>
+        /// 对指定层级的UI列表进行排序并设置排序顺序
+        /// </summary>
+        /// <param name="layerKey">层级名称</param>
+        /// <param name="views">该层级的UI列表</param>
+        private void RefreshViewLayerOrder(string layerKey, List<BaseView> views)
+        {
+            // 如果该层没有可见UI，跳过处理
+            if (views == null || views.Count == 0) return;
+            
+            // 按现有排序顺序排序
+            views.Sort((a, b) => a.canvas.sortingOrder.CompareTo(b.canvas.sortingOrder));
+            
+            // 计算基础层级值
+            int baseLayerOrder = _uiViewConfig.layer[layerKey].order * LAYER_INTERVAL;
+            
+            // 设置新的排序顺序
+            for (int i = 0; i < views.Count; i++)
+            {
+                views[i].canvas.sortingOrder = baseLayerOrder + i * VIEW_ORDER_IN_LAYER_INTERVAL;
             }
         }
 
