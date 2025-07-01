@@ -41,7 +41,8 @@ namespace Rain.Launcher
             //RA.Local = ModuleCenter.CreateModule<Localization>();
             //RA.SDK = ModuleCenter.CreateModule<SDKManager>();
             //RA.Download = ModuleCenter.CreateModule<DownloadManager>();
-            //RA.LogWriter = ModuleCenter.CreateModule<F8LogWriter>();
+            RA.Log = ModuleCenter.CreateModule<LogMgr>();
+            LogMgr.Ins.OnEnterGame();
 
             ConfigMgr.Ins.Init();
             ConfigMgr.Ins.LoadAllConfig();

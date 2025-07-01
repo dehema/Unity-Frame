@@ -43,7 +43,7 @@ namespace Rain.Launcher
         // 下载管理器
         private static DownloadManager _downloadManager;
         // 日志助手
-        private static F8LogWriter _logWriter;
+        private static LogMgr _logMgr;
 
 
         /* ------------------------可选模块------------------------ */
@@ -312,18 +312,18 @@ namespace Rain.Launcher
             }
         }
 
-        public static F8LogWriter LogWriter
+        public static LogMgr Log
         {
             get
             {
-                if (_logWriter == null)
-                    _logWriter = ModuleCenter.CreateModule<F8LogWriter>();
-                return _logWriter;
+                if (_logMgr == null)
+                    _logMgr = ModuleCenter.CreateModule<LogMgr>();
+                return _logMgr;
             }
             set
             {
-                if (_logWriter == null)
-                    _logWriter = value;
+                if (_logMgr == null)
+                    _logMgr = value;
             }
         }
 

@@ -42,7 +42,7 @@ namespace Rain.Tests
 			RA.Local = ModuleCenter.CreateModule<Localization>();
 			RA.SDK = ModuleCenter.CreateModule<SDKManager>();
 			RA.Download = ModuleCenter.CreateModule<DownloadManager>();
-			RA.LogWriter = ModuleCenter.CreateModule<F8LogWriter>();
+			RA.LogWriter = ModuleCenter.CreateModule<LogMgr>();
 			
 			StoryCanvas.SetActive(true);
 			UICanvas.SetActive(true);

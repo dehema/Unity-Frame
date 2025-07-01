@@ -427,8 +427,6 @@ namespace Rain.UI
         {
         }
 
-
-
         // 异步加载，使用枚举作为参数
         public UILoader OpenViewAsync<T>(IViewParams viewParams = null, Action onComplete = null) where T : BaseView
         {
