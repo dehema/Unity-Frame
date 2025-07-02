@@ -21,7 +21,7 @@ namespace Rain.Tests
 
             /*----------Log其他功能----------*/
             // 开启写入log文件
-            RA.LogWriter.OnEnterGame();
+            RA.Log.OnEnterGame();
             // 开启捕获错误日志
             //RLog.GetCrashErrorMessage();
             //// 开始监视代码使用情况

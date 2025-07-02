@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using UnityEditor;
 using UnityEditor.Callbacks;
@@ -13,111 +15,166 @@ using Object = UnityEngine.Object;
 
 namespace Rain.UI.Editor
 {
+    enum BaseUIType
+    {
+        BaseUI,
+        BaseView,
+        BasePoolItem,
+    }
+
     public class EditorExportUI
     {
         static GameObject uiPrefab;
-        /// <summary>
-        /// 导出的的是视图脚本
-        /// </summary>
-        static bool isExportView;
         /// <summary>
         /// 导出视图的UI
         /// </summary>
         public static void ExportViewUI(GameObject _uiPrefab = null)
         {
-            if (EditorApplication.isPlaying)
+            try
             {
-                EditorUtility.DisplayDialog("错误", "正在运行时不能导出", "ok");
-                return;
-            }
-            uiPrefab = _uiPrefab;
-            PrefabStage stage = null;
-            if (uiPrefab == null)
-            {
-                stage = PrefabStageUtility.GetCurrentPrefabStage();
-                if (!stage)
+                // 1. 检查运行状态
+                if (EditorApplication.isPlaying)
                 {
-                    EditorUtility.DisplayDialog("错误", "先打开一个View的预制体，进入预制体模式", "ok");
+                    EditorUtility.DisplayDialog("错误", "正在运行时不能导出", "确定");
                     return;
                 }
+
+                // 2. 获取预制体
+                uiPrefab = _uiPrefab;
+                if (uiPrefab == null)
+                {
+                    PrefabStage stage = PrefabStageUtility.GetCurrentPrefabStage();
+                    if (stage == null)
+                    {
+                        EditorUtility.DisplayDialog("错误", "请先打开一个View的预制体，进入预制体模式", "确定");
+                        return;
+                    }
+                    uiPrefab = currActiveBaseUIPrefab;
+                    if (uiPrefab == null)
+                    {
+                        EditorUtility.DisplayDialog("错误", "无法获取当前预制体", "确定");
+                        return;
+                    }
+                }
+
+                // 3. 获取组件和基本信息
+                BaseUI baseUI = uiPrefab.GetComponent<BaseUI>();
+                if (baseUI == null)
+                {
+                    EditorUtility.DisplayDialog("错误", "预制体必须包含继承自BaseUI的组件", "确定");
+                    return;
+                }
+                BaseUIType baseUIType = BaseUIType.BaseUI;
+                if (baseUI is BaseView)
+                {
+                    baseUIType = BaseUIType.BaseView;
+                }
+                else if (baseUI is BasePoolItem)
+                {
+                    baseUIType = BaseUIType.BasePoolItem;
+                }
+
+                // 设置是否为视图导出
+                string viewName = uiPrefab.name;
+
+                // 4. 获取UI结构内容
+                List<Transform> allRoot = ForeachRoot(uiPrefab.transform);
+                List<Transform> tfList = GetRegularRoot(allRoot);
+                string uiModelContent = GetUIModelContent(tfList);
+
+                // 5. 确定父类名称
+                string superClassName = baseUIType.ToString();
+
+                // 6. 查找脚本路径
+                string viewScriptFolderPath = FindViewScriptPath(viewName);
+                if (string.IsNullOrEmpty(viewScriptFolderPath))
+                {
+                    EditorUtility.DisplayDialog("错误", "找不到与预制体同名脚本", "确定");
+                    return;
+                }
+
+                // 确保目录存在
+                if (!Directory.Exists(viewScriptFolderPath))
+                {
+                    Directory.CreateDirectory(viewScriptFolderPath);
+                }
+
+                // 7. 生成脚本内容
+                string templatePath = GetTemplatePath(baseUIType, superClassName);
+                string content = GenerateScriptContent(templatePath, viewName, uiModelContent, superClassName);
+
+                // 8. 写入文件并处理
+                string viewUIPath = Path.Combine(viewScriptFolderPath, viewName + "_UI.cs");
+                string oldMd5 = File.Exists(viewUIPath) ? GetFileMD5(viewUIPath) : string.Empty;
+
+                File.WriteAllText(viewUIPath, content);
+                EditorGUIUtility.PingObject(AssetDatabase.LoadAssetAtPath<Object>(viewUIPath));
+
+                string newMd5 = GetFileMD5(viewUIPath);
+                if (oldMd5 == newMd5)
+                {
+                    // 文件没变动不用重构工程，直接序列化
+                    SetSerializedObject(uiPrefab);
+                }
+                else
+                {
+                    EditorViewCreater.AddTempFileLabels(fieldNeedSerializedObject, viewName);
+                    AssetDatabase.Refresh();
+                }
+
+                Debug.Log($"成功导出UI: {viewUIPath}");
             }
-            uiPrefab = uiPrefab ?? currActiveBaseUIPrefab;
-            BaseView baseView = uiPrefab.GetComponent<BaseView>();
-            BaseUI baseUI = uiPrefab.GetComponent<BaseUI>();
-            //导出的是否是视图
-            isExportView = baseView != null;
-            string viewName = uiPrefab.name;
-            //Debug.Log(viewName, root);
-            List<Transform> allRoot = ForeachRoot(uiPrefab.transform);
-            List<Transform> tfList = GetRegularRoot(allRoot);
-            string uiModelContent = GetUIModelContent(tfList);
-            string viewScriptFolderPath = string.Empty;
-            //父类名称
-            string superClassName = isExportView ? "BaseView" : "BaseUI";
-            //获取View脚本路径
-            if (baseView != null)
+            catch (Exception ex)
             {
-                superClassName = baseView.GetType().BaseType.ToString();
+                Debug.LogError($"导出UI时发生错误: {ex.Message}\n{ex.StackTrace}");
+                EditorUtility.DisplayDialog("错误", $"导出UI时发生错误: {ex.Message}", "确定");
             }
-            else if (baseUI != null)
-            {
-                superClassName = baseUI.GetType().BaseType.ToString();
-            }
-            foreach (var item in AssetDatabase.FindAssets(uiPrefab.name + " t:Script"))
+        }
+
+        /// <summary>
+        /// 查找视图脚本路径
+        /// </summary>
+        private static string FindViewScriptPath(string viewName)
+        {
+            foreach (var item in AssetDatabase.FindAssets(viewName + " t:Script"))
             {
                 string scriptPath = AssetDatabase.GUIDToAssetPath(item);
                 if (scriptPath.Contains("/" + viewName + ".cs"))
                 {
-                    viewScriptFolderPath = scriptPath.Replace(viewName + ".cs", string.Empty);
-                    break;
+                    return scriptPath.Replace(viewName + ".cs", string.Empty);
                 }
             }
-            if (string.IsNullOrEmpty(viewScriptFolderPath))
+            return string.Empty;
+        }
+
+        /// <summary>
+        /// 获取模板路径
+        /// </summary>
+        private static string GetTemplatePath(BaseUIType baseUIType, string superClassName)
+        {
+            switch (baseUIType)
             {
-                EditorUtility.DisplayDialog("错误", "找不到与View预制体同名脚本", "ok");
-                return;
+                case BaseUIType.BaseUI:
+                    return PathExportBaseUITemplate;
+                case BaseUIType.BaseView:
+                    return PathExportBaseViewTemplate;
+                case BaseUIType.BasePoolItem:
+                default:
+                    return PathExportBasePoolItemTemplate;
             }
-            if (!Directory.Exists(viewScriptFolderPath))
-                Directory.CreateDirectory(viewScriptFolderPath);
-            string tempViewUIContent = string.Empty;
-            if (isExportView)
-            {
-                tempViewUIContent = File.ReadAllText(ExportViewScriptTemplatePath);
-            }
-            else if (superClassName == "PoolItemBase")
-            {
-                tempViewUIContent = File.ReadAllText(ExportPoolItemBaseTemplatePath);
-            }
-            else
-            {
-                tempViewUIContent = File.ReadAllText(ExportUIWidgetTemplatePath);
-            }
-            tempViewUIContent = tempViewUIContent.Replace("#ScriptName#", viewName);
-            //替换_LoadUI函数里find相关代码
-            string content = tempViewUIContent;
+        }
+
+        /// <summary>
+        /// 生成脚本内容
+        /// </summary>
+        private static string GenerateScriptContent(string templatePath, string viewName, string uiModelContent, string superClassName)
+        {
+            string content = File.ReadAllText(templatePath);
+            content = content.Replace("#ScriptName#", viewName);
             content = content.Replace("#Content#", "");
             content = content.Replace("#UIModelContent#", uiModelContent);
             content = content.Replace("#Superclass#", superClassName);
-            string viewUIPath = Path.Combine(viewScriptFolderPath, viewName + "_UI.cs");
-            string oldMd5 = "";
-            if (File.Exists(viewUIPath))
-            {
-                oldMd5 = GetFileMD5(viewUIPath);
-            }
-            File.WriteAllText(viewUIPath, content);
-            EditorGUIUtility.PingObject(AssetDatabase.LoadAssetAtPath<Object>(viewUIPath));
-            string newMd5 = GetFileMD5(viewUIPath);
-            if (oldMd5 == newMd5)
-            {
-                //文件没变动不用重构工程 直接序列化
-                SetSerializedObject(uiPrefab);
-            }
-            else
-            {
-                EditorViewCreater.AddTempFileLabels(fieldNeedSerializedObject, viewName);
-                AssetDatabase.Refresh();
-            }
-            Debug.Log($"导出{viewUIPath}");
+            return content;
         }
 
         /// <summary>
@@ -149,15 +206,18 @@ namespace Rain.UI.Editor
             get
             {
                 PrefabStage prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
-                if (prefabStage)
+                if (prefabStage != null)
                 {
                     return prefabStage.prefabContentsRoot;
                 }
                 Scene scene = EditorSceneManager.GetActiveScene();
                 GameObject prefab = GameObject.Find(scene.name);
-                if (prefab != null && prefab.GetComponent<BaseUI>())
+                foreach (var rootObj in scene.GetRootGameObjects())
                 {
-                    return prefab;
+                    if (rootObj.name == scene.name && rootObj.GetComponent<BaseUI>() != null)
+                    {
+                        return rootObj;
+                    }
                 }
                 return null;
             }
@@ -252,40 +312,22 @@ namespace Rain.UI.Editor
         }
 
         /// <summary>
-        /// 获取自动导出View上所有UI模板脚本
+        /// BaseUI模板脚本
         /// </summary>
         /// <returns></returns>
-        public static string ExportViewScriptTemplatePath
-        {
-            get
-            {
-                return Application.dataPath + "/RainFramework/Editor/UI/AutoCreator/ExportViewScriptTemplate.txt";
-            }
-        }
+        public static string PathExportBaseUITemplate { get { return Application.dataPath + "/RainFramework/Editor/UI/AutoCreator/ExportBaseUITemplate.txt"; } }
 
         /// <summary>
-        /// 获取自动导出Prefab上所有UI模板脚本
+        /// BaseView上所有UI模板脚本
         /// </summary>
         /// <returns></returns>
-        public static string ExportUIWidgetTemplatePath
-        {
-            get
-            {
-                return Application.dataPath + "/RainFramework/Editor/UI/AutoCreator/ExportUIWidgetTemplate.txt";
-            }
-        }
+        public static string PathExportBaseViewTemplate { get { return Application.dataPath + "/RainFramework/Editor/UI/AutoCreator/ExportBaseViewScriptTemplate.txt"; } }
 
         /// <summary>
-        /// 获取自动导出对象池Item上所有UI模板脚本
+        /// BasePoolItem上所有UI模板脚本
         /// </summary>
         /// <returns></returns>
-        public static string ExportPoolItemBaseTemplatePath
-        {
-            get
-            {
-                return Application.dataPath + "/RainFramework/Editor/UI/AutoCreator/ExportPoolItemBaseTemplate.txt";
-            }
-        }
+        public static string PathExportBasePoolItemTemplate { get { return Application.dataPath + "/RainFramework/Editor/UI/AutoCreator/ExportBasePoolItemTemplate.txt"; } }
 
         /// <summary>
         /// 获取所有符合规则的UI
@@ -355,6 +397,33 @@ namespace Rain.UI.Editor
                         if (item.GetComponent(componentFullName) != null)
                         {
                             components.Add(componentName);
+                        }
+                        else
+                        {
+                            bool res = EditorUtility.DisplayDialog("错误", $"在名为{componentFullName}的对象上找不到{componentName}组件", "确定", "自动添加");
+                            if (res == false)
+                            {
+                                try
+                                {
+                                    Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+                                    foreach (Assembly assembly in assemblies)
+                                    {
+                                        Type[] types = assembly.GetTypes();
+                                        foreach (Type type in types)
+                                        {
+                                            if (type.Name == componentName && typeof(Component).IsAssignableFrom(type))
+                                            {
+                                                item.gameObject.AddComponent(type);
+                                                components.Add(componentName);
+                                            }
+                                        }
+                                    }
+                                }
+                                catch (Exception)
+                                {
+                                    EditorUtility.DisplayDialog("错误", $"在名为{componentFullName}的对象上尝试添加{componentName}组件失败，请手动添加", "确定");
+                                }
+                            }
                         }
                     }
                 }

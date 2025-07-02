@@ -4,19 +4,17 @@ using UnityEngine;
 using UnityEngine.UI;
 using Rain.UI;
 
-public partial class #ScriptName# : #Superclass#
+public partial class CardMatchCardItem : BasePoolItem
 {
     [System.Serializable]
     struct SerializableUIComponents
     {
-        #UIModelContent#
+        [SerializeField] public GameObject icon;
+        [SerializeField] public Image icon_Image;
+        [SerializeField] public GameObject board;
+        [SerializeField] public Image board_Image;
     }
 
     [Header("自动序列化组件")]
     [SerializeField] private SerializableUIComponents ui;
-
-    internal void _LoadUI()    
-    {
-        #Content#    
-    }
 }

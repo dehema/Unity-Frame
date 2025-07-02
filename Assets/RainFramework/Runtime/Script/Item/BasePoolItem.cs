@@ -1,18 +1,12 @@
 ﻿using Rain.UI;
 
-public class PoolItemBase : BaseUI
+public class BasePoolItem : BaseUI
 {
     public virtual void OnCreate(params object[] _params)
     {
-        _LoadUI();
     }
 
     public virtual void OnCollect()
-    {
-
-    }
-
-    internal virtual void _LoadUI()
     {
 
     }

@@ -44,12 +44,12 @@ public class ObjPool
         item.transform.name = prototype.name;
         item.transform.localScale = prototype.transform.localScale;
         item.SetActive(true);
-        PoolItemBase poolItemBase = item.GetComponent<PoolItemBase>();
+        BasePoolItem poolItemBase = item.GetComponent<BasePoolItem>();
         if (poolItemBase != null)
         {
             poolItemBase.OnCreate(_params);
         }
-        PoolItemBase3D poolItemBase3D = item.GetComponent<PoolItemBase3D>();
+        BasePoolItem3D poolItemBase3D = item.GetComponent<BasePoolItem3D>();
         if (poolItemBase3D != null)
         {
             poolItemBase3D.OnCreate(_params);
@@ -105,12 +105,12 @@ public class ObjPool
         inActivePool.Add(go);
         go.transform.SetParent(inActiveParent);
 
-        PoolItemBase poolItemBase = go.GetComponent<PoolItemBase>();
+        BasePoolItem poolItemBase = go.GetComponent<BasePoolItem>();
         if (poolItemBase != null)
         {
             poolItemBase.OnCollect();
         }
-        PoolItemBase3D poolItemBase3D = go.GetComponent<PoolItemBase3D>();
+        BasePoolItem3D poolItemBase3D = go.GetComponent<BasePoolItem3D>();
         if (poolItemBase3D != null)
         {
             poolItemBase3D.OnCollect();

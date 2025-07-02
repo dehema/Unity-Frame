@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class PoolItemBase3D : MonoBehaviour
+public class BasePoolItem3D : MonoBehaviour
 {
     public virtual void OnCreate(params object[] _params)
     {
