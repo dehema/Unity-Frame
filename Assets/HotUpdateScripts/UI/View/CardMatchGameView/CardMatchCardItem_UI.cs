@@ -12,7 +12,7 @@ public partial class CardMatchCardItem : BasePoolItem
         [SerializeField] public GameObject icon;
         [SerializeField] public Image icon_Image;
         [SerializeField] public GameObject board;
-        [SerializeField] public Image board_Image;
+        [SerializeField] public GameObject back;
     }
 
     [Header("自动序列化组件")]

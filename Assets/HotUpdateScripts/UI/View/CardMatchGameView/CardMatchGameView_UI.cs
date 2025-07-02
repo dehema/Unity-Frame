@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Rain.UI;
 
-public partial class CardMatchGameView : Rain.UI.BaseView
+public partial class CardMatchGameView : BaseView
 {
     [System.Serializable]
     struct SerializableUIComponents
@@ -14,6 +14,7 @@ public partial class CardMatchGameView : Rain.UI.BaseView
         [SerializeField] public Button bg_Button;
         [SerializeField] public GameObject content;
         [SerializeField] public RectTransform content_Rect;
+        [SerializeField] public GameObject cardMatchCardItem;
     }
 
     [Header("自动序列化组件")]

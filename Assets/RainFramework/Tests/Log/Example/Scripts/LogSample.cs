@@ -8,14 +8,14 @@ namespace Rain.Tests
     {
         private void Start()
         {
-            Function.Instance.AddCommand(this, "TestLog", new object[] { 2 });
-            Function.Instance.AddCommand(this, "TestCommand", new object[] { "by command text" });
-            Function.Instance.AddCommand(this, "TestCategory", new object[] { "category1", "category2" });
-            Function.Instance.AddCommand(this, "SendExceptionLog");
-            Function.Instance.AddCommand(this, "SendAssertLog");
-            Function.Instance.AddCommand(this, "SendErrorLog");
-            Function.Instance.AddCommand(this, "SendWarningLog");
-            Function.Instance.AddCheatKeyCallback((cheatKey) =>
+            Function.Ins.AddCommand(this, "TestLog", new object[] { 2 });
+            Function.Ins.AddCommand(this, "TestCommand", new object[] { "by command text" });
+            Function.Ins.AddCommand(this, "TestCategory", new object[] { "category1", "category2" });
+            Function.Ins.AddCommand(this, "SendExceptionLog");
+            Function.Ins.AddCommand(this, "SendAssertLog");
+            Function.Ins.AddCommand(this, "SendErrorLog");
+            Function.Ins.AddCommand(this, "SendWarningLog");
+            Function.Ins.AddCheatKeyCallback((cheatKey) =>
             {
                 RLog.Log("Call cheat key callback with : " + cheatKey);
             });
@@ -54,13 +54,13 @@ namespace Rain.Tests
             RLog.Log("*TestLog() : " + index.ToString());
             RLog.Log("category1 log");
 
-            RLog.Log(LogViewer.Instance.MakeLogWithCategory("Test message with category", "TestCategory"));
+            RLog.Log(LogViewer.Ins.MakeLogWithCategory("Test message with category", "TestCategory"));
             RLog.Log("$(category)TempCategory$(category");
             RLog.Log("$(category)TempCategory$(category)");
             RLog.Log("$(category)TempCategory$(");
             RLog.Log("$(category)TempCategory$(category) Test");
 
-            RLog.Log(SystemInformation.Instance.ToString());
+            RLog.Log(SystemInformation.Ins.ToString());
         }
 
         private void TestCommand(string text)
@@ -70,8 +70,8 @@ namespace Rain.Tests
 
         private void TestCategory(string category1, string category2)
         {
-            RLog.Log(LogViewer.Instance.MakeLogWithCategory("Log with category(" + category1 + ")", category1));
-            RLog.Log(LogViewer.Instance.MakeLogWithCategory("Log with category(" + category2 + ")", category2));
+            RLog.Log(LogViewer.Ins.MakeLogWithCategory("Log with category(" + category1 + ")", category1));
+            RLog.Log(LogViewer.Ins.MakeLogWithCategory("Log with category(" + category2 + ")", category2));
         }
 
         public void SendExceptionLog()

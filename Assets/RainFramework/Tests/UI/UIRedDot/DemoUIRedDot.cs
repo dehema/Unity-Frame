@@ -17,36 +17,36 @@ namespace Rain.Tests
         public void Init()
         {
             // 手动添加
-            UIRedDot.Instance.AddRedDotCfg(UIMain);
-            UIRedDot.Instance.AddRedDotCfg(UIMain_Intensify, UIMain);
-            UIRedDot.Instance.AddRedDotCfg(UIMain_AutoIntensify, UIMain);
-            UIRedDot.Instance.AddRedDotCfg(UIMain_AutoIntensify2, UIMain_AutoIntensify);
-            UIRedDot.Instance.AddRedDotCfg(UIMain_AutoIntensify3, UIMain_AutoIntensify2);
+            UIRedDot.Ins.AddRedDotCfg(UIMain);
+            UIRedDot.Ins.AddRedDotCfg(UIMain_Intensify, UIMain);
+            UIRedDot.Ins.AddRedDotCfg(UIMain_AutoIntensify, UIMain);
+            UIRedDot.Ins.AddRedDotCfg(UIMain_AutoIntensify2, UIMain_AutoIntensify);
+            UIRedDot.Ins.AddRedDotCfg(UIMain_AutoIntensify3, UIMain_AutoIntensify2);
 
-            UIRedDot.Instance.Init();
+            UIRedDot.Ins.Init();
         }
 
         private void Start()
         {
             // 改变布尔状态
-            UIRedDot.Instance.Change(DemoUIRedDot.UIMain_AutoIntensify2, true);
-            RLog.Log(UIRedDot.Instance.GetState(DemoUIRedDot.UIMain_AutoIntensify3));
+            UIRedDot.Ins.Change(DemoUIRedDot.UIMain_AutoIntensify2, true);
+            RLog.Log(UIRedDot.Ins.GetState(DemoUIRedDot.UIMain_AutoIntensify3));
             
             // 改变数量状态
-            UIRedDot.Instance.Change(DemoUIRedDot.UIMain_AutoIntensify2, 15);
-            RLog.Log(UIRedDot.Instance.GetCount(DemoUIRedDot.UIMain_AutoIntensify3));
+            UIRedDot.Ins.Change(DemoUIRedDot.UIMain_AutoIntensify2, 15);
+            RLog.Log(UIRedDot.Ins.GetCount(DemoUIRedDot.UIMain_AutoIntensify3));
             
             // 改变文本状态
-            UIRedDot.Instance.Change(DemoUIRedDot.UIMain_AutoIntensify2, "空闲");
-            RLog.Log(UIRedDot.Instance.GetTextState(DemoUIRedDot.UIMain_AutoIntensify3));
+            UIRedDot.Ins.Change(DemoUIRedDot.UIMain_AutoIntensify2, "空闲");
+            RLog.Log(UIRedDot.Ins.GetTextState(DemoUIRedDot.UIMain_AutoIntensify3));
             
             // 绑定，解绑GameObject
-            UIRedDot.Instance.Binding(DemoUIRedDot.UIMain_AutoIntensify2, this.gameObject);
-            UIRedDot.Instance.UnBinding(DemoUIRedDot.UIMain_AutoIntensify2);
-            UIRedDot.Instance.UnBinding(DemoUIRedDot.UIMain_AutoIntensify2, this.gameObject);
+            UIRedDot.Ins.Binding(DemoUIRedDot.UIMain_AutoIntensify2, this.gameObject);
+            UIRedDot.Ins.UnBinding(DemoUIRedDot.UIMain_AutoIntensify2);
+            UIRedDot.Ins.UnBinding(DemoUIRedDot.UIMain_AutoIntensify2, this.gameObject);
             
             // 清空所有红点状态
-            UIRedDot.Instance.RemoveAllRed();
+            UIRedDot.Ins.RemoveAllRed();
         }
     }
 }

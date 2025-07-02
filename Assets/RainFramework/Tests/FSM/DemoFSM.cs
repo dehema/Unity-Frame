@@ -99,7 +99,7 @@ namespace Rain.Tests
     {
         public override bool SwitchFunction(IFSM<Transform> fsm)
         {
-            float distance = Vector3.Distance(fsm.Owner.transform.position, DemoFSM.Instance.Target.position);
+            float distance = Vector3.Distance(fsm.Owner.transform.position, DemoFSM.Ins.Target.position);
             if (distance <= 10)
                 return true;
             else
@@ -144,7 +144,7 @@ namespace Rain.Tests
     {
         public override bool SwitchFunction(IFSM<Transform> fsm)
         {
-            float distance = Vector3.Distance(fsm.Owner.transform.position, DemoFSM.Instance.Target.position);
+            float distance = Vector3.Distance(fsm.Owner.transform.position, DemoFSM.Ins.Target.position);
             if (distance > 10)
                 return true;
             else

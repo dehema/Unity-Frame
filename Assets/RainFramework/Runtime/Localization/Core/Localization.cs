@@ -54,7 +54,7 @@ namespace Rain.Core
                 }
                 catch
                 {
-                    ReadExcel.Instance.LoadAllExcelData();
+                    ReadExcel.Ins.LoadAllExcelData();
                 }
             }
             LoadSuccess();

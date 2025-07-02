@@ -10,6 +10,7 @@ using UnityEditor.Callbacks;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Rain.Core;
 using Component = UnityEngine.Component;
 using Object = UnityEngine.Object;
 

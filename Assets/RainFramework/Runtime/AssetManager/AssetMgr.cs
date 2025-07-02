@@ -225,7 +225,7 @@ namespace Rain.Core
 #if UNITY_EDITOR
                     if (IsEditorMode)
                     {
-                        return AssetDatabaseManager.Instance.EditorLoadAsset<T>(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
+                        return AssetDatabaseManager.Ins.EditorLoadAsset<T>(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
                             subAssetName, out EditorLoader editorLoader);
                     }
 #endif
@@ -280,7 +280,7 @@ namespace Rain.Core
 #if UNITY_EDITOR
                     if (IsEditorMode)
                     {
-                        return AssetDatabaseManager.Instance.EditorLoadAsset(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
+                        return AssetDatabaseManager.Ins.EditorLoadAsset(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
                             out EditorLoader editorLoader, assetType, subAssetName);
                     }
 #endif
@@ -333,7 +333,7 @@ namespace Rain.Core
 #if UNITY_EDITOR
                     if (IsEditorMode)
                     {
-                        return AssetDatabaseManager.Instance.EditorLoadAsset<Object>(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
+                        return AssetDatabaseManager.Ins.EditorLoadAsset<Object>(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
                             subAssetName, out EditorLoader editorLoader);
                     }
 #endif
@@ -400,7 +400,7 @@ namespace Rain.Core
 #if UNITY_EDITOR
                     if (IsEditorMode)
                     {
-                        return AssetDatabaseManager.Instance.EditorLoadAllAsset(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
+                        return AssetDatabaseManager.Ins.EditorLoadAllAsset(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
                             out EditorLoader editorLoader);
                     }
 #endif
@@ -457,7 +457,7 @@ namespace Rain.Core
 #if UNITY_EDITOR
                     if (IsEditorMode)
                     {
-                        return AssetDatabaseManager.Instance.EditorLoadAllAsset(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
+                        return AssetDatabaseManager.Ins.EditorLoadAllAsset(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
                             out EditorLoader editorLoader);
                     }
 #endif
@@ -536,7 +536,7 @@ namespace Rain.Core
 #if UNITY_EDITOR
                     if (IsEditorMode)
                     {
-                        var allAsset = AssetDatabaseManager.Instance.EditorLoadAllAsset(
+                        var allAsset = AssetDatabaseManager.Ins.EditorLoadAllAsset(
                             info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0], out EditorLoader editorLoader);
                         End(allAsset);
                         return editorLoader;
@@ -614,7 +614,7 @@ namespace Rain.Core
 #if UNITY_EDITOR
                     if (IsEditorMode)
                     {
-                        return AssetDatabaseManager.Instance.EditorLoadAllAsset(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
+                        return AssetDatabaseManager.Ins.EditorLoadAllAsset(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
                             out EditorLoader editorLoader);
                     }
 #endif
@@ -693,7 +693,7 @@ namespace Rain.Core
 #if UNITY_EDITOR
                     if (IsEditorMode)
                     {
-                        var allAsset = AssetDatabaseManager.Instance.EditorLoadAllAsset(
+                        var allAsset = AssetDatabaseManager.Ins.EditorLoadAllAsset(
                             info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0], out EditorLoader editorLoader);
                         End(allAsset);
                         return editorLoader;
@@ -767,7 +767,7 @@ namespace Rain.Core
 #if UNITY_EDITOR
                     if (IsEditorMode)
                     {
-                        return AssetDatabaseManager.Instance.EditorLoadAsset<T>(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
+                        return AssetDatabaseManager.Ins.EditorLoadAsset<T>(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
                             subAssetName, out EditorLoader editorLoader);
                     }
 #endif
@@ -905,7 +905,7 @@ namespace Rain.Core
 #if UNITY_EDITOR
                     if (IsEditorMode)
                     {
-                        return AssetDatabaseManager.Instance.EditorLoadAsset(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
+                        return AssetDatabaseManager.Ins.EditorLoadAsset(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
                             out EditorLoader editorLoader, assetType, subAssetName);
                     }
 #endif
@@ -976,7 +976,7 @@ namespace Rain.Core
 #if UNITY_EDITOR
                     if (IsEditorMode)
                     {
-                        return AssetDatabaseManager.Instance.EditorLoadAsset<Object>(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
+                        return AssetDatabaseManager.Ins.EditorLoadAsset<Object>(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
                             subAssetName, out EditorLoader editorLoader);
                     }
 #endif
@@ -1063,7 +1063,7 @@ namespace Rain.Core
 #if UNITY_EDITOR
                     if (IsEditorMode)
                     {
-                        T o = AssetDatabaseManager.Instance.EditorLoadAsset<T>(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
+                        T o = AssetDatabaseManager.Ins.EditorLoadAsset<T>(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
                             subAssetName, out EditorLoader editorLoader);
                         End(o);
                         return editorLoader;
@@ -1152,7 +1152,7 @@ namespace Rain.Core
 #if UNITY_EDITOR
                     if (IsEditorMode)
                     {
-                        T o = AssetDatabaseManager.Instance.EditorLoadAsset<T>(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
+                        T o = AssetDatabaseManager.Ins.EditorLoadAsset<T>(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
                             subAssetName, out EditorLoader editorLoader);
                         yield return o;
                         yield break;
@@ -1231,7 +1231,7 @@ namespace Rain.Core
 #if UNITY_EDITOR
                     if (IsEditorMode)
                     {
-                        var o = AssetDatabaseManager.Instance.EditorLoadAsset(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
+                        var o = AssetDatabaseManager.Ins.EditorLoadAsset(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
                             out EditorLoader editorLoader, assetType, subAssetName);
                         yield return o;
                         yield break;
@@ -1545,7 +1545,7 @@ namespace Rain.Core
 #if UNITY_EDITOR
                     if (IsEditorMode)
                     {
-                        Object o = AssetDatabaseManager.Instance.EditorLoadAsset(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
+                        Object o = AssetDatabaseManager.Ins.EditorLoadAsset(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
                             out EditorLoader editorLoader, assetType, subAssetName);
                         End(o);
                         return editorLoader;
@@ -1644,7 +1644,7 @@ namespace Rain.Core
 #if UNITY_EDITOR
                     if (IsEditorMode)
                     {
-                        Object o = AssetDatabaseManager.Instance.EditorLoadAsset<Object>(
+                        Object o = AssetDatabaseManager.Ins.EditorLoadAsset<Object>(
                             info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0], subAssetName, out EditorLoader editorLoader);
                         End(o);
                         return editorLoader;
@@ -1733,7 +1733,7 @@ namespace Rain.Core
 #if UNITY_EDITOR
                 if (IsEditorMode)
                 {
-                    AssetDatabaseManager.Instance.Unload(SearchAsset(assetName));
+                    AssetDatabaseManager.Ins.Unload(SearchAsset(assetName));
                     
                     AssetInfo editorRes = GetAssetInfoFromResource(assetName);
                     if (IsLegal(ref editorRes))
@@ -1773,7 +1773,7 @@ namespace Rain.Core
 #if UNITY_EDITOR
                 if (IsEditorMode)
                 {
-                    AssetDatabaseManager.Instance.Unload(SearchAsset(assetName));
+                    AssetDatabaseManager.Ins.Unload(SearchAsset(assetName));
                     
                     AssetInfo editorRes = GetAssetInfoFromResource(assetName);
                     if (IsLegal(ref editorRes))

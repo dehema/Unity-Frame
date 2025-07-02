@@ -33,7 +33,7 @@ namespace Rain.Core
         public override void InitializeView()
         {
             multiLayout = GetComponent<MultiLayout>();
-            information = SystemInformation.Instance.GetInformation();
+            information = SystemInformation.Ins.GetInformation();
 
             SetSystemInfo();
             SetAppInfo();
@@ -45,7 +45,7 @@ namespace Rain.Core
 
         public void Refresh()
         {
-            SystemInformation.Instance.RefreshInformation();
+            SystemInformation.Ins.RefreshInformation();
 
             UpdateRefresh();
         }
@@ -84,7 +84,7 @@ namespace Rain.Core
 
         private void SetDisplayInfo()
         {
-            information = SystemInformation.Instance.GetInformation();
+            information = SystemInformation.Ins.GetInformation();
 
             displayInfoGroup.ClearInfo();
             displayInfoGroup.AddInfo(SystemViewConst.INFROMATION_HEADING_RESOLUTION,

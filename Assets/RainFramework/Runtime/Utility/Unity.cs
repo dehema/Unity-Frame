@@ -474,12 +474,12 @@ namespace Rain.Core
 
             public static void PostToUnityThread(Action<object> postCallback)
             {
-                UnityThreadSync.Instance.PostToUnityThread(postCallback);
+                UnityThreadSync.Ins.PostToUnityThread(postCallback);
             }
 
             public static void SendToUnityThread(Action<object> postCallback)
             {
-                UnityThreadSync.Instance.SendToUnityThread(postCallback);
+                UnityThreadSync.Ins.SendToUnityThread(postCallback);
             }
 
             #endregion

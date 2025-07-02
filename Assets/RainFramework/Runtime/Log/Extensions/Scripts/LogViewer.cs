@@ -24,12 +24,12 @@ namespace Rain.Core
 
         public void AddCheatKeyCallback(Action<string> callback)
         {
-            Function.Instance.AddCheatKeyCallback(callback);
+            Function.Ins.AddCheatKeyCallback(callback);
         }
 
         public void AddCommand(object instance, string methodName)
         {
-            Function.Instance.AddCommand(instance, methodName);
+            Function.Ins.AddCommand(instance, methodName);
         }
 
         public void Show()
@@ -39,12 +39,12 @@ namespace Rain.Core
 
         public string MakeLogWithCategory(string message, string category)
         {
-            return Log.Instance.MakeLogMessageWithCategory(message, category);
+            return Log.Ins.MakeLogMessageWithCategory(message, category);
         }
 
         private void Initialize()
         {
-            Function.Instance.Initialize();
+            Function.Ins.Initialize();
 
             SetMailData();
 
@@ -60,7 +60,7 @@ namespace Rain.Core
 
         private void Clear()
         {
-            Function.Instance.Clear();
+            Function.Ins.Clear();
         }
         
         private void SetGestureEnable()
@@ -75,7 +75,7 @@ namespace Rain.Core
         
         private void SetMailData()
         {
-            Function.Instance.SetMailData(mailSetting);
+            Function.Ins.SetMailData(mailSetting);
         }
     }
 }

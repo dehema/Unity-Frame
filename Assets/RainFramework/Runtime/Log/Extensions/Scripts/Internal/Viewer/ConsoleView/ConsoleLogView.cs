@@ -65,7 +65,7 @@ namespace Rain.Core
         public void SelectLogType(bool show)
         {
             logTypeView.SetTypeEnable(LogType.Log, show);
-            Log.Instance.SetLogTypeEnable(LogType.Log, show);
+            Log.Ins.SetLogTypeEnable(LogType.Log, show);
 
             ResetShowLog();
         }
@@ -73,7 +73,7 @@ namespace Rain.Core
         public void SelectWarningType(bool show)
         {
             logTypeView.SetTypeEnable(LogType.Warning, show);
-            Log.Instance.SetLogTypeEnable(LogType.Warning, show);
+            Log.Ins.SetLogTypeEnable(LogType.Warning, show);
 
             ResetShowLog();
         }
@@ -81,37 +81,37 @@ namespace Rain.Core
         public void SelectErrorType(bool show)
         {
             logTypeView.SetTypeEnable(LogType.Error, show);
-            Log.Instance.SetLogTypeEnable(LogType.Error, show);
-            Log.Instance.SetLogTypeEnable(LogType.Exception, show);
-            Log.Instance.SetLogTypeEnable(LogType.Assert, show);
+            Log.Ins.SetLogTypeEnable(LogType.Error, show);
+            Log.Ins.SetLogTypeEnable(LogType.Exception, show);
+            Log.Ins.SetLogTypeEnable(LogType.Assert, show);
 
             ResetShowLog();
         }
 
         public void SendMail()
         {
-            WaitUi.Instance.ShowUi(true);
-            WaitUi.Instance.SetMessage(ConsoleViewConst.SEND_MAIL_SENDING);
+            WaitUi.Ins.ShowUi(true);
+            WaitUi.Ins.SetMessage(ConsoleViewConst.SEND_MAIL_SENDING);
             
-            Log.Instance.SendFullLogToMail((object sender, AsyncCompletedEventArgs e) =>
+            Log.Ins.SendFullLogToMail((object sender, AsyncCompletedEventArgs e) =>
             {
-                WaitUi.Instance.ShowUi(false);
+                WaitUi.Ins.ShowUi(false);
                 
                 if (e.Cancelled == true)
                 {
                     RLog.Log(ConsoleViewConst.SEND_MAIL_CANCELED);
-                    Popup.Instance.ShowPopup(ConsoleViewConst.SEND_MAIL_CANCELED);
+                    Popup.Ins.ShowPopup(ConsoleViewConst.SEND_MAIL_CANCELED);
                 }
                 else if (e.Error != null)
                 {
                     string message = string.Format(ConsoleViewConst.SEND_MAIL_FAILED, e.Error.Message);
                     RLog.LogError(message);
-                    Popup.Instance.ShowPopup(message, "ERROR");
+                    Popup.Ins.ShowPopup(message, "ERROR");
                 }
                 else
                 {
                     RLog.Log(ConsoleViewConst.SEND_MAIL_SUCCEEDED);
-                    Popup.Instance.ShowPopup(ConsoleViewConst.SEND_MAIL_SUCCEEDED);
+                    Popup.Ins.ShowPopup(ConsoleViewConst.SEND_MAIL_SUCCEEDED);
                 }
                 
                 logList.MoveToBottom();
@@ -123,11 +123,11 @@ namespace Rain.Core
             int index = categoryDropdown.value;
             if (index == 0)
             {
-                Log.Instance.SetCurrentCategory(LogConst.DEFAULT_CATEGORY_NAME);
+                Log.Ins.SetCurrentCategory(LogConst.DEFAULT_CATEGORY_NAME);
             }
             else
             {
-                Log.Instance.SetCurrentCategory(index - 1);
+                Log.Ins.SetCurrentCategory(index - 1);
             }
 
             ResetShowLog();
@@ -135,7 +135,7 @@ namespace Rain.Core
 
         public void ChangeFilterIgnoreCase(bool ignore)
         {
-            Log.Instance.SetFilterIgnoreCase(ignore);
+            Log.Ins.SetFilterIgnoreCase(ignore);
 
             ResetShowLog();
         }
@@ -154,13 +154,13 @@ namespace Rain.Core
 
         public void SetFilter(string filter)
         {
-            Log.Instance.SetFilter(filter);
+            Log.Ins.SetFilter(filter);
             ResetShowLog();
         }
 
         public void Clear()
         {
-            Log.Instance.ClearLog();
+            Log.Ins.ClearLog();
             ResetShowLog();
             ResetCategory();
         }
@@ -174,16 +174,16 @@ namespace Rain.Core
 
         private void UpdateLogCount()
         {
-            logTypeView.SetLogCount(LogType.Log, Log.Instance.GetLogCount(LogType.Log));
-            logTypeView.SetLogCount(LogType.Warning, Log.Instance.GetLogCount(LogType.Warning));
+            logTypeView.SetLogCount(LogType.Log, Log.Ins.GetLogCount(LogType.Log));
+            logTypeView.SetLogCount(LogType.Warning, Log.Ins.GetLogCount(LogType.Warning));
             logTypeView.SetLogCount(LogType.Error,
-                Log.Instance.GetLogCount(LogType.Error) + Log.Instance.GetLogCount(LogType.Exception) +
-                Log.Instance.GetLogCount(LogType.Assert));
+                Log.Ins.GetLogCount(LogType.Error) + Log.Ins.GetLogCount(LogType.Exception) +
+                Log.Ins.GetLogCount(LogType.Assert));
         }
 
         private void UpdateCategory()
         {
-            string[] categories = Log.Instance.GetCategories();
+            string[] categories = Log.Ins.GetCategories();
 
             if (categoryCount - 1 < categories.Length)
             {
@@ -202,7 +202,7 @@ namespace Rain.Core
 
         private void UpdateShowLog()
         {
-            List<Log.LogData> logs = Log.Instance.GetCurrentLogs();
+            List<Log.LogData> logs = Log.Ins.GetCurrentLogs();
 
             if (showLogCount < logs.Count)
             {
@@ -230,7 +230,7 @@ namespace Rain.Core
 
         private void InitializeAddon()
         {
-            var adapters = Function.Instance.GetAdapters();
+            var adapters = Function.Ins.GetAdapters();
 
             foreach (var adapter in adapters)
             {
@@ -269,7 +269,7 @@ namespace Rain.Core
         public void CopyStackTrace()
         {
             GUIUtility.systemCopyBuffer = stackTrace.text;
-            Popup.Instance.ShowPopup(ConsoleViewConst.STACKTRACE_COPY_MESSAGE, ConsoleViewConst.STACKTRACE_COPY_TITLE);
+            Popup.Ins.ShowPopup(ConsoleViewConst.STACKTRACE_COPY_MESSAGE, ConsoleViewConst.STACKTRACE_COPY_TITLE);
         }
     }
 }

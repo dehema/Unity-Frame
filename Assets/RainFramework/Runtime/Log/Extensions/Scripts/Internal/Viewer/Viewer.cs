@@ -45,7 +45,7 @@ namespace Rain.Core
 
             Show(false);
 
-            Log.Instance.AddLogNotificationCallback(OnLogNotification);
+            Log.Ins.AddLogNotificationCallback(OnLogNotification);
         }
 
         public void Close()

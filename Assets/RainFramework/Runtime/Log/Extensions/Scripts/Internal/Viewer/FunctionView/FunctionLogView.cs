@@ -10,12 +10,12 @@ namespace Rain.Core
 
         public void InputCheatKey(string cheatKey)
         {
-            Function.Instance.InvokeCheatKey(cheatKey);
+            Function.Ins.InvokeCheatKey(cheatKey);
         }
 
         private void Update()
         {
-            List<Function.CommandData> commands = Function.Instance.GetCommandDatas();
+            List<Function.CommandData> commands = Function.Ins.GetCommandDatas();
 
             if (showCommandCount < commands.Count)
             {

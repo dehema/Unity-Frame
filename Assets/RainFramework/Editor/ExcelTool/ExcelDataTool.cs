@@ -287,7 +287,7 @@ namespace Rain.Core.Editor
         [UnityEditor.MenuItem("开发工具/运行时读取Excel _F7", false, 101)]
         public static void ReLoadExcelData()
         {
-            ReadExcel.Instance.LoadAllExcelData();
+            ReadExcel.Ins.LoadAllExcelData();
         }
 
         private static void OnLogCallBack(string condition)

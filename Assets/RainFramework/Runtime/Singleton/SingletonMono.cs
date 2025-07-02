@@ -7,7 +7,7 @@ namespace Rain.Core
         private static T m_instace;
         private static readonly object lockObj = new object();
 
-        public static T Instance
+        public static T Ins
         {
             get
             {

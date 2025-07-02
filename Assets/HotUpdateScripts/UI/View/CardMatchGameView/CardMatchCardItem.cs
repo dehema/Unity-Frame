@@ -1,17 +1,76 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using Rain.UI;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public partial class CardMatchCardItem : BasePoolItem
+public partial class CardMatchCardItem : BasePoolItem, IPointerClickHandler
 {
-    void Start()
+    enum CardStatus
     {
+        Close,
+        Open,
+        UnLock,
+    }
+    string imgPath;
+    public delegate void OnCardOpen(CardMatchCardItem cardItem);
+    public OnCardOpen onCardOpen;
+    CardStatus cardStatus = CardStatus.Close;
 
+    public string ImgPath { get => imgPath; set => imgPath = value; }
+
+    public override void OnCreate(params object[] _params)
+    {
+        base.OnCreate(_params);
+        ImgPath = _params[0] as string;
+        Sprite sprite = Resources.Load<Sprite>("UI/hero/" + ImgPath);
+        ui.icon_Image.sprite = sprite;
     }
 
-    void Update()
+    public void OnPointerClick(PointerEventData eventData)
     {
+        if (cardStatus != CardStatus.Close)
+        {
+            return;
+        }
+        onCardOpen(this);
+        OpenAnimation();
+    }
 
+    void OpenAnimation()
+    {
+        cardStatus = CardStatus.Open;
+        transform.DOScaleX(0, 0.3f).OnComplete(() =>
+        {
+            transform.DOScaleX(1, 0.3f).OnComplete(() =>
+            {
+                ui.back.SetActive(false);
+                if (cardStatus != CardStatus.UnLock)
+                    CloseAnimation();
+            });
+        });
+    }
+
+    void CloseAnimation()
+    {
+        transform.DOScaleX(0, 0.3f).OnComplete(() =>
+        {
+            ui.back.SetActive(true);
+            transform.DOScaleX(1, 0.3f).OnComplete(() =>
+            {
+                cardStatus = CardStatus.Close;
+            });
+        });
+    }
+
+    public void UnLockCard()
+    {
+        cardStatus = CardStatus.UnLock;
+    }
+
+    public bool IsUnlock()
+    {
+        return cardStatus == CardStatus.UnLock;
     }
 }

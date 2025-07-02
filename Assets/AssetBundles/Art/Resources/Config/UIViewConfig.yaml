@@ -28,13 +28,11 @@ layer:
 #[key]为prefab同名，默认也与脚本同名
 #[comment]为注释，调试时会用到
 #可选#
-#[layer]为layer配置字段，用来调整canvas的sortingOrder
-#[hasBg]为背景图是否接受射线默认true
-#[bgColor]背景颜色默认透明
-#[bgClose]点击背景是否关闭
-#[showMethod]显示动画 pop为弹出
-#[worldAllow]允许存在在大地图上的UI，如果允许则：屏幕边缘光标改变样式，打开页面不暂停世界时间流速，屏幕不能移动到Game窗口外面
-#[escClose]按ESC键可以关闭的页面
+#[layer]为layer配置字段，用来调整canvas的sortingOrder 默认NormalLayer
+#[hasBg]为背景图是否接受射线 默认true
+#[bgColor]背景颜色默认透明  默认#00000000
+#[bgClose]点击背景是否关闭 默认false
+#[showMethod]显示动画 对标ViewShowMethod字段 默认normal
 view:
     DebugView:
         comment: 调试弹窗
@@ -48,7 +46,6 @@ view:
         comment: 资源栏
         layer: DialogLayer
         hasBg: false
-        worldAllow: true
     LoadingView:
         comment: loading
         layer: DialogLayer
@@ -62,7 +59,6 @@ view:
         comment: 提示弹窗UI
         layer: TipsLayer
         hasBg: false
-        worldAllow: true
     ImageTextMixView:
         comment: 图文混合
         bgColor: "#000000B0"
@@ -71,34 +67,28 @@ view:
         comment: 战场计时数据
         layer: TipsLayer
         hasBg: false
-        worldAllow: true
     RecruitView:
         comment: 招募
         layer: DialogLayer
         bgColor: "#000000B0"
-        escClose: true
     LoadSceneView:
         comment: 读取页面
     CursorEffectView:
         comment: 光标特效
         layer: CursorLayer
         hasBg: false
-        worldAllow: true
     EscView:
         comment: 暂停游戏菜单
         layer: TipsLayer
         bgColor: "#000000B0"
-        escClose: true
     SettingView:
         comment: 设置
         layer: TipsLayer
         bgColor: "#000000B0"
-        escClose: true
     CityInfoView:
         comment: 城镇信息
         layer: DialogLayer
         bgColor: "#000000B0"
-        escClose: true
         showMethod: pop
     BattleVictoryView:
         comment: 战斗胜利
@@ -119,5 +109,6 @@ view:
     CardMatchGameView:
         comment: 翻卡牌
         layer: NormalLayer
-        bgColor: "#000000ff"
+        bgColor: "#000000B0"
+        bgClose: true
         

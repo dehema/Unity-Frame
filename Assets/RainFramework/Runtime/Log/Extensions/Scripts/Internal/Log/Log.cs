@@ -128,7 +128,7 @@ namespace Rain.Core
                     try
                     {
                         stream = File.Open(logFilePath, FileMode.Open);
-                        Function.Instance.SendMail(
+                        Function.Ins.SendMail(
                             string.Format(LogConst.LOGMAIL_SUBJECT_FORMAT, Application.productName,
                                 DateTime.Now.ToString("G")),
                             LogConst.LOGMAIL_BODY, stream, LogConst.LOGFILE_NAME,
@@ -160,7 +160,7 @@ namespace Rain.Core
                     {
                         using (var writer = new StreamWriter(stream))
                         {
-                            writer.WriteLine(SystemInformation.Instance.ToString());
+                            writer.WriteLine(SystemInformation.Ins.ToString());
                             writer.WriteLine(logInformation);
                         }
                     }

@@ -346,7 +346,7 @@ namespace Rain.Core.Editor
         private void DrawAssetDatabaseList()
         {
             // 获取AssetDatabase加载器数据
-            editorLoaders = AssetDatabaseManager.Instance.GetEditorLoaders();
+            editorLoaders = AssetDatabaseManager.Ins.GetEditorLoaders();
             if (editorLoaders == null || editorLoaders.Count == 0)
             {
                 EditorGUILayout.HelpBox("没有通过AssetDatabase加载的资源", MessageType.Info);
