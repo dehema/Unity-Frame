@@ -3,12 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using Rain.Core;
 using Rain.UI;
+using UnityEditor.Build;
 using UnityEngine;
 
 public partial class CardMatchGameView : BaseView
 {
     ObjPool cardPool;
-    string[] imageArray = { "哥布林战士", "骷髅战士", "皮卡丘", "人类士兵", "史莱姆_冰", "史莱姆_草", "史莱姆_火", "史莱姆_雷" };
+    string[] imageArray = { "人族剑士", "人族魔法师", "兽人士兵", "哥布林", "巨魔", "怨灵", "森林精灵", "美人鱼" };
     CardMatchCardItem cardItem1;
     CardMatchCardItem cardItem2;
     List<CardMatchCardItem> cardList = new List<CardMatchCardItem>();
@@ -16,11 +17,24 @@ public partial class CardMatchGameView : BaseView
     {
         base.Init(viewParams);
         cardPool = PoolMgr.Ins.CreatePool(ui.cardMatchCardItem);
+        ui.slider_SliderCountDown.Init(30, () =>
+        {
+            if (IsAllUnlock())
+            {
+                GameWin();
+            }
+            else
+            {
+                GameOver();
+            }
+        });
+        ui.btClose_Button.SetButton(Close);
     }
 
     public override void OnOpen(IViewParams viewParams = null)
     {
         base.OnOpen(viewParams);
+        ui.slider_SliderCountDown.Play();
         SetBlockVisible(false);
         List<string> strings = new List<string>();
         foreach (var imagePath in imageArray)
@@ -43,6 +57,7 @@ public partial class CardMatchGameView : BaseView
     {
         base.OnClose(_cb);
         cardPool.CollectAll();
+        ui.slider_SliderCountDown.Stop();
     }
 
     public void OnCardOpen(CardMatchCardItem cardItem)
@@ -75,6 +90,14 @@ public partial class CardMatchGameView : BaseView
                 ClearCardData();
             });
         }
+        if (IsAllUnlock())
+        {
+            GameWin();
+        }
+    }
+
+    bool IsAllUnlock()
+    {
         bool unlockAll = true;
         foreach (var item in cardList)
         {
@@ -86,9 +109,11 @@ public partial class CardMatchGameView : BaseView
         }
         if (unlockAll)
         {
+            GameWin();
             Debug.Log("全部解锁");
-            return;
+            return unlockAll;
         }
+        return unlockAll;
     }
 
     void ClearCardData()
@@ -103,5 +128,15 @@ public partial class CardMatchGameView : BaseView
     private void SetBlockVisible(bool _show)
     {
         ui.block_Image.raycastTarget = _show;
+    }
+
+    void GameWin()
+    {
+
+    }
+
+    void GameOver()
+    {
+
     }
 }

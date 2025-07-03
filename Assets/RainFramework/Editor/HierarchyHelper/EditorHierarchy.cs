@@ -4,22 +4,29 @@ using Object = UnityEngine.Object;
 
 public class EditorHierarchy
 {
-    [MenuItem("GameObject/自定义组件/文本", priority = 0)]
+    const string folderPath = "Prefab/EditorHierarchy/";
+    [MenuItem("GameObject/A组件/文本", priority = 0)]
     public static void CreateText()
     {
-        CreatePrefab("Prefab/EditorHierarchy/Text");
+        CreatePrefab(folderPath + "Text");
     }
 
-    [MenuItem("GameObject/自定义组件/按钮", priority = 1)]
+    [MenuItem("GameObject/A组件/按钮", priority = 1)]
     public static void CreateButton()
     {
-        CreatePrefab("Prefab/EditorHierarchy/Button");
+        CreatePrefab(folderPath + "Button");
     }
 
-    [MenuItem("GameObject/自定义组件/文本按钮", priority = 2)]
+    [MenuItem("GameObject/A组件/文本按钮", priority = 2)]
     public static void CreateTextButton()
     {
-        CreatePrefab("Prefab/EditorHierarchy/TextButton");
+        CreatePrefab(folderPath + "TextButton");
+    }
+
+    [MenuItem("GameObject/A组件/close按钮", priority = 3)]
+    public static void CreateCloseButton()
+    {
+        CreatePrefab(folderPath + "$btClose#Button");
     }
 
     private static void CreatePrefab(string _path)

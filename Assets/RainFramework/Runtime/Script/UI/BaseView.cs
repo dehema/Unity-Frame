@@ -5,6 +5,7 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 using Ease = DG.Tweening.Ease;
+using static UnityEngine.Rendering.VirtualTexturing.Debugging;
 
 namespace Rain.UI
 {
@@ -30,8 +31,9 @@ namespace Rain.UI
             canvas.worldCamera = Camera.main;
             //CanvasScaler
             CanvasScaler canvasScaler = GetComponent<CanvasScaler>();
-            canvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ConstantPixelSize;
-            //canvasScaler.referenceResolution = new Vector2(1920, 1080);
+            //canvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ConstantPixelSize;
+            canvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+            canvasScaler.referenceResolution = new Vector2(1920, 1080);
             //bg
             __imgBg = transform.GetChild(0)?.GetComponent<Image>();
             Color bgColor = Utility.ColorHexToRGB(viewConfig.bgColor);
@@ -62,7 +64,7 @@ namespace Rain.UI
             }
         }
 
-        public virtual void OnOpen(IViewParams viewParams = null)
+        public virtual void OnOpen(IViewParams _viewParams = null)
         {
             //Utility.Log(_viewName + ".OnOpen()", gameObject);
             if (viewConfig.showMethod == ViewShowMethod.pop)
@@ -162,6 +164,20 @@ namespace Rain.UI
         public bool IsShow
         {
             get { return isActiveAndEnabled; }
+        }
+
+        /// <summary>
+        /// 注册一个基于时间的计时器并返回其ID
+        /// </summary>
+        /// <param name="step">计时间隔（秒）</param>
+        /// <param name="delay">初始延迟（秒）</param>
+        /// <param name="field">触发次数，0表示1次</param>
+        /// <param name="onSecond">每次触发的回调</param>
+        /// <param name="onComplete">完成时的回调</param>
+        /// <returns>计时器唯一ID</returns>
+        protected int AddTimer(float step = 1f, float delay = 0f, int field = 0, Action onSecond = null, Action onComplete = null)
+        {
+            return TimerMgr.Ins.AddTimer(this, step, delay, field, onSecond, onComplete);
         }
     }
 }

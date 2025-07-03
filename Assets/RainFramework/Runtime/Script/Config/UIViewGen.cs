@@ -36,4 +36,6 @@ public class ViewName
 	public const string BattleDefeatView = "BattleDefeatView";
 	public const string UIControlDemoView = "UIControlDemoView";
 	public const string DemoView = "DemoView";
+	public const string CardMatchGameView = "CardMatchGameView";
+	public const string CountDownView = "CountDownView";
 }

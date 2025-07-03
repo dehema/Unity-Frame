@@ -110,4 +110,8 @@ view:
         comment: 翻卡牌
         layer: NormalLayer
         bgColor: "#FFFFFFFF"
+    CountDownView:
+        comment: 倒计时
+        layer: TipsLayer
+        bgColor: "#FFFFFFFF"
         

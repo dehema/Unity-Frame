@@ -232,7 +232,7 @@ namespace Rain.UI.Editor
         {
             GUILayout.Label("<color=white>------------------- 其他 -------------------</color>", titleLabelStyle, GUILayout.Height(20));
             GUILayout.BeginHorizontal();
-            GUILayout.Label("Hierarchy右键->BM工具", GUILayout.Width(150));
+            GUILayout.Label("Hierarchy右键->A工具", GUILayout.Width(150));
             GUILayout.EndHorizontal();
         }
 
@@ -330,7 +330,7 @@ namespace Rain.UI.Editor
             }
         }
 
-        [MenuItem("GameObject/BM工具/只 显示&&点击这个物体", priority = 0)]
+        [MenuItem("GameObject/A工具/只显示&&点击这个物体", priority = 0)]
         public static void PickingAndIsolateObj()
         {
             Object obj = Selection.activeObject;
@@ -346,19 +346,19 @@ namespace Rain.UI.Editor
             SceneVisibilityManager.instance.Show(go, true);
         }
 
-        [MenuItem("GameObject/BM工具/只显示最后一个NormalLayer普通页面", priority = 1)]
+        [MenuItem("GameObject/A工具/只显示最后一个NormalLayer普通页面", priority = 1)]
         public static void OnlyShowLastNormalUI()
         {
             OnlyShowLastUI(ViewLayer.NormalLayer.ToString());
         }
 
-        [MenuItem("GameObject/BM工具/只显示最后一个DialogLayer弹窗", priority = 2)]
+        [MenuItem("GameObject/A工具/只显示最后一个DialogLayer弹窗", priority = 2)]
         public static void OnlyShowLastPopUI()
         {
             OnlyShowLastUI(ViewLayer.DialogLayer.ToString());
         }
 
-        [MenuItem("GameObject/BM工具/只显示最后一个TipsLayer消息", priority = 3)]
+        [MenuItem("GameObject/A工具/只显示最后一个TipsLayer消息", priority = 3)]
         public static void OnlyShowLastTipsUI()
         {
             OnlyShowLastUI(ViewLayer.TipsLayer.ToString());
@@ -405,7 +405,7 @@ namespace Rain.UI.Editor
         }
 
 
-        [MenuItem("GameObject/BM工具/重置 显示&&点击", priority = 999)]
+        [MenuItem("GameObject/A工具/重置 显示&&点击", priority = 999)]
         public static void PickingAndIsolateReset()
         {
             ShowAllGameObject();

@@ -54,6 +54,14 @@ public partial class DebugView : BaseView
                     };
                     UIMgr.Ins.OpenView(uiName, viewParams);
                 }
+                else if (uiName == ViewName.CountDownView)
+                {
+                    CountDownViewParams viewParams = new CountDownViewParams();
+                    viewParams.countDown = 5;
+                    viewParams.delay = 1;
+                    viewParams.cb = () => { Debug.Log("倒计时结束"); };
+                    UIMgr.Ins.OpenView(uiName, viewParams);
+                }
                 else
                 {
                     UIMgr.Ins.OpenView(uiName);

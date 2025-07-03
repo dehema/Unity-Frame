@@ -25,8 +25,14 @@ public partial class CardMatchCardItem : BasePoolItem, IPointerClickHandler
     {
         base.OnCreate(_params);
         ImgPath = _params[0] as string;
-        Sprite sprite = Resources.Load<Sprite>("UI/hero/" + ImgPath);
+        Sprite sprite = Resources.Load<Sprite>("UI/unit/" + ImgPath);
         ui.icon_Image.sprite = sprite;
+    }
+
+    public override void OnOpen(params object[] _params)
+    {
+        base.OnOpen(_params);
+        ui.back.SetActive(true);
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -45,9 +51,7 @@ public partial class CardMatchCardItem : BasePoolItem, IPointerClickHandler
         transform.DOScaleX(0, cardFlipDuation).SetEase(Ease.Linear).OnComplete(() =>
         {
             ui.back.SetActive(false);
-            transform.DOScale(1.1f, cardFlipDuation).SetEase(Ease.Linear).OnComplete(() =>
-            {
-            });
+            transform.DOScale(1.1f, cardFlipDuation).SetEase(Ease.Linear);
         });
     }
 
