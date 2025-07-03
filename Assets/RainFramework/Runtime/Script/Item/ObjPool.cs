@@ -10,27 +10,27 @@ public class ObjPool
     /// 已激活对象列表 - 当前正在使用的对象
     /// </summary>
     public List<GameObject> activePool = new List<GameObject>();
-    
+
     /// <summary>
     /// 非激活对象列表 - 当前等待复用的对象
     /// </summary>
     public List<GameObject> inActivePool = new List<GameObject>();
-    
+
     /// <summary>
     /// 原型对象 - 用于创建新实例的模板
     /// </summary>
     public GameObject prototype;
-    
+
     /// <summary>
     /// 原型对象的父节点 - 激活对象将被放置在这里
     /// </summary>
     public Transform prototypeParent;
-    
+
     /// <summary>
     /// 非激活对象的父节点 - 非激活对象将被放置在这里
     /// </summary>
     public Transform inActiveParent;
-    
+
     /// <summary>
     /// 脚本列表 - 跟踪从池中获取的组件
     /// </summary>
@@ -48,15 +48,15 @@ public class ObjPool
             Debug.LogError("[ObjPool] 创建对象池失败：参数为空");
             return;
         }
-        
+
         // 初始化属性
         prototype = _prototype;
         prototypeParent = _prototype.transform.parent;
         inActiveParent = _inActiveParent;
-        
+
         // 保存原始缩放比例，确保在父节点变化后保持正确的缩放
         Vector3 scale = _prototype.transform.localScale;
-        
+
         // 将原型对象移动到非激活父节点下并设置为非激活状态
         _prototype.transform.SetParent(_inActiveParent);
         _prototype.transform.localScale = scale;
@@ -71,14 +71,15 @@ public class ObjPool
     public GameObject Get(params object[] _params)
     {
         GameObject item;
-        
+        // 是否创建  不是则为显示
+        bool isFirstCreate = false;
         // 如果非激活池中有对象，则复用它
         if (inActivePool.Count > 0)
         {
             // 从非激活池中取出最后一个对象
             item = inActivePool[inActivePool.Count - 1];
             inActivePool.Remove(item);
-            
+
             // 将对象移动到原型父节点下
             item.transform.SetParent(prototypeParent);
         }
@@ -86,30 +87,36 @@ public class ObjPool
         {
             // 如果没有可复用的对象，则创建新实例
             item = GameObject.Instantiate(prototype, prototypeParent);
+            isFirstCreate = true;
         }
-        
+
         // 将对象添加到激活池中
         activePool.Add(item);
-        
+
         // 设置对象属性
         item.transform.name = prototype.name;
         item.transform.localScale = prototype.transform.localScale;
         item.SetActive(true);
-        
+
         // 如果对象包含BasePoolItem组件，调用其OnCreate方法
         BasePoolItem poolItemBase = item.GetComponent<BasePoolItem>();
         if (poolItemBase != null)
         {
-            poolItemBase.OnCreate(_params);
+            if (isFirstCreate)
+                poolItemBase.OnCreate(_params);
+            poolItemBase.OnOpen(_params);
+            return item;
         }
-        
+
         // 如果对象包含BasePoolItem3D组件，调用其OnCreate方法
         BasePoolItem3D poolItemBase3D = item.GetComponent<BasePoolItem3D>();
         if (poolItemBase3D != null)
         {
-            poolItemBase3D.OnCreate(_params);
+            if (isFirstCreate)
+                poolItemBase3D.OnCreate(_params);
+            poolItemBase.OnOpen(_params);
         }
-        
+
         return item;
     }
 
@@ -123,10 +130,10 @@ public class ObjPool
     {
         // 先从池中获取游戏对象
         GameObject item = Get(_params);
-        
+
         // 获取对象上的指定类型组件
         T t = item.GetComponent<T>();
-        
+
         // 将组件添加到脚本列表中进行跟踪
         if (t != null)
         {
@@ -136,7 +143,7 @@ public class ObjPool
         {
             Debug.LogWarning($"[ObjPool] 对象 {item.name} 上没有找到 {typeof(T).Name} 组件");
         }
-        
+
         return t;
     }
 
@@ -152,11 +159,11 @@ public class ObjPool
         {
             return activePool[_index];
         }
-        
+
         Debug.LogWarning($"[ObjPool] 索引 {_index} 超出范围，当前激活对象数量：{activePool.Count}");
         return null;
     }
-    
+
     /// <summary>
     /// 根据索引获取激活池中对象的指定类型组件
     /// </summary>
@@ -167,7 +174,7 @@ public class ObjPool
     {
         // 获取指定索引的游戏对象
         GameObject item = GetItemByIndex(_index);
-        
+
         // 如果对象存在，则获取其组件
         if (item != null)
         {
@@ -178,7 +185,7 @@ public class ObjPool
             }
             return component;
         }
-        
+
         return default(T);
     }
 
@@ -194,7 +201,7 @@ public class ObjPool
             Debug.LogWarning($"[ObjPool] 无法回收对象：对象为空或不在激活池中");
             return;
         }
-        
+
         // 从脚本列表中移除相关组件
         for (int i = 0; i < scriptList.Count; i++)
         {
@@ -204,11 +211,11 @@ public class ObjPool
                 break;
             }
         }
-        
+
         // 从激活池移动到非激活池
         activePool.Remove(go);
         inActivePool.Add(go);
-        
+
         // 将对象移动到非激活父节点下
         go.transform.SetParent(inActiveParent);
 
@@ -218,14 +225,14 @@ public class ObjPool
         {
             poolItemBase.OnCollect();
         }
-        
+
         // 调用对象上 BasePoolItem3D 组件的 OnCollect 方法
         BasePoolItem3D poolItemBase3D = go.GetComponent<BasePoolItem3D>();
         if (poolItemBase3D != null)
         {
             poolItemBase3D.OnCollect();
         }
-        
+
         // 设置对象为非激活状态
         go.SetActive(false);
     }
@@ -244,7 +251,7 @@ public class ObjPool
             }
         }
     }
-    
+
     /// <summary>
     /// 清空对象池，销毁所有对象
     /// </summary>
@@ -252,7 +259,7 @@ public class ObjPool
     {
         // 先回收所有激活对象
         CollectAll();
-        
+
         // 销毁所有非激活对象
         foreach (GameObject obj in inActivePool)
         {
@@ -261,7 +268,7 @@ public class ObjPool
                 GameObject.Destroy(obj);
             }
         }
-        
+
         // 清空列表
         inActivePool.Clear();
         activePool.Clear();
@@ -275,7 +282,7 @@ public class ObjPool
     {
         get { return activePool.Count; }
     }
-    
+
     /// <summary>
     /// 获取当前非激活对象的数量
     /// </summary>
@@ -283,7 +290,7 @@ public class ObjPool
     {
         get { return inActivePool.Count; }
     }
-    
+
     /// <summary>
     /// 获取对象池中对象总数（激活 + 非激活）
     /// </summary>

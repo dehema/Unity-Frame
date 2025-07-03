@@ -3,6 +3,7 @@ using Rain.Core;
 using UnityEngine;
 using Rain.UI;
 using System;
+using UnityEngine.UIElements;
 
 namespace Rain.Launcher
 {
@@ -21,7 +22,7 @@ namespace Rain.Launcher
             RA.Message = ModuleCenter.CreateModule<MessageManager>();
             //RA.Input = ModuleCenter.CreateModule<InputManager>(new DefaultInputHelper());
             //RA.Storage = ModuleCenter.CreateModule<StorageManager>();
-            //RA.Timer = ModuleCenter.CreateModule<TimerMgr>();
+            RA.Timer = ModuleCenter.CreateModule<TimerMgr>();
             //RA.Procedure = ModuleCenter.CreateModule<ProcedureManager>();
             //RA.Network = ModuleCenter.CreateModule<NetworkManager>();
             //RA.FSM = ModuleCenter.CreateModule<FSMManager>();

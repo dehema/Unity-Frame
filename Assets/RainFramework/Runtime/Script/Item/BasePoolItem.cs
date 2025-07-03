@@ -6,6 +6,10 @@ public class BasePoolItem : BaseUI
     {
     }
 
+    public virtual void OnOpen(params object[] _params)
+    {
+    }
+
     public virtual void OnCollect()
     {
 

@@ -346,19 +346,19 @@ namespace Rain.UI.Editor
             SceneVisibilityManager.instance.Show(go, true);
         }
 
-        [MenuItem("GameObject/BM工具/只显示最后一个NormalUI普通页面", priority = 1)]
+        [MenuItem("GameObject/BM工具/只显示最后一个NormalLayer普通页面", priority = 1)]
         public static void OnlyShowLastNormalUI()
         {
             OnlyShowLastUI(ViewLayer.NormalLayer.ToString());
         }
 
-        [MenuItem("GameObject/BM工具/只显示最后一个Dialog弹窗", priority = 2)]
+        [MenuItem("GameObject/BM工具/只显示最后一个DialogLayer弹窗", priority = 2)]
         public static void OnlyShowLastPopUI()
         {
             OnlyShowLastUI(ViewLayer.DialogLayer.ToString());
         }
 
-        [MenuItem("GameObject/BM工具/只显示最后一个Tips消息", priority = 3)]
+        [MenuItem("GameObject/BM工具/只显示最后一个TipsLayer消息", priority = 3)]
         public static void OnlyShowLastTipsUI()
         {
             OnlyShowLastUI(ViewLayer.TipsLayer.ToString());
@@ -366,7 +366,7 @@ namespace Rain.UI.Editor
 
         public static void OnlyShowLastUI(string _rootName)
         {
-            GameObject uiRoot = GameObject.Find(typeof(UIMgr).ToString());
+            GameObject uiRoot = UIMgr.Ins.gameObject;
             if (uiRoot == null)
             {
                 return;

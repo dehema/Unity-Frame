@@ -15,6 +15,8 @@ public partial class CardMatchGameView : BaseView
         [SerializeField] public GameObject content;
         [SerializeField] public RectTransform content_Rect;
         [SerializeField] public GameObject cardMatchCardItem;
+        [SerializeField] public GameObject block;
+        [SerializeField] public Image block_Image;
     }
 
     [Header("自动序列化组件")]

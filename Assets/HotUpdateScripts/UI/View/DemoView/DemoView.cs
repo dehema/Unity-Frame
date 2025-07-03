@@ -35,6 +35,14 @@ public partial class DemoView : BaseView
         {
             ui.imgBuild2_Image.sprite = OnAssetObject;
         });
+
+        TimerMgr.Ins.AddTimer(this, step: 2, field: 0, onSecond: () =>
+        {
+            Debug.Log("onSecond");
+        }, onComplete: () =>
+        {
+            Debug.Log("onComplete");
+        });
     }
 
     public override void OnOpen(IViewParams viewParams = null)

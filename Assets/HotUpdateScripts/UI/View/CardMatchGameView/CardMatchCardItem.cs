@@ -17,6 +17,7 @@ public partial class CardMatchCardItem : BasePoolItem, IPointerClickHandler
     public delegate void OnCardOpen(CardMatchCardItem cardItem);
     public OnCardOpen onCardOpen;
     CardStatus cardStatus = CardStatus.Close;
+    public const float cardFlipDuation = 0.3f;
 
     public string ImgPath { get => imgPath; set => imgPath = value; }
 
@@ -41,23 +42,26 @@ public partial class CardMatchCardItem : BasePoolItem, IPointerClickHandler
     void OpenAnimation()
     {
         cardStatus = CardStatus.Open;
-        transform.DOScaleX(0, 0.3f).OnComplete(() =>
+        transform.DOScaleX(0, cardFlipDuation).SetEase(Ease.Linear).OnComplete(() =>
         {
-            transform.DOScaleX(1, 0.3f).OnComplete(() =>
+            ui.back.SetActive(false);
+            transform.DOScale(1.1f, cardFlipDuation).SetEase(Ease.Linear).OnComplete(() =>
             {
-                ui.back.SetActive(false);
-                if (cardStatus != CardStatus.UnLock)
-                    CloseAnimation();
             });
         });
     }
 
-    void CloseAnimation()
+    public void CloseAnimation()
     {
-        transform.DOScaleX(0, 0.3f).OnComplete(() =>
+        if (IsUnlock())
+        {
+            return;
+        }
+        transform.DOKill();
+        transform.DOScale(new Vector3(0, 1, 1), cardFlipDuation).SetEase(Ease.Linear).OnComplete(() =>
         {
             ui.back.SetActive(true);
-            transform.DOScaleX(1, 0.3f).OnComplete(() =>
+            transform.DOScaleX(1, cardFlipDuation).SetEase(Ease.Linear).OnComplete(() =>
             {
                 cardStatus = CardStatus.Close;
             });

@@ -1,12 +1,14 @@
+ï»¿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Rain.Core;
 using Rain.UI;
 using UnityEngine;
 
 public partial class CardMatchGameView : BaseView
 {
     ObjPool cardPool;
-    string[] imageArray = { "¸ç²¼ÁÖÕ½Ê¿", "÷¼÷ÃÕ½Ê¿", "Æ¤¿¨Çğ", "ÈËÀàÊ¿±ø", "Ê·À³Ä·_±ù", "Ê·À³Ä·_²İ", "Ê·À³Ä·_»ğ", "Ê·À³Ä·_À×" };
+    string[] imageArray = { "å“¥å¸ƒæ—æˆ˜å£«", "éª·é«…æˆ˜å£«", "çš®å¡ä¸˜", "äººç±»å£«å…µ", "å²è±å§†_å†°", "å²è±å§†_è‰", "å²è±å§†_ç«", "å²è±å§†_é›·" };
     CardMatchCardItem cardItem1;
     CardMatchCardItem cardItem2;
     List<CardMatchCardItem> cardList = new List<CardMatchCardItem>();
@@ -19,25 +21,38 @@ public partial class CardMatchGameView : BaseView
     public override void OnOpen(IViewParams viewParams = null)
     {
         base.OnOpen(viewParams);
+        SetBlockVisible(false);
+        List<string> strings = new List<string>();
         foreach (var imagePath in imageArray)
         {
             for (int i = 1; i <= 2; i++)
             {
-                CardMatchCardItem item = cardPool.Get<CardMatchCardItem>(imagePath);
-                cardList.Add(item);
-                item.onCardOpen += OnCardOpen;
+                strings.Add(imagePath);
             }
         }
+        strings.Shuffle();
+        foreach (var imagePath in strings)
+        {
+            CardMatchCardItem item = cardPool.Get<CardMatchCardItem>(imagePath);
+            cardList.Add(item);
+            item.onCardOpen += OnCardOpen;
+        }
+    }
+
+    public override void OnClose(Action _cb)
+    {
+        base.OnClose(_cb);
+        cardPool.CollectAll();
     }
 
     public void OnCardOpen(CardMatchCardItem cardItem)
     {
-        if (cardItem1 != null)
+
+        if (cardItem1 == null)
         {
             cardItem1 = cardItem;
-            CheckCard();
         }
-        else if (cardItem2 != null)
+        else
         {
             cardItem2 = cardItem;
             CheckCard();
@@ -46,22 +61,47 @@ public partial class CardMatchGameView : BaseView
 
     public void CheckCard()
     {
+        SetBlockVisible(true);
         if (cardItem1.ImgPath == cardItem2.ImgPath)
         {
             cardItem1.UnLockCard();
             cardItem2.UnLockCard();
+            ClearCardData();
+        }
+        else
+        {
+            TimerMgr.Ins.AddTimer(this, delay: CardMatchCardItem.cardFlipDuation * 2, onComplete: () =>
+            {
+                ClearCardData();
+            });
         }
         bool unlockAll = true;
         foreach (var item in cardList)
         {
             if (!item.IsUnlock())
             {
+                unlockAll = false;
                 break;
             }
         }
         if (unlockAll)
         {
-            Debug.Log("È«²¿½âËø");
+            Debug.Log("å…¨éƒ¨è§£é”");
+            return;
         }
+    }
+
+    void ClearCardData()
+    {
+        SetBlockVisible(false);
+        cardItem1.CloseAnimation();
+        cardItem2.CloseAnimation();
+        cardItem1 = null;
+        cardItem2 = null;
+    }
+
+    private void SetBlockVisible(bool _show)
+    {
+        ui.block_Image.raycastTarget = _show;
     }
 }

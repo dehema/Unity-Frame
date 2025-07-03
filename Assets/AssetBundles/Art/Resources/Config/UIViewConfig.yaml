@@ -109,6 +109,5 @@ view:
     CardMatchGameView:
         comment: 翻卡牌
         layer: NormalLayer
-        bgColor: "#000000B0"
-        bgClose: true
+        bgColor: "#FFFFFFFF"
         
