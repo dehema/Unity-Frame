@@ -20,6 +20,7 @@ public partial class SliderCountDown : BaseUI
 
     // 当前剩余时间
     private float _remainingTime;
+    private int remainingNumber;
 
     // 动画Tween引用，用于控制和取消动画
     private Tween _fillTween;
@@ -49,7 +50,7 @@ public partial class SliderCountDown : BaseUI
 
     void RefreshCountDownText()
     {
-        ui.countDown_Text.text = ((int)_remainingTime).ToString();
+        ui.countDown_Text.text = (remainingNumber).ToString();
     }
 
     /// <summary>
@@ -61,7 +62,11 @@ public partial class SliderCountDown : BaseUI
         {
             // 更新剩余时间
             _remainingTime -= Time.deltaTime;
-
+            if (remainingNumber != Mathf.FloorToInt(_remainingTime))
+            {
+                remainingNumber = Mathf.FloorToInt(_remainingTime);
+                RefreshCountDownText();
+            }
             // 检查是否倒计时结束
             if (_remainingTime <= 0f)
             {
@@ -78,8 +83,6 @@ public partial class SliderCountDown : BaseUI
         // 如果已经在播放，则不重复操作
         if (_isPlaying)
             return;
-        CancelInvoke("RefreshCountDownText");
-        InvokeRepeating("RefreshCountDownText", 60, 1);
         _isPlaying = true;
 
         // 取消之前的动画（如果有）
@@ -125,7 +128,6 @@ public partial class SliderCountDown : BaseUI
         }
 
         _isPlaying = false;
-        CancelInvoke("RefreshCountDownText");
     }
 
     /// <summary>

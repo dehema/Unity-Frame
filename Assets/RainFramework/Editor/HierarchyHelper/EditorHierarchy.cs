@@ -14,7 +14,7 @@ public class EditorHierarchy
     [MenuItem("GameObject/A组件/按钮", priority = 1)]
     public static void CreateButton()
     {
-        CreatePrefab(folderPath + "Button");
+        CreatePrefab(folderPath + "CommonButton");
     }
 
     [MenuItem("GameObject/A组件/文本按钮", priority = 2)]

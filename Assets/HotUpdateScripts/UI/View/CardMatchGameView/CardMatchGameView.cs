@@ -17,6 +17,22 @@ public partial class CardMatchGameView : BaseView
     {
         base.Init(viewParams);
         cardPool = PoolMgr.Ins.CreatePool(ui.cardMatchCardItem);
+        ui.btClose_Button.SetButton(Close);
+        
+    }
+
+    public override void OnOpen(IViewParams viewParams = null)
+    {
+        base.OnOpen(viewParams);
+        //倒计时界面
+        CountDownViewParams viewParmas = new CountDownViewParams
+        {
+            countDown = 3,
+            delay = 0f,
+            cb = GameStart
+        };
+        UIMgr.Ins.OpenView<CountDownView>(viewParmas);
+        //倒计时滑块
         ui.slider_SliderCountDown.Init(30, () =>
         {
             if (IsAllUnlock())
@@ -28,14 +44,12 @@ public partial class CardMatchGameView : BaseView
                 GameOver();
             }
         });
-        ui.btClose_Button.SetButton(Close);
     }
 
-    public override void OnOpen(IViewParams viewParams = null)
+    void GameStart()
     {
-        base.OnOpen(viewParams);
-        ui.slider_SliderCountDown.Play();
         SetBlockVisible(false);
+        ui.slider_SliderCountDown.Play();
         List<string> strings = new List<string>();
         foreach (var imagePath in imageArray)
         {
@@ -132,11 +146,11 @@ public partial class CardMatchGameView : BaseView
 
     void GameWin()
     {
-
+        Debug.Log("GameWin");
     }
 
     void GameOver()
     {
-
+        Debug.Log("GameOver");
     }
 }

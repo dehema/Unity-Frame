@@ -10,7 +10,7 @@ namespace Rain.Core.Editor
 {
     public class AssetSetABName
     {
-        [MenuItem("Assets/（F8资产功能）/（清空所有选中的资产AB名）", false , 1011)]
+        [MenuItem("Assets/【Rain资产功能】/（清空所有选中的资产AB名）", false , 1011)]
         private static void SetAssetBundleNameIsFolderName()
         {
             // 获取所有选中 文件、文件夹的 GUID
@@ -72,7 +72,7 @@ namespace Rain.Core.Editor
             RLog.LogAsset("已清空所有选中的资产AB名");
         }
         
-        [MenuItem("Assets/（F8资产功能）/（设置选中的所有资产为相同AB名（AB名取自第一个资产））", false , 1012)]
+        [MenuItem("Assets/【Rain资产功能】/（设置选中的所有资产为相同AB名（AB名取自第一个资产））", false , 1012)]
         private static void SetAssetBundleSameName()
         {
             // 获取所有选中 文件、文件夹的 GUID

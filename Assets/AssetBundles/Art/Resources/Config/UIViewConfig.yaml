@@ -113,5 +113,5 @@ view:
     CountDownView:
         comment: 倒计时
         layer: TipsLayer
-        bgColor: "#FFFFFFFF"
+        bgColor: "#00000000"
         

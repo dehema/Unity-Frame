@@ -5,7 +5,7 @@ namespace Rain.Core.Editor
 {
     public class CreatePoolsPreset
     {
-        [MenuItem("Assets/（F8预加载对象池）/（PoolsPreset.asset）", false, 1040)]
+        [MenuItem("Assets/【Rain预加载对象池）/（PoolsPreset.asset）", false, 1040)]
         private static void CreateScriptObject()
         {
             PoolsPreset config = ScriptableObject.CreateInstance<PoolsPreset>();

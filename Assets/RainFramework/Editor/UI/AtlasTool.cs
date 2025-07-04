@@ -9,7 +9,7 @@ namespace Rain.Core.Editor
     {
         static List<string> t2dPath;
         
-        [MenuItem("Assets/（F8UI界面管理功能）/（图集切割）", false, 1023)]
+        [MenuItem("Assets/【RainUI界面管理功能】/（图集切割）", false, 1023)]
         public static void SliceAtlas()
         {
             t2dPath = new List<string>();

@@ -14,9 +14,10 @@ public partial class CountDownView : BaseView
         [SerializeField] public Button bg_Button;
         [SerializeField] public GameObject content;
         [SerializeField] public RectTransform content_Rect;
-        [SerializeField] public GameObject bar;
-        [SerializeField] public Image bar_Image;
-        [SerializeField] public RectTransform bar_Rect;
+        [SerializeField] public GameObject bar1;
+        [SerializeField] public RectTransform bar1_Rect;
+        [SerializeField] public GameObject bar2;
+        [SerializeField] public RectTransform bar2_Rect;
         [SerializeField] public GameObject number;
         [SerializeField] public Image number_Image;
     }

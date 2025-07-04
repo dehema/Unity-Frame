@@ -6,7 +6,6 @@ using DG.Tweening;
 using Rain.Core;
 using Rain.UI;
 using UnityEngine;
-using static UnityEngine.Rendering.VirtualTexturing.Debugging;
 
 public partial class CountDownView : BaseView
 {
@@ -15,19 +14,33 @@ public partial class CountDownView : BaseView
     CountDownViewParams viewParams;
     bool startCountDown = false;
     DBInt db;
-    public override void OnOpen(IViewParams _viewParams = null)
+
+    public override void Init(IViewParams viewParams = null)
+    {
+        base.Init(viewParams);
+        db = new DBInt();
+    }
+
+    public override void OnOpen(IViewParams _viewParams)
     {
         base.OnOpen(_viewParams);
+        if (_viewParams == null)
+        {
+            _viewParams = new CountDownViewParams();
+        }
         viewParams = _viewParams as CountDownViewParams;
         currentTime = viewParams.countDown;
-        db = new DBInt(Mathf.CeilToInt(viewParams.countDown));
+        db.Value = Mathf.CeilToInt(viewParams.countDown);
         db.Bind(UpdateNumberDisplay);
         AddTimer(delay: viewParams.delay, onComplete: () =>
         {
             startCountDown = true;
         });
-        ui.bar_Rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 0);
-        ui.bar_Rect.DoWidth(Screen.width, 1);
+        float width = Screen.width / 2;
+        ui.bar1_Rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 0);
+        ui.bar1_Rect.DoWidth(width, 0.5f);
+        ui.bar2_Rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 0);
+        ui.bar2_Rect.DoWidth(width, 0.5f);
     }
 
     public void Update()
@@ -63,7 +76,7 @@ public partial class CountDownView : BaseView
 
 public class CountDownViewParams : IViewParams
 {
-    public float countDown = 1;
-    public float delay = 3;
+    public float countDown = 3;
+    public float delay = 0.5f;
     public Action cb;
 }
