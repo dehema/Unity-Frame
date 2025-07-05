@@ -2,6 +2,7 @@ using System;
 using DG.Tweening;
 using Rain.UI;
 using UnityEngine;
+using Ease = DG.Tweening.Ease;
 
 /// <summary>
 /// 滑动条倒计时组件
@@ -24,6 +25,8 @@ public partial class SliderCountDown : BaseUI
 
     // 动画Tween引用，用于控制和取消动画
     private Tween _fillTween;
+    GameObject fxFire;
+    FxFireCountDown fxFireCountDown;
 
     /// <summary>
     /// 初始化倒计时组件
@@ -45,7 +48,32 @@ public partial class SliderCountDown : BaseUI
         // 初始化进度条为满
         ui.imgFill_Image.fillAmount = 1f;
 
+        //火焰特效 不好看注释掉
+        //if (fxFire == null)
+        //{
+        //    GameObject fx = Resources.Load<GameObject>("FX/fire_countdown");
+        //    fxFire = Instantiate(fx);
+        //    fxFire.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
+        //    fxFireCountDown = fx.GetComponent<FxFireCountDown>();
+        //    UpdateFirePos();
+        //}
+    }
 
+    void UpdateFirePos()
+    {
+        Vector3 targetPos = GetProgressWorldBounds();
+        // 1. 获取UI元素在屏幕上的位置
+        Vector2 screenPosition = RectTransformUtility.WorldToScreenPoint(Camera.main, targetPos);
+
+        // 2. 转换为特效相机的视口坐标
+        Vector3 viewportPosition = Camera.main.ScreenToViewportPoint(screenPosition);
+
+        // 3. 转换为特效相机的世界坐标
+        Vector3 worldPosition = UIMgr.Ins.CameraFx.ViewportToWorldPoint(
+            new Vector3(viewportPosition.x, viewportPosition.y, 10)
+        );
+
+        fxFire.transform.position = worldPosition;
     }
 
     void RefreshCountDownText()
@@ -60,6 +88,9 @@ public partial class SliderCountDown : BaseUI
     {
         if (_isPlaying)
         {
+            //UpdateFirePos();
+            //fxFireCountDown.SetPowerValue(1 - ui.imgFill_Image.fillAmount);
+
             // 更新剩余时间
             _remainingTime -= Time.deltaTime;
             if (remainingNumber != Mathf.FloorToInt(_remainingTime))
@@ -154,5 +185,30 @@ public partial class SliderCountDown : BaseUI
     private void OnDestroy()
     {
         Stop();
+        if (fxFire != null)
+        {
+            Destroy(fxFire);
+        }
     }
+    /// <summary>
+    /// 获取进度条当前显示部分的世界坐标边界
+    /// </summary>
+    public Vector3 GetProgressWorldBounds()
+    {
+        if (!ui.imgFill_Image) return Vector3.zero;
+
+        // 计算当前填充比例对应的局部坐标范围
+        Vector2 localMax = ui.imgFill_Rect.rect.size;
+
+        float horizontalSize = ui.imgFill_Rect.rect.width * ui.imgFill_Image.fillAmount;
+        localMax.x = horizontalSize - ui.imgFill_Rect.rect.width / 2 - 10;
+        localMax.y = 0;
+
+        // 局部坐标转世界坐标
+        Vector3 worldMax = ui.imgFill_Rect.TransformPoint(localMax);
+
+        // 创建边界框
+        return worldMax;
+    }
+
 }

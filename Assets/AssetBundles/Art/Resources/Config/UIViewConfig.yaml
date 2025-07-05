@@ -63,14 +63,6 @@ view:
         comment: 图文混合
         bgColor: "#000000B0"
         bgClose: true
-    HUDView:
-        comment: 战场计时数据
-        layer: TipsLayer
-        hasBg: false
-    RecruitView:
-        comment: 招募
-        layer: DialogLayer
-        bgColor: "#000000B0"
     LoadSceneView:
         comment: 读取页面
     CursorEffectView:
@@ -85,17 +77,12 @@ view:
         comment: 设置
         layer: TipsLayer
         bgColor: "#000000B0"
-    CityInfoView:
-        comment: 城镇信息
+    GameWinView:
+        comment: 游戏胜利
         layer: DialogLayer
         bgColor: "#000000B0"
-        showMethod: pop
-    BattleVictoryView:
-        comment: 战斗胜利
-        layer: DialogLayer
-        bgColor: "#000000B0"
-    BattleDefeatView:
-        comment: 战斗失败
+    GameOverView:
+        comment: 游戏失败
         layer: DialogLayer
         bgColor: "#000000B0"
     UIControlDemoView:

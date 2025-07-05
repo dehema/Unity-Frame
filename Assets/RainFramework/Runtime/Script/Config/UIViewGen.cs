@@ -32,8 +32,8 @@ public class ViewName
 	public const string EscView = "EscView";
 	public const string SettingView = "SettingView";
 	public const string CityInfoView = "CityInfoView";
-	public const string BattleVictoryView = "BattleVictoryView";
-	public const string BattleDefeatView = "BattleDefeatView";
+	public const string GameWinView = "GameWinView";
+	public const string GameFailView = "GameFailView";
 	public const string UIControlDemoView = "UIControlDemoView";
 	public const string DemoView = "DemoView";
 	public const string CardMatchGameView = "CardMatchGameView";

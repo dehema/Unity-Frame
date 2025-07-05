@@ -123,7 +123,7 @@ GameObject:
   - component: {fileID: 8741325816605166558}
   - component: {fileID: 1664039808895412687}
   m_Layer: 5
-  m_Name: $imgFill#Image
+  m_Name: $imgFill#Image,Rect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -240,8 +240,10 @@ MonoBehaviour:
   ui:
     imgFill: {fileID: 3067545626145085147}
     imgFill_Image: {fileID: 1664039808895412687}
+    imgFill_Rect: {fileID: 5091078074323964458}
     countDown: {fileID: 161447272118520241}
     countDown_Text: {fileID: 6533728689567052242}
+    block: {fileID: 0}
 --- !u!1 &6949508096840221901
 GameObject:
   m_ObjectHideFlags: 0
@@ -316,4 +318,4 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 2.9
+  m_PixelsPerUnitMultiplier: 4

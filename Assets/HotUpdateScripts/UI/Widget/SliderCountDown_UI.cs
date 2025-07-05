@@ -11,6 +11,7 @@ public partial class SliderCountDown : BaseUI
     {
         [SerializeField] public GameObject imgFill;
         [SerializeField] public Image imgFill_Image;
+        [SerializeField] public RectTransform imgFill_Rect;
         [SerializeField] public GameObject countDown;
         [SerializeField] public Text countDown_Text;
     }

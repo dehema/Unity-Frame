@@ -34,7 +34,6 @@ namespace Rain.Launcher
             //RA.Config = ModuleCenter.CreateModule<F8DataManager>();
             RA.Audio = ModuleCenter.CreateModule<AudioMgr>();
             //RA.Tween = ModuleCenter.CreateModule<F8Tween>();
-            //RA.UI = ModuleCenter.CreateModule<UIManager>();
             RA.UIMgr = ModuleCenter.CreateModule<UIMgr>();
 #if UNITY_WEBGL
             yield return F8DataManager.Instance.LoadLocalizedStringsIEnumerator(); // WebGL专用

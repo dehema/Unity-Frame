@@ -19,6 +19,10 @@ public partial class CardMatchGameView : BaseView
         [SerializeField] public SliderCountDown slider_SliderCountDown;
         [SerializeField] public GameObject btClose;
         [SerializeField] public Button btClose_Button;
+        [SerializeField] public GameObject btSuccess;
+        [SerializeField] public Button btSuccess_Button;
+        [SerializeField] public GameObject btFail;
+        [SerializeField] public Button btFail_Button;
         [SerializeField] public GameObject block;
         [SerializeField] public Image block_Image;
     }

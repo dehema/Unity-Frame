@@ -8,6 +8,7 @@ namespace Rain.Core
 {
     public static class UGUIExtension
     {
+        #region Button
         public static Button AddButtonClickListener(this Button @this, UnityAction<BaseEventData> handle)
         {
             var eventTrigger = @this.gameObject.GetOrAddComponent<EventTrigger>();
@@ -64,6 +65,17 @@ namespace Rain.Core
             entry.callback.AddListener(handle);
             return @this;
         }
+
+        public static void SetButton(this Button _button, Action _action)
+        {
+            Tools.Ins.SetButton(_button, _action);
+        }
+
+        public static void SetDebugButton(this Button _button, Action _action)
+        {
+            Tools.Ins.SetDebugButton(_button, _action);
+        }
+
         public static Button RemoveListener(this Button @this, EventTriggerType triggerType, UnityAction<BaseEventData> handle)
         {
             var eventTrigger = @this.gameObject.GetOrAddComponent<EventTrigger>();
@@ -73,6 +85,7 @@ namespace Rain.Core
             entry?.callback.RemoveListener(handle);
             return @this;
         }
+
         public static Button RemoveAllListeners(this Button @this, EventTriggerType triggerType)
         {
             var eventTrigger = @this.GetComponent<EventTrigger>();
@@ -82,6 +95,9 @@ namespace Rain.Core
             entry?.callback.RemoveAllListeners();
             return @this;
         }
+        #endregion
+
+        #region Image
         public static void EnableImage(this Image @this)
         {
             if (@this != null)
@@ -99,5 +115,6 @@ namespace Rain.Core
                 @this.color = new Color(c.r, c.g, c.b, 0);
             }
         }
+        #endregion
     }
 }

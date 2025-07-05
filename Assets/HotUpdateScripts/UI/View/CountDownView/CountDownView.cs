@@ -6,11 +6,12 @@ using DG.Tweening;
 using Rain.Core;
 using Rain.UI;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public partial class CountDownView : BaseView
 {
     private float currentTime;
-    [SerializeField] private Sprite[] numberSprites;  // 0-9的Sprite数组
+    [SerializeField] private Sprite[] numberSprites;  // 0-9鐨凷prite鏁扮粍
     CountDownViewParams viewParams;
     bool startCountDown = false;
     DBInt db;
@@ -20,6 +21,9 @@ public partial class CountDownView : BaseView
         base.Init(viewParams);
         db = new DBInt();
     }
+
+    private float lastClickTime = -1f;
+    private float doubleClickTimeThreshold = 0.3f; // 鍙屽嚮鏃堕棿闃堝�硷紝300姣
 
     public override void OnOpen(IViewParams _viewParams)
     {
@@ -45,6 +49,11 @@ public partial class CountDownView : BaseView
 
     public void Update()
     {
+        if (Input.anyKeyDown)
+        {
+            OnDoubleClick();
+            return;
+        }
         if (!startCountDown)
             return;
         currentTime -= Time.deltaTime;
@@ -64,6 +73,18 @@ public partial class CountDownView : BaseView
         {
             ui.number_Image.sprite = numberSprites[db.Value];
         }
+    }
+
+    // 鍙屽嚮close
+    private void OnDoubleClick()
+    {
+        float currentClickTime = Time.time;
+        if (currentClickTime - lastClickTime < doubleClickTimeThreshold)
+        {
+            // 鍙屽嚮妫�娴嬫垚鍔燂紝瑙﹀彂鍏抽棴鏂规硶
+            Close();
+        }
+        lastClickTime = currentClickTime;
     }
 
     public override void OnClose(Action _cb)

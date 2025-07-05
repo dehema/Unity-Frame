@@ -28,6 +28,12 @@ namespace Rain.UI
         /// <summary>最大排序值</summary>
         private const int LAYER_MAX = 32767;
 
+        private Camera _camera_fx;
+        /// <summary>
+        /// 特效相机
+        /// </summary>
+        public Camera CameraFx { get { if (_camera_fx == null) { _camera_fx = GameObject.Find("FX Camera").GetComponent<Camera>(); } return _camera_fx; } }
+
         /// <summary>
         /// 初始化UI管理器
         /// </summary>
@@ -297,13 +303,13 @@ namespace Rain.UI
         {
             // 初始化层级数据结构
             var layerGroups = new Dictionary<string, List<BaseView>>(_uiViewConfig.layer.Count);
-            
+
             // 初始化每个层级的列表
             foreach (var layer in _uiViewConfig.layer)
             {
                 layerGroups[layer.Key] = new List<BaseView>();
             }
-            
+
             // 收集所有显示中的UI
             foreach (var view in _allView.Values)
             {
@@ -312,14 +318,14 @@ namespace Rain.UI
                     layerList.Add(view);
                 }
             }
-            
+
             // 对每个层级的UI进行排序并设置排序顺序
             foreach (var kvp in layerGroups)
             {
                 RefreshViewLayerOrder(kvp.Key, kvp.Value);
             }
         }
-        
+
         /// <summary>
         /// 对指定层级的UI进行重新排序
         /// </summary>
@@ -332,7 +338,7 @@ namespace Rain.UI
                 Debug.LogWarning($"尝试刷新不存在的UI层级: {layerKey}");
                 return;
             }
-            
+
             // 收集指定层级的所有显示中的UI
             List<BaseView> views = new List<BaseView>();
             foreach (var view in _allView.Values)
@@ -342,11 +348,11 @@ namespace Rain.UI
                     views.Add(view);
                 }
             }
-            
+
             // 对收集到的UI进行排序
             RefreshViewLayerOrder(layerKey, views);
         }
-        
+
         /// <summary>
         /// 对指定层级的UI列表进行排序并设置排序顺序
         /// </summary>
@@ -356,13 +362,13 @@ namespace Rain.UI
         {
             // 如果该层没有可见UI，跳过处理
             if (views == null || views.Count == 0) return;
-            
+
             // 按现有排序顺序排序
             views.Sort((a, b) => a.canvas.sortingOrder.CompareTo(b.canvas.sortingOrder));
-            
+
             // 计算基础层级值
             int baseLayerOrder = _uiViewConfig.layer[layerKey].order * LAYER_INTERVAL;
-            
+
             // 设置新的排序顺序
             for (int i = 0; i < views.Count; i++)
             {

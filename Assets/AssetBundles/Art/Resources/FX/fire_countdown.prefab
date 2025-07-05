@@ -28,7 +28,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.9995574, y: 0.9995574, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4786397832149482675}
@@ -4880,10 +4880,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c77c3dc117f8a9d4f8858caa4301c3be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  power: 0
+  power: 0.99889344
   ps_fire: {fileID: 1728369579550792593}
   ps_ember: {fileID: 4522755924082026169}
   ps_smoke: {fileID: 6079320309741637058}
+  smokeShowThreshold: 0.7
+  minFireScale: 0.6
+  maxFireScale: 1
 --- !u!1 &3445247071084886703
 GameObject:
   m_ObjectHideFlags: 0
@@ -5000,7 +5003,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.5
+      scalar: 0.7597123
       minScalar: 0.4
       maxCurve:
         serializedVersion: 2
@@ -5053,7 +5056,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 4
+      scalar: 5.995574
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -5754,7 +5757,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 10
+      scalar: 14.990041
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -9753,8 +9756,8 @@ Transform:
   m_GameObject: {fileID: 7530972730045154891}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 1.1995574, z: 0}
+  m_LocalScale: {x: 0.79889345, y: 0.79889345, z: 0.79889345}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4786397832149482675}
@@ -9842,7 +9845,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 3
+      scalar: 1.8026557
       minScalar: 0.5
       maxCurve:
         serializedVersion: 2
@@ -9877,7 +9880,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 1.9977869
       minScalar: 3
       maxCurve:
         serializedVersion: 2

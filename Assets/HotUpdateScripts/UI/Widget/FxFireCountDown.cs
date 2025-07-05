@@ -4,7 +4,7 @@ using UnityEngine;
 /// 火焰倒计时特效控制器
 /// 基于力量值控制火焰、火花和烟雾特效
 /// </summary>
-public class FXFireCountdown : MonoBehaviour
+public class FxFireCountDown : MonoBehaviour
 {
     [Tooltip("火焰强度值（0-1）")]
     [Range(0f, 1f)]

@@ -17,6 +17,7 @@ namespace Rain.Core
 {
     public static class Utility
     {
+        #region Log
         // 唯一公开方法：自动处理各种类型
         public static void Log(object obj) => LogInternal(obj, "", 0);
 
@@ -73,6 +74,7 @@ namespace Rain.Core
                 LogInternal(item, $"{prefix}[{index++}]: ", depth + 1);
             }
         }
+        #endregion
 
         /// <summary>
         /// 十六进制转颜色
@@ -106,11 +108,6 @@ namespace Rain.Core
         public static string ColorRGBToHex(Color _color)
         {
             return ColorUtility.ToHtmlStringRGBA(_color);
-        }
-
-        public static void SetButton(this Button _button, Action _action)
-        {
-            Tools.Ins.SetButton(_button, _action);
         }
 
         /// <summary>
@@ -370,6 +367,30 @@ namespace Rain.Core
                 _updateCB(_num);
             };
             return Tween;
+        }
+
+        /// <summary>
+        /// 将UI坐标转换为3D世界坐标（位于相机视平面上）
+        /// </summary>
+        /// <param name="uiPos">UI坐标（通常是屏幕像素坐标）</param>
+        /// <param name="camera">用于转换的相机</param>
+        /// <param name="distanceFromCamera">距离相机的深度（默认为10米）</param>
+        /// <returns>对应的3D世界坐标</returns>
+        public static Vector3 GetWorldPositionFromUI(Vector2 uiPos, Camera camera, float distanceFromCamera = 10f)
+        {
+            // 确保相机存在
+            if (camera == null)
+            {
+                Debug.LogError("Camera is null!");
+                return Vector3.zero;
+            }
+
+            // 将UI坐标转换为世界坐标
+            // 使用ScreenPointToRay将屏幕点转换为射线
+            Ray ray = camera.ScreenPointToRay(uiPos);
+
+            // 在射线上取距离相机指定距离的点
+            return ray.GetPoint(distanceFromCamera);
         }
     }
 }

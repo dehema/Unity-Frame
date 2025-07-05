@@ -5,6 +5,7 @@ using Rain.Core;
 using Rain.UI;
 using UnityEditor.Build;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public partial class CardMatchGameView : BaseView
 {
@@ -13,17 +14,21 @@ public partial class CardMatchGameView : BaseView
     CardMatchCardItem cardItem1;
     CardMatchCardItem cardItem2;
     List<CardMatchCardItem> cardList = new List<CardMatchCardItem>();
+    const int gameTime = 60; //游戏限时
     public override void Init(IViewParams viewParams = null)
     {
         base.Init(viewParams);
         cardPool = PoolMgr.Ins.CreatePool(ui.cardMatchCardItem);
         ui.btClose_Button.SetButton(Close);
-        
+        ui.btSuccess_Button.SetDebugButton(DebugGameWin);
+        ui.btFail_Button.SetDebugButton(DebugGameOver);
     }
 
     public override void OnOpen(IViewParams viewParams = null)
     {
         base.OnOpen(viewParams);
+        cardItem1 = null;
+        cardItem2 = null;
         //倒计时界面
         CountDownViewParams viewParmas = new CountDownViewParams
         {
@@ -33,33 +38,30 @@ public partial class CardMatchGameView : BaseView
         };
         UIMgr.Ins.OpenView<CountDownView>(viewParmas);
         //倒计时滑块
-        ui.slider_SliderCountDown.Init(30, () =>
+        ui.slider_SliderCountDown.Init(gameTime, () =>
         {
-            if (IsAllUnlock())
-            {
-                GameWin();
-            }
-            else
+            if (!IsAllUnlock())
             {
                 GameOver();
             }
         });
+        InitCard();
     }
 
-    void GameStart()
+    void InitCard()
     {
-        SetBlockVisible(false);
-        ui.slider_SliderCountDown.Play();
-        List<string> strings = new List<string>();
+        //生成卡牌
+        cardList.Clear();
+        List<string> cardPath = new List<string>();
         foreach (var imagePath in imageArray)
         {
             for (int i = 1; i <= 2; i++)
             {
-                strings.Add(imagePath);
+                cardPath.Add(imagePath);
             }
         }
-        strings.Shuffle();
-        foreach (var imagePath in strings)
+        //cardPath.Shuffle();
+        foreach (var imagePath in cardPath)
         {
             CardMatchCardItem item = cardPool.Get<CardMatchCardItem>(imagePath);
             cardList.Add(item);
@@ -67,9 +69,19 @@ public partial class CardMatchGameView : BaseView
         }
     }
 
+    void GameStart()
+    {
+        SetBlockVisible(false);
+        ui.slider_SliderCountDown.Play();
+    }
+
     public override void OnClose(Action _cb)
     {
         base.OnClose(_cb);
+        foreach (var card in cardList)
+        {
+            card.onCardOpen -= OnCardOpen;
+        }
         cardPool.CollectAll();
         ui.slider_SliderCountDown.Stop();
     }
@@ -96,17 +108,14 @@ public partial class CardMatchGameView : BaseView
             cardItem1.UnLockCard();
             cardItem2.UnLockCard();
             ClearCardData();
+            CheckAllUnlock();
         }
         else
         {
-            TimerMgr.Ins.AddTimer(this, delay: CardMatchCardItem.cardFlipDuation * 2, onComplete: () =>
+            TimerMgr.Ins.AddTimer(this, delay: CardMatchCardItem.cardFlipDuation * 3, onComplete: () =>
             {
                 ClearCardData();
             });
-        }
-        if (IsAllUnlock())
-        {
-            GameWin();
         }
     }
 
@@ -121,20 +130,29 @@ public partial class CardMatchGameView : BaseView
                 break;
             }
         }
+        return unlockAll;
+    }
+
+    void CheckAllUnlock()
+    {
+        bool unlockAll = IsAllUnlock();
+        Debug.Log("CheckAllUnlock" + unlockAll);
         if (unlockAll)
         {
-            GameWin();
+            ui.slider_SliderCountDown.Stop();
+            TimerMgr.Ins.AddTimer(this, delay: CardMatchCardItem.cardFlipDuation * 2, onComplete: () =>
+            {
+                GameWin();
+            });
             Debug.Log("全部解锁");
-            return unlockAll;
         }
-        return unlockAll;
     }
 
     void ClearCardData()
     {
         SetBlockVisible(false);
-        cardItem1.CloseAnimation();
-        cardItem2.CloseAnimation();
+        cardItem1?.CloseAnimation();
+        cardItem2?.CloseAnimation();
         cardItem1 = null;
         cardItem2 = null;
     }
@@ -144,13 +162,39 @@ public partial class CardMatchGameView : BaseView
         ui.block_Image.raycastTarget = _show;
     }
 
+    void DebugGameWin()
+    {
+        foreach (CardMatchCardItem item in cardList)
+        {
+            item.OpenAnimation();
+            item.UnLockCard();
+        }
+        CheckAllUnlock();
+    }
+
+    void DebugGameOver()
+    {
+        GameOver();
+    }
+
     void GameWin()
     {
         Debug.Log("GameWin");
+        GameWinViewParams viewParams = new GameWinViewParams(() =>
+        {
+            Close();
+        });
+        UIMgr.Ins.OpenView<GameWinView>(viewParams);
     }
 
     void GameOver()
     {
         Debug.Log("GameOver");
+        ui.slider_SliderCountDown.Stop();
+        GameOverViewParams viewParams = new GameOverViewParams(() =>
+        {
+            Close();
+        });
+        UIMgr.Ins.OpenView<GameOverView>(viewParams);
     }
 }

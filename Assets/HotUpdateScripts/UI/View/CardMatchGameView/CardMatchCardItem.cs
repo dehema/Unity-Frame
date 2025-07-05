@@ -33,6 +33,7 @@ public partial class CardMatchCardItem : BasePoolItem, IPointerClickHandler
     {
         base.OnOpen(_params);
         ui.back.SetActive(true);
+        cardStatus = CardStatus.Close;
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -41,11 +42,11 @@ public partial class CardMatchCardItem : BasePoolItem, IPointerClickHandler
         {
             return;
         }
-        onCardOpen(this);
         OpenAnimation();
+        onCardOpen(this);
     }
 
-    void OpenAnimation()
+    public void OpenAnimation()
     {
         cardStatus = CardStatus.Open;
         transform.DOScaleX(0, cardFlipDuation).SetEase(Ease.Linear).OnComplete(() =>
