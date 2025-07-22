@@ -70,13 +70,13 @@ namespace Rain.UI.Editor
                 newEnglishDict.Add(item.Key, englishDict[item.Key]);
             }
             string transFileTxt = JsonConvert.SerializeObject(newEnglishDict);
-            File.WriteAllText(EditorDevTools.GetLangPath(SystemLanguage.English), transFileTxt);
+            File.WriteAllText(GetLangPath(SystemLanguage.English), transFileTxt);
             Debug.Log("翻译完成,共翻译" + transLangKey.Count + $"个多语言,跳过{ignoreList.Count}个翻译项");
         }
 
         static Dictionary<string, string> ReadChineseJson(SystemLanguage language)
         {
-            string path = EditorDevTools.GetLangPath(language);
+            string path = GetLangPath(language);
             string content = File.ReadAllText(path);
             Dictionary<string, string> dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(content);
             return dict;
@@ -157,6 +157,12 @@ namespace Rain.UI.Editor
             }
             // 返回加密的字符串
             return sb.ToString();
+        }
+
+
+        public static string GetLangPath(SystemLanguage language)
+        {
+            return Application.streamingAssetsPath + $"/Lang/{language}.json";
         }
     }
 

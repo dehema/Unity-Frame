@@ -1,665 +1,211 @@
-﻿using System;
-using System.Collections;
+using System;
 using System.Collections.Generic;
-using System.IO;
-using DotLiquid;
-using Rain.Core;
-using Unity.EditorCoroutines.Editor;
+using System.Linq;
 using UnityEditor;
-using UnityEditor.Callbacks;
-using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.UI;
-using YamlDotNet.Serialization;
-using YamlDotNet.Serialization.NamingConventions;
-using Object = UnityEngine.Object;
-using Path = System.IO.Path;
 
 namespace Rain.UI.Editor
 {
+
     public class EditorDevTools : EditorWindow
     {
-        static GUILayoutOption[] commonLayout = { GUILayout.Height(30) };
-        public static GUIStyle titleLabelStyle;
-        float gameTimeSpeed = 1;
-        static string editorScriptPath;
+        static EditorDevTools_Style editorDevTools_Style;
+        private List<EditorDevTools_Base> rootModules = new List<EditorDevTools_Base>();
+        // 当前选中的模块路径（记录从根到叶子的完整路径）
+        private Stack<EditorDevTools_Base> selectedPath = new Stack<EditorDevTools_Base>();
 
-        private void OnEnable()
-        {
-            titleLabelStyle = new GUIStyle() { fontSize = 20, alignment = TextAnchor.MiddleCenter };
-        }
 
         [MenuItem("开发工具/开发工具", priority = 0)]
         static void ShowWindow()
         {
             EditorDevTools window = GetWindow<EditorDevTools>("Rain开发工具", typeof(EditorWindow).Assembly.GetType("UnityEditor.ConsoleWindow"));
             window.minSize = new Vector2(700, 700);
+            editorDevTools_Style = new EditorDevTools_Style();
         }
 
-        public static string GetEditorScriptPath()
+        private void OnEnable()
         {
-            return Application.dataPath + "/Script/Editor/EditorDevTools.cs";
+            // 初始化分页时传递当前窗口实例（this）
+            InitializeModules();
+        }
+
+        private void InitializeModules()
+        {
+            // 创建一个三级结构的示例：UI -> 建筑UI -> 防御建筑
+            var defenseBuildingUI = new EditorDevTools_Dev(this, editorDevTools_Style);
+            rootModules.Add(defenseBuildingUI);
+
+            var resourceBuildingUI = new EditorDevTools_UI(this, editorDevTools_Style);
+            rootModules.Add(resourceBuildingUI);
+
+            // 默认选中第一个根模块
+            if (rootModules.Count > 0)
+            {
+                SelectModule(rootModules[0]);
+            }
+        }
+
+        // 选择模块，更新选中路径
+        private void SelectModule(EditorDevTools_Base module)
+        {
+            // 先清空选中路径
+            selectedPath.Clear();
+            
+            // 构建从根到当前模块的路径
+            var pathList = new List<EditorDevTools_Base>();
+            EditorDevTools_Base current = module;
+            
+            // 先添加当前模块
+            pathList.Add(current);
+            
+            // 然后添加其所有父模块
+            while (current.Parent != null)
+            {
+                pathList.Add(current.Parent);
+                current = current.Parent;
+            }
+            
+            // 将路径反转并压入栈中（从根到叶子）
+            for (int i = pathList.Count - 1; i >= 0; i--)
+            {
+                selectedPath.Push(pathList[i]);
+            }
+            
+            // 更新所有模块的激活状态
+            UpdateModuleStates();
+        }
+
+        // 更新所有模块的激活状态
+        private void UpdateModuleStates()
+        {
+            // 重置所有模块状态
+            ResetModuleStates(rootModules);
+
+            // 激活选中路径上的所有模块
+            foreach (var module in selectedPath)
+            {
+                module.isActive = true;
+            }
+        }
+
+        // 递归重置所有模块状态
+        private void ResetModuleStates(List<EditorDevTools_Base> modules)
+        {
+            foreach (var module in modules)
+            {
+                module.isActive = false;
+                ResetModuleStates(module.subModules);
+            }
         }
 
         Vector2 scrollPosition;
         private void OnGUI()
         {
-            scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
-            OnGUIUIPlaying();
-            OnGUIEditor();
-            OnGUIUI();
-            OnGUIUIConfig();
-            OnGUIUIOther();
-            OnGUIDebug();
-            EditorGUILayout.EndScrollView();
+            //EditorGUILayout.BeginScrollView(scrollPosition);
+            DrawNavigationRecursive(rootModules, 0);
+            DrawCurrentContent();
+            //EditorGUILayout.EndScrollView();
         }
 
-        private void OnGUIEditor()
+        // 递归绘制导航菜单
+        private void DrawNavigationRecursive(List<EditorDevTools_Base> modules, int level)
         {
-            EditorGUILayout.LabelField("<color=white>------------------- 编辑 -------------------</color>", titleLabelStyle, GUILayout.Height(20));
-            GUILayout.BeginHorizontal();
-            editorScriptPath = GetEditorScriptPath();
-            GUILayout.Label("编辑脚本路径:" + editorScriptPath);
-            if (GUILayout.Button("打开编辑器脚本"))
-            {
-                OpenEditorScript();
-            }
-            GUILayout.EndHorizontal();
-            GUILayout.BeginHorizontal();
-            if (GUILayout.Button("清除PlayerPrefs"))
-            {
-                PlayerPrefs.DeleteAll(); ;
-            }
-            if (GUILayout.Button("删除所有丢失的脚本组件"))
-            {
-                DelAllMissScripts();
-            }
-            GUILayout.EndHorizontal();
-            GUILayout.BeginHorizontal();
-            if (GUILayout.Button("替换所有丢失字体的文本"))
-            {
-                ReplaceAllFont(true);
-            }
-            if (GUILayout.Button("替换所有文本的字体"))
-            {
-                ReplaceAllFont();
-            }
-            newfont = EditorGUILayout.ObjectField(newfont, typeof(Font), true) as Font;
-            GUILayout.EndHorizontal();
-            GUILayout.BeginHorizontal();
-            if (GUILayout.Button("导出Excel"))
-            {
-                ExportExcel2Json();
-            }
-            GUILayout.EndHorizontal();
-        }
+            var modulesToDraw = GetModulesForCurrentLevel(modules, level);
+            if (modulesToDraw.Count == 0) return;
 
-        string createViewName = "ViewNameYouWantCreate";
-        private void OnGUIUI()
-        {
-            //UI
-            EditorGUILayout.LabelField("<color=white>------------------- UI -------------------</color>", titleLabelStyle, GUILayout.Height(20));
-            GUILayout.BeginHorizontal();
-            createViewName = GUILayout.TextField(createViewName, 30, GUILayout.Width(170));
-            if (GUILayout.Button("创建View"))
-            {
-                EditorViewCreater.CreateView(createViewName);
-            }
-            if (GUILayout.Button("导出UI"))
-            {
-                EditorExportUI.ExportViewUI();
-            }
-            GUILayout.EndHorizontal();
-        }
-        private void OnGUIUIConfig()
-        {
-            //UI配置
-            EditorGUILayout.LabelField("<color=white>------------------- 配置 -------------------</color>", titleLabelStyle, GUILayout.Height(20));
-            GUILayout.BeginHorizontal();
-            if (GUILayout.Button("打开View配置"))
-            {
-                OpenUIViewConfig();
-            }
-            if (GUILayout.Button("导出View配置"))
-            {
-                ExportViewConfig();
-            }
-            if (GUILayout.Button("打开Scene配置"))
-            {
-                OpenSceneConfig();
-            }
-            if (GUILayout.Button("导出Scene配置"))
-            {
-                ExportSceneConfig();
-            }
-            if (GUILayout.Button("打开Excel配置目录"))
-            {
-                string path = Directory.GetParent(Application.dataPath).FullName + @"\Product\StaticData";
-                System.Diagnostics.Process.Start("Explorer.exe", path);
-            }
-            GUILayout.EndHorizontal();
-            GUILayout.BeginHorizontal();
-            if (GUILayout.Button("打开多语言配置"))
-            {
-                string langName = Application.systemLanguage.ToString();
-                if (Application.systemLanguage == SystemLanguage.ChineseSimplified || Application.systemLanguage == SystemLanguage.ChineseTraditional)
-                {
-                    langName = SystemLanguage.Chinese.ToString();
-                }
-                string path = Application.streamingAssetsPath + $"/Lang/{langName}.json";
-                Debug.Log(path);
-                EditorUtility.OpenWithDefaultApp(path);
-            }
-            if (GUILayout.Button("多语言汉译英"))
-            {
-                EditorTranslate.OnClickTranslateLanguage();
-            }
-            GUILayout.EndHorizontal();
-            GUILayout.BeginHorizontal();
-            if (EditorApplication.isPlaying)
-            {
-                if (GUILayout.Button("套用本地配置"))
-                {
-                    ConfigMgr.Ins.LoadAllConfig();
-                }
-                if (GUILayout.Button("套用远端配置"))
-                {
-                    ConfigMgr.Ins.LoadAllConfig(false);
-                }
-            }
-            GUILayout.EndHorizontal();
-        }
+            GUILayout.BeginHorizontal(EditorStyles.toolbar);
+            GUILayout.Space(level * 15);
 
-        public static string GetLangPath(SystemLanguage language)
-        {
-            return Application.streamingAssetsPath + $"/Lang/{language}.json";
-        }
+            // 保存当前选中的模块
+            EditorDevTools_Base selectedModule = null;
+            foreach (var module in modulesToDraw)
+            {
+                if (module.isActive)
+                {
+                    selectedModule = module;
+                    break;
+                }
+            }
 
-        bool audit = false;
-        private void OnGUIUIPlaying()
-        {
-            //运行
-            EditorGUILayout.LabelField("<color=white>------------------- 运行 -------------------</color>", titleLabelStyle, GUILayout.Height(20));
-            GUILayout.BeginHorizontal();
-            if (EditorApplication.isPlaying)
+            // 绘制带分割线的Toggle组
+            for (int i = 0; i < modulesToDraw.Count; i++)
             {
-                if (GUILayout.Button("停止游戏 Ctrl+P", commonLayout))
+                var module = modulesToDraw[i];
+
+                // 绘制Toggle
+                bool isSelected = module.isActive;
+                bool newState = GUILayout.Toggle(isSelected, module.pageName, EditorStyles.toolbarButton, GUILayout.ExpandWidth(true));
+
+                // 如果状态发生变化
+                if (newState != isSelected)
                 {
-                    EditorCoroutineUtility.StartCoroutine(StopGame(), this);
-                }
-            }
-            else
-            {
-                if (GUILayout.Button("启动游戏 Ctrl+P | Ctrl+R", commonLayout))
-                {
-                    StartGame();
-                }
-            }
-            if (EditorApplication.isPlaying)
-            {
-                if (GUILayout.Button("重启游戏 Ctrl+R", commonLayout))
-                {
-                    ResetGame();
-                }
-            }
-            GUILayout.EndHorizontal();
-            if (EditorApplication.isPlaying)
-            {
-                GUILayout.BeginHorizontal();
-                //Time.timeScale
-                GUILayout.Label("游戏全局速度 x1 - x10", GUILayout.Width(130));
-                gameTimeSpeed = GUILayout.HorizontalSlider(gameTimeSpeed, 1, 10, GUILayout.Width(this.position.width - 420));
-                GUILayout.Label("x0.2 - x1", GUILayout.Width(50));
-                gameTimeSpeed = GUILayout.HorizontalSlider(gameTimeSpeed, 0.2f, 1f, GUILayout.Width(100));
-                if (gameTimeSpeed >= 1)
-                {
-                    if ((gameTimeSpeed * 10) % 10 > 5)
+                    // 先重置同级所有模块的状态
+                    foreach (var otherModule in modulesToDraw)
                     {
-                        gameTimeSpeed = Mathf.CeilToInt(gameTimeSpeed);
+                        otherModule.isActive = false;
                     }
-                    else
+
+                    if (newState)
                     {
-                        gameTimeSpeed = Mathf.FloorToInt(gameTimeSpeed);
+                        SelectModule(module);
+                    }
+                    else if (selectedModule == module)
+                    {
+                        // 如果是取消选中当前选中的模块
+                        // 如果有父模块，则选中父模块
+                        if (module.Parent != null)
+                        {
+                            SelectModule(module.Parent);
+                        }
+                        else if (level == 0 && rootModules.Count > 0)
+                        {
+                            // 如果是根模块，则选中第一个根模块
+                            // 这里可以选择不同的逻辑，比如不选中任何模块
+                            SelectModule(rootModules[0]);
+                        }
                     }
                 }
-                Time.timeScale = gameTimeSpeed;
-                GUIStyle timeScaleStyle = new GUIStyle() { fontSize = 14, alignment = TextAnchor.MiddleLeft };
-                EditorGUILayout.LabelField("<color=#02FF19>x" + gameTimeSpeed.ToString("f2") + "</color>", timeScaleStyle, GUILayout.Width(80));
-                GUILayout.EndHorizontal();
-                GUILayout.BeginHorizontal();
-                GameSettingStatic.ResLog = GUILayout.Toggle(GameSettingStatic.ResLog, "资源log");
-                audit = GUILayout.Toggle(audit, "审核模式");
-                GUILayout.EndHorizontal();
-            }
-        }
 
-        /// <summary>
-        /// 其他
-        /// </summary>
-        private void OnGUIUIOther()
-        {
-            GUILayout.Label("<color=white>------------------- 其他 -------------------</color>", titleLabelStyle, GUILayout.Height(20));
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Hierarchy右键->A工具", GUILayout.Width(150));
+                // 不是最后一个元素则绘制分割线
+                if (i < modulesToDraw.Count - 1)
+                {
+                    GUILayout.Label("|", EditorStyles.label, GUILayout.Width(5));
+                }
+            }
+
             GUILayout.EndHorizontal();
-        }
 
-        /// <summary>
-        /// 调试
-        /// </summary>
-        private void OnGUIDebug()
-        {
-            GUILayout.BeginHorizontal();
-            GUILayout.EndHorizontal();
-        }
-
-        [MenuItem("开发工具/重启 %R")]
-        static void ResetGame()
-        {
-            if (Application.isPlaying)
+            // 递归绘制下一级
+            if (selectedPath.Count > level)
             {
-                EditorWindow.GetWindow<EditorDevTools>()._ResetGame();
-            }
-            else
-            {
-                StartGame();
+                DrawNavigationRecursive(modulesToDraw, level + 1);
             }
         }
-        /// <summary>
-        /// 当有此文件时说明代码编译后需要重启
-        /// </summary>
-        readonly static string ReStartGameFile = "temp_ReStartGameFile";
-        void _ResetGame()
+        private List<EditorDevTools_Base> GetModulesForCurrentLevel(List<EditorDevTools_Base> modules, int level)
         {
-            string tempFilePath = Directory.GetParent(Application.dataPath).FullName + ReStartGameFile;
-            File.WriteAllText(tempFilePath, string.Empty);
-            EditorCoroutineUtility.StartCoroutine(ReStart(), this);
-        }
+            if (level == 0) return modules;
 
-        /// <summary>
-        /// 此标记可以让脚本在编译后在调用一次
-        /// </summary>
-        [DidReloadScripts]
-        public static void OnCompileScripts()
-        {
-            if (!Application.isEditor || EditorApplication.isPlaying)
-                return;
-            string tempFilePath = Directory.GetParent(Application.dataPath).FullName + ReStartGameFile;
-            if (File.Exists(tempFilePath))
+            if (selectedPath.Count >= level)
             {
-                File.Delete(tempFilePath);
-                StartGame();
+                var list = selectedPath.Reverse().ToList();
+                return list[level - 1].subModules;
             }
+
+            return new List<EditorDevTools_Base>();
         }
 
-        public IEnumerator StopGame()
+        // 绘制当前选中模块的内容
+        private void DrawCurrentContent()
         {
-            EditorApplication.isPlaying = false;
-            EditorUtility.DisplayProgressBar("进度", "等待运行停止", 0.1f);
+            GUILayout.Space(10);
 
-            yield return new EditorWaitForSeconds(0.1f);
-
-            EditorUtility.ClearProgressBar();
-            yield return null;
-        }
-
-        static IEnumerator PlayGame()
-        {
-            if (Application.isPlaying)
-                yield break;
-            var scene = EditorSceneManager.OpenScene("Assets/Scenes/GameScene.unity", OpenSceneMode.Single);
-            EditorSceneManager.SetActiveScene(scene);
-            EditorUtility.DisplayProgressBar("打开", "GameScene场景", 0.1f);
-            yield return new EditorWaitForSeconds(0.1f);
-            EditorUtility.ClearProgressBar();
-            EditorApplication.isPlaying = true;
-        }
-
-        static IEnumerator ReStart()
-        {
-            if (!EditorApplication.isPlaying)
+            if (selectedPath.Count == 0)
             {
-                EditorCoroutineUtility.StartCoroutineOwnerless(PlayGame());
-                yield break;
-            }
-            while (EditorApplication.isPlaying)
-            {
-                EditorApplication.isPlaying = false;
-                yield return new EditorWaitForSeconds(0.1f);
-                EditorCoroutineUtility.StartCoroutineOwnerless(PlayGame());
-            }
-        }
-
-        public static void StartGame()
-        {
-            if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
-            {
-                EditorCoroutineUtility.StartCoroutineOwnerless(PlayGame());
-            }
-        }
-
-        [MenuItem("GameObject/A工具/只显示&&点击这个物体", priority = 0)]
-        public static void PickingAndIsolateObj()
-        {
-            Object obj = Selection.activeObject;
-            if (obj == null)
-            {
-                return;
-            }
-            //显示
-            GameObject go = obj as GameObject;
-            //点击
-            HideAllGameObject();
-            SceneVisibilityManager.instance.EnablePicking(go, true);
-            SceneVisibilityManager.instance.Show(go, true);
-        }
-
-        [MenuItem("GameObject/A工具/只显示最后一个NormalLayer普通页面", priority = 1)]
-        public static void OnlyShowLastNormalUI()
-        {
-            OnlyShowLastUI(ViewLayer.NormalLayer.ToString());
-        }
-
-        [MenuItem("GameObject/A工具/只显示最后一个DialogLayer弹窗", priority = 2)]
-        public static void OnlyShowLastPopUI()
-        {
-            OnlyShowLastUI(ViewLayer.DialogLayer.ToString());
-        }
-
-        [MenuItem("GameObject/A工具/只显示最后一个TipsLayer消息", priority = 3)]
-        public static void OnlyShowLastTipsUI()
-        {
-            OnlyShowLastUI(ViewLayer.TipsLayer.ToString());
-        }
-
-        public static void OnlyShowLastUI(string _rootName)
-        {
-            GameObject uiRoot = UIMgr.Ins.gameObject;
-            if (uiRoot == null)
-            {
-                return;
-            }
-            Transform tf = uiRoot.transform.Find(_rootName);
-            if (tf == null)
-            {
-                return;
-            }
-            if (tf.childCount <= 0)
-            {
+                GUILayout.Label("请选择一个功能模块", EditorStyles.helpBox);
                 return;
             }
 
-            GameObject uigo = null;
-            for (int i = tf.childCount - 1; i >= 0; i--)
-            {
-                var tmp = tf.GetChild(i).gameObject;
-                if (!tmp.activeSelf)
-                {
-                    continue;
-                }
-                uigo = tf.GetChild(i).gameObject;
-                break;
-            }
-            if (uigo == null)
-            {
-                return;
-            }
-            HideAllGameObject();
-            SceneVisibilityManager.instance.EnablePicking(uigo, true);
-            SceneVisibilityManager.instance.Show(uigo, true);
-            //Hierarchy面板选择该物体
-            EditorGUIUtility.PingObject(uigo);
-            Selection.activeGameObject = uigo;
-        }
-
-
-        [MenuItem("GameObject/A工具/重置 显示&&点击", priority = 999)]
-        public static void PickingAndIsolateReset()
-        {
-            ShowAllGameObject();
-        }
-
-        /// <summary>
-        /// 显示和可点击所有的物体
-        /// </summary>
-        private static void ShowAllGameObject()
-        {
-            foreach (GameObject item in FindObjectsOfType<GameObject>())
-            {
-                SceneVisibilityManager.instance.Show(item, true);
-                SceneVisibilityManager.instance.EnablePicking(item, true);
-            }
-        }
-
-        /// <summary>
-        /// 隐藏和不可点击所有的物体
-        /// </summary>
-        private static void HideAllGameObject()
-        {
-            foreach (GameObject item in FindObjectsOfType<GameObject>())
-            {
-                SceneVisibilityManager.instance.Hide(item, true);
-                SceneVisibilityManager.instance.DisablePicking(item, true);
-            }
-        }
-
-        /// <summary>
-        /// 打开此脚本
-        /// </summary>
-        private static void OpenEditorScript()
-        {
-            editorScriptPath = GetEditorScriptPath();
-            Debug.Log("打开脚本" + editorScriptPath);
-            EditorUtility.OpenWithDefaultApp(editorScriptPath);
-        }
-
-        /// <summary>
-        /// 删除所有丢失的脚本组件
-        /// </summary>
-        public static void DelAllMissScripts()
-        {
-            Action<GameObject, string> action = (GameObject _ui, string _uiPath) =>
-            {
-                int missNum = 0;
-                foreach (var trans in _ui.GetComponentsInChildren<Transform>(true))
-                {
-                    missNum += GameObjectUtility.RemoveMonoBehavioursWithMissingScript(trans.gameObject);
-                }
-                if (missNum > 0)
-                {
-                    PrefabUtility.SaveAsPrefabAsset(_ui, PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(_ui));
-                    Debug.Log(string.Format("{0}删除{1}个丢失脚本", _uiPath, missNum));
-                }
-            };
-            ForeachAllUIPrefab(action);
-        }
-
-        [SerializeField]
-        static Font newfont;
-        /// 替换所有丢失字体的文本组件
-        /// </summary>
-        /// </summary>
-        /// <param name="_onlyMissFont">只有丢失字体的文本</param>
-        public static void ReplaceAllFont(bool _onlyMissFont = false)
-        {
-            if (newfont == null)
-            {
-                EditorUtility.DisplayDialog("提示", "先设置新字体", "确定");
-                return;
-            }
-            Action<GameObject, string> action = (GameObject _ui, string _uiPath) =>
-            {
-                int textNum = 0;
-                foreach (var text in _ui.GetComponentsInChildren<Text>(true))
-                {
-                    if (_onlyMissFont && text.font != null)
-                    {
-                        continue;
-                    }
-                    textNum++;
-                    text.font = newfont;
-                }
-                if (textNum > 0)
-                {
-                    PrefabUtility.SaveAsPrefabAsset(_ui, PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(_ui));
-                    Debug.Log($"{_uiPath}替换{textNum}个文本");
-                }
-            };
-            ForeachAllUIPrefab(action);
-        }
-
-        /// <summary>
-        /// 遍历所有UI预制体
-        /// </summary>
-        public static void ForeachAllUIPrefab(Action<GameObject, string> _action)
-        {
-            List<string> PrefabPath = new List<string>();
-            Action<string, string> FindPrefabPath = (_resDirPath, prefix) =>
-            {
-                foreach (var filePath in Directory.GetFiles(_resDirPath + prefix, "*.prefab", SearchOption.AllDirectories))
-                {
-                    string fileName = Path.GetFileName(filePath);
-                    fileName = fileName.Replace(".prefab", string.Empty);
-                    PrefabPath.Add(prefix + fileName);
-                }
-            };
-            FindPrefabPath(Application.dataPath + "/Resources/", "View/");
-            FindPrefabPath(Application.dataPath + "/Framework/Resources/", "View/");
-            foreach (var path in PrefabPath)
-            {
-                GameObject ui = PrefabUtility.InstantiatePrefab(Resources.Load(path) as GameObject) as GameObject;
-                _action(ui, path);
-                DestroyImmediate(ui);
-            }
-        }
-
-        /// <summary>
-        /// Excel导成Json
-        /// </summary>
-        public static void ExportExcel2Json()
-        {
-            try
-            {
-                string batPath = Directory.GetParent(Application.dataPath).FullName;
-                batPath += "/Product/excel2json/excel2json.bat";
-                if (!File.Exists(batPath))
-                {
-                    EditorUtility.DisplayDialog("错误", "没有找到文件" + batPath, "确定");
-                    return;
-                }
-                System.Diagnostics.Process pro = new System.Diagnostics.Process();
-                FileInfo file = new FileInfo(batPath);
-                pro.StartInfo.WorkingDirectory = file.Directory.FullName;
-                pro.StartInfo.FileName = batPath;
-                pro.StartInfo.CreateNoWindow = false;
-                pro.Start();
-                pro.WaitForExit();
-                Debug.Log("导出完成->Resources/Json/");
-            }
-            catch (Exception ex)
-            {
-                Debug.LogError("执行失败 错误原因:" + ex.Message);
-            }
-        }
-
-
-        /// <summary>
-        /// 场景配置文件   必须放在 Resources 下，运行时也会读取
-        /// </summary>
-        public string SceneConfigPath { get { return Application.dataPath + "/AssetBundles/Art/Resources/Config/SceneConfig.yaml"; } }
-
-        public string SceneTemplatePath { get { return Application.dataPath + "/RainFramework/Runtime/Script/Config/SceneGenTemplate.txt"; } }
-        
-        public string SceneGenPath { get { return Application.dataPath + "/RainFramework/Runtime/Script/Config/SceneGen.cs"; } }
-
-        /// <summary>
-        /// UI配置文件   必须放在 Resources 下，运行时也会读取
-        /// </summary>
-        public string UIViewConfigPath { get { return Application.dataPath + "/AssetBundles/Art/Resources/Config/UIViewConfig.yaml"; } }
-
-        public string UIViewTemplatePath { get { return Application.dataPath + "/RainFramework/Runtime/Script/Config/UIViewGenTemplate.txt"; } }
-
-        public string UIViewGenPath { get { return Application.dataPath + "/RainFramework/Runtime/Script/Config/UIViewGen.cs"; } }
-
-        /// <summary>
-        /// 打开View的yaml配置文件
-        /// </summary>
-        public void OpenUIViewConfig()
-        {
-            EditorUtility.OpenWithDefaultApp(UIViewConfigPath);
-        }
-
-        /// <summary>
-        /// 导出View配置
-        /// </summary>
-        public void ExportViewConfig()
-        {
-            if (!File.Exists(UIViewConfigPath))
-            {
-                Debug.LogError("找不到 UIViewConfig.yaml 文件");
-                return;
-            }
-            string config = File.ReadAllText(UIViewConfigPath);
-            var deserializer = new DeserializerBuilder()
-                  .WithNamingConvention(CamelCaseNamingConvention.Instance)
-                  .Build();
-            UIViewConfig UIViewConfig = deserializer.Deserialize<UIViewConfig>(config);
-            Utility.Log(UIViewConfig);
-            //创建模板
-            string template = File.ReadAllText(UIViewTemplatePath);
-            Template temp = Template.Parse(template);
-            List<object> layerConfigList = new List<object>();
-            foreach (var item in UIViewConfig.layer)
-            {
-                layerConfigList.Add(new { comment = item.Value.comment, layerVal = item.Value.order, layerName = item.Key });
-            }
-            List<object> viewList = new List<object>();
-            foreach (var item in UIViewConfig.view)
-            {
-                viewList.Add(new { viewName = item.Key, comment = item.Value.comment });
-            }
-            Hash hash = Hash.FromAnonymousObject(new { layer = layerConfigList, view = viewList });
-            string result = temp.Render(hash);
-            File.WriteAllText(UIViewGenPath, result);
-            AssetDatabase.Refresh();
-        }
-
-        /// <summary>
-        /// 打开View的yaml配置文件
-        /// </summary>
-        public void OpenSceneConfig()
-        {
-            EditorUtility.OpenWithDefaultApp(SceneConfigPath);
-        }
-
-        /// <summary>
-        /// 导出Scene配置
-        /// </summary>
-        public void ExportSceneConfig()
-        {
-            if (!File.Exists(SceneConfigPath))
-            {
-                Debug.LogError("找不到 SceneConfig.yaml 文件");
-                return;
-            }
-            string config = File.ReadAllText(SceneConfigPath);
-            var deserializer = new DeserializerBuilder()
-                  .WithNamingConvention(CamelCaseNamingConvention.Instance)
-                  .Build();
-            AllSceneConfig allSceneConfig = deserializer.Deserialize<AllSceneConfig>(config);
-            Utility.Log(allSceneConfig);
-            //创建模板
-            string template = File.ReadAllText(SceneTemplatePath);
-            Template temp = Template.Parse(template);
-            List<object> allConfigList = new List<object>();
-            foreach (var item in allSceneConfig.scenes)
-            {
-                allConfigList.Add(new { comment = item.Value.comment, sceneName = item.Key });
-            }
-            Hash hash = Hash.FromAnonymousObject(new { scenes = allConfigList });
-            string result = temp.Render(hash);
-            File.WriteAllText(SceneGenPath, result);
-            AssetDatabase.Refresh();
+            selectedPath.Peek().DrawContent();
         }
     }
 }
