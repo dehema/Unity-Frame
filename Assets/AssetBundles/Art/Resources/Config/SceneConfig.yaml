@@ -1,0 +1,13 @@
+#Scene配置
+#必填#
+#[Scene]
+#可选#
+# [Scene].comment: 场景注释
+scenes:
+    Launcher:
+        comment: 启动场景
+    MainScene:
+        comment: 主场景
+    TD:
+        comment: 塔防场景
+

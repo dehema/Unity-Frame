@@ -1,7 +1,9 @@
 public enum ViewLayer
 { 
 {% for item in layer -%}
-	//{{item.layerComment}}
+    /// <summary>
+    /// {{item.comment}}
+    /// </summary>
 	{{item.layerName}} = {{item.layerVal}},
 {% endfor -%}
 }
@@ -9,6 +11,9 @@ public enum ViewLayer
 public class ViewName
 {
 {% for item in view -%}
+    /// <summary>
+    /// {{item.comment}}
+    /// </summary>
 	public const string {{item.viewName}} = "{{item.viewName}}";
 {% endfor -%}
 }

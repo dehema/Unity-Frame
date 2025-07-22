@@ -65,6 +65,7 @@ view:
         bgClose: true
     LoadSceneView:
         comment: 读取页面
+        bgColor: "#FFFFFFFF"
     CursorEffectView:
         comment: 光标特效
         layer: CursorLayer

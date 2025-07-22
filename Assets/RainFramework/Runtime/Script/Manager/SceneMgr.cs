@@ -45,19 +45,11 @@ public class SceneMgr : MonoSingleton<SceneMgr>
         Debug.Log("跳转到场景:" + targetSceneName);
     }
 
-    public bool IsWorld
+    public bool IsMain
     {
         get
         {
             return currSceneID == SceneID.MainScene;
-        }
-    }
-
-    public bool IsBattleField
-    {
-        get
-        {
-            return currSceneID == SceneID.BattleField;
         }
     }
 }

@@ -32,12 +32,12 @@ public partial class LoadSceneView : BaseView
         while (!operation.isDone)
         {
             currProgress = Mathf.Min(progressMax, operation.progress);
-            progress_Slider.value = currProgress;
-            txtProgress_Text.text = string.Format(LangMgr.Ins.Get("1672306530"), (int)(currProgress * 100));
+            ui.progress_Slider.value = currProgress;
+            ui.txtProgress_Text.text = string.Format(LangMgr.Ins.Get("1672306530"), (int)(currProgress * 100));
             if (currProgress >= 0.9F)
             {
-                progress_Slider.value = 1.0f;
-                txtProgress_Text.text = string.Format(LangMgr.Ins.Get("1672306530"), 100);
+                ui.progress_Slider.value = 1.0f;
+                ui.txtProgress_Text.text = string.Format(LangMgr.Ins.Get("1672306530"), 100);
                 operation.allowSceneActivation = true;
                 Close();
             }

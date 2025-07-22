@@ -6,7 +6,9 @@ public enum ViewLayer
 	MenuLayer = 5,
 	//弹窗UI
 	DialogLayer = 10,
-	//提示UI
+	/// <summary>
+	/// 提示UI
+	/// </summary>
 	TipsLayer = 20,
 	//引导UI
 	GuideLayer = 25,

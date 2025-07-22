@@ -1,0 +1,20 @@
+
+public class SceneName
+{
+{% for item in scenes -%}
+    /// <summary>
+    /// {{item.comment}}
+    /// </summary>
+	public const string {{item.sceneName}} = "{{item.sceneName}}";
+{% endfor -%}
+}
+
+public enum SceneID
+{
+{% for item in scenes -%}
+    /// <summary>
+    /// {{item.comment}}
+    /// </summary>
+	{{item.sceneName}},
+{% endfor -%}
+}

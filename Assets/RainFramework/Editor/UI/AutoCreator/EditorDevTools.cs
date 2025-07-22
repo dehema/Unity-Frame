@@ -29,7 +29,7 @@ namespace Rain.UI.Editor
             titleLabelStyle = new GUIStyle() { fontSize = 20, alignment = TextAnchor.MiddleCenter };
         }
 
-        [MenuItem("开发工具/开发工具")]
+        [MenuItem("开发工具/开发工具", priority = 0)]
         static void ShowWindow()
         {
             EditorDevTools window = GetWindow<EditorDevTools>("Rain开发工具", typeof(EditorWindow).Assembly.GetType("UnityEditor.ConsoleWindow"));
@@ -116,7 +116,7 @@ namespace Rain.UI.Editor
             //UI配置
             EditorGUILayout.LabelField("<color=white>------------------- 配置 -------------------</color>", titleLabelStyle, GUILayout.Height(20));
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button("打开View配置文件"))
+            if (GUILayout.Button("打开View配置"))
             {
                 OpenUIViewConfig();
             }
@@ -124,7 +124,15 @@ namespace Rain.UI.Editor
             {
                 ExportViewConfig();
             }
-            if (GUILayout.Button("打开Excel配置文件夹"))
+            if (GUILayout.Button("打开Scene配置"))
+            {
+                OpenSceneConfig();
+            }
+            if (GUILayout.Button("导出Scene配置"))
+            {
+                ExportSceneConfig();
+            }
+            if (GUILayout.Button("打开Excel配置目录"))
             {
                 string path = Directory.GetParent(Application.dataPath).FullName + @"\Product\StaticData";
                 System.Diagnostics.Process.Start("Explorer.exe", path);
@@ -554,41 +562,24 @@ namespace Rain.UI.Editor
             }
         }
 
-        /// <summary>
-        /// 获取UIView配置Yaml文件路径
-        /// </summary>
-        /// <returns></returns>
-        public string UIViewConfigPath
-        {
-            get
-            {
-                return Application.dataPath + "/AssetBundles/Art/Resources/Config/UIViewConfig.yaml";
-            }
-        }
 
         /// <summary>
-        /// 获取UIView配置Yaml文件路径
+        /// 场景配置文件   必须放在 Resources 下，运行时也会读取
         /// </summary>
-        /// <returns></returns>
-        public string UIViewTemplatePath
-        {
-            get
-            {
-                return Application.dataPath + "/RainFramework/Editor/UI/AutoCreator/UIViewGenTemplate.txt";
-            }
-        }
+        public string SceneConfigPath { get { return Application.dataPath + "/AssetBundles/Art/Resources/Config/SceneConfig.yaml"; } }
+
+        public string SceneTemplatePath { get { return Application.dataPath + "/RainFramework/Runtime/Script/Config/SceneGenTemplate.txt"; } }
+        
+        public string SceneGenPath { get { return Application.dataPath + "/RainFramework/Runtime/Script/Config/SceneGen.cs"; } }
 
         /// <summary>
-        /// 获取UIView配置Yaml文件路径
+        /// UI配置文件   必须放在 Resources 下，运行时也会读取
         /// </summary>
-        /// <returns></returns>
-        public string UIViewUIViewGenPath
-        {
-            get
-            {
-                return Application.dataPath + "/RainFramework/Runtime/Script/Config/UIViewGen.cs";
-            }
-        }
+        public string UIViewConfigPath { get { return Application.dataPath + "/AssetBundles/Art/Resources/Config/UIViewConfig.yaml"; } }
+
+        public string UIViewTemplatePath { get { return Application.dataPath + "/RainFramework/Runtime/Script/Config/UIViewGenTemplate.txt"; } }
+
+        public string UIViewGenPath { get { return Application.dataPath + "/RainFramework/Runtime/Script/Config/UIViewGen.cs"; } }
 
         /// <summary>
         /// 打开View的yaml配置文件
@@ -605,7 +596,7 @@ namespace Rain.UI.Editor
         {
             if (!File.Exists(UIViewConfigPath))
             {
-                Debug.LogError("找不到UIView.yaml文件");
+                Debug.LogError("找不到 UIViewConfig.yaml 文件");
                 return;
             }
             string config = File.ReadAllText(UIViewConfigPath);
@@ -620,16 +611,54 @@ namespace Rain.UI.Editor
             List<object> layerConfigList = new List<object>();
             foreach (var item in UIViewConfig.layer)
             {
-                layerConfigList.Add(new { layerComment = item.Value.comment, layerVal = item.Value.order, layerName = item.Key });
+                layerConfigList.Add(new { comment = item.Value.comment, layerVal = item.Value.order, layerName = item.Key });
             }
             List<object> viewList = new List<object>();
             foreach (var item in UIViewConfig.view)
             {
-                viewList.Add(new { viewName = item.Key });
+                viewList.Add(new { viewName = item.Key, comment = item.Value.comment });
             }
             Hash hash = Hash.FromAnonymousObject(new { layer = layerConfigList, view = viewList });
             string result = temp.Render(hash);
-            File.WriteAllText(UIViewUIViewGenPath, result);
+            File.WriteAllText(UIViewGenPath, result);
+            AssetDatabase.Refresh();
+        }
+
+        /// <summary>
+        /// 打开View的yaml配置文件
+        /// </summary>
+        public void OpenSceneConfig()
+        {
+            EditorUtility.OpenWithDefaultApp(SceneConfigPath);
+        }
+
+        /// <summary>
+        /// 导出Scene配置
+        /// </summary>
+        public void ExportSceneConfig()
+        {
+            if (!File.Exists(SceneConfigPath))
+            {
+                Debug.LogError("找不到 SceneConfig.yaml 文件");
+                return;
+            }
+            string config = File.ReadAllText(SceneConfigPath);
+            var deserializer = new DeserializerBuilder()
+                  .WithNamingConvention(CamelCaseNamingConvention.Instance)
+                  .Build();
+            AllSceneConfig allSceneConfig = deserializer.Deserialize<AllSceneConfig>(config);
+            Utility.Log(allSceneConfig);
+            //创建模板
+            string template = File.ReadAllText(SceneTemplatePath);
+            Template temp = Template.Parse(template);
+            List<object> allConfigList = new List<object>();
+            foreach (var item in allSceneConfig.scenes)
+            {
+                allConfigList.Add(new { comment = item.Value.comment, sceneName = item.Key });
+            }
+            Hash hash = Hash.FromAnonymousObject(new { scenes = allConfigList });
+            string result = temp.Render(hash);
+            File.WriteAllText(SceneGenPath, result);
             AssetDatabase.Refresh();
         }
     }
