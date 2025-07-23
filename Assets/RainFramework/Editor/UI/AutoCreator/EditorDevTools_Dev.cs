@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using DotLiquid;
 using Rain.Core;
 using Rain.UI;
@@ -277,9 +278,12 @@ public class EditorDevTools_Dev : EditorDevTools_Base
     {
         if (Application.isPlaying)
             yield break;
-        var scene = EditorSceneManager.OpenScene("Assets/Scenes/GameScene.unity", OpenSceneMode.Single);
+        //var scene = EditorSceneManager.OpenScene("Assets/Scenes/GameScene.unity", OpenSceneMode.Single);
+        List<SceneID> sceneList = Enum.GetValues(typeof(SceneID)).Cast<SceneID>().ToList();
+        string firstSceneName = sceneList.First().ToString();
+        var scene = EditorSceneManager.OpenScene($"Assets/AssetBundles/Scenes/{firstSceneName}.unity", OpenSceneMode.Single);
         EditorSceneManager.SetActiveScene(scene);
-        EditorUtility.DisplayProgressBar("打开", "GameScene场景", 0.1f);
+        EditorUtility.DisplayProgressBar("打开", $"{firstSceneName}场景", 0.1f);
         yield return new EditorWaitForSeconds(0.1f);
         EditorUtility.ClearProgressBar();
         EditorApplication.isPlaying = true;
