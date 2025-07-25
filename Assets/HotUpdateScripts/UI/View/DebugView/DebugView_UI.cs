@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Rain.UI;
 
-public partial class DebugView : Rain.UI.BaseView
+public partial class DebugView : BaseView
 {
     [System.Serializable]
     struct SerializableUIComponents
@@ -23,8 +23,8 @@ public partial class DebugView : Rain.UI.BaseView
         [SerializeField] public Button btStartGame_Button;
         [SerializeField] public GameObject btTips;
         [SerializeField] public Button btTips_Button;
-        [SerializeField] public GameObject btEnterBattleField;
-        [SerializeField] public Button btEnterBattleField_Button;
+        [SerializeField] public GameObject tdScene;
+        [SerializeField] public Button tdScene_Button;
     }
 
     [Header("自动序列化组件")]

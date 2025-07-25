@@ -39,7 +39,7 @@ public class EditorDevTools_Dev : EditorDevTools_Base
 
     private void OnGUIEditor()
     {
-        EditorGUILayout.LabelField("<color=white>------------------- 编辑 -------------------</color>", EditorDevTools_Style.titleLabelStyle, GUILayout.Height(20));
+        EditorGUILayout.LabelField("<color=white>------------------- 编辑 -------------------</color>", style.titleLabelStyle, GUILayout.Height(20));
         GUILayout.BeginHorizontal();
         GUILayout.Label("编辑脚本路径:" + EditorScriptPath);
         if (GUILayout.Button("打开编辑器脚本"))
@@ -80,7 +80,7 @@ public class EditorDevTools_Dev : EditorDevTools_Base
     private void OnGUIUI()
     {
         //UI
-        EditorGUILayout.LabelField("<color=white>------------------- UI -------------------</color>", EditorDevTools_Style.titleLabelStyle, GUILayout.Height(20));
+        EditorGUILayout.LabelField("<color=white>------------------- UI -------------------</color>", style.titleLabelStyle, GUILayout.Height(20));
         GUILayout.BeginHorizontal();
         createViewName = GUILayout.TextField(createViewName, 30, GUILayout.Width(170));
         if (GUILayout.Button("创建View"))
@@ -96,7 +96,7 @@ public class EditorDevTools_Dev : EditorDevTools_Base
     private void OnGUIUIConfig()
     {
         //UI配置
-        EditorGUILayout.LabelField("<color=white>------------------- 配置 -------------------</color>", EditorDevTools_Style.titleLabelStyle, GUILayout.Height(20));
+        EditorGUILayout.LabelField("<color=white>------------------- 配置 -------------------</color>", style.titleLabelStyle, GUILayout.Height(20));
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("打开View配置"))
         {
@@ -155,7 +155,7 @@ public class EditorDevTools_Dev : EditorDevTools_Base
     private void OnGUIUIPlaying()
     {
         //运行
-        EditorGUILayout.LabelField("<color=white>------------------- 运行 -------------------</color>", EditorDevTools_Style.titleLabelStyle, GUILayout.Height(20));
+        EditorGUILayout.LabelField("<color=white>------------------- 运行 -------------------</color>", style.titleLabelStyle, GUILayout.Height(20));
         GUILayout.BeginHorizontal();
         if (EditorApplication.isPlaying)
         {

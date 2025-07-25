@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class EditorDevTools_Style
 {
-    public static GUIStyle titleLabelStyle;
+    public GUIStyle titleLabelStyle;
     public EditorDevTools_Style()
     {
         titleLabelStyle = new GUIStyle() { fontSize = 20, alignment = TextAnchor.MiddleCenter };

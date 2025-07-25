@@ -10,7 +10,7 @@ namespace Rain.UI.Editor
 
     public class EditorDevTools : EditorWindow
     {
-        static EditorDevTools_Style editorDevTools_Style;
+        EditorDevTools_Style editorDevTools_Style;
         private List<EditorDevTools_Base> rootPages = new List<EditorDevTools_Base>();
         // 当前选中的模块路径 从子元素到根元素
         private List<EditorDevTools_Base> selectedPages = new List<EditorDevTools_Base>();
@@ -21,12 +21,10 @@ namespace Rain.UI.Editor
         {
             EditorDevTools window = GetWindow<EditorDevTools>("Rain开发工具", typeof(EditorWindow).Assembly.GetType("UnityEditor.ConsoleWindow"));
             window.minSize = new Vector2(700, 700);
-            editorDevTools_Style = new EditorDevTools_Style();
         }
 
         private void OnEnable()
         {
-            // 初始化分页时传递当前窗口实例（this）
             InitializePages();
         }
 
@@ -41,6 +39,7 @@ namespace Rain.UI.Editor
 
         private void InitializePages()
         {
+            editorDevTools_Style = new EditorDevTools_Style();
             FillPageData();
             for (int i = 0; i < rootPages.Count; i++)
             {

@@ -14,14 +14,14 @@ public partial class DebugView : BaseView
         base.Init(viewParams);
         InitUIPool();
         ui.viewList_Rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, canvas.pixelRect.height / 2 - 140);
-        ui.btStartGame_Button.SetButton(OnClickStartGame);
+        ui.btStartGame_Button.SetButton(() => { ChangeScene(SceneID.MainScene); });
         ui.btTips_Button.SetButton(() => { UIUtility.PopTips(DateTime.Now.ToString()); });
+        ui.tdScene_Button.SetButton(() => { ChangeScene(SceneID.TD); });
     }
 
-    public void OnClickStartGame()
+    private void ChangeScene(SceneID _sceneID, Action _cb = null)
     {
-        ui.btStartGame_Button.interactable = false;
-        SceneMgr.Ins.ChangeScene(SceneID.MainScene);
+        SceneMgr.Ins.ChangeScene(_sceneID, _cb);
         Close();
     }
 
