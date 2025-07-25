@@ -20,7 +20,7 @@ public class CameraController_SLG : MonoBehaviour
     [Tooltip("最大正交尺寸")]
     public float maxOrthographicSize = 15f;     // 最大缩放值（缩小极限）
     [Tooltip("缩放速度")]
-    public float zoomSpeed = 3f;               // 缩放速度
+    public const float zoomSpeed = 3f;          // 缩放速度
     [Tooltip("缩放平滑度")]
     public float zoomDampening = 5f;           // 缩放平滑度
 
