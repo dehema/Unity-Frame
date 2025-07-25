@@ -26,7 +26,6 @@ public class EditorDevTools_Dev : EditorDevTools_Base
     }
 
     static GUILayoutOption[] commonLayout = { GUILayout.Height(30) };
-    static string editorScriptPath;
     float gameTimeSpeed = 1;
 
     public override void DrawContent()
@@ -42,8 +41,7 @@ public class EditorDevTools_Dev : EditorDevTools_Base
     {
         EditorGUILayout.LabelField("<color=white>------------------- 编辑 -------------------</color>", EditorDevTools_Style.titleLabelStyle, GUILayout.Height(20));
         GUILayout.BeginHorizontal();
-        editorScriptPath = GetEditorScriptPath();
-        GUILayout.Label("编辑脚本路径:" + editorScriptPath);
+        GUILayout.Label("编辑脚本路径:" + EditorScriptPath);
         if (GUILayout.Button("打开编辑器脚本"))
         {
             OpenEditorScript();
@@ -152,11 +150,6 @@ public class EditorDevTools_Dev : EditorDevTools_Base
             }
         }
         GUILayout.EndHorizontal();
-    }
-
-    public static string GetEditorScriptPath()
-    {
-        return Application.dataPath + "/Script/Editor/EditorDevTools.cs";
     }
 
     private void OnGUIUIPlaying()
@@ -317,9 +310,7 @@ public class EditorDevTools_Dev : EditorDevTools_Base
     /// </summary>
     private static void OpenEditorScript()
     {
-        editorScriptPath = GetEditorScriptPath();
-        Debug.Log("打开脚本" + editorScriptPath);
-        EditorUtility.OpenWithDefaultApp(editorScriptPath);
+        EditorUtility.OpenWithDefaultApp(EditorScriptPath);
     }
 
     /// <summary>
@@ -431,6 +422,10 @@ public class EditorDevTools_Dev : EditorDevTools_Base
         }
     }
 
+    /// <summary>
+    /// 编辑器脚本路径
+    /// </summary>
+    public static string EditorScriptPath { get { return Application.dataPath + "/RainFramework/Editor/Dev/EditorDevTools.cs"; } }
 
     /// <summary>
     /// 场景配置文件   必须放在 Resources 下，运行时也会读取

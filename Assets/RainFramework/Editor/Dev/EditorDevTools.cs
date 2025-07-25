@@ -30,14 +30,18 @@ namespace Rain.UI.Editor
             InitializePages();
         }
 
-        private void InitializePages()
+        private void FillPageData()
         {
-            // 创建一个三级结构的示例：UI -> 建筑UI -> 防御建筑
             var EditorDevTools_Dev = new EditorDevTools_Dev(this, editorDevTools_Style);
             rootPages.Add(EditorDevTools_Dev);
 
             var resourceBuildingUI = new EditorDevTools_UI(this, editorDevTools_Style);
             rootPages.Add(resourceBuildingUI);
+        }
+
+        private void InitializePages()
+        {
+            FillPageData();
             for (int i = 0; i < rootPages.Count; i++)
             {
                 EditorDevTools_Base page = rootPages[i];

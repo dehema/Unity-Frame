@@ -53,10 +53,3 @@ public class SceneMgr : MonoSingleton<SceneMgr>
         }
     }
 }
-
-
-public class LoadSceneViewParams : IViewParams
-{
-    public string targetSceneName;
-    public Action CloseCB;
-}

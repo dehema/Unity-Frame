@@ -45,3 +45,10 @@ public partial class LoadSceneView : BaseView
         }
     }
 }
+
+
+public class LoadSceneViewParams : IViewParams
+{
+    public string targetSceneName;
+    public Action CloseCB;
+}

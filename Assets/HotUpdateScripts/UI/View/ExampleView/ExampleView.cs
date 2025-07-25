@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Rain.Core;
+using Rain.UI;
 using UnityEngine;
 
 public partial class ExampleView : ExampleViewParent
