@@ -10,10 +10,11 @@ namespace Rain.UI.Editor
 
     public class EditorDevTools : EditorWindow
     {
-        EditorDevTools_Style editorDevTools_Style;
+        EditorDevTools_Style editorDevTools_Style = null;
         private List<EditorDevTools_Base> rootPages = new List<EditorDevTools_Base>();
         // 当前选中的模块路径 从子元素到根元素
         private List<EditorDevTools_Base> selectedPages = new List<EditorDevTools_Base>();
+
 
 
         [MenuItem("开发工具/开发工具 &d", priority = 0)]
@@ -23,23 +24,61 @@ namespace Rain.UI.Editor
             window.minSize = new Vector2(700, 700);
         }
 
+
         private void OnEnable()
         {
             InitializePages();
         }
 
+        private void OnGUI()
+        {
+            InitStyle();
+            DrawNavigationRecursive(rootPages, 0);
+            DrawCurrentContent();
+        }
+
+        /// <summary>
+        /// 初始化并应用样式到所有页面
+        /// </summary>
+        void InitStyle()
+        {
+            // 如果样式未初始化，则创建新样式
+            if (editorDevTools_Style == null)
+                editorDevTools_Style = new EditorDevTools_Style(GUI.skin);
+            
+            // 递归设置样式到所有页面
+            SetStyleRecursively(rootPages, editorDevTools_Style);
+        }
+        
+        /// <summary>
+        /// 递归设置样式到页面及其子页面
+        /// </summary>
+        /// <param name="pages">要设置样式的页面列表</param>
+        /// <param name="style">要应用的样式</param>
+        private void SetStyleRecursively(List<EditorDevTools_Base> pages, EditorDevTools_Style style)
+        {
+            foreach (var page in pages)
+            {
+                page.SetStyle(style);
+                if (page.subPages != null && page.subPages.Count > 0)
+                    SetStyleRecursively(page.subPages, style);
+            }
+        }
+
         private void FillPageData()
         {
-            var EditorDevTools_Dev = new EditorDevTools_Dev(this, editorDevTools_Style);
+            var EditorDevTools_Dev = new EditorDevTools_Dev(this);
             rootPages.Add(EditorDevTools_Dev);
 
-            var resourceBuildingUI = new EditorDevTools_UI(this, editorDevTools_Style);
+            var resourceBuildingScene = new EditorDevTools_Scene(this);
+            rootPages.Add(resourceBuildingScene);
+
+            var resourceBuildingUI = new EditorDevTools_UI(this);
             rootPages.Add(resourceBuildingUI);
         }
 
         private void InitializePages()
         {
-            editorDevTools_Style = new EditorDevTools_Style();
             FillPageData();
             for (int i = 0; i < rootPages.Count; i++)
             {
@@ -130,12 +169,6 @@ namespace Rain.UI.Editor
             {
                 _page.isActive = false;
             }
-        }
-
-        private void OnGUI()
-        {
-            DrawNavigationRecursive(rootPages, 0);
-            DrawCurrentContent();
         }
 
         // 递归绘制导航菜单

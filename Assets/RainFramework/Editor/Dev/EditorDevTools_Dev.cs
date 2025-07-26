@@ -19,8 +19,8 @@ using Path = System.IO.Path;
 
 public class EditorDevTools_Dev : EditorDevTools_Base
 {
-    public EditorDevTools_Dev(EditorWindow mainWindow, EditorDevTools_Style style, List<EditorDevTools_Base> subModules = null)
-        : base(mainWindow, style, subModules)
+    public EditorDevTools_Dev(EditorWindow mainWindow, List<EditorDevTools_Base> subModules = null)
+        : base(mainWindow, subModules)
     {
         this.pageName = "开发";
     }
@@ -39,40 +39,31 @@ public class EditorDevTools_Dev : EditorDevTools_Base
 
     private void OnGUIEditor()
     {
-        EditorGUILayout.LabelField("<color=white>------------------- 编辑 -------------------</color>", style.titleLabelStyle, GUILayout.Height(20));
+        EditorGUILayout.LabelField("------------------- 编辑 -------------------", style.lbTitle, GUILayout.Height(20));
         GUILayout.BeginHorizontal();
-        GUILayout.Label("编辑脚本路径:" + EditorScriptPath);
-        if (GUILayout.Button("打开编辑器脚本"))
+        if (GUILayout.Button("打开编辑器脚本", style.bt))
         {
             OpenEditorScript();
         }
-        GUILayout.EndHorizontal();
-        GUILayout.BeginHorizontal();
-        if (GUILayout.Button("清除PlayerPrefs"))
+        if (GUILayout.Button("清除PlayerPrefs", style.bt))
         {
             PlayerPrefs.DeleteAll(); ;
         }
-        if (GUILayout.Button("删除所有丢失的脚本组件"))
+        if (GUILayout.Button("删除所有丢失的脚本组件", style.bt))
         {
             DelAllMissScripts();
         }
         GUILayout.EndHorizontal();
         GUILayout.BeginHorizontal();
-        if (GUILayout.Button("替换所有丢失字体的文本"))
+        if (GUILayout.Button("替换所有丢失字体的文本", style.bt))
         {
             ReplaceAllFont(true);
         }
-        if (GUILayout.Button("替换所有文本的字体"))
+        if (GUILayout.Button("替换所有文本的字体", style.bt))
         {
             ReplaceAllFont();
         }
         newfont = EditorGUILayout.ObjectField(newfont, typeof(Font), true) as Font;
-        GUILayout.EndHorizontal();
-        GUILayout.BeginHorizontal();
-        if (GUILayout.Button("导出Excel"))
-        {
-            ExportExcel2Json();
-        }
         GUILayout.EndHorizontal();
     }
 
@@ -80,14 +71,14 @@ public class EditorDevTools_Dev : EditorDevTools_Base
     private void OnGUIUI()
     {
         //UI
-        EditorGUILayout.LabelField("<color=white>------------------- UI -------------------</color>", style.titleLabelStyle, GUILayout.Height(20));
+        EditorGUILayout.LabelField("------------------- UI -------------------", style.lbTitle, GUILayout.Height(20));
         GUILayout.BeginHorizontal();
         createViewName = GUILayout.TextField(createViewName, 30, GUILayout.Width(170));
-        if (GUILayout.Button("创建View"))
+        if (GUILayout.Button("创建View", style.bt))
         {
             EditorViewCreater.CreateView(createViewName);
         }
-        if (GUILayout.Button("导出UI"))
+        if (GUILayout.Button("导出UI", style.bt))
         {
             EditorExportUI.ExportViewUI();
         }
@@ -96,32 +87,36 @@ public class EditorDevTools_Dev : EditorDevTools_Base
     private void OnGUIUIConfig()
     {
         //UI配置
-        EditorGUILayout.LabelField("<color=white>------------------- 配置 -------------------</color>", style.titleLabelStyle, GUILayout.Height(20));
+        EditorGUILayout.LabelField("------------------- 配置 -------------------", style.lbTitle, GUILayout.Height(20));
         GUILayout.BeginHorizontal();
-        if (GUILayout.Button("打开View配置"))
+        if (GUILayout.Button("打开View配置", style.bt))
         {
             OpenUIViewConfig();
         }
-        if (GUILayout.Button("导出View配置"))
+        if (GUILayout.Button("导出View配置", style.bt))
         {
             ExportViewConfig();
         }
-        if (GUILayout.Button("打开Scene配置"))
+        if (GUILayout.Button("打开Scene配置", style.bt))
         {
             OpenSceneConfig();
         }
-        if (GUILayout.Button("导出Scene配置"))
+        if (GUILayout.Button("导出Scene配置", style.bt))
         {
             ExportSceneConfig();
         }
-        if (GUILayout.Button("打开Excel配置目录"))
+        if (GUILayout.Button("打开Excel配置目录", style.bt))
         {
             string path = Directory.GetParent(Application.dataPath).FullName + @"\Product\StaticData";
             System.Diagnostics.Process.Start("Explorer.exe", path);
         }
+        if (GUILayout.Button("导出Excel", style.bt))
+        {
+            ExportExcel2Json();
+        }
         GUILayout.EndHorizontal();
         GUILayout.BeginHorizontal();
-        if (GUILayout.Button("打开多语言配置"))
+        if (GUILayout.Button("中文表", style.bt))
         {
             string langName = Application.systemLanguage.ToString();
             if (Application.systemLanguage == SystemLanguage.ChineseSimplified || Application.systemLanguage == SystemLanguage.ChineseTraditional)
@@ -132,7 +127,7 @@ public class EditorDevTools_Dev : EditorDevTools_Base
             Debug.Log(path);
             EditorUtility.OpenWithDefaultApp(path);
         }
-        if (GUILayout.Button("多语言汉译英"))
+        if (GUILayout.Button("多语言汉译英", style.bt))
         {
             EditorTranslate.OnClickTranslateLanguage();
         }
@@ -140,11 +135,11 @@ public class EditorDevTools_Dev : EditorDevTools_Base
         GUILayout.BeginHorizontal();
         if (EditorApplication.isPlaying)
         {
-            if (GUILayout.Button("套用本地配置"))
+            if (GUILayout.Button("套用本地配置", style.bt))
             {
                 ConfigMgr.Ins.LoadAllConfig();
             }
-            if (GUILayout.Button("套用远端配置"))
+            if (GUILayout.Button("套用远端配置", style.bt))
             {
                 ConfigMgr.Ins.LoadAllConfig(false);
             }
@@ -155,7 +150,7 @@ public class EditorDevTools_Dev : EditorDevTools_Base
     private void OnGUIUIPlaying()
     {
         //运行
-        EditorGUILayout.LabelField("<color=white>------------------- 运行 -------------------</color>", style.titleLabelStyle, GUILayout.Height(20));
+        EditorGUILayout.LabelField("------------------- 运行 -------------------", style.lbTitle, GUILayout.Height(20));
         GUILayout.BeginHorizontal();
         if (EditorApplication.isPlaying)
         {
@@ -200,7 +195,7 @@ public class EditorDevTools_Dev : EditorDevTools_Base
             }
             Time.timeScale = gameTimeSpeed;
             GUIStyle timeScaleStyle = new GUIStyle() { fontSize = 14, alignment = TextAnchor.MiddleLeft };
-            EditorGUILayout.LabelField("<color=#02FF19>x" + gameTimeSpeed.ToString("f2") + "</color>", timeScaleStyle, GUILayout.Width(80));
+            EditorGUILayout.LabelField(gameTimeSpeed.ToString("f2"), timeScaleStyle, GUILayout.Width(80));
             GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
             GameSettingStatic.ResLog = GUILayout.Toggle(GameSettingStatic.ResLog, "资源log");

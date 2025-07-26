@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class EditorDevTools_UI : EditorDevTools_Base
 {
-    public EditorDevTools_UI(EditorWindow mainWindow, EditorDevTools_Style style, List<EditorDevTools_Base> subModules = null)
-        : base(mainWindow, style, subModules)
+    public EditorDevTools_UI(EditorWindow mainWindow,  List<EditorDevTools_Base> subModules = null)
+        : base(mainWindow, subModules)
     {
         this.pageName = "UI";
     }

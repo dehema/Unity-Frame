@@ -40,10 +40,9 @@ public abstract class EditorDevTools_Base
     /// </summary>
     public int index;
 
-    public EditorDevTools_Base(EditorWindow mainWindow, EditorDevTools_Style style, List<EditorDevTools_Base> subModules = null)
+    public EditorDevTools_Base(EditorWindow mainWindow, List<EditorDevTools_Base> subModules = null)
     {
         this.mainWindow = mainWindow;
-        this.style = style;
         this.subPages = subModules ?? new List<EditorDevTools_Base>();
         for (int i = 0; i < subPages.Count; i++)
         {
@@ -70,5 +69,10 @@ public abstract class EditorDevTools_Base
         {
             _subPage.SetLevel(level + 1);
         }
+    }
+
+    public void SetStyle(EditorDevTools_Style _style)
+    {
+        style = _style;
     }
 }
