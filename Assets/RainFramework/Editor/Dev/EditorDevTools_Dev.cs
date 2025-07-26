@@ -25,7 +25,6 @@ public class EditorDevTools_Dev : EditorDevTools_Base
         this.pageName = "开发";
     }
 
-    static GUILayoutOption[] commonLayout = { GUILayout.Height(30) };
     float gameTimeSpeed = 1;
 
     public override void DrawContent()
@@ -154,21 +153,21 @@ public class EditorDevTools_Dev : EditorDevTools_Base
         GUILayout.BeginHorizontal();
         if (EditorApplication.isPlaying)
         {
-            if (GUILayout.Button("停止游戏 Ctrl+P", commonLayout))
+            if (GUILayout.Button("停止游戏 Ctrl+P", style.btLarge, GUILayout.Height(30)))
             {
                 EditorCoroutineUtility.StartCoroutine(StopGame(), this);
             }
         }
         else
         {
-            if (GUILayout.Button("启动游戏 Ctrl+P | Ctrl+R", commonLayout))
+            if (GUILayout.Button("启动游戏 Ctrl+P | Ctrl+R", style.btLarge, GUILayout.Height(30)))
             {
                 StartGame();
             }
         }
         if (EditorApplication.isPlaying)
         {
-            if (GUILayout.Button("重启游戏 Ctrl+R", commonLayout))
+            if (GUILayout.Button("重启游戏 Ctrl+R", style.btLarge, GUILayout.Height(30)))
             {
                 ResetGame();
             }
@@ -178,9 +177,9 @@ public class EditorDevTools_Dev : EditorDevTools_Base
         {
             GUILayout.BeginHorizontal();
             //Time.timeScale
-            GUILayout.Label("游戏全局速度 x1 - x10", GUILayout.Width(130));
+            GUILayout.Label("游戏全局速度 x1 - x10", style.lb, GUILayout.Width(130));
             gameTimeSpeed = GUILayout.HorizontalSlider(gameTimeSpeed, 1, 10, GUILayout.Width(mainWindow.position.width - 420));
-            GUILayout.Label("x0.2 - x1", GUILayout.Width(50));
+            GUILayout.Label("x0.2 - x1", style.lb, GUILayout.Width(50));
             gameTimeSpeed = GUILayout.HorizontalSlider(gameTimeSpeed, 0.2f, 1f, GUILayout.Width(100));
             if (gameTimeSpeed >= 1)
             {
@@ -194,8 +193,7 @@ public class EditorDevTools_Dev : EditorDevTools_Base
                 }
             }
             Time.timeScale = gameTimeSpeed;
-            GUIStyle timeScaleStyle = new GUIStyle() { fontSize = 14, alignment = TextAnchor.MiddleLeft };
-            EditorGUILayout.LabelField(gameTimeSpeed.ToString("f2"), timeScaleStyle, GUILayout.Width(80));
+            EditorGUILayout.LabelField(gameTimeSpeed.ToString("f2"), style.lb, GUILayout.Width(80));
             GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
             GameSettingStatic.ResLog = GUILayout.Toggle(GameSettingStatic.ResLog, "资源log");

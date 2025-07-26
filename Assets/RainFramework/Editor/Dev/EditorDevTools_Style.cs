@@ -14,7 +14,7 @@ public class EditorDevTools_Style
 
     public EditorDevTools_Style(GUISkin _skin)
     {
-        lb = new GUIStyle(_skin.label) { fontSize = 14, alignment = TextAnchor.MiddleCenter, normal = { textColor = Color.white } };
+        lb = new GUIStyle(_skin.label) { fontSize = 12, alignment = TextAnchor.MiddleCenter, normal = { textColor = Color.white } };
         lbTitle = new GUIStyle(lb) { fontSize = 16 };
 
         bt = new GUIStyle(_skin.button) { fontSize = 12, alignment = TextAnchor.MiddleCenter, hover = { textColor = Color.green } };
