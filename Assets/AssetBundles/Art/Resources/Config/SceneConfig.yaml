@@ -10,4 +10,6 @@ scenes:
         comment: 主场景
     TD:
         comment: 塔防场景
+    RTSUnitTest:
+        comment: RTS单位测试场景
 

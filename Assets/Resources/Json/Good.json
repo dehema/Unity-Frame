@@ -1,13 +1,5 @@
 {
   "CashOutMethod": {
-    "2": {
-      "ID": 2,
-      "type": 1,
-      "cashNum": 111.0,
-      "needNum": 111.0,
-      "taskID": 2,
-      "countDown": 15
-    },
     "3": {
       "ID": 3,
       "type": 1,
@@ -15,14 +7,6 @@
       "needNum": 109.0,
       "taskID": 3,
       "countDown": 3
-    },
-    "1": {
-      "ID": 1,
-      "type": 1,
-      "cashNum": 102.0,
-      "needNum": 102.0,
-      "taskID": 1,
-      "countDown": 20
     },
     "6": {
       "ID": 6,
@@ -32,11 +16,19 @@
       "taskID": 3,
       "countDown": 10
     },
-    "4": {
-      "ID": 4,
-      "type": 2,
-      "cashNum": 53.2,
-      "needNum": 10000.0,
+    "2": {
+      "ID": 2,
+      "type": 1,
+      "cashNum": 111.0,
+      "needNum": 111.0,
+      "taskID": 2,
+      "countDown": 15
+    },
+    "1": {
+      "ID": 1,
+      "type": 1,
+      "cashNum": 102.0,
+      "needNum": 102.0,
       "taskID": 1,
       "countDown": 20
     },
@@ -47,6 +39,14 @@
       "needNum": 9955.0,
       "taskID": 2,
       "countDown": 15
+    },
+    "4": {
+      "ID": 4,
+      "type": 2,
+      "cashNum": 53.2,
+      "needNum": 10000.0,
+      "taskID": 1,
+      "countDown": 20
     }
   },
   "Task": {

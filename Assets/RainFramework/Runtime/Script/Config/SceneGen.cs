@@ -13,6 +13,10 @@ public class SceneName
     /// 塔防场景
     /// </summary>
 	public const string TD = "TD";
+    /// <summary>
+    /// RTS单位测试场景
+    /// </summary>
+	public const string RTSUnitTest = "RTSUnitTest";
 }
 
 public enum SceneID
@@ -29,4 +33,8 @@ public enum SceneID
     /// 塔防场景
     /// </summary>
 	TD,
+    /// <summary>
+    /// RTS单位测试场景
+    /// </summary>
+	RTSUnitTest,
 }

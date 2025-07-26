@@ -6,7 +6,7 @@ using UnityEngine;
 /// SLG类型游戏的相机控制器
 /// 实现类似文明6的相机效果，包括滚轮缩放
 /// </summary>
-public class CameraController_SLG : MonoBehaviour
+public class CameraController_RTS : MonoBehaviour
 {
     [Header("相机设置")]
     [Tooltip("相机组件")]
@@ -23,10 +23,23 @@ public class CameraController_SLG : MonoBehaviour
     public const float zoomSpeed = 3f;          // 缩放速度
     [Tooltip("缩放平滑度")]
     public float zoomDampening = 5f;           // 缩放平滑度
+    
+    [Header("平移设置")]
+    [Tooltip("相机移动速度")]
+    public float panSpeed = 10f;               // 相机平移速度
+    [Tooltip("相机移动平滑度")]
+    public float panDampening = 2f;            // 相机平移平滑度
 
 
     // 当前目标正交尺寸
     private float targetOrthographicSize;
+    
+    // 相机目标位置
+    private Vector3 targetPosition;
+    
+    // 鼠标中键拖动状态
+    private bool isMiddleMouseDragging = false;
+    private Vector3 lastMousePosition;
 
     // 初始化
     void Start()
@@ -51,6 +64,9 @@ public class CameraController_SLG : MonoBehaviour
         }
 
         SetTargetOrthographicSize(defaultOrthographicSize);
+        
+        // 初始化目标位置为当前位置
+        targetPosition = transform.position;
     }
 
     // 每帧更新
@@ -60,6 +76,9 @@ public class CameraController_SLG : MonoBehaviour
 
         // 处理相机缩放
         HandleZoom();
+        
+        // 处理相机平移
+        HandlePanning();
     }
 
     /// <summary>
@@ -102,6 +121,61 @@ public class CameraController_SLG : MonoBehaviour
                 mainCamera.orthographicSize,
                 targetOrthographicSize,
                 Time.deltaTime * zoomDampening
+            );
+        }
+    }
+    
+    /// <summary>
+    /// 处理相机平移（鼠标中键拖动）
+    /// </summary>
+    private void HandlePanning()
+    {
+        // 检测鼠标中键按下状态
+        if (Input.GetMouseButtonDown(2)) // 鼠标中键按下
+        {
+            isMiddleMouseDragging = true;
+            lastMousePosition = Input.mousePosition;
+        }
+        else if (Input.GetMouseButtonUp(2)) // 鼠标中键释放
+        {
+            isMiddleMouseDragging = false;
+        }
+        
+        // 处理鼠标中键拖动
+        if (isMiddleMouseDragging)
+        {
+            // 计算鼠标位置差值
+            Vector3 mouseDelta = Input.mousePosition - lastMousePosition;
+            
+            // 根据相机正交尺寸调整移动速度（缩放越大，移动速度越快）
+            float moveSpeedFactor = mainCamera.orthographicSize / defaultOrthographicSize;
+            
+            // 计算相机移动方向和距离
+            // 注意：鼠标向右移动，相机应该向左移动，所以使用负值
+            Vector3 moveDirection = new Vector3(
+                -mouseDelta.x * moveSpeedFactor * panSpeed * Time.deltaTime,
+                -mouseDelta.y * moveSpeedFactor * panSpeed * Time.deltaTime,
+                0
+            );
+            
+            // 将屏幕空间移动转换为世界空间移动
+            moveDirection = transform.TransformDirection(moveDirection);
+            moveDirection.z = 0; // 确保相机只在XY平面移动
+            
+            // 更新目标位置
+            targetPosition += moveDirection;
+            
+            // 更新鼠标位置记录
+            lastMousePosition = Input.mousePosition;
+        }
+        
+        // 平滑过渡到目标位置
+        if (transform.position != targetPosition)
+        {
+            transform.position = Vector3.Lerp(
+                transform.position,
+                targetPosition,
+                Time.deltaTime * panDampening
             );
         }
     }

@@ -11,6 +11,8 @@ namespace Rain.Launcher
     {
         IEnumerator Start()
         {
+            DontDestroyOnLoad(Camera.main);
+
             Application.targetFrameRate = 60;
             // 初始化模块中心
             ModuleCenter.Initialize(this);

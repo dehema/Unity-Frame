@@ -25,6 +25,8 @@ public partial class DebugView : BaseView
         [SerializeField] public Button btTips_Button;
         [SerializeField] public GameObject tdScene;
         [SerializeField] public Button tdScene_Button;
+        [SerializeField] public GameObject rtsUnitTest;
+        [SerializeField] public Button rtsUnitTest_Button;
     }
 
     [Header("自动序列化组件")]

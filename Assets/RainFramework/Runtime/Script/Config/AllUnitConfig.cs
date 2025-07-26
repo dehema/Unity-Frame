@@ -16,7 +16,7 @@ public class UnitConfig
     /// ID 第1位是种族ID 第二位是兵种类型 最后两位是分类
     /// </summary>
     public int ID;
-    public UnitType type;
+    public string _unitType;
     public string name;
     /// <summary>
     /// 生命值

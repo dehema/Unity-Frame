@@ -17,6 +17,7 @@ public partial class DebugView : BaseView
         ui.btStartGame_Button.SetButton(() => { ChangeScene(SceneID.MainScene); });
         ui.btTips_Button.SetButton(() => { UIUtility.PopTips(DateTime.Now.ToString()); });
         ui.tdScene_Button.SetButton(() => { ChangeScene(SceneID.TD); });
+        ui.rtsUnitTest_Button.SetButton(() => { ChangeScene(SceneID.RTSUnitTest); });
     }
 
     private void ChangeScene(SceneID _sceneID, Action _cb = null)
