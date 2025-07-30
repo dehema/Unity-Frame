@@ -160,10 +160,10 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: -5421213890086952936}
-    m_Position: {x: 760, y: 180, z: 0}
+    m_Position: {x: 690, y: 180, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 9154816512791647938}
-    m_Position: {x: 750, y: 300, z: 0}
+    m_Position: {x: 720, y: 300, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 4385315188161783815}
     m_Position: {x: 260, y: 0, z: 0}
@@ -206,7 +206,7 @@ BlendTree:
     m_DirectBlendParameter: Speed
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: e8b6ae497645a274e98d76a6e407ce8b, type: 3}
+    m_Motion: {fileID: 7400000, guid: 0db21fc102c66a444a2d99ddd0c4168b, type: 3}
     m_Threshold: 1
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
