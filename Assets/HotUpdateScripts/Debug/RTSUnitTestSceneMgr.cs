@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Rain.Core.RTS;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -31,13 +32,8 @@ public class RTSUnitTestSceneMgr : MonoBehaviour
             // 实例化单位预制体
             unit = Instantiate(prefab, Vector3.zero, Quaternion.identity);
 
-            // 获取或添加NavMeshAgent组件
-            agent = unit.GetComponent<NavMeshAgent>();
-
-            // 配置NavMeshAgent基本属性
-            agent.speed = unitConfig.moveSpeed;
-            agent.acceleration = 999;
-            agent.angularSpeed = unitConfig.angularSpeed;
+            BattleUnit unitController_RTS = prefab.GetComponent<BattleUnit>();
+            unitController_RTS.InitData(unitConfig);
         }
     }
 

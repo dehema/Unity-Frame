@@ -29,7 +29,7 @@ public class UnitConfig
     /// <summary>
     /// 攻击力
     /// </summary>
-    public float attack;
+    public int attack;
     /// <summary>
     /// 攻击间隔
     /// </summary>
