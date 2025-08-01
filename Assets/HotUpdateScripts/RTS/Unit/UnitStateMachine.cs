@@ -32,7 +32,7 @@ namespace Rain.Core.RTS
         // 切换状态
         public void ChangeState(IState newState)
         {
-            CurrentState?.Exit(_unit);
+            CurrentState?.Exit();
             CurrentState = newState;
             CurrentState?.Enter(_unit);
         }
@@ -40,7 +40,7 @@ namespace Rain.Core.RTS
         // 每帧更新状态
         public void Update()
         {
-            CurrentState?.Update(_unit);
+            CurrentState?.Update();
         }
     }
 }
