@@ -1006,9 +1006,6 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 169256, guid: 7b4e51ccca67b514d883b197e0f59efd, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 4786131103437905224}
-    - targetCorrespondingSourceObject: {fileID: 169256, guid: 7b4e51ccca67b514d883b197e0f59efd, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 8712837494317381939}
     - targetCorrespondingSourceObject: {fileID: 169256, guid: 7b4e51ccca67b514d883b197e0f59efd, type: 3}
       insertIndex: -1
@@ -1019,28 +1016,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 169256, guid: 7b4e51ccca67b514d883b197e0f59efd, type: 3}
   m_PrefabInstance: {fileID: 8302577649408641748}
   m_PrefabAsset: {fileID: 0}
---- !u!195 &4786131103437905224
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8302577649408745468}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 3.5
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 2
-  m_BaseOffset: 0
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
 --- !u!136 &8712837494317381939
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1076,10 +1051,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75e710cd043985d4087e2115182f7062, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 2
-  runSpeed: 5
-  rotationSpeed: 10
-  attackRange: 2
-  attackCooldown: 1
-  attackDamage: 10
   attackTarget: {fileID: 0}
+  animator: {fileID: 0}
+  _data:
+    unitId: 0
+    isPlayerUnit: 0
+    hp: 0
+    moveSpeed: 0
+    runSpeed: 0
+    rotationSpeed: 0
+    attack: 0
+    attackRange: 0
+    attackInterval: 0
+    maxHealth: 100
+    faction: 0
+    currentHealth: 0
+    isDead: 0
+    targetPosition: {x: 0, y: 0, z: 0}
+    targetEnemy: {fileID: 0}
+    attackTimer: 0
+  moveController: {fileID: 0}

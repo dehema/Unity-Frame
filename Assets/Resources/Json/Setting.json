@@ -1,85 +1,85 @@
 {
-  "Common": {
-    "World_Camera_ZoomHeight": {
-      "ID": "World_Camera_ZoomHeight",
-      "val": "10,20"
+  "Common": [
+    {
+      "ID": "HPSliderDisplay",
+      "val": "1.5"
     },
-    "row_18": {
-      "ID": null,
-      "val": null
-    },
-    "World_Camera_ZoomRot": {
-      "ID": "World_Camera_ZoomRot",
-      "val": "40,50"
-    },
-    "World_Size": {
+    {
       "ID": "World_Size",
       "val": "200,200"
     },
-    "World_Time_QuickSpeed": {
-      "ID": "World_Time_QuickSpeed",
-      "val": "2"
-    },
-    "World_Camera_ZoomSpeed": {
-      "ID": "World_Camera_ZoomSpeed",
-      "val": "0.3"
-    },
-    "row_20": {
-      "ID": null,
-      "val": null
-    },
-    "World_Camera_MoveSpeed": {
-      "ID": "World_Camera_MoveSpeed",
-      "val": "15"
-    },
-    "row_19": {
-      "ID": null,
-      "val": null
-    },
-    "row_21": {
-      "ID": null,
-      "val": null
-    },
-    "row_17": {
-      "ID": null,
-      "val": null
-    },
-    "row_16": {
-      "ID": null,
-      "val": null
-    },
-    "World_Unit_RotX": {
-      "ID": "World_Unit_RotX",
-      "val": "45"
-    },
-    "World_Player_MoveSpeed": {
-      "ID": "World_Player_MoveSpeed",
-      "val": "5"
-    },
-    "World_Camera_DragSpeed": {
-      "ID": "World_Camera_DragSpeed",
-      "val": "0.015"
-    },
-    "World_Time_NormalSpeed": {
-      "ID": "World_Time_NormalSpeed",
-      "val": "0.8"
-    },
-    "World_Trade_MoveSpeed": {
-      "ID": "World_Trade_MoveSpeed",
-      "val": "2.0"
-    },
-    "World_Trade_InitGold": {
-      "ID": "World_Trade_InitGold",
-      "val": "100"
-    },
-    "World_UnitPixelSize": {
+    {
       "ID": "World_UnitPixelSize",
       "val": "256"
     },
-    "HPSliderDisplay": {
-      "ID": "HPSliderDisplay",
-      "val": "1.5"
+    {
+      "ID": "World_Camera_MoveSpeed",
+      "val": "15"
+    },
+    {
+      "ID": "World_Camera_DragSpeed",
+      "val": "0.015"
+    },
+    {
+      "ID": "World_Camera_ZoomHeight",
+      "val": "10,20"
+    },
+    {
+      "ID": "World_Camera_ZoomRot",
+      "val": "40,50"
+    },
+    {
+      "ID": "World_Camera_ZoomSpeed",
+      "val": "0.3"
+    },
+    {
+      "ID": "World_Player_MoveSpeed",
+      "val": "5"
+    },
+    {
+      "ID": "World_Unit_RotX",
+      "val": "45"
+    },
+    {
+      "ID": "World_Time_NormalSpeed",
+      "val": "0.8"
+    },
+    {
+      "ID": "World_Time_QuickSpeed",
+      "val": "2"
+    },
+    {
+      "ID": "World_Trade_MoveSpeed",
+      "val": "2.0"
+    },
+    {
+      "ID": "World_Trade_InitGold",
+      "val": "100"
+    },
+    {
+      "ID": null,
+      "val": null
+    },
+    {
+      "ID": null,
+      "val": null
+    },
+    {
+      "ID": null,
+      "val": null
+    },
+    {
+      "ID": null,
+      "val": null
+    },
+    {
+      "ID": null,
+      "val": null
+    },
+    {
+      "ID": null,
+      "val": null
     }
-  },
-  "Other": {}
+  ],
+  "Other": []
 }

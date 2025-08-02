@@ -43,7 +43,7 @@ namespace Rain.Core.RTS
                     unit.stateMachine.ChangeState(new AttackState());
                 }
                 // 如果有移动目标，返回移动状态
-                else if (Vector3.Distance(unit.transform.position, unit.attackTarget.transform.position) > unit.Data.)
+                else if (Vector3.Distance(unit.transform.position, unit.attackTarget.transform.position) > unit.Data.attackRange)
                 {
                     unit.stateMachine.ChangeState(new MoveState());
                 }

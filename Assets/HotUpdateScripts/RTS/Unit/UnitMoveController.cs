@@ -17,7 +17,7 @@ namespace Rain.Core.RTS
 
         private void Awake()
         {
-            agent = GetComponent<NavMeshAgent>();
+            agent = GetComponent<NavMeshAgent>() ?? gameObject.AddComponent<NavMeshAgent>();
         }
 
         // 初始化：关联角色数据并设置初始速度

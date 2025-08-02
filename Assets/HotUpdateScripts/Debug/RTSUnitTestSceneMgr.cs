@@ -32,8 +32,8 @@ public class RTSUnitTestSceneMgr : MonoBehaviour
             // 实例化单位预制体
             unit = Instantiate(prefab, Vector3.zero, Quaternion.identity);
 
-            BattleUnit unitController_RTS = prefab.GetComponent<BattleUnit>();
-            unitController_RTS.InitData(unitConfig);
+            BattleUnit battleUnit = prefab.GetComponent<BattleUnit>();
+            battleUnit.InitData(unitConfig);
         }
     }
 

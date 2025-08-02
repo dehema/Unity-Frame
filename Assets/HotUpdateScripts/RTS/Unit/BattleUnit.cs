@@ -8,7 +8,7 @@ namespace Rain.Core.RTS
     /// <summary>
     /// 战斗单位逻辑组件
     /// </summary>
-    [RequireComponent(typeof(UnitMoveController))]
+    [RequireComponent(typeof(Animator))]
     public class BattleUnit : MonoBehaviour
     {
         [Header("引用")]
@@ -45,23 +45,16 @@ namespace Rain.Core.RTS
         {
             // 获取组件引用
             animator = GetComponent<Animator>();
-            capsuleCollider = GetComponent<CapsuleCollider>();
-            moveController = GetComponent<UnitMoveController>();
+            capsuleCollider = GetComponent<CapsuleCollider>() ?? gameObject.AddComponent<CapsuleCollider>();
+            moveController = GetComponent<UnitMoveController>() ?? gameObject.AddComponent<UnitMoveController>();
             stateMachine = new UnitStateMachine(this);
         }
 
         private void Start()
         {
-            // 初始化数据
-            _data.currentHealth = _data.maxHealth;
-            moveController.Init(_data);
-
-            // 注册到战斗管理器
-            BattleMgr.Ins.RegisterUnit(this);
-
-            // 初始状态为空闲
-            stateMachine.ChangeState(new IdleState());
         }
+
+
 
         private void Update()
         {
@@ -75,6 +68,18 @@ namespace Rain.Core.RTS
         {
             // 从战斗管理器注销
             BattleMgr.Ins.UnregisterUnit(this);
+        }
+
+        public void InitData(UnitConfig unitConfig)
+        {
+            _data.Init(unitConfig);
+            moveController.Init(_data);
+
+            // 注册到战斗管理器
+            BattleMgr.Ins.RegisterUnit(this);
+
+            // 初始状态为空闲
+            stateMachine.ChangeState(new IdleState());
         }
 
         /// <summary>

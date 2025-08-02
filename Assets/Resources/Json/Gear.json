@@ -1,13 +1,13 @@
 {
-  "GearID": {
-    "sword_1": {
+  "GearID": [
+    {
       "gearID": "sword_1",
       "gearType": "sword",
       "langID": "长剑"
     }
-  },
-  "WeaponOffset": {
-    "sword_1": {
+  ],
+  "WeaponOffset": [
+    {
       "WeaponID": "sword_1",
       "posX": 0.011,
       "posY": -0.068,
@@ -16,6 +16,6 @@
       "angY": -157.351,
       "angZ": 92.852
     }
-  },
-  "Other": {}
+  ],
+  "Other": []
 }

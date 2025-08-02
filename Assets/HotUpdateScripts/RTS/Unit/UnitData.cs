@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml.Linq;
 using UnityEngine;
 
 namespace Rain.Core.RTS
@@ -44,6 +45,7 @@ namespace Rain.Core.RTS
 
         public void Init(UnitConfig config)
         {
+            currentHealth = maxHealth;
             unitConfig = config;
             UpdateAttributes();
         }
