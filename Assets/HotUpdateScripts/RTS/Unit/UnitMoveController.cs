@@ -12,8 +12,10 @@ namespace Rain.Core.RTS
         public NavMeshAgent agent;
         private UnitData _data; // 引用角色数据
 
-        public bool HasMoveTarget { get; private set; }
-        public Vector3 MoveTarget { get; private set; }
+        private bool hasMoveTarget;
+        public bool HasMoveTarget => hasMoveTarget;
+        private Vector3 moveTarget;
+        public Vector3 MoveTarget => moveTarget;
 
         private void Awake()
         {
@@ -49,16 +51,26 @@ namespace Rain.Core.RTS
 
         public bool IsAtTarget()
         {
-            if (!HasMoveTarget) return true;
+            if (!hasMoveTarget) return true;
 
-            float distanceToTarget = Vector3.Distance(transform.position, MoveTarget);
+            float distanceToTarget = Vector3.Distance(transform.position, moveTarget);
             return distanceToTarget <= agent.stoppingDistance + 0.1f;
+        }
+
+        /// <summary>
+        /// 设置移动目标
+        /// </summary>
+        /// <param name="target"></param>
+        public void SetMoveTarget(Vector3 target)
+        {
+            moveTarget = target;
+            hasMoveTarget = true;
         }
 
         public void ClearMoveTarget()
         {
-            HasMoveTarget = false;
-            MoveTarget = Vector3.zero;
+            hasMoveTarget = false;
+            moveTarget = Vector3.zero;
         }
 
         // 追击目标单位

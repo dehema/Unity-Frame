@@ -16,16 +16,11 @@ namespace Rain.Core.RTS
 
         // 组件引用
         public Animator animator;
-        private CapsuleCollider capsuleCollider;
-
-        // 动画参数哈希（优化性能）
-        private int speedHash = Animator.StringToHash("Speed");
-        private int isAttackingHash = Animator.StringToHash("IsAttacking");
-        private int isHurtHash = Animator.StringToHash("IsHurt");
-        private int isDeadHash = Animator.StringToHash("IsDead");
 
         //事件
         public event Action<BattleUnit> OnDeath;
+        public bool HasMoveTarget => moveController.HasMoveTarget;
+        public Vector3 MoveTarget => moveController.MoveTarget;
 
         //数据
         [SerializeField] private UnitData _data;        // 角色数据
@@ -38,6 +33,7 @@ namespace Rain.Core.RTS
 
         public UnitMoveController moveController;
         public UnitStateMachine stateMachine;
+        public UnitStateType unitStateType => stateMachine.currentState.stateType;
         public NavMeshAgent agent => moveController.agent;
 
 
@@ -88,7 +84,7 @@ namespace Rain.Core.RTS
         /// <param name="target"></param>
         public void SetMoveTarget(Vector3 target)
         {
-            moveController.MoveTo(target);
+            moveController.SetMoveTarget(target);
         }
 
         /// <summary>
@@ -240,15 +236,6 @@ namespace Rain.Core.RTS
                 _data.targetEnemy.transform.position.z
             );
             transform.LookAt(targetPosition);
-        }
-
-        /// <summary>
-        /// 是否有移动目标
-        /// </summary>
-        /// <returns></returns>
-        public bool HasMoveTarget()
-        {
-            return moveController.HasMoveTarget;
         }
 
         ////////////////////////////////////////////////////

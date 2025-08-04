@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 public class AllUnitConfig : ConfigBase
 {
-    public Dictionary<int, UnitConfig> unit = new Dictionary<int, UnitConfig>();
+    public List<UnitConfig> unit = new List<UnitConfig>();
 
     public override void Init()
     {
@@ -13,7 +14,7 @@ public class AllUnitConfig : ConfigBase
 public class UnitConfig
 {
     /// <summary>
-    /// ID 第1位是种族ID 第二位是兵种类型 最后两位是分类
+    /// ID      
     /// </summary>
     public int ID;
     public string _unitType;

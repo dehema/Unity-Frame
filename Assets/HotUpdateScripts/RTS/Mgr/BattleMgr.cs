@@ -106,16 +106,21 @@ namespace Rain.Core.RTS
             // 可以添加战斗结束逻辑，如显示结算界面等
         }
 
+        public void AllUnitMove(Vector3 targetPos)
+        {
+            UnitMove(_factionUnits[Faction.Player], targetPos);
+        }
+
         // 向单位下达移动命令
-        public void IssueMoveOrder(List<BattleUnit> units, Vector3 targetPosition)
+        public void UnitMove(List<BattleUnit> units, Vector3 targetPos)
         {
             foreach (var unit in units)
             {
                 if (unit.IsAlive())
                 {
-                    unit.SetMoveTarget(targetPosition);
-                    if (unit.stateMachine.CurrentState is not MoveState &&
-                        unit.stateMachine.CurrentState is not AttackState)
+                    unit.SetMoveTarget(targetPos);
+                    if (unit.stateMachine.currentState is not MoveState &&
+                        unit.stateMachine.currentState is not AttackState)
                     {
                         unit.stateMachine.ChangeState(new MoveState());
                     }

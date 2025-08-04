@@ -4,6 +4,7 @@ namespace Rain.Core.RTS
 {
     public class AttackState : BaseState
     {
+        public override UnitStateType stateType => UnitStateType.Attack;
         private float _lastAttackTime;
         public override void Enter(BattleUnit unit)
         {
@@ -24,7 +25,7 @@ namespace Rain.Core.RTS
             }
 
             // 有移动目标时切换到移动状态
-            if (unit.HasMoveTarget())
+            if (unit.HasMoveTarget)
             {
                 unit.stateMachine.ChangeState(new MoveState());
                 return;
@@ -44,7 +45,7 @@ namespace Rain.Core.RTS
             }
 
             // 有移动目标时切换到移动状态
-            if (unit.HasMoveTarget())
+            if (unit.HasMoveTarget)
             {
                 unit.stateMachine.ChangeState(new MoveState());
                 return;

@@ -2,6 +2,7 @@
 {
     public class DieState : BaseState
     {
+        public override UnitStateType stateType => UnitStateType.Die;
         public override void Enter(BattleUnit unit)
         {
             base.Enter(unit);

@@ -5,12 +5,13 @@ namespace Rain.Core.RTS
 {
     public class HurtState : BaseState
     {
+        public override UnitStateType stateType => UnitStateType.Hurt;
         private float _hurtDuration; // 受伤硬直时长
         private float _enterTime;    // 进入状态的时间
-        private IState _previousState; // 受伤前的状态
+        private BaseState _previousState; // 受伤前的状态
 
         // 构造函数，接收受伤硬直时长和之前的状态
-        public HurtState(float duration, IState previousState)
+        public HurtState(float duration, BaseState previousState)
         {
             _hurtDuration = duration;
             _previousState = previousState;

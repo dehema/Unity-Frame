@@ -32,7 +32,7 @@ public class RTSUnitTestSceneMgr : MonoBehaviour
             // 实例化单位预制体
             unit = Instantiate(prefab, Vector3.zero, Quaternion.identity);
 
-            BattleUnit battleUnit = prefab.GetComponent<BattleUnit>();
+            BattleUnit battleUnit = unit.GetComponent<BattleUnit>();
             battleUnit.InitData(unitConfig);
         }
     }
@@ -51,13 +51,6 @@ public class RTSUnitTestSceneMgr : MonoBehaviour
     /// </summary>
     private void MoveUnitToMousePosition()
     {
-        // 确保单位和代理组件存在
-        if (unit == null || agent == null)
-        {
-            Debug.LogWarning("单位或NavMeshAgent组件不存在，请先创建单位");
-            return;
-        }
-
         // 从相机发射射线到鼠标位置
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
         Debug.DrawRay(mainCamera.transform.position, ray.direction, Color.red);
@@ -66,7 +59,7 @@ public class RTSUnitTestSceneMgr : MonoBehaviour
         if (Physics.Raycast(ray, out hit, 1000f, 1 << GameObjectLayer.Scene3D))
         {
             // 设置导航目标位置
-            agent.SetDestination(hit.point);
+            BattleMgr.Ins.AllUnitMove(hit.point);
             Debug.Log("单位移动到: " + hit.point);
         }
     }

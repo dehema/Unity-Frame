@@ -5,6 +5,8 @@ namespace Rain.Core.RTS
 {
     public class MoveState : BaseState
     {
+        public override UnitStateType stateType => UnitStateType.Move;
+
         private int _speedHash = Animator.StringToHash("Speed");
         private int _isAttackingHash;
         private float _runAnimationSpeed;
@@ -20,8 +22,7 @@ namespace Rain.Core.RTS
         {
             base.Enter(unit);
             // 进入移动状态时启动导航
-            unit.moveController.MoveTo(unit.moveController.MoveTarget);
-            Debug.Log($"{unit.Data.Name} 进入移动状态");
+            unit.moveController.MoveTo(unit.MoveTarget);
         }
 
         public override void Update()

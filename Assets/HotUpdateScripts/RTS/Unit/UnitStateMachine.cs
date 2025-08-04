@@ -17,11 +17,13 @@
 //                             │   AttackState    │ │    MoveState     │ │ AttackState      │
 //                             └─────────┘ └─────────┘ └─────────┘
 
+using UnityEngine;
+
 namespace Rain.Core.RTS
 {
     public class UnitStateMachine
     {
-        public IState CurrentState { get; private set; }
+        public BaseState currentState { get; private set; }
         private BattleUnit _unit;
 
         public UnitStateMachine(BattleUnit unit)
@@ -30,17 +32,17 @@ namespace Rain.Core.RTS
         }
 
         // 切换状态
-        public void ChangeState(IState newState)
+        public void ChangeState(BaseState newState)
         {
-            CurrentState?.Exit();
-            CurrentState = newState;
-            CurrentState?.Enter(_unit);
+            currentState?.Exit();
+            currentState = newState;
+            currentState?.Enter(_unit);
         }
 
         // 每帧更新状态
         public void Update()
         {
-            CurrentState?.Update();
+            currentState?.Update();
         }
     }
 }

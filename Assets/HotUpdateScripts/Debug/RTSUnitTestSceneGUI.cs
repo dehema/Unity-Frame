@@ -52,7 +52,7 @@ public class RTSUnitTestSceneGUI : MonoBehaviour
         int index = 0;
         foreach (var item in ConfigMgr.Ins.allUnitConfig.unit)
         {
-            UnitConfig unitConfig = item.Value;
+            UnitConfig unitConfig = item;
             // 计算每个按钮的位置
             float yPos = startY + index * (buttonHeight + buttonSpacing);
             Rect buttonRect = new Rect(10, yPos, buttonWidth, buttonHeight);
@@ -75,7 +75,7 @@ public class RTSUnitTestSceneGUI : MonoBehaviour
     {
         foreach (var item in ConfigMgr.Ins.allUnitConfig.unit)
         {
-            unitNameDict[item.Value.name] = LangMgr.Ins.Get(item.Value.name);
+            unitNameDict[item.name] = LangMgr.Ins.Get(item.name);
         }
     }
 }

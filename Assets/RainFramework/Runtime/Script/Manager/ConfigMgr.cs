@@ -22,11 +22,11 @@ public class ConfigMgr : MonoSingleton<ConfigMgr>
     public void LoadAllConfig(bool _localConfig = true)
     {
         uiViewConfig = LoadViewConfig(); ;
-        imageTextMix = LoadConfig<ImageTextMixConfig>("ImageTextMix");
-        settingConfig = LoadConfig<GameSettingConfig>("Setting");
+        //imageTextMix = LoadConfig<ImageTextMixConfig>("ImageTextMix");
+        //settingConfig = LoadConfig<GameSettingConfig>("Setting");
         allUnitConfig = LoadConfig<AllUnitConfig>("Unit");
-        allCityConfig = LoadConfig<AllCityConfig>("City");
-        worldConfig = LoadConfig<WorldConfig>("World");
+        //allCityConfig = LoadConfig<AllCityConfig>("City");
+        //worldConfig = LoadConfig<WorldConfig>("World");
         AllLoadComplete();
     }
 
