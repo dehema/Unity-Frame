@@ -74,5 +74,9 @@ namespace Rain.Core.RTS
         {
             Debug.Log($"{unit.Data.Name} 退出攻击状态");
         }
+
+        public override void UpdateState()
+        {
+        }
     }
 }

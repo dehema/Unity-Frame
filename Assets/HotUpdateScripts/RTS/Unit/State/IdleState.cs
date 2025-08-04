@@ -28,5 +28,9 @@ namespace Rain.Core.RTS
         public override void Exit()
         {
         }
+
+        public override void UpdateState()
+        {
+        }
     }
 }

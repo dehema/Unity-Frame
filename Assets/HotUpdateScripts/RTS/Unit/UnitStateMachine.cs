@@ -44,5 +44,10 @@ namespace Rain.Core.RTS
         {
             currentState?.Update();
         }
+
+        public void UpdateState()
+        {
+            currentState?.UpdateState();
+        }
     }
 }

@@ -15,7 +15,7 @@ namespace Rain.Core.RTS
         void Enter(BattleUnit unit);
 
         /// <summary>
-        /// 状态更新
+        /// 每帧更新
         /// </summary>
         /// <param name="unit"></param>
         void Update();
@@ -25,5 +25,10 @@ namespace Rain.Core.RTS
         /// </summary>
         /// <param name="unit"></param>
         void Exit();
+
+        /// <summary>
+        /// 更新状态逻辑
+        /// </summary>
+        void UpdateState();
     }
 }

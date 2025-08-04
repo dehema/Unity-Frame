@@ -60,5 +60,9 @@ namespace Rain.Core.RTS
         {
             Debug.Log($"{unit.Data.Name} 退出受伤状态");
         }
+
+        public override void UpdateState()
+        {
+        }
     }
 }

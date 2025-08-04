@@ -15,11 +15,13 @@ namespace Rain.Core.RTS
         public virtual void Enter(BattleUnit unit)
         {
             this.unit = unit;
-            Debug.Log($"[ {LangMgr.Ins.Get(unit.Data.Name)} ] 进入【 {stateType} 】状态 ");
+            Debug.Log($"[ {unit.Data.Name} ] 进入【 {stateType} 】状态 ");
         }
 
         public abstract void Update();
 
         public abstract void Exit();
+
+        public abstract void UpdateState();
     }
 }

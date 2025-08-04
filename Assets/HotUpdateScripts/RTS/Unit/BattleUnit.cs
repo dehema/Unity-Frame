@@ -16,6 +16,7 @@ namespace Rain.Core.RTS
 
         // 组件引用
         public Animator animator;
+        public CapsuleCollider capsuleCollider;
 
         //事件
         public event Action<BattleUnit> OnDeath;
@@ -85,6 +86,7 @@ namespace Rain.Core.RTS
         public void SetMoveTarget(Vector3 target)
         {
             moveController.SetMoveTarget(target);
+            stateMachine.UpdateState(); 
         }
 
         /// <summary>

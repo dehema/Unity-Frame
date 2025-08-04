@@ -9,8 +9,9 @@ namespace Rain.Core.RTS
 
         private int _speedHash = Animator.StringToHash("Speed");
         private int _isAttackingHash;
-        private float _runAnimationSpeed;
         MovementSubState moveState;
+        NavMeshAgent agent;
+        Animator animator;
 
         // 构造函数初始化动画哈希和参数
         public MoveState()
@@ -21,15 +22,14 @@ namespace Rain.Core.RTS
         public override void Enter(BattleUnit unit)
         {
             base.Enter(unit);
+            agent = unit.moveController.agent;
+            animator = unit.animator;
             // 进入移动状态时启动导航
             unit.moveController.MoveTo(unit.MoveTarget);
         }
 
         public override void Update()
         {
-            NavMeshAgent agent = unit.moveController.agent;
-            Animator animator = unit.animator;
-
             // 检查是否已到达目的地
             if (agent.remainingDistance <= agent.stoppingDistance)
             {
@@ -40,8 +40,9 @@ namespace Rain.Core.RTS
             }
 
             // 计算动画速度并设置
-            float animationSpeed = GetAnimationSpeed(agent.remainingDistance);
+            float animationSpeed = 1;
             animator.SetFloat(_speedHash, animationSpeed);
+            agent.speed = unit.Data.moveSpeed;
 
             // 面向移动方向
             RotateTowards(unit.transform, agent.velocity.normalized);
@@ -55,32 +56,12 @@ namespace Rain.Core.RTS
                 agent.ResetPath(); // 停止移动
                 return;
             }
-
-            // 切换走/跑状态（通过修改移动速度实现）
-            if (moveState == MovementSubState.Walk && animationSpeed > _runAnimationSpeed)
-            {
-                moveState = MovementSubState.Run;
-                agent.speed = unit.Data.runSpeed;
-            }
-            else if (moveState == MovementSubState.Run && animationSpeed <= _runAnimationSpeed)
-            {
-                moveState = MovementSubState.Walk;
-                agent.speed = unit.Data.moveSpeed;
-            }
         }
 
         public override void Exit()
         {
             // 退出移动状态时的清理
             Debug.Log($"{unit.Data.Name} 退出移动状态");
-        }
-
-        // 计算动画速度（复用原有逻辑）
-        private float GetAnimationSpeed(float remainingDistance)
-        {
-            // 这里复用你原有的动画速度计算逻辑
-            // 示例：根据剩余距离返回0-1之间的动画速度值
-            return Mathf.Clamp01(1 - (remainingDistance / 10f));
         }
 
         // 面向移动方向（复用原有逻辑）
@@ -95,6 +76,11 @@ namespace Rain.Core.RTS
                     Time.deltaTime * 10f
                 );
             }
+        }
+
+        public override void UpdateState()
+        {
+            unit.moveController.MoveTo(unit.MoveTarget);
         }
     }
 
