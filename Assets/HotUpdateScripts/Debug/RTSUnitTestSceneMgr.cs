@@ -31,6 +31,10 @@ public class RTSUnitTestSceneMgr : MonoBehaviour
     /// <param name="unitConfig"></param>
     public void CreateUnit(UnitConfig unitConfig)
     {
+        if (unit != null)
+        {
+            Destroy(unit);
+        }
         GameObject prefab = Resources.Load<GameObject>("Prefab/Unit/" + unitConfig.fullID);
         if (prefab != null)
         {
