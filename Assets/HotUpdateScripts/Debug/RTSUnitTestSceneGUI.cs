@@ -1,8 +1,5 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.Windows.Speech;
-using static UnityEditor.Progress;
 
 public class RTSUnitTestSceneGUI : MonoBehaviour
 {

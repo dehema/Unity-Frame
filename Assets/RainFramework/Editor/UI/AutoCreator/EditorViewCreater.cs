@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
@@ -103,10 +103,17 @@ namespace Rain.UI.Editor
             return File.Exists(TempFilePath);
         }
 
+        const string templateScenePath = "Assets/AssetBundles/Scenes/TemplateScene.unity";
         public static Scene CreateViewScene(string _viewName)
         {
-            string templateScenePath = $"Assets/Scenes/TemplateScene.unity";
-            string scenePath = $"Assets/Scenes/{_viewName}.unity";
+
+            // 检查模板场景是否存在，如果不存在直接中断执行
+            if (!File.Exists(templateScenePath))
+            {
+                Debug.LogError($"模板场景不存在: {templateScenePath}");
+            }
+
+            string scenePath = $"Assets/AssetBundles/Scenes/{_viewName}.unity";
             AssetDatabase.CopyAsset(templateScenePath, scenePath);
             currScene = EditorSceneManager.OpenScene(scenePath);
             return currScene;

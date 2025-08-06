@@ -22,7 +22,7 @@ namespace Rain.UI
         private Image __imgBg;
         private RectTransform __content;
 
-        public virtual void Init(IViewParams viewParams = null)
+        public virtual void Init(IViewParams _viewParams = null)
         {
             _viewName = GetType().ToString();
             Utility.Log(_viewName + ".Init()");

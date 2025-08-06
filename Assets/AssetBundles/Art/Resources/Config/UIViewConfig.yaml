@@ -102,4 +102,8 @@ view:
         comment: 倒计时
         layer: TipsLayer
         bgColor: "#00000000"
+    RTSUnitTestView:
+        comment: 即时战略单位测试场景
+        layer: NormalLayer
+        bgColor: "#00000000"
         

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Rain.Core.RTS;
+using Rain.UI;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -18,6 +19,10 @@ public class RTSUnitTestSceneMgr : MonoBehaviour
     void Start()
     {
         mainCamera = GetComponent<Camera>();
+        UIMgr.Ins.OpenView<RTSUnitTestView>(new RTSUnitTestViewParams()
+        {
+            actionCreateUnit = CreateUnit
+        });
     }
 
     /// <summary>
