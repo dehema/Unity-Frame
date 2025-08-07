@@ -19,6 +19,12 @@ public partial class RTSUnitTestView : BaseView
         [SerializeField] public GameObject unitItem;
         [SerializeField] public GameObject btShowUnitList;
         [SerializeField] public Button btShowUnitList_Button;
+        [SerializeField] public GameObject right_float;
+        [SerializeField] public RectTransform right_float_Rect;
+        [SerializeField] public GameObject btAddDummy;
+        [SerializeField] public Button btAddDummy_Button;
+        [SerializeField] public GameObject btShowOperationList;
+        [SerializeField] public Button btShowOperationList_Button;
     }
 
     [Header("自动序列化组件")]

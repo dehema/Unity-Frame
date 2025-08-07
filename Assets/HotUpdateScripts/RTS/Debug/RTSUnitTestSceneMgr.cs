@@ -19,10 +19,11 @@ public class RTSUnitTestSceneMgr : MonoBehaviour
     void Start()
     {
         mainCamera = GetComponent<Camera>();
-        UIMgr.Ins.OpenView<RTSUnitTestView>(new RTSUnitTestViewParams()
-        {
-            actionCreateUnit = CreateUnit
-        });
+        //UIMgr.Ins.OpenView<RTSUnitTestView>(new RTSUnitTestViewParams()
+        //{
+        //    actionCreateUnit = CreateUnit
+        //});
+
     }
 
     /// <summary>

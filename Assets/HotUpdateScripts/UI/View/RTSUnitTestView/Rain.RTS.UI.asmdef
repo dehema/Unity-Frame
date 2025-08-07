@@ -1,0 +1,19 @@
+{
+    "name": "Rain.RTS.UI",
+    "rootNamespace": "",
+    "references": [
+        "GUID:f774ecce4920052458871f649ea9fc50",
+        "GUID:e7e53514cbc78694bb9d8db5fe1c8e1a",
+        "GUID:e9dd896ebf2606340aae3d7c223890a6",
+        "GUID:9facc0df629e5e2469a2c19e31b6953b"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

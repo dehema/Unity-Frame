@@ -35,6 +35,7 @@ public partial class RTSUnitTestView : BaseView
             Button bt = item.GetComponent<Button>();
             bt.SetButton(() =>
             {
+                
                 actionCreateUnit?.Invoke(unitConfig);
             });
         }
