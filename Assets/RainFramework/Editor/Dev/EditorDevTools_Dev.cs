@@ -75,7 +75,8 @@ public class EditorDevTools_Dev : EditorDevTools_Base
         createViewName = GUILayout.TextField(createViewName, 30, GUILayout.Width(170));
         if (GUILayout.Button("创建View", style.bt))
         {
-            EditorViewCreater.CreateView(createViewName);
+            ViewConfig viewConfig = GetViewConfig(createViewName);
+            EditorViewCreater.CreateView(viewConfig);
         }
         if (GUILayout.Button("导出UI", style.bt))
         {
@@ -456,29 +457,79 @@ public class EditorDevTools_Dev : EditorDevTools_Base
             Debug.LogError("找不到 UIViewConfig.yaml 文件");
             return;
         }
+        UIViewConfig UIViewConfig = GetUIViewConfig();
+        //创建模板
+        string template = File.ReadAllText(UIViewTemplatePath);
+        Template temp = Template.Parse(template);
+        List<object> viewListList = new List<object>();
+        foreach (var item in UIViewConfig.layer)
+        {
+            viewListList.Add(new { comment = item.Value.comment, layerVal = item.Value.order, layerName = item.Key });
+        }
+        List<object> viewGroupList = new List<object>();
+        List<string> _tempGroup = new List<string>();
+        foreach (var group in UIViewConfig.view)
+        {
+            foreach (var item in group.Value)
+            {
+                if (!_tempGroup.Contains(group.Key))
+                {
+                    _tempGroup.Add(group.Key);
+                    viewGroupList.Add(new { group = group.Key });
+                }
+            }
+        }
+        List<object> viewNameList = new List<object>();
+        foreach (var group in UIViewConfig.view)
+        {
+            foreach (var item in group.Value)
+            {
+                viewNameList.Add(new { viewName = item.Key, comment = item.Value.comment });
+            }
+        }
+        Hash hash = Hash.FromAnonymousObject(new { ViewLayer = viewListList, ViewGroup = viewGroupList, ViewName = viewNameList });
+        string result = temp.Render(hash);
+        File.WriteAllText(UIViewGenPath, result);
+        AssetDatabase.Refresh();
+    }
+
+    /// <summary>
+    /// 读取UI配置
+    /// </summary>
+    /// <returns></returns>
+    public UIViewConfig GetUIViewConfig()
+    {
         string config = File.ReadAllText(UIViewConfigPath);
         var deserializer = new DeserializerBuilder()
               .WithNamingConvention(CamelCaseNamingConvention.Instance)
               .Build();
         UIViewConfig UIViewConfig = deserializer.Deserialize<UIViewConfig>(config);
-        Utility.Log(UIViewConfig);
-        //创建模板
-        string template = File.ReadAllText(UIViewTemplatePath);
-        Template temp = Template.Parse(template);
-        List<object> layerConfigList = new List<object>();
-        foreach (var item in UIViewConfig.layer)
+        return UIViewConfig;
+    }
+
+    /// <summary>
+    /// 获取某个View的配置
+    /// </summary>
+    /// <param name="_viewName"></param>
+    /// <returns></returns>
+    public ViewConfig GetViewConfig(string _viewName)
+    {
+        UIViewConfig uiViewConfig = GetUIViewConfig();
+        foreach (var group in uiViewConfig.view)
         {
-            layerConfigList.Add(new { comment = item.Value.comment, layerVal = item.Value.order, layerName = item.Key });
+            foreach (var item in group.Value)
+            {
+                if (item.Key == _viewName)
+                {
+                    return item.Value;
+                }
+            }
         }
-        List<object> viewList = new List<object>();
-        foreach (var item in UIViewConfig.view)
-        {
-            viewList.Add(new { viewName = item.Key, comment = item.Value.comment });
-        }
-        Hash hash = Hash.FromAnonymousObject(new { layer = layerConfigList, view = viewList });
-        string result = temp.Render(hash);
-        File.WriteAllText(UIViewGenPath, result);
-        AssetDatabase.Refresh();
+        ViewConfig viewConfig = new ViewConfig();
+        viewConfig.viewName = _viewName;
+        viewConfig.group = "Common";
+        //ViewName
+        return viewConfig;
     }
 
     /// <summary>

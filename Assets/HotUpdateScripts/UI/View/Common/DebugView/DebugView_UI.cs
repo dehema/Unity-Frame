@@ -21,8 +21,6 @@ public partial class DebugView : BaseView
         [SerializeField] public Toggle closeAfterOpenView_Toggle;
         [SerializeField] public GameObject btStartGame;
         [SerializeField] public Button btStartGame_Button;
-        [SerializeField] public GameObject btTips;
-        [SerializeField] public Button btTips_Button;
         [SerializeField] public GameObject tdScene;
         [SerializeField] public Button tdScene_Button;
         [SerializeField] public GameObject rtsUnitTest;

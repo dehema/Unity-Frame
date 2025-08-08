@@ -5,19 +5,25 @@ using Rain.Core.RTS;
 using Rain.UI;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.EventSystems;
 
 public class RTSUnitTestSceneMgr : MonoBehaviour
 {
-    [Header("单位设置")]
-    GameObject unit;
+    public static RTSUnitTestSceneMgr Ins;
+
+    List<BattleUnit> playerUnits = new List<BattleUnit>();
     NavMeshAgent agent;
 
     [Header("射线设置")]
     [SerializeField]
     Camera mainCamera;     // 主相机引用
 
-    void Start()
+    BattleUnit dummy; //假人
+
+    void Awake()
     {
+        Ins = this;
+        UIMgr.Ins.OpenView(ViewName.RTSUnitTestView);
         mainCamera = GetComponent<Camera>();
         //UIMgr.Ins.OpenView<RTSUnitTestView>(new RTSUnitTestViewParams()
         //{
@@ -27,24 +33,58 @@ public class RTSUnitTestSceneMgr : MonoBehaviour
     }
 
     /// <summary>
+    /// 创建玩家单位
+    /// </summary>
+    public void CreatePlayerUnit(UnitConfig unitConfig)
+    {
+        foreach (var item in playerUnits)
+        {
+            Destroy(item.gameObject);
+        }
+        playerUnits.Clear();
+        unitConfig.faction = Faction.Player; // 设置单位阵营为玩家
+        BattleUnit battleUnit = CreateUnit(unitConfig);
+        if (battleUnit == null)
+        {
+            return;
+        }
+        playerUnits.Add(battleUnit);
+    }
+
+    /// <summary>
+    /// 创建假人
+    /// </summary>
+    public void CreateDummy()
+    {
+        if (dummy != null)
+        {
+            return;
+        }
+        UnitConfig unitConfig = ConfigMgr.Ins.allUnitConfig.unit.Find((x) => x.ID == 1101);
+        unitConfig.hp = 100000;                 // 设置假人生命值
+        unitConfig.unitType = UnitType.Dummy;   // 设置单位类型为假人
+        unitConfig.faction = Faction.Dummy;   // 设置单位类型为假人
+        dummy = CreateUnit(unitConfig);
+        dummy.transform.position = new Vector3(0, 0, -5);
+    }
+
+    /// <summary>
     /// 创建单位
     /// </summary>
     /// <param name="unitConfig"></param>
-    public void CreateUnit(UnitConfig unitConfig)
+    public BattleUnit CreateUnit(UnitConfig unitConfig)
     {
-        if (unit != null)
-        {
-            Destroy(unit);
-        }
+        BattleUnit battleUnit = null;
         GameObject prefab = Resources.Load<GameObject>("Prefab/Unit/" + unitConfig.fullID);
         if (prefab != null)
         {
             // 实例化单位预制体
-            unit = Instantiate(prefab, Vector3.zero, Quaternion.identity);
+            GameObject item = Instantiate(prefab, Vector3.zero, Quaternion.identity);
 
-            BattleUnit battleUnit = unit.GetComponent<BattleUnit>();
+            battleUnit = item.GetComponent<BattleUnit>();
             battleUnit.InitData(unitConfig);
         }
+        return battleUnit;
     }
 
     void Update()
@@ -52,15 +92,20 @@ public class RTSUnitTestSceneMgr : MonoBehaviour
         // 检测鼠标左键点击
         if (Input.GetMouseButtonDown(0))
         {
-            MoveUnitToMousePosition();
+            MovePlayerUnitsToMousePosition();
         }
     }
 
     /// <summary>
     /// 移动单位到鼠标点击位置
     /// </summary>
-    private void MoveUnitToMousePosition()
+    private void MovePlayerUnitsToMousePosition()
     {
+        bool isOverUI = EventSystem.current.IsPointerOverGameObject();
+        if (isOverUI)
+        {
+            return; // 点到UI
+        }
         // 从相机发射射线到鼠标位置
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
         Debug.DrawRay(mainCamera.transform.position, ray.direction, Color.red);

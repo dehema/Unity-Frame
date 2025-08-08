@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 using Rain.Core;
 using Rain.UI;
 using UnityEngine;
@@ -13,7 +14,9 @@ public class ConfigMgr : MonoSingleton<ConfigMgr>
     public AllUnitConfig allUnitConfig;
     public AllCityConfig allCityConfig;
     public WorldConfig worldConfig;
-    public UIViewConfig uiViewConfig;
+    private UIViewConfig uiViewConfig;
+    public UIViewConfig UIViewConfig => uiViewConfig;
+
 
     public void Init()
     {
@@ -32,7 +35,6 @@ public class ConfigMgr : MonoSingleton<ConfigMgr>
 
     private void AllLoadComplete()
     {
-
     }
 
     /// <summary>
@@ -56,7 +58,7 @@ public class ConfigMgr : MonoSingleton<ConfigMgr>
         }
         T t = JsonConvert.DeserializeObject<T>(_config);
         ConfigBase configBase = t as ConfigBase;
-        configBase.Init();
+        configBase.OnLoadComplete();
         return t;
     }
 
@@ -73,7 +75,7 @@ public class ConfigMgr : MonoSingleton<ConfigMgr>
     /// 读取UI配置
     /// </summary>
     /// <returns></returns>
-    public UIViewConfig LoadViewConfig()
+    private UIViewConfig LoadViewConfig()
     {
         if (uiViewConfig != null)
         {
@@ -87,11 +89,25 @@ public class ConfigMgr : MonoSingleton<ConfigMgr>
               .Build();
         Utility.Log(config);
         uiViewConfig = deserializer.Deserialize<UIViewConfig>(config);
-        foreach (var item in uiViewConfig.view)
+        foreach (var group in uiViewConfig.view)
         {
-            item.Value.viewName = item.Key;
+            foreach (var view in group.Value)
+            {
+                view.Value.viewName = view.Key;
+                view.Value.group = group.Key;
+                uiViewConfig.allViewConfig.Add(view.Key, view.Value);
+            }
         }
         return uiViewConfig;
+    }
+
+    /// <summary>
+    /// 获取所有UI配置
+    /// </summary>
+    /// <returns></returns>
+    public Dictionary<string, ViewConfig> GetAllViewConfig()
+    {
+        return uiViewConfig.allViewConfig;
     }
 
     /// <summary>

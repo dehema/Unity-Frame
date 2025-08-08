@@ -17,17 +17,18 @@ namespace Rain.UI.Editor
         /// <summary>
         /// 创建示例UI
         /// </summary>
-        public static void CreateView(string _viewName)
+        public static void CreateView(ViewConfig _viewConfig)
         {
-            if (!CheckRegular(_viewName))
+            string viewName = _viewConfig.viewName;
+            if (!CheckRegular(viewName))
                 return;
-            CreateViewScene(_viewName);
-            CreateViewScript(_viewName);
+            CreateViewScene(viewName);
+            CreateViewScript(_viewConfig);
             ///调用CreateViewScript之后，脚本一定创建成功，这时候需要重编译代码，等编译完成后调用OnCompileScripts
-            CreateViewPrefab(_viewName);
+            CreateViewPrefab(viewName);
             //view.AddComponent(Type.GetType("UnityEngine.Rigidbody, UnityEngine.PhysicsModule"));
             //view.AddComponent(Type.GetType("DebugView, Assembly-CSharp"));
-            Debug.Log("创建View--->" + _viewName);
+            Debug.Log("创建View--->" + viewName);
         }
 
         static readonly string fieldNeedExportViewUI = "NeedExportViewUI";
@@ -175,10 +176,15 @@ namespace Rain.UI.Editor
             return prefab;
         }
 
-        //创建脚本
-        public static bool CreateViewScript(string _viewName)
+        /// <summary>
+        /// 创建脚本
+        /// </summary>
+        /// <param name="_viewName"></param>
+        /// <returns></returns>
+        public static bool CreateViewScript(ViewConfig _viewConfig)
         {
-            string dirPath = Path.Combine(Application.dataPath, "HotUpdateScripts/UI/View", _viewName);
+            string _viewName = _viewConfig.viewName;
+            string dirPath = Path.Combine(Application.dataPath, "HotUpdateScripts/UI/View", _viewConfig.group, _viewName);
             if (!Directory.Exists(dirPath))
                 Directory.CreateDirectory(dirPath);
             string viewPath = Path.Combine(dirPath, $"{_viewName}.cs");

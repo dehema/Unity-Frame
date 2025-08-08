@@ -1,6 +1,6 @@
 public enum ViewLayer
 { 
-{% for item in layer -%}
+{% for item in ViewLayer -%}
     /// <summary>
     /// {{item.comment}}
     /// </summary>
@@ -8,9 +8,16 @@ public enum ViewLayer
 {% endfor -%}
 }
 
+public class ViewGroup
+{
+{% for item in ViewGroup -%}
+	public const string {{item.group}} = "{{item.group}}";
+{% endfor -%}
+}
+
 public class ViewName
 {
-{% for item in view -%}
+{% for item in ViewName -%}
     /// <summary>
     /// {{item.comment}}
     /// </summary>

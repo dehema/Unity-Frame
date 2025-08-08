@@ -24,6 +24,7 @@ namespace Rain.Core.RTS
         public float attackInterval;    // 攻击间隔
         public int maxHealth = 100;     // 最大生命值
         public Faction faction;         // 阵营
+        public UnitType unitType;       // 单位类型
 
         [Header("运行时状态")]
         public int currentHealth;        // 当前生命值
@@ -52,6 +53,8 @@ namespace Rain.Core.RTS
 
         private void UpdateAttributes()
         {
+            unitType = unitConfig.unitType;
+            faction = unitConfig.faction;
             hp = unitConfig.hp;
             moveSpeed = unitConfig.moveSpeed;
             runSpeed = moveSpeed * 1.5f;

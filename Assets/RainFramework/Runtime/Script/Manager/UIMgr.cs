@@ -154,22 +154,25 @@ namespace Rain.UI
         /// </summary>
         /// <param name="viewName">视图名称</param>
         /// <returns>视图配置，如果不存在则返回null</returns>
-        public ViewConfig GetViewConfig(string viewName)
+        public ViewConfig GetViewConfig(string _viewName)
         {
-            if (string.IsNullOrEmpty(viewName))
+            if (string.IsNullOrEmpty(_viewName))
             {
                 Debug.LogError("视图名称不能为空");
                 return null;
             }
-            if (_uiViewConfig.view.ContainsKey(viewName))
+            foreach (var group in _uiViewConfig.view)
             {
-                return _uiViewConfig.view[viewName];
+                foreach (var item in group.Value)
+                {
+                    if (item.Key == _viewName)
+                    {
+                        return item.Value;
+                    }
+                }
             }
-            else
-            {
-                Debug.LogWarning($"未找到视图 {viewName} 的配置");
-                return null;
-            }
+            Debug.LogError($"未找到视图 {_viewName} 的配置");
+            return null;
         }
 
         /// <summary>

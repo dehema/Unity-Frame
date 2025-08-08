@@ -15,7 +15,6 @@ public partial class DebugView : BaseView
         InitUIPool();
         ui.viewList_Rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, canvas.pixelRect.height / 2 - 140);
         ui.btStartGame_Button.SetButton(() => { ChangeScene(SceneID.MainScene); });
-        ui.btTips_Button.SetButton(() => { UIUtility.PopTips(DateTime.Now.ToString()); });
         ui.tdScene_Button.SetButton(() => { ChangeScene(SceneID.TD); });
         ui.rtsUnitTest_Button.SetButton(() => { ChangeScene(SceneID.RTSUnitTest); });
     }
@@ -29,9 +28,9 @@ public partial class DebugView : BaseView
     private void InitUIPool()
     {
         btUIPool = PoolMgr.Ins.CreatePool(ui.btUIItem);
-        UIViewConfig allViewConfig = ConfigMgr.Ins.uiViewConfig;
-        foreach (var uiConfig in allViewConfig.view)
+        foreach (var uiConfig in ConfigMgr.Ins.GetAllViewConfig())
         {
+
             string uiName = uiConfig.Key;
             GameObject item = btUIPool.Get();
             item.GetComponent<Button>().onClick.AddListener(() =>

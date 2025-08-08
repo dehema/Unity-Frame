@@ -50,7 +50,7 @@ namespace Rain.Launcher
             ConfigMgr.Ins.LoadAllConfig();
             DataMgr.Ins.Load();
             LangMgr.Ins.Init();
-            UIMgr.Ins.Init(ConfigMgr.Ins.uiViewConfig);
+            UIMgr.Ins.Init(ConfigMgr.Ins.UIViewConfig);
             // 游戏初始化逻辑...
 
             StartGame();

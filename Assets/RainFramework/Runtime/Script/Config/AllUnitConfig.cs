@@ -5,9 +5,12 @@ public class AllUnitConfig : ConfigBase
 {
     public List<UnitConfig> unit = new List<UnitConfig>();
 
-    public override void Init()
+    public override void OnLoadComplete()
     {
-
+        foreach (var item in unit)
+        {
+            item.unitType = (UnitType)Enum.Parse(typeof(UnitType), item._unitType);
+        }
     }
 }
 
@@ -18,6 +21,14 @@ public class UnitConfig
     /// </summary>
     public int ID;
     public string _unitType;
+    /// <summary>
+    /// 单位类型
+    /// </summary>
+    public UnitType unitType = UnitType.Infantry;
+    /// <summary>
+    /// 阵营
+    /// </summary>
+    public Faction faction = Faction.Player;
     public string name;
     /// <summary>
     /// 生命值
@@ -68,4 +79,53 @@ public class UnitConfig
     /// </summary>
     public int upkeep;
     public string fullID;
+
+}
+
+public enum UnitType
+{
+    /// <summary>
+    /// 假人
+    /// </summary>
+    Dummy,
+    /// <summary>
+    /// 玩家
+    /// </summary>
+    Player = -1,
+    /// <summary>
+    /// 步兵
+    /// </summary>
+    Infantry = 1,
+    /// <summary>
+    /// 弓箭手
+    /// </summary>
+    Archer,
+    /// <summary>
+    /// 骑兵
+    /// </summary>
+    Cavalry
+}
+
+public enum Faction
+{
+    /// <summary>
+    /// 玩家阵营
+    /// </summary>
+    Player,
+    /// <summary>
+    /// 敌人阵营
+    /// </summary>
+    Enemy,
+    /// <summary>
+    /// 中立阵营
+    /// </summary>
+    Neutral,
+    /// <summary>
+    /// 盟友阵营
+    /// </summary>
+    Ally,
+    /// <summary>
+    /// 假人
+    /// </summary>
+    Dummy,
 }

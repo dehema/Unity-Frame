@@ -8,9 +8,9 @@ public class AllCityConfig : ConfigBase
     public Dictionary<int, BuildingConfig> building = new Dictionary<int, BuildingConfig>();
     public Dictionary<int, RecruitDailyConfig> recruitDaily = new Dictionary<int, RecruitDailyConfig>();
 
-    public override void Init()
+    public override void OnLoadComplete()
     {
-        base.Init();
+        base.OnLoadComplete();
         foreach (var item in building)
         {
             item.Value.Init();

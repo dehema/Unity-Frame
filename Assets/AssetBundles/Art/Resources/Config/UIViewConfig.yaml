@@ -34,76 +34,79 @@ layer:
 #[bgClose]点击背景是否关闭 默认false
 #[showMethod]显示动画 对标ViewShowMethod字段 默认normal
 view:
-    DebugView:
-        comment: 调试弹窗
-        layer: NormalLayer
-    BlockView:
-        comment: 奖励弹窗
-        layer: DialogLayer
-        hasBg: true
-        bgColor: "#000000B0"
-    TopView:
-        comment: 资源栏
-        layer: DialogLayer
-        hasBg: false
-    LoadingView:
-        comment: loading
-        layer: DialogLayer
-    ExampleView:
-        comment: 示例UI
-        layer: DialogLayer
-        bgColor: "#000000B0"
-        showMethod: pop
-        bgClose: true
-    TipsView:
-        comment: 提示弹窗UI
-        layer: TipsLayer
-        hasBg: false
-    ImageTextMixView:
-        comment: 图文混合
-        bgColor: "#000000B0"
-        bgClose: true
-    LoadSceneView:
-        comment: 读取页面
-        bgColor: "#FFFFFFFF"
-    CursorEffectView:
-        comment: 光标特效
-        layer: CursorLayer
-        hasBg: false
-    EscView:
-        comment: 暂停游戏菜单
-        layer: TipsLayer
-        bgColor: "#000000B0"
-    SettingView:
-        comment: 设置
-        layer: TipsLayer
-        bgColor: "#000000B0"
-    GameWinView:
-        comment: 游戏胜利
-        layer: DialogLayer
-        bgColor: "#000000B0"
-    GameOverView:
-        comment: 游戏失败
-        layer: DialogLayer
-        bgColor: "#000000B0"
-    UIControlDemoView:
-        comment: UI组件示例
-        layer: NormalLayer
-        bgColor: "#000000ff"
-    DemoView:
-        comment: UI示例
-        layer: NormalLayer
-        bgColor: "#000000ff"
-    CardMatchGameView:
-        comment: 翻卡牌
-        layer: NormalLayer
-        bgColor: "#FFFFFFFF"
-    CountDownView:
-        comment: 倒计时
-        layer: TipsLayer
-        bgColor: "#00000000"
-    RTSUnitTestView:
-        comment: 即时战略单位测试场景
-        layer: NormalLayer
-        bgColor: "#00000000"
+    Common:
+        DebugView:
+            comment: 调试弹窗
+            layer: NormalLayer
+        BlockView:
+            comment: 奖励弹窗
+            layer: DialogLayer
+            hasBg: true
+            bgColor: "#000000B0"
+        TopView:
+            comment: 资源栏
+            layer: DialogLayer
+            hasBg: false
+        LoadingView:
+            comment: loading
+            layer: DialogLayer
+        ExampleView:
+            comment: 示例UI
+            layer: DialogLayer
+            bgColor: "#000000B0"
+            showMethod: pop
+            bgClose: true
+        TipsView:
+            comment: 提示弹窗UI
+            layer: TipsLayer
+            hasBg: false
+        ImageTextMixView:
+            comment: 图文混合
+            bgColor: "#000000B0"
+            bgClose: true
+        LoadSceneView:
+            comment: 读取页面
+            bgColor: "#FFFFFFFF"
+        CursorEffectView:
+            comment: 光标特效
+            layer: CursorLayer
+            hasBg: false
+        EscView:
+            comment: 暂停游戏菜单
+            layer: TipsLayer
+            bgColor: "#000000B0"
+        SettingView:
+            comment: 设置
+            layer: TipsLayer
+            bgColor: "#000000B0"
+        GameWinView:
+            comment: 游戏胜利
+            layer: DialogLayer
+            bgColor: "#000000B0"
+        GameOverView:
+            comment: 游戏失败
+            layer: DialogLayer
+            bgColor: "#000000B0"
+        UIControlDemoView:
+            comment: UI组件示例
+            layer: NormalLayer
+            bgColor: "#000000ff"
+        DemoView:
+            comment: UI示例
+            layer: NormalLayer
+            bgColor: "#000000ff"
+        CardMatchGameView:
+            comment: 翻卡牌
+            layer: NormalLayer
+            bgColor: "#FFFFFFFF"
+        CountDownView:
+            comment: 倒计时
+            layer: TipsLayer
+            bgColor: "#00000000"
+    RTS:
+        RTSUnitTestView:
+            comment: RTS单位
+            layer: NormalLayer
+            bgColor: "#00000000"
+            hasBg: false
         

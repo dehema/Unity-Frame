@@ -6,7 +6,7 @@ public class ImageTextMixConfig : ConfigBase
 {
     public Dictionary<string, ImageTextMixUnitConfig> Mix = new Dictionary<string, ImageTextMixUnitConfig>();
 
-    public override void Init()
+    public override void OnLoadComplete()
     {
         foreach (var mix in Mix)
         {

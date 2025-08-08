@@ -1,6 +1,6 @@
 ﻿public class ConfigBase
 {
-    public virtual void Init()
+    public virtual void OnLoadComplete()
     {
 
     }
