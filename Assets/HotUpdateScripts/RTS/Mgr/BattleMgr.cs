@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Xml.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -67,6 +68,16 @@ namespace Rain.Core.RTS
             return _factionUnits[faction].FindAll(u => u.IsAlive());
         }
 
+        /// <summary>
+        /// 检查两个单位是否为敌对阵营
+        /// </summary>
+        /// <returns></returns>
+        public bool isFactionEnemy(BattleUnit _battleUnit1, BattleUnit _battleUnit2)
+        {
+            Relation relation = _battleUnit1.GetFactionRelation(_battleUnit2.Data.faction);
+            return relation == Relation.Hostile;
+        }
+
         // 检查战斗状态
         private void CheckBattleState()
         {
@@ -129,8 +140,9 @@ namespace Rain.Core.RTS
         }
 
         // 向单位下达攻击命令
-        public void IssueAttackOrder(List<BattleUnit> units, BattleUnit target)
+        public void FactionUnitAttackUnit(Faction _faction, BattleUnit target)
         {
+            List<BattleUnit> units = _factionUnits[_faction];
             foreach (var unit in units)
             {
                 if (unit.IsAlive() && unit.IsEnemy(target))
@@ -148,6 +160,44 @@ namespace Rain.Core.RTS
                     }
                 }
             }
+        }
+
+
+        /// <summary>
+        /// 检查两个单位是否为敌对关系
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public bool IsEnemy(BattleUnit _unit1, BattleUnit _unit2)
+        {
+            bool res = GetFactionRelation(_unit1.Data.faction, _unit2.Data.faction) == Relation.Hostile;
+            return res;
+        }
+
+        /// <summary>
+        /// 获取阵营关系
+        /// </summary>
+        /// <param name="ownFaction"></param>
+        /// <param name="_faction2"></param>
+        /// <returns></returns>
+        public Relation GetFactionRelation(Faction _faction1, Faction _faction2)
+        {
+            // 相同阵营为友好
+            if (_faction1 == _faction2)
+                return Relation.Friendly;
+
+            // 玩家与敌人、怪物为敌对
+            if ((_faction1 == Faction.Player && (_faction2 == Faction.Enemy || _faction2 == Faction.Enemy)) ||
+                ((_faction1 == Faction.Enemy || _faction1 == Faction.Enemy) && _faction2 == Faction.Player))
+                return Relation.Hostile;
+
+            // 玩家与友方为友好
+            if (_faction1 == Faction.Player && _faction2 == Faction.Ally ||
+                _faction1 == Faction.Ally && _faction2 == Faction.Player)
+                return Relation.Friendly;
+
+            // 其他情况为中立
+            return Relation.Neutral;
         }
     }
 }

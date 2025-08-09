@@ -1,5 +1,8 @@
 ﻿namespace Rain.Core.RTS
 {
+    /// <summary>
+    /// 阵营关系
+    /// </summary>
     public enum Relation
     {
         /// <summary>

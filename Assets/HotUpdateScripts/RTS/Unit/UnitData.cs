@@ -11,7 +11,8 @@ namespace Rain.Core.RTS
     public class UnitData
     {
         [Header("数据源")]
-        public UnitConfig unitConfig;
+        private UnitConfig unitConfig;
+        public UnitConfig UnitConfig => unitConfig;
         [Header("基础属性")]
         public int unitId;              // 单位ID
         public bool isPlayerUnit;       // 是否为玩家单位

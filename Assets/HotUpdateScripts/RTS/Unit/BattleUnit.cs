@@ -86,7 +86,7 @@ namespace Rain.Core.RTS
         public void SetMoveTarget(Vector3 target)
         {
             moveController.SetMoveTarget(target);
-            stateMachine.UpdateState(); 
+            stateMachine.UpdateState();
         }
 
         /// <summary>
@@ -188,35 +188,22 @@ namespace Rain.Core.RTS
         /// </summary>
         /// <param name="other"></param>
         /// <returns></returns>
-        internal bool IsEnemy(BattleUnit other)
+        public bool IsEnemy(BattleUnit other)
         {
-            return GetFactionRelation(_data.faction, other.Data.faction) == Relation.Hostile;
+            bool res = BattleMgr.Ins.IsEnemy(this, other);
+            return res;
         }
 
         /// <summary>
         /// 获取阵营关系
         /// </summary>
         /// <param name="ownFaction"></param>
-        /// <param name="otherFaction"></param>
+        /// <param name="_otherFaction"></param>
         /// <returns></returns>
-        public Relation GetFactionRelation(Faction ownFaction, Faction otherFaction)
+        public Relation GetFactionRelation(Faction _otherFaction)
         {
-            // 相同阵营为友好
-            if (ownFaction == otherFaction)
-                return Relation.Friendly;
-
-            // 玩家与敌人、怪物为敌对
-            if ((ownFaction == Faction.Player && (otherFaction == Faction.Enemy || otherFaction == Faction.Enemy)) ||
-                ((ownFaction == Faction.Enemy || ownFaction == Faction.Enemy) && otherFaction == Faction.Player))
-                return Relation.Hostile;
-
-            // 玩家与友方为友好
-            if (ownFaction == Faction.Player && otherFaction == Faction.Ally ||
-                ownFaction == Faction.Ally && otherFaction == Faction.Player)
-                return Relation.Friendly;
-
-            // 其他情况为中立
-            return Relation.Neutral;
+            Relation relation = BattleMgr.Ins.GetFactionRelation(Data.faction, _otherFaction);
+            return relation;
         }
 
         // 检查单位是否存活

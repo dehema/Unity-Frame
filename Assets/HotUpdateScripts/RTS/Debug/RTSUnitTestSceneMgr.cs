@@ -25,10 +25,6 @@ public class RTSUnitTestSceneMgr : MonoBehaviour
         Ins = this;
         UIMgr.Ins.OpenView(ViewName.RTSUnitTestView);
         mainCamera = GetComponent<Camera>();
-        //UIMgr.Ins.OpenView<RTSUnitTestView>(new RTSUnitTestViewParams()
-        //{
-        //    actionCreateUnit = CreateUnit
-        //});
 
     }
 
@@ -80,7 +76,6 @@ public class RTSUnitTestSceneMgr : MonoBehaviour
         {
             // 实例化单位预制体
             GameObject item = Instantiate(prefab, Vector3.zero, Quaternion.identity);
-
             battleUnit = item.GetComponent<BattleUnit>();
             battleUnit.InitData(unitConfig);
         }
@@ -108,11 +103,22 @@ public class RTSUnitTestSceneMgr : MonoBehaviour
         }
         // 从相机发射射线到鼠标位置
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-        Debug.DrawRay(mainCamera.transform.position, ray.direction, Color.red);
+        Debug.DrawRay(mainCamera.transform.position, ray.direction, Color.red,1);
         RaycastHit hit;
         // 如果射线击中了地面
         if (Physics.Raycast(ray, out hit, 1000f, 1 << GameObjectLayer.Scene3D))
         {
+            BattleUnit battleUnit = hit.collider.gameObject.GetComponent<BattleUnit>();
+            if (battleUnit != null)
+            {
+                //如果是个单位
+                if (BattleMgr.Ins.GetFactionRelation(Faction.Player, battleUnit.Data.faction) == Relation.Hostile)
+                {
+                    BattleMgr.Ins.FactionUnitAttackUnit(Faction.Player, battleUnit);
+                    return;
+                }
+            }
+
             // 设置导航目标位置
             BattleMgr.Ins.AllUnitMove(hit.point);
             Debug.Log("单位移动到: " + hit.point);
