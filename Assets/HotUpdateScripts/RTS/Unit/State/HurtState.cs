@@ -39,7 +39,7 @@ namespace Rain.Core.RTS
                     unit.stateMachine.ChangeState(_previousState);
                 }
                 // 如果目标仍在攻击范围内，返回攻击状态
-                else if (unit.Data.targetEnemy != null && unit.IsTargetInAttackRange())
+                else if (unit.Data.AttackTarget != null && unit.IsTargetInAttackRange())
                 {
                     unit.stateMachine.ChangeState(new AttackState());
                 }

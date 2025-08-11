@@ -30,8 +30,10 @@ namespace Rain.Core.RTS
         [Header("运行时状态")]
         public int currentHealth;        // 当前生命值
         public bool isDead = false;      // 是否死亡
-        public Vector3 targetPosition;   // 目标位置
-        public BattleUnit targetEnemy;   // 目标敌人
+        private Vector3? movePos;       // 目标位置
+        public Vector3? MovePos { get => movePos; set => movePos = value; }
+        private BattleUnit attackTarget;  // 目标敌人
+        public BattleUnit AttackTarget { get => attackTarget; set => attackTarget = value; }
         public float attackTimer;        // 上次攻击时间
         public const float walkRange = 3;// 切换走路的距离
 

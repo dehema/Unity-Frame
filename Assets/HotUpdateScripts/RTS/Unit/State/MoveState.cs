@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
+using static UnityEngine.UI.CanvasScaler;
 
 namespace Rain.Core.RTS
 {
@@ -8,15 +9,13 @@ namespace Rain.Core.RTS
         public override UnitStateType stateType => UnitStateType.Move;
 
         private int _speedHash = Animator.StringToHash("Speed");
-        private int _isAttackingHash;
-        MovementSubState moveState;
         NavMeshAgent agent;
         Animator animator;
+        MoveStateType moveStateType = MoveStateType.Move;
 
         // 构造函数初始化动画哈希和参数
         public MoveState()
         {
-            _isAttackingHash = Animator.StringToHash("IsAttacking");
         }
 
         public override void Enter(BattleUnit unit)
@@ -24,44 +23,63 @@ namespace Rain.Core.RTS
             base.Enter(unit);
             agent = unit.moveController.agent;
             animator = unit.animator;
-            // 进入移动状态时启动导航
-            unit.moveController.MoveTo(unit.MoveTarget);
-        }
 
-        public override void Update()
-        {
-            // 检查是否已到达目的地
-            if (agent.remainingDistance <= agent.stoppingDistance)
+            // 进入移动状态时启动导航
+            if (unit.Data.AttackTarget != null)
             {
-                // 切换到空闲状态
-                unit.stateMachine.ChangeState(new IdleState());
-                animator.SetFloat(_speedHash, 0);
-                return;
+                unit.moveController.MoveTo(unit.Data.AttackTarget);
+                moveStateType = MoveStateType.MoveAndAttack;
+            }
+            else
+            {
+                unit.moveController.MoveTo((Vector3)unit.moveController.MovePos);
             }
 
             // 计算动画速度并设置
             float animationSpeed = 1;
             animator.SetFloat(_speedHash, animationSpeed);
             agent.speed = unit.Data.moveSpeed;
+        }
 
-            // 面向移动方向
-            RotateTowards(unit.transform, agent.velocity.normalized);
-
-            // 检查是否可以攻击
-            if (unit.CanAttack())
+        public override void Update()
+        {
+            if (agent.pathPending)
             {
-                // 切换到攻击状态
-                unit.stateMachine.ChangeState(new AttackState());
-                animator.SetBool(_isAttackingHash, true);
-                agent.ResetPath(); // 停止移动
+                //等待路径计算完成
                 return;
             }
+            // 检查是否已到达目的地
+            if (moveStateType == MoveStateType.Move)
+            {
+                if (agent.remainingDistance <= agent.stoppingDistance)
+                {
+                    unit.stateMachine.ChangeState(new IdleState());
+                    return;
+                }
+            }
+            else if (moveStateType == MoveStateType.MoveAndAttack)
+            {
+                if (unit.IsTargetInAttackRange())
+                {
+                    unit.stateMachine.ChangeState(new AttackState());
+                    return;
+                }
+                else if (agent.remainingDistance <= agent.stoppingDistance && !unit.IsTargetInAttackRange())
+                {
+                    unit.moveController.MoveTo(unit.MoveTarget);
+                    return;
+                }
+            }
+            // 面向移动方向
+            RotateTowards(unit.transform, agent.velocity.normalized);
         }
 
         public override void Exit()
         {
             // 退出移动状态时的清理
             Debug.Log($"{unit.Data.Name} 退出移动状态");
+            animator.SetFloat(_speedHash, 0);
+            agent.ResetPath(); // 停止移动
         }
 
         // 面向移动方向（复用原有逻辑）
@@ -82,6 +100,11 @@ namespace Rain.Core.RTS
         {
             unit.moveController.MoveTo(unit.MoveTarget);
         }
+
+        public void MoveTo(Vector3 targetPos)
+        {
+            unit.moveController.MoveTo(targetPos);
+        }
     }
 
     // 新增移动子状态枚举（区分走/跑）
@@ -89,5 +112,11 @@ namespace Rain.Core.RTS
     {
         Walk,
         Run
+    }
+
+    public enum MoveStateType
+    {
+        Move,
+        MoveAndAttack,
     }
 }

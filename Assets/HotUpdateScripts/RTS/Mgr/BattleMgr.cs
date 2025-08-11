@@ -129,11 +129,15 @@ namespace Rain.Core.RTS
             {
                 if (unit.IsAlive())
                 {
-                    unit.SetMoveTarget(targetPos);
-                    if (unit.stateMachine.currentState is not MoveState &&
-                        unit.stateMachine.currentState is not AttackState)
+                    if (unit.stateMachine.currentState.stateType != UnitStateType.Move)
                     {
+                        unit.SetMoveTarget(targetPos);
                         unit.stateMachine.ChangeState(new MoveState());
+                    }
+                    else
+                    {
+                        MoveState moveState = unit.stateMachine.currentState as MoveState;
+                        moveState.MoveTo(targetPos);
                     }
                 }
             }
@@ -156,7 +160,7 @@ namespace Rain.Core.RTS
                     }
                     else
                     {
-                        unit.stateMachine.ChangeState(new IdleState());
+                        unit.stateMachine.ChangeState(new MoveState());
                     }
                 }
             }
@@ -186,14 +190,17 @@ namespace Rain.Core.RTS
             if (_faction1 == _faction2)
                 return Relation.Friendly;
 
+            if (_faction1 == Faction.Dummy || _faction2 == Faction.Dummy)
+                return Relation.Hostile;
+
             // 玩家与敌人、怪物为敌对
-            if ((_faction1 == Faction.Player && (_faction2 == Faction.Enemy || _faction2 == Faction.Enemy)) ||
-                ((_faction1 == Faction.Enemy || _faction1 == Faction.Enemy) && _faction2 == Faction.Player))
+            if ((_faction1 == Faction.Player && _faction2 == Faction.Enemy) ||
+                (_faction1 == Faction.Enemy && _faction2 == Faction.Player))
                 return Relation.Hostile;
 
             // 玩家与友方为友好
-            if (_faction1 == Faction.Player && _faction2 == Faction.Ally ||
-                _faction1 == Faction.Ally && _faction2 == Faction.Player)
+            if ((_faction1 == Faction.Player && _faction2 == Faction.Ally) ||
+                (_faction1 == Faction.Ally && _faction2 == Faction.Player))
                 return Relation.Friendly;
 
             // 其他情况为中立

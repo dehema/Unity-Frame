@@ -2,6 +2,7 @@
 using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.AI;
+using static UnityEngine.UI.CanvasScaler;
 
 namespace Rain.Core.RTS
 {
@@ -20,15 +21,13 @@ namespace Rain.Core.RTS
 
         //事件
         public event Action<BattleUnit> OnDeath;
-        public bool HasMoveTarget => moveController.HasMoveTarget;
-        public Vector3 MoveTarget => moveController.MoveTarget;
 
         //数据
         [SerializeField] private UnitData _data;        // 角色数据
 
         // 属性访问器
         public UnitData Data => _data;
-        public bool IsDead => _data.isDead;
+        public bool IsDead => Data.isDead;
         public string UnitName => Data.Name;
         public float AttackTimer => Data.attackTimer;
 
@@ -51,11 +50,9 @@ namespace Rain.Core.RTS
         {
         }
 
-
-
         private void Update()
         {
-            if (!_data.isDead)
+            if (!Data.isDead)
             {
                 stateMachine.Update();
             }
@@ -69,8 +66,8 @@ namespace Rain.Core.RTS
 
         public void InitData(UnitConfig unitConfig)
         {
-            _data.Init(unitConfig);
-            moveController.Init(_data);
+            Data.Init(unitConfig);
+            moveController.Init(Data);
 
             // 注册到战斗管理器
             BattleMgr.Ins.RegisterUnit(this);
@@ -105,7 +102,7 @@ namespace Rain.Core.RTS
         {
             if (IsEnemy(target))
             {
-                _data.targetEnemy = target;
+                Data.AttackTarget = target;
             }
         }
 
@@ -114,7 +111,7 @@ namespace Rain.Core.RTS
         /// </summary>
         public void ClearAttackTarget()
         {
-            _data.targetEnemy = null;
+            Data.AttackTarget = null;
         }
 
         /// <summary>
@@ -123,10 +120,10 @@ namespace Rain.Core.RTS
         /// <returns></returns>
         public bool IsTargetInAttackRange()
         {
-            if (_data.targetEnemy == null) return false;
+            if (Data.AttackTarget == null) return false;
 
-            float distance = Vector3.Distance(transform.position, _data.targetEnemy.transform.position);
-            return distance <= _data.attackRange;
+            float distance = Vector3.Distance(transform.position, Data.AttackTarget.transform.position);
+            return distance <= Data.attackRange;
         }
 
         /// <summary>
@@ -134,10 +131,10 @@ namespace Rain.Core.RTS
         /// </summary>
         public void AttackTarget()
         {
-            if (_data.targetEnemy != null && !_data.targetEnemy.Data.isDead && IsEnemy(_data.targetEnemy))
+            if (Data.AttackTarget != null && !Data.AttackTarget.Data.isDead && IsEnemy(Data.AttackTarget))
             {
-                _data.targetEnemy.TakeDamage(_data.attack);
-                Debug.Log($"{_data.Name} 攻击了 {_data.targetEnemy.Data.Name}，造成 {_data.Name} 点伤害");
+                Data.AttackTarget.TakeDamage(Data.attack);
+                Debug.Log($"{Data.Name} 攻击了 {Data.AttackTarget.Data.Name}，造成 {Data.Name} 点伤害");
             }
         }
 
@@ -147,12 +144,12 @@ namespace Rain.Core.RTS
         /// <param name="damage"></param>
         public void TakeDamage(int damage)
         {
-            if (_data.isDead) return;
+            if (Data.isDead) return;
 
-            _data.currentHealth -= damage;
-            if (_data.currentHealth <= 0)
+            Data.currentHealth -= damage;
+            if (Data.currentHealth <= 0)
             {
-                _data.currentHealth = 0;
+                Data.currentHealth = 0;
                 stateMachine.ChangeState(new DieState());
             }
         }
@@ -209,7 +206,7 @@ namespace Rain.Core.RTS
         // 检查单位是否存活
         public bool IsAlive()
         {
-            return !_data.isDead;
+            return !Data.isDead;
         }
 
         /// <summary>
@@ -217,14 +214,22 @@ namespace Rain.Core.RTS
         /// </summary>
         public void LookAtTarget()
         {
-            if (_data.targetEnemy == null) return;
+            if (Data.AttackTarget == null) return;
 
             Vector3 targetPosition = new Vector3(
-                _data.targetEnemy.transform.position.x,
+                Data.AttackTarget.transform.position.x,
                 transform.position.y,
-                _data.targetEnemy.transform.position.z
+                Data.AttackTarget.transform.position.z
             );
             transform.LookAt(targetPosition);
+        }
+
+        /// <summary>
+        /// 单位移动
+        /// </summary>
+        public void UnitMove(Vector3 targetPos)
+        {
+
         }
 
         ////////////////////////////////////////////////////
@@ -307,10 +312,8 @@ namespace Rain.Core.RTS
             if (Time.time - AttackTimer <= Data.attackInterval) return false;
 
             // 检查距离是否在攻击范围内
-            float distanceToTarget = Vector3.Distance(transform.position, attackTarget.position);
-            if (distanceToTarget > _data.attackRange) return false;
-
-            return true;
+            bool isTargetInAttackRange = IsTargetInAttackRange();
+            return isTargetInAttackRange;
         }
 
         ///// <summary>

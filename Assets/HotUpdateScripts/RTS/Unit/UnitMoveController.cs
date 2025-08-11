@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Xml.Linq;
+using UnityEngine;
 using UnityEngine.AI;
 
 namespace Rain.Core.RTS
@@ -12,10 +13,10 @@ namespace Rain.Core.RTS
         public NavMeshAgent agent;
         private UnitData _data; // 引用角色数据
 
-        private bool hasMoveTarget;
-        public bool HasMoveTarget => hasMoveTarget;
-        private Vector3 moveTarget;
-        public Vector3 MoveTarget => moveTarget;
+        public Vector3? MovePos { get => _data.MovePos; set => _data.MovePos = value; }
+        public BattleUnit AttackTarget { get => _data.AttackTarget; set => _data.AttackTarget = value; }
+
+        public bool HasMoveTarget { get => MovePos != null || AttackTarget != null; }
 
         private void Awake()
         {
@@ -36,8 +37,17 @@ namespace Rain.Core.RTS
         // 移动到目标点
         public void MoveTo(Vector3 targetPosition)
         {
-            if (_data.isDead) return; // 死亡状态不移动
+            ClearMoveTarget();
+            _data.MovePos = targetPosition;
             agent.SetDestination(targetPosition);
+            agent.isStopped = false;
+        }
+
+        public void MoveTo(BattleUnit battleUnit)
+        {
+            ClearMoveTarget();
+            _data.AttackTarget = battleUnit;
+            agent.SetDestination(battleUnit.transform.position);
             agent.isStopped = false;
         }
 
@@ -49,28 +59,30 @@ namespace Rain.Core.RTS
             agent.isStopped = true;
         }
 
-        public bool IsAtTarget()
+        /// <summary>
+        /// 设置移动目标
+        /// </summary>
+        /// <param name="target"></param>
+        public void SetMoveTarget(Vector3 _movePos)
         {
-            if (!hasMoveTarget) return true;
-
-            float distanceToTarget = Vector3.Distance(transform.position, moveTarget);
-            return distanceToTarget <= agent.stoppingDistance + 0.1f;
+            ClearMoveTarget();
+            MovePos = _movePos;
         }
 
         /// <summary>
         /// 设置移动目标
         /// </summary>
         /// <param name="target"></param>
-        public void SetMoveTarget(Vector3 target)
+        public void SetMoveTarget(BattleUnit _battleUnit)
         {
-            moveTarget = target;
-            hasMoveTarget = true;
+            ClearMoveTarget();
+            AttackTarget = _battleUnit;
         }
 
         public void ClearMoveTarget()
         {
-            hasMoveTarget = false;
-            moveTarget = Vector3.zero;
+            MovePos = null;
+            AttackTarget = null;
         }
 
         // 追击目标单位

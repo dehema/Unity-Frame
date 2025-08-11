@@ -103,7 +103,7 @@ public class RTSUnitTestSceneMgr : MonoBehaviour
         }
         // 从相机发射射线到鼠标位置
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-        Debug.DrawRay(mainCamera.transform.position, ray.direction, Color.red,1);
+        Debug.DrawRay(mainCamera.transform.position, ray.direction, Color.red, 1);
         RaycastHit hit;
         // 如果射线击中了地面
         if (Physics.Raycast(ray, out hit, 1000f, 1 << GameObjectLayer.Scene3D))
@@ -112,7 +112,8 @@ public class RTSUnitTestSceneMgr : MonoBehaviour
             if (battleUnit != null)
             {
                 //如果是个单位
-                if (BattleMgr.Ins.GetFactionRelation(Faction.Player, battleUnit.Data.faction) == Relation.Hostile)
+                Relation relation = BattleMgr.Ins.GetFactionRelation(Faction.Player, battleUnit.Data.faction);
+                if (relation == Relation.Hostile)
                 {
                     BattleMgr.Ins.FactionUnitAttackUnit(Faction.Player, battleUnit);
                     return;
