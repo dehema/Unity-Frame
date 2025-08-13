@@ -20,7 +20,11 @@ namespace Rain.Core.RTS
 
         public abstract void Update();
 
-        public abstract void Exit();
+        public virtual void Exit()
+        {
+
+            Debug.Log($"[ {unit.Data.Name} ] 退出【 {stateType} 】状态 ");
+        }
 
         public abstract void UpdateState();
     }

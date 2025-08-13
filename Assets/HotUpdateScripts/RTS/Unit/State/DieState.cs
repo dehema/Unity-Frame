@@ -14,6 +14,7 @@
 
         public override void Exit()
         {
+            base.Exit();
         }
 
         public override void UpdateState()

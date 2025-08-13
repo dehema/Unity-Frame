@@ -44,7 +44,7 @@ namespace Rain.Core.RTS
                     unit.stateMachine.ChangeState(new AttackState());
                 }
                 // 如果有移动目标，返回移动状态
-                else if (Vector3.Distance(unit.transform.position, unit.attackTarget.transform.position) > unit.Data.attackRange)
+                else if (Vector3.Distance(unit.transform.position, unit.Data.AttackTarget.transform.position) > unit.Data.attackRange)
                 {
                     unit.stateMachine.ChangeState(new MoveState());
                 }
@@ -58,7 +58,7 @@ namespace Rain.Core.RTS
 
         public override void Exit()
         {
-            Debug.Log($"{unit.Data.Name} 退出受伤状态");
+            base.Exit();
         }
 
         public override void UpdateState()

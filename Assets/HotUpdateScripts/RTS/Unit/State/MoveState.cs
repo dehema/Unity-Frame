@@ -25,14 +25,14 @@ namespace Rain.Core.RTS
             animator = unit.animator;
 
             // 进入移动状态时启动导航
-            if (unit.Data.AttackTarget != null)
+            if (unit.MovePos != null)
+            {
+                unit.moveController.MoveTo((Vector3)unit.MovePos);
+            }
+            else if (unit.AttackTarget != null)
             {
                 unit.moveController.MoveTo(unit.Data.AttackTarget);
                 moveStateType = MoveStateType.MoveAndAttack;
-            }
-            else
-            {
-                unit.moveController.MoveTo((Vector3)unit.moveController.MovePos);
             }
 
             // 计算动画速度并设置
@@ -66,8 +66,11 @@ namespace Rain.Core.RTS
                 }
                 else if (agent.remainingDistance <= agent.stoppingDistance && !unit.IsTargetInAttackRange())
                 {
-                    unit.moveController.MoveTo(unit.MoveTarget);
-                    return;
+                    if (unit.MovePos != null)
+                    {
+                        unit.moveController.MoveTo((Vector3)unit.MovePos);
+                        return;
+                    }
                 }
             }
             // 面向移动方向
@@ -76,8 +79,7 @@ namespace Rain.Core.RTS
 
         public override void Exit()
         {
-            // 退出移动状态时的清理
-            Debug.Log($"{unit.Data.Name} 退出移动状态");
+            base.Exit();
             animator.SetFloat(_speedHash, 0);
             agent.ResetPath(); // 停止移动
         }
@@ -98,7 +100,10 @@ namespace Rain.Core.RTS
 
         public override void UpdateState()
         {
-            unit.moveController.MoveTo(unit.MoveTarget);
+            if (unit.MovePos != null)
+            {
+                unit.moveController.MoveTo((Vector3)unit.MovePos);
+            }
         }
 
         public void MoveTo(Vector3 targetPos)

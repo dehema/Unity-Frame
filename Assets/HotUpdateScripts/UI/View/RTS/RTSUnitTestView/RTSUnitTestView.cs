@@ -6,10 +6,12 @@ using Rain.Core;
 using Rain.UI;
 using UnityEngine;
 using UnityEngine.UI;
+using static SettingField;
 
 public partial class RTSUnitTestView : BaseView
 {
     ObjPool unitPool;
+    List<Button> btUnits = new List<Button>();
     bool isShowUnitList = true;
     public override void Init(IViewParams _viewParams = null)
     {
@@ -17,6 +19,10 @@ public partial class RTSUnitTestView : BaseView
         ui.btShowUnitList_Button.SetButton(OnClickShowUnitList);
         ui.btAddDummy_Button.SetButton(() => { RTSUnitTestSceneMgr.Ins.CreateDummy(); });
         InitUnitList();
+
+        //场景默认创建一个假人一个士兵
+        ui.btAddDummy_Button.onClick.Invoke();
+        btUnits.First().onClick.Invoke();
     }
 
     void InitUnitList()
@@ -29,6 +35,7 @@ public partial class RTSUnitTestView : BaseView
             Text textName = item.transform.Find("text").GetComponent<Text>();
             textName.text = LangMgr.Ins.Get(unitConfig.name);
             Button bt = item.GetComponent<Button>();
+            btUnits.Add(bt);
             bt.SetButton(() =>
             {
                 RTSUnitTestSceneMgr.Ins.CreatePlayerUnit(unitConfig);

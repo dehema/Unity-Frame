@@ -122,7 +122,6 @@ public class RTSUnitTestSceneMgr : MonoBehaviour
 
             // 设置导航目标位置
             BattleMgr.Ins.AllUnitMove(hit.point);
-            Debug.Log("单位移动到: " + hit.point);
         }
     }
 

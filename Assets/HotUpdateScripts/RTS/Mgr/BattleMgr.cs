@@ -120,6 +120,7 @@ namespace Rain.Core.RTS
         public void AllUnitMove(Vector3 targetPos)
         {
             UnitMove(_factionUnits[Faction.Player], targetPos);
+            Debug.Log("玩家部队 开始向坐标移动: " + targetPos);
         }
 
         // 向单位下达移动命令
@@ -151,8 +152,8 @@ namespace Rain.Core.RTS
             {
                 if (unit.IsAlive() && unit.IsEnemy(target))
                 {
-                    unit.SetAttackTarget(target);
                     unit.ClearMoveTarget();
+                    unit.SetAttackTarget(target);
 
                     if (unit.IsTargetInAttackRange())
                     {

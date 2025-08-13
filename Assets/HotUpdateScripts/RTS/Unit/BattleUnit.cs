@@ -12,9 +12,6 @@ namespace Rain.Core.RTS
     [RequireComponent(typeof(Animator))]
     public class BattleUnit : MonoBehaviour
     {
-        [Header("引用")]
-        public Transform attackTarget; // 攻击目标
-
         // 组件引用
         public Animator animator;
         public CapsuleCollider capsuleCollider;
@@ -30,6 +27,9 @@ namespace Rain.Core.RTS
         public bool IsDead => Data.isDead;
         public string UnitName => Data.Name;
         public float AttackTimer => Data.attackTimer;
+        public Vector3? MovePos { get => Data.MovePos; set => Data.MovePos = value; }
+        public BattleUnit AttackTarget { get => Data.AttackTarget; set => Data.AttackTarget = value; }
+        public bool HasMoveTarget { get => Data.MovePos != null || Data.AttackTarget != null; }
 
         public UnitMoveController moveController;
         public UnitStateMachine stateMachine;
@@ -129,12 +129,12 @@ namespace Rain.Core.RTS
         /// <summary>
         /// 执行攻击
         /// </summary>
-        public void AttackTarget()
+        public void Attack()
         {
             if (Data.AttackTarget != null && !Data.AttackTarget.Data.isDead && IsEnemy(Data.AttackTarget))
             {
                 Data.AttackTarget.TakeDamage(Data.attack);
-                Debug.Log($"{Data.Name} 攻击了 {Data.AttackTarget.Data.Name}，造成 {Data.Name} 点伤害");
+                Debug.Log($"{Data.Name} 攻击了 {Data.AttackTarget.Data.Name}，造成 {Data.attack} 点伤害");
             }
         }
 
@@ -308,7 +308,8 @@ namespace Rain.Core.RTS
         /// </summary>
         public bool CanAttack()
         {
-            if (attackTarget == null) return false;
+            if (Data.AttackTarget == null)
+                return false;
             if (Time.time - AttackTimer <= Data.attackInterval) return false;
 
             // 检查距离是否在攻击范围内

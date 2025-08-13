@@ -11,12 +11,8 @@ namespace Rain.Core.RTS
     public class UnitMoveController : MonoBehaviour
     {
         public NavMeshAgent agent;
-        private UnitData _data; // 引用角色数据
+        private UnitData data; // 引用角色数据
 
-        public Vector3? MovePos { get => _data.MovePos; set => _data.MovePos = value; }
-        public BattleUnit AttackTarget { get => _data.AttackTarget; set => _data.AttackTarget = value; }
-
-        public bool HasMoveTarget { get => MovePos != null || AttackTarget != null; }
 
         private void Awake()
         {
@@ -24,13 +20,13 @@ namespace Rain.Core.RTS
         }
 
         // 初始化：关联角色数据并设置初始速度
-        public void Init(UnitData data)
+        public void Init(UnitData _data)
         {
-            _data = data;
+            this.data = _data;
 
-            agent.speed = _data.moveSpeed;
+            agent.speed = this.data.moveSpeed;
             agent.updateRotation = false;                       // 禁用自动旋转，由脚本控制
-            agent.stoppingDistance = _data.attackRange - 0.1f;  // 停止距离,稍微小于攻击范围
+            agent.stoppingDistance = this.data.attackRange - 0.1f;  // 停止距离,稍微小于攻击范围
             agent.acceleration = 999;
         }
 
@@ -38,7 +34,7 @@ namespace Rain.Core.RTS
         public void MoveTo(Vector3 targetPosition)
         {
             ClearMoveTarget();
-            _data.MovePos = targetPosition;
+            data.MovePos = targetPosition;
             agent.SetDestination(targetPosition);
             agent.isStopped = false;
         }
@@ -46,7 +42,7 @@ namespace Rain.Core.RTS
         public void MoveTo(BattleUnit battleUnit)
         {
             ClearMoveTarget();
-            _data.AttackTarget = battleUnit;
+            data.AttackTarget = battleUnit;
             agent.SetDestination(battleUnit.transform.position);
             agent.isStopped = false;
         }
@@ -66,7 +62,7 @@ namespace Rain.Core.RTS
         public void SetMoveTarget(Vector3 _movePos)
         {
             ClearMoveTarget();
-            MovePos = _movePos;
+            data.MovePos = _movePos;
         }
 
         /// <summary>
@@ -76,19 +72,19 @@ namespace Rain.Core.RTS
         public void SetMoveTarget(BattleUnit _battleUnit)
         {
             ClearMoveTarget();
-            AttackTarget = _battleUnit;
+            data.AttackTarget = _battleUnit;
         }
 
         public void ClearMoveTarget()
         {
-            MovePos = null;
-            AttackTarget = null;
+            data.MovePos = null;
+            data.AttackTarget = null;
         }
 
         // 追击目标单位
         public void ChaseTarget(Transform target)
         {
-            if (_data.isDead || target == null) return;
+            if (data.isDead || target == null) return;
             MoveTo(target.position);
         }
 
