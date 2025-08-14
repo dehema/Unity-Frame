@@ -28,7 +28,6 @@ namespace Rain.Core.RTS
                 stateInfo = animator.GetCurrentAnimatorStateInfo(0);
                 if (stateInfo.normalizedTime >= 1f && stateInfo.shortNameHash == Animator.StringToHash("Attack"))
                 {
-                    animator.SetBool(_isAttackingHash, false);
                     unit.stateMachine.ChangeState(new IdleState());
                 }
                 return;
@@ -56,13 +55,13 @@ namespace Rain.Core.RTS
             {
                 animator.SetBool(_isAttackingHash, true);
                 isStartAttack = true;
-                unit.Attack();
                 return;
             }
         }
 
         public override void Exit()
         {
+            animator.SetBool(_isAttackingHash, false);
             base.Exit();
         }
 

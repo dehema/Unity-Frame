@@ -26,7 +26,7 @@ namespace Rain.Core.RTS
         public UnitData Data => _data;
         public bool IsDead => Data.isDead;
         public string UnitName => Data.Name;
-        public float AttackTimer => Data.attackTimer;
+        public float AttackTimer { get => Data.attackTimer; set => Data.attackTimer = value; }
         public Vector3? MovePos { get => Data.MovePos; set => Data.MovePos = value; }
         public BattleUnit AttackTarget { get => Data.AttackTarget; set => Data.AttackTarget = value; }
         public bool HasMoveTarget { get => Data.MovePos != null || Data.AttackTarget != null; }
@@ -133,6 +133,7 @@ namespace Rain.Core.RTS
         {
             if (Data.AttackTarget != null && !Data.AttackTarget.Data.isDead && IsEnemy(Data.AttackTarget))
             {
+                AttackTimer = Time.time;
                 Data.AttackTarget.TakeDamage(Data.attack);
                 Debug.Log($"{Data.Name} 攻击了 {Data.AttackTarget.Data.Name}，造成 {Data.attack} 点伤害");
             }
