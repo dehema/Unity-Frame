@@ -8,20 +8,18 @@ public partial class HudUnitStateBar : BasePoolItem
 {
     float rectWidth;
     float rectHeight;
-    RectTransform rect;
+    Camera unitCamera;
 
     /// <summary>
     /// 单位高度
     /// </summary>
     float unitHeight = 0;
-    Camera camera;
     public override void OnCreate(params object[] _params)
     {
         base.OnCreate(_params);
         HudUnitStateBarParam param = _params[0] as HudUnitStateBarParam;
-        camera = param.camera;
+        unitCamera = param.camera;
         unitHeight = param.unitHeight;
-        rect = GetComponent<RectTransform>();
         rectWidth = rect.rect.width;
         rectHeight = rect.rect.height;
     }
@@ -48,7 +46,7 @@ public partial class HudUnitStateBar : BasePoolItem
     {
         //屏幕坐标
         //模型坐标在脚下 + 身高 + 0.2偏移值
-        Vector3 sPos = camera.WorldToScreenPoint(_pos + new Vector3(0, unitHeight + 0.2f));
+        Vector3 sPos = unitCamera.WorldToScreenPoint(_pos + new Vector3(0, unitHeight + 0.2f));
         //Debug.LogError($"X:{sPos.y}  Y:{sPos.y}");
         //
         Vector2 uiPos = new Vector3(sPos.x - Screen.width / 2, sPos.y - Screen.height / 2);

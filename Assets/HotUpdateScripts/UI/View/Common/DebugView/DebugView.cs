@@ -30,7 +30,6 @@ public partial class DebugView : BaseView
         btUIPool = PoolMgr.Ins.CreatePool(ui.btUIItem);
         foreach (var uiConfig in ConfigMgr.Ins.GetAllViewConfig())
         {
-
             string uiName = uiConfig.Key;
             GameObject item = btUIPool.Get();
             item.GetComponent<Button>().onClick.AddListener(() =>

@@ -10,7 +10,7 @@ namespace Rain.Launcher
         /* ------------------------核心模块------------------------ */
 
         // 全局消息
-        private static MessageManager _message;
+        private static MsgMgr _message;
         // 输入管理-->使用了消息模块
         private static InputManager _inputManager;
         // 本地存储
@@ -50,12 +50,12 @@ namespace Rain.Launcher
         // 热更新版本管理-->使用了下载模块-->使用了资产模块
         private static HotUpdateManager _hotUpdateManager;
 
-        public static MessageManager Message
+        public static MsgMgr Msg
         {
             get
             {
                 if (_message == null)
-                    _message = ModuleCenter.CreateModule<MessageManager>();
+                    _message = ModuleCenter.CreateModule<MsgMgr>();
                 return _message;
             }
             set

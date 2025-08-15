@@ -445,8 +445,8 @@ namespace Rain.Core
                 _helper.LoadDevice(new StandardInputDevice());
                 _helper.OnInit();
 
-                MessageManager.Ins.AddEventListener(MessageEvent.ApplicationFocus, ResetAll, this);
-                MessageManager.Ins.AddEventListener(MessageEvent.NotApplicationFocus, ResetAll, this);
+                MsgMgr.Ins.AddEventListener(MessageEvent.ApplicationFocus, ResetAll, this);
+                MsgMgr.Ins.AddEventListener(MessageEvent.NotApplicationFocus, ResetAll, this);
             }
             else
             {
@@ -487,8 +487,8 @@ namespace Rain.Core
 
         public void OnTermination()
         {
-            MessageManager.Ins.RemoveEventListener(MessageEvent.ApplicationFocus, ResetAll, this);
-            MessageManager.Ins.RemoveEventListener(MessageEvent.NotApplicationFocus, ResetAll, this);
+            MsgMgr.Ins.RemoveEventListener(MessageEvent.ApplicationFocus, ResetAll, this);
+            MsgMgr.Ins.RemoveEventListener(MessageEvent.NotApplicationFocus, ResetAll, this);
             _helper.OnTerminate();
             FrameCount = 0;
             base.Destroy();

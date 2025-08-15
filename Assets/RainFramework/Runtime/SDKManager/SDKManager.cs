@@ -192,7 +192,7 @@ namespace Rain.Core
         {
             RLog.LogSDK("OnInitSuccess：" + msg);
             
-            MessageManager.Ins.DispatchEvent(MessageEvent.SDKOnInitSuccess);
+            MsgMgr.Ins.DispatchEvent(MessageEvent.SDKOnInitSuccess);
         }
 
         /// <summary>
@@ -203,7 +203,7 @@ namespace Rain.Core
         {
             RLog.LogSDK("OnInitFail：" + msg);
             
-            MessageManager.Ins.DispatchEvent(MessageEvent.SDKOnInitFail);
+            MsgMgr.Ins.DispatchEvent(MessageEvent.SDKOnInitFail);
         }
 
         /// <summary>
@@ -220,7 +220,7 @@ namespace Rain.Core
             
             RLog.LogSDK("OnLoginSuccess：" + this.userId);
             
-            MessageManager.Ins.DispatchEvent(MessageEvent.SDKOnLoginSuccess);
+            MsgMgr.Ins.DispatchEvent(MessageEvent.SDKOnLoginSuccess);
         }
         
         /// <summary>
@@ -231,7 +231,7 @@ namespace Rain.Core
         {
             RLog.LogSDK("OnLoginFail：" + msg);
             
-            MessageManager.Ins.DispatchEvent(MessageEvent.SDKOnLoginFail);
+            MsgMgr.Ins.DispatchEvent(MessageEvent.SDKOnLoginFail);
         }
         
         /// <summary>
@@ -246,7 +246,7 @@ namespace Rain.Core
             this.userName = userInfo.userName;
             this.token = userInfo.token;
             
-            MessageManager.Ins.DispatchEvent(MessageEvent.SDKOnSwitchAccountSuccess);
+            MsgMgr.Ins.DispatchEvent(MessageEvent.SDKOnSwitchAccountSuccess);
         }
 
         /// <summary>
@@ -257,7 +257,7 @@ namespace Rain.Core
         {
             RLog.LogSDK("OnLogoutSuccess：" + msg);
             
-            MessageManager.Ins.DispatchEvent(MessageEvent.SDKOnLogoutSuccess);
+            MsgMgr.Ins.DispatchEvent(MessageEvent.SDKOnLogoutSuccess);
         }
         
         /// <summary>
@@ -271,7 +271,7 @@ namespace Rain.Core
             RLog.LogSDK("OnLoginSuccess：" + payInfo.orderId);
             RLog.LogSDK("OnLoginSuccess：" + payInfo.cpOrderId);
             
-            MessageManager.Ins.DispatchEvent(MessageEvent.SDKOnPaySuccess);
+            MsgMgr.Ins.DispatchEvent(MessageEvent.SDKOnPaySuccess);
         }
 
         /// <summary>
@@ -281,7 +281,7 @@ namespace Rain.Core
         public void OnPayFail(string msg)
         {
             RLog.LogSDK("OnPayFail：" + msg);
-            MessageManager.Ins.DispatchEvent(MessageEvent.SDKOnPayFail);
+            MsgMgr.Ins.DispatchEvent(MessageEvent.SDKOnPayFail);
         }
 
         /// <summary>
@@ -291,7 +291,7 @@ namespace Rain.Core
         public void OnPayCancel(string msg)
         {
             RLog.LogSDK("OnPayCancel：" + msg);
-            MessageManager.Ins.DispatchEvent(MessageEvent.SDKOnPayCancel);
+            MsgMgr.Ins.DispatchEvent(MessageEvent.SDKOnPayCancel);
         }
 
         /// <summary>
@@ -301,7 +301,7 @@ namespace Rain.Core
         public void OnExitSuccess(string msg)
         {
             RLog.LogSDK("OnExitSuccess：" + msg);
-            MessageManager.Ins.DispatchEvent(MessageEvent.SDKOnExitSuccess);
+            MsgMgr.Ins.DispatchEvent(MessageEvent.SDKOnExitSuccess);
         }
     }
 }

@@ -14,6 +14,7 @@ public partial class RTSHudView : BaseView
         [SerializeField] public Button bg_Button;
         [SerializeField] public GameObject content;
         [SerializeField] public RectTransform content_Rect;
+        [SerializeField] public GameObject hudUnitStateBar;
     }
 
     [Header("自动序列化组件")]

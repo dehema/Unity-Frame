@@ -20,7 +20,7 @@ namespace Rain.Tests
 			RA.HotUpdate = ModuleCenter.CreateModule<HotUpdateManager>();
         
 			// 按顺序创建模块，可按需添加
-			RA.Message = ModuleCenter.CreateModule<MessageManager>();
+			RA.Msg = ModuleCenter.CreateModule<MsgMgr>();
 			RA.Input = ModuleCenter.CreateModule<InputManager>(new DefaultInputHelper());
 			RA.Storage = ModuleCenter.CreateModule<StorageManager>();
 			RA.Timer = ModuleCenter.CreateModule<TimerMgr>();

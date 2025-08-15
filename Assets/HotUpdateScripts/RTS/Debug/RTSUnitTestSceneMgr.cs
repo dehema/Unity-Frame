@@ -16,7 +16,7 @@ public class RTSUnitTestSceneMgr : MonoBehaviour
 
     [Header("射线设置")]
     [SerializeField]
-    Camera mainCamera;     // 主相机引用
+    public Camera mainCamera;     // 主相机引用
 
     BattleUnit dummy; //假人
 

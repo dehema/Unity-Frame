@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Rain.Core
 {
     // 消息管理器类，实现了单例模式和消息管理接口
-    public class MessageManager : ModuleSingletonMono<MessageManager>, IMessageManager, IModule
+    public class MsgMgr : ModuleSingletonMono<MsgMgr>, IMessageManager, IModule
     {
         // 存储事件ID与事件处理器列表的字典
         private Dictionary<int, List<IEventDataBase>> events = new Dictionary<int, List<IEventDataBase>>();

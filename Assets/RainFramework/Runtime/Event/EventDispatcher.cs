@@ -24,7 +24,7 @@ namespace Rain.UI
             EventData eventData = new EventData(eventId, listener, handle);
             events[eventId].Add(eventData);
 
-            MessageManager.Ins.AddEventListener(eventId, listener, handle);
+            MsgMgr.Ins.AddEventListener(eventId, listener, handle);
         }
 
         public void AddEventListener<T>(T eventName, Action<object[]> listener, object handle = null) where T : Enum, IConvertible
@@ -42,7 +42,7 @@ namespace Rain.UI
             EventData<object[]> eventData = new EventData<object[]>(eventId, listener, handle);
             events[eventId].Add(eventData);
 
-            MessageManager.Ins.AddEventListener(eventId, listener, handle);
+            MsgMgr.Ins.AddEventListener(eventId, listener, handle);
         }
 
         public void RemoveEventListener<T>(T eventName, Action listener, object handle = null) where T : Enum, IConvertible
@@ -69,7 +69,7 @@ namespace Rain.UI
                     {
                         if (item is EventData eb && eb.Listener == listener && eb.Handle == handle)
                         {
-                            MessageManager.Ins.RemoveEventListener(eventId, eb.Listener, eb.Handle);
+                            MsgMgr.Ins.RemoveEventListener(eventId, eb.Listener, eb.Handle);
                             delects.Add(eb);
                         }
                     }
@@ -111,7 +111,7 @@ namespace Rain.UI
                     {
                         if (item is EventData<object[]> eb && eb.Listener == listener && eb.Handle == handle)
                         {
-                            MessageManager.Ins.RemoveEventListener(eventId, eb.Listener, eb.Handle);
+                            MsgMgr.Ins.RemoveEventListener(eventId, eb.Listener, eb.Handle);
                             delects.Add(eb);
                         }
                     }
@@ -145,29 +145,29 @@ namespace Rain.UI
                 if (events[eventId].Count > 0)
                 {
                     events.Remove(eventId);
-                    MessageManager.Ins.RemoveEventListener(eventId);
+                    MsgMgr.Ins.RemoveEventListener(eventId);
                 }
             }
         }
 
         public void DispatchEvent<T>(T eventName) where T : Enum, IConvertible
         {
-            MessageManager.Ins.DispatchEvent(eventName);
+            MsgMgr.Ins.DispatchEvent(eventName);
         }
 
         public void DispatchEvent(int eventId)
         {
-            MessageManager.Ins.DispatchEvent(eventId);
+            MsgMgr.Ins.DispatchEvent(eventId);
         }
 
         public void DispatchEvent<T>(T eventName, params object[] arg1) where T : Enum, IConvertible
         {
-            MessageManager.Ins.DispatchEvent(eventName, arg1);
+            MsgMgr.Ins.DispatchEvent(eventName, arg1);
         }
 
         public void DispatchEvent(int eventId, params object[] arg1)
         {
-            MessageManager.Ins.DispatchEvent(eventId, arg1);
+            MsgMgr.Ins.DispatchEvent(eventId, arg1);
         }
 
         public void Clear()
@@ -180,11 +180,11 @@ namespace Rain.UI
                     {
                         if (eventData is IEventData typedEventData)
                         {
-                            MessageManager.Ins.RemoveEventListener(typedEventData.GetEvent(), typedEventData.Listener, typedEventData.Handle);
+                            MsgMgr.Ins.RemoveEventListener(typedEventData.GetEvent(), typedEventData.Listener, typedEventData.Handle);
                         }
                         else if (eventData is IEventData<object[]> typedEventData1)
                         {
-                            MessageManager.Ins.RemoveEventListener(typedEventData1.GetEvent(), typedEventData1.Listener, typedEventData1.Handle);
+                            MsgMgr.Ins.RemoveEventListener(typedEventData1.GetEvent(), typedEventData1.Listener, typedEventData1.Handle);
                         }
                     }
                 }
