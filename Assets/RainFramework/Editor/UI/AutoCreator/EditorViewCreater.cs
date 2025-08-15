@@ -20,7 +20,7 @@ namespace Rain.UI.Editor
         public static void CreateView(ViewConfig _viewConfig)
         {
             string viewName = _viewConfig.viewName;
-            if (!CheckRegular(viewName))
+            if (!CheckRegular(_viewConfig))
                 return;
             CreateViewScene(viewName);
             CreateViewScript(_viewConfig);
@@ -151,15 +151,22 @@ namespace Rain.UI.Editor
 
         static GameObject AddScriptAndSavePrefab(string _viewName, GameObject _view)
         {
-            try
+            Type type = null;
+            //遍历所有程序集
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
-                _view.AddComponent(Type.GetType($"{_viewName}, Rain.UI"));
+                Type _type = assembly.GetType($"{_viewName}");
+                if (_type != null)
+                {
+                    type = _type;
+                }
             }
-            catch (Exception)
+            if (type == null)
             {
                 Debug.Log($"添加组件{_viewName}失败", _view);
-                throw;
             }
+            _view.AddComponent(type);
+
             string sceneName = EditorSceneManager.GetActiveScene().name;
             GameObject viewGo = GameObject.Find(sceneName);
             string dirPath = Application.dataPath + $"/AssetBundles/Art/Resources/View/{_viewName}/";
@@ -206,14 +213,14 @@ namespace Rain.UI.Editor
         /// </summary>
         /// <param name="_viewName"></param>
         /// <returns></returns>
-        public static bool CheckRegular(string _viewName)
+        public static bool CheckRegular(ViewConfig _viewConfig)
         {
-            if (string.IsNullOrEmpty(_viewName))
+            if (_viewConfig == null)
             {
-                EditorUtility.DisplayDialog("错误", "在前面的输入框中输入要创建的View", "ok");
+                EditorUtility.DisplayDialog("错误", "找不view到配置", "ok");
                 return false;
             }
-            foreach (char item in _viewName)
+            foreach (char item in _viewConfig.viewName)
             {
                 if ((!char.IsLetter(item) || char.ToLower(item) < 'a' || char.ToLower(item) > 'z') && item != '_')
                 {

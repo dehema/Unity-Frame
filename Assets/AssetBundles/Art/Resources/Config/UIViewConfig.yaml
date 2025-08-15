@@ -109,4 +109,9 @@ view:
             layer: NormalLayer
             bgColor: "#00000000"
             hasBg: false
+        RTSHudView:
+            comment: RTS HUD
+            layer: MenuLayer
+            bgColor: "#00000000"
+            hasBg: false
         

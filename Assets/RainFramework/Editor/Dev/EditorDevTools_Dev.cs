@@ -521,6 +521,8 @@ public class EditorDevTools_Dev : EditorDevTools_Base
             {
                 if (item.Key == _viewName)
                 {
+                    item.Value.viewName = item.Key;
+                    item.Value.group = group.Key;
                     return item.Value;
                 }
             }
