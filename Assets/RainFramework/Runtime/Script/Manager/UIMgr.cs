@@ -68,7 +68,7 @@ namespace Rain.UI
         /// <typeparam name="T">视图类型</typeparam>
         /// <param name="_params">传递给视图的参数</param>
         /// <returns>打开的UI视图实例</returns>
-        public T OpenView<T>(IViewParams viewParams = null) where T : BaseView
+        public T OpenView<T>(IViewParam viewParams = null) where T : BaseView
         {
             string viewName = typeof(T).ToString();
             return OpenView(viewName, viewParams) as T;
@@ -80,7 +80,7 @@ namespace Rain.UI
         /// <param name="_viewName">视图名称</param>
         /// <param name="viewParams">传递给视图的参数</param>
         /// <returns>打开的UI视图</returns>
-        public BaseView OpenView(string _viewName, IViewParams viewParams = null)
+        public BaseView OpenView(string _viewName, IViewParam viewParams = null)
         {
             if (string.IsNullOrEmpty(_viewName))
             {
@@ -182,7 +182,7 @@ namespace Rain.UI
         /// <param name="viewConfig">视图配置</param>
         /// <param name="viewParams">初始化参数</param>
         /// <returns>添加的视图实例</returns>
-        private BaseView AddView(GameObject viewGo, ViewConfig viewConfig, IViewParams viewParams = null)
+        private BaseView AddView(GameObject viewGo, ViewConfig viewConfig, IViewParam viewParams = null)
         {
             if (viewGo == null || viewConfig == null)
             {
@@ -437,21 +437,21 @@ namespace Rain.UI
         }
 
         // 异步加载，使用枚举作为参数
-        public UILoader OpenViewAsync<T>(IViewParams viewParams = null, Action onComplete = null) where T : BaseView
+        public UILoader OpenViewAsync<T>(IViewParam viewParams = null, Action onComplete = null) where T : BaseView
         {
             string viewName = typeof(T).ToString();
             return OpenViewAsync(viewName, viewParams, onComplete);
         }
 
         // 异步加载，使用id作为参数
-        public UILoader OpenViewAsync(string viewName, IViewParams viewParams = null, Action onComplete = null)
+        public UILoader OpenViewAsync(string viewName, IViewParam viewParams = null, Action onComplete = null)
         {
             ViewConfig viewConfig = GetViewConfig(viewName);
             return LoadAsync(viewConfig, viewParams);
         }
 
 
-        private UILoader LoadAsync(ViewConfig viewConfig, IViewParams viewParams = null, Action onComplete = null)
+        private UILoader LoadAsync(ViewConfig viewConfig, IViewParam viewParams = null, Action onComplete = null)
         {
             viewConfig.uiLoader = new UILoader();
             viewConfig.uiLoader.SetOnCompleted(onComplete);

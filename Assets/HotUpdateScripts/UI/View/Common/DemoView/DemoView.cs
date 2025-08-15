@@ -5,18 +5,17 @@ using Rain.Core;
 using Rain.UI;
 using UnityEngine;
 using UnityEngine.UI;
-using static SettingField;
 
 public partial class DemoView : BaseView
 {
-    DemoViewParams _viewParams;
+    DemoViewParam _viewParams;
 
-    public override void Init(IViewParams viewParams = null)
+    public override void Init(IViewParam viewParams = null)
     {
         base.Init(viewParams);
 
         //视图参数
-        _viewParams = viewParams as DemoViewParams;
+        _viewParams = viewParams as DemoViewParam;
         Debug.Log(_viewParams.number);
         Debug.Log(_viewParams.tips);
         _viewParams?.action();
@@ -45,7 +44,7 @@ public partial class DemoView : BaseView
         });
     }
 
-    public override void OnOpen(IViewParams viewParams = null)
+    public override void OnOpen(IViewParam viewParams = null)
     {
         base.OnOpen(viewParams);
         Debug.Log("UI打开");
@@ -73,7 +72,7 @@ public partial class DemoView : BaseView
 }
 
 
-public class DemoViewParams : IViewParams
+public class DemoViewParam : IViewParam
 {
     public int number;
     public string tips;

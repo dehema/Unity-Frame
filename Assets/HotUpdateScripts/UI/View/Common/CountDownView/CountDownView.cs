@@ -12,11 +12,11 @@ public partial class CountDownView : BaseView
 {
     private float currentTime;
     [SerializeField] private Sprite[] numberSprites;  // 0-9的Sprite数组
-    CountDownViewParams viewParams;
+    CountDownViewParam viewParams;
     bool startCountDown = false;
     DBInt db;
 
-    public override void Init(IViewParams viewParams = null)
+    public override void Init(IViewParam viewParams = null)
     {
         base.Init(viewParams);
         db = new DBInt();
@@ -25,14 +25,14 @@ public partial class CountDownView : BaseView
     private float lastClickTime = -1f;
     private float doubleClickTimeThreshold = 0.3f; // 双击时间阈值，300毫秒
 
-    public override void OnOpen(IViewParams _viewParams)
+    public override void OnOpen(IViewParam _viewParams)
     {
         base.OnOpen(_viewParams);
         if (_viewParams == null)
         {
-            _viewParams = new CountDownViewParams();
+            _viewParams = new CountDownViewParam();
         }
-        viewParams = _viewParams as CountDownViewParams;
+        viewParams = _viewParams as CountDownViewParam;
         currentTime = viewParams.countDown;
         db.Value = Mathf.CeilToInt(viewParams.countDown);
         db.Bind(UpdateNumberDisplay);
@@ -95,7 +95,7 @@ public partial class CountDownView : BaseView
     }
 }
 
-public class CountDownViewParams : IViewParams
+public class CountDownViewParam : IViewParam
 {
     public float countDown = 3;
     public float delay = 0.5f;

@@ -1,7 +1,7 @@
 
 namespace Rain.UI
 {
-    public interface IViewParams
+    public interface IViewParam
     {
 
     }

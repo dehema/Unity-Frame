@@ -9,7 +9,7 @@ public partial class DebugView : BaseView
 {
     ObjPool btUIPool;
 
-    public override void Init(IViewParams viewParams = null)
+    public override void Init(IViewParam viewParams = null)
     {
         base.Init(viewParams);
         InitUIPool();
@@ -41,7 +41,7 @@ public partial class DebugView : BaseView
                 }
                 else if (uiName == ViewName.DemoView)
                 {
-                    DemoViewParams viewParams = new DemoViewParams();
+                    DemoViewParam viewParams = new DemoViewParam();
                     viewParams.number = 123;
                     viewParams.tips = "hello world";
                     viewParams.action = () =>
@@ -56,7 +56,7 @@ public partial class DebugView : BaseView
                 }
                 else if (uiName == ViewName.CountDownView)
                 {
-                    CountDownViewParams viewParams = new CountDownViewParams();
+                    CountDownViewParam viewParams = new CountDownViewParam();
                     viewParams.countDown = 5;
                     viewParams.delay = 1;
                     viewParams.cb = () => { Debug.Log("倒计时结束"); };

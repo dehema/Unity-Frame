@@ -21,7 +21,7 @@ public partial class ExampleView : ExampleViewParent
         Debug.Log("OnEnable");
     }
 
-    public override void Init(IViewParams viewParams = null)
+    public override void Init(IViewParam viewParams = null)
     {
         base.Init(viewParams);
         Debug.Log("Init");
@@ -31,7 +31,7 @@ public partial class ExampleView : ExampleViewParent
         btUnBindAllDataBind_Button.SetButton(() => { UnBindAllDataBind(); });
     }
 
-    public override void OnOpen(IViewParams viewParams = null)
+    public override void OnOpen(IViewParam viewParams = null)
     {
         base.OnOpen();
         Debug.Log("OnOpen");

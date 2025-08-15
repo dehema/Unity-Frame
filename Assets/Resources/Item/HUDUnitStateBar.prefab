@@ -201,6 +201,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75b88e1d5c5051c4db9e0fe014029288, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ui:
+    redHp: {fileID: 6880780292029757950}
+    redHp_Image: {fileID: 942773804040969968}
+    redHp_Rect: {fileID: 2808109729307412174}
+    greenHp: {fileID: 6086665258981496897}
+    greenHp_Image: {fileID: 9121983912983986903}
+    greenHp_Rect: {fileID: 4526385314131674564}
 --- !u!1 &8995835446213749568
 GameObject:
   m_ObjectHideFlags: 0

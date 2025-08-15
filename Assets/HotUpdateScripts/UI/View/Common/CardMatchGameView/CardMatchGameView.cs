@@ -15,7 +15,7 @@ public partial class CardMatchGameView : BaseView
     CardMatchCardItem cardItem2;
     List<CardMatchCardItem> cardList = new List<CardMatchCardItem>();
     const int gameTime = 60; //游戏限时
-    public override void Init(IViewParams viewParams = null)
+    public override void Init(IViewParam viewParams = null)
     {
         base.Init(viewParams);
         cardPool = PoolMgr.Ins.CreatePool(ui.cardMatchCardItem);
@@ -24,13 +24,13 @@ public partial class CardMatchGameView : BaseView
         ui.btFail_Button.SetDebugButton(DebugGameOver);
     }
 
-    public override void OnOpen(IViewParams viewParams = null)
+    public override void OnOpen(IViewParam viewParams = null)
     {
         base.OnOpen(viewParams);
         cardItem1 = null;
         cardItem2 = null;
         //倒计时界面
-        CountDownViewParams viewParmas = new CountDownViewParams
+        CountDownViewParam viewParmas = new CountDownViewParam
         {
             countDown = 3,
             delay = 0f,
@@ -180,7 +180,7 @@ public partial class CardMatchGameView : BaseView
     void GameWin()
     {
         Debug.Log("GameWin");
-        GameWinViewParams viewParams = new GameWinViewParams(() =>
+        GameWinViewParam viewParams = new GameWinViewParam(() =>
         {
             Close();
         });
@@ -191,7 +191,7 @@ public partial class CardMatchGameView : BaseView
     {
         Debug.Log("GameOver");
         ui.slider_SliderCountDown.Stop();
-        GameOverViewParams viewParams = new GameOverViewParams(() =>
+        GameOverViewParam viewParams = new GameOverViewParam(() =>
         {
             Close();
         });

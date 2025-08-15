@@ -8,7 +8,7 @@ public partial class LoadingView : BaseView
     //data
     LoadingViewParams _viewParams;
 
-    public override void OnOpen(IViewParams viewParams = null)
+    public override void OnOpen(IViewParam viewParams = null)
     {
         base.OnOpen();
         if (viewParams != null)

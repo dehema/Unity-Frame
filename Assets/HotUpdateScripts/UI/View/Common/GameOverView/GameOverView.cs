@@ -7,14 +7,14 @@ using UnityEngine;
 
 public partial class GameOverView : BaseView
 {
-    GameOverViewParams viewParams;
-    public override void OnOpen(IViewParams _viewParams = null)
+    GameOverViewParam viewParams;
+    public override void OnOpen(IViewParam _viewParams = null)
     {
         base.OnOpen(_viewParams);
         viewParams = null;
         if (_viewParams != null)
         {
-            viewParams = _viewParams as GameOverViewParams;
+            viewParams = _viewParams as GameOverViewParam;
         }
         ui.icon.transform.DOKill();
         ui.icon.transform.localScale = Vector3.zero;
@@ -37,11 +37,11 @@ public partial class GameOverView : BaseView
 }
 
 
-public class GameOverViewParams : IViewParams
+public class GameOverViewParam : IViewParam
 {
     public Action closeCB;
 
-    public GameOverViewParams(Action _closeCB)
+    public GameOverViewParam(Action _closeCB)
     {
         closeCB = _closeCB;
     }

@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public partial class UIControlDemoView : BaseView
 {
-    public override void Init(IViewParams viewParams = null)
+    public override void Init(IViewParam viewParams = null)
     {
         base.Init(viewParams);
         ui.btClose_Button.SetButton(Close);

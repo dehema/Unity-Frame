@@ -13,7 +13,7 @@ public class SceneMgr : MonoSingleton<SceneMgr>
     /// <param name="_sceneID"></param>
     public void ChangeScene(SceneID _sceneID, Action _changeSuccess = null)
     {
-        LoadSceneViewParams viewParams = new LoadSceneViewParams();
+        LoadSceneViewParam viewParams = new LoadSceneViewParam();
         viewParams.targetSceneName = _sceneID.ToString();
         targetSceneName = viewParams.targetSceneName;
         viewParams.CloseCB = () =>

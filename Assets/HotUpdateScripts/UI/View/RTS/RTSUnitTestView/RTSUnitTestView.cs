@@ -13,7 +13,7 @@ public partial class RTSUnitTestView : BaseView
     ObjPool unitPool;
     List<Button> btUnits = new List<Button>();
     bool isShowUnitList = true;
-    public override void Init(IViewParams _viewParams = null)
+    public override void Init(IViewParam _viewParams = null)
     {
         base.Init(_viewParams);
         ui.btShowUnitList_Button.SetButton(OnClickShowUnitList);

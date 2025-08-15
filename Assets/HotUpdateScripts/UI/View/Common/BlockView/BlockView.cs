@@ -2,7 +2,7 @@
 
 public partial class BlockView : BaseView
 {
-    public override void Init(IViewParams viewParams = null)
+    public override void Init(IViewParam viewParams = null)
     {
         base.Init(viewParams);
     }
