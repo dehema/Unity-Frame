@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Rain.Core.RTS;
+using Rain.RTS.Core;
 using Rain.UI;
 using UnityEngine;
 using UnityEngine.AI;
@@ -23,9 +23,10 @@ public class RTSUnitTestSceneMgr : MonoBehaviour
     void Awake()
     {
         Ins = this;
+        UIMgr.Ins.OpenView(ViewName.RTSHudView);
         UIMgr.Ins.OpenView(ViewName.RTSUnitTestView);
         mainCamera = GetComponent<Camera>();
-
+        BattleMgr.Ins.unitCamera = mainCamera;
     }
 
     /// <summary>
@@ -70,15 +71,7 @@ public class RTSUnitTestSceneMgr : MonoBehaviour
     /// <param name="unitConfig"></param>
     public BattleUnit CreateUnit(UnitConfig unitConfig)
     {
-        BattleUnit battleUnit = null;
-        GameObject prefab = Resources.Load<GameObject>("Prefab/Unit/" + unitConfig.fullID);
-        if (prefab != null)
-        {
-            // 实例化单位预制体
-            GameObject item = Instantiate(prefab, Vector3.zero, Quaternion.identity);
-            battleUnit = item.GetComponent<BattleUnit>();
-            battleUnit.InitData(unitConfig);
-        }
+        BattleUnit battleUnit =  BattleMgr.Ins.CreateUnit(unitConfig);
         return battleUnit;
     }
 

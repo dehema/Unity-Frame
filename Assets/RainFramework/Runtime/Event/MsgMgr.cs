@@ -49,17 +49,17 @@ namespace Rain.Core
         {
             if (hasFocus) // 应用程序获得焦点
             {
-                DispatchEvent(MessageEvent.ApplicationFocus);
+                DispatchEvent(MsgEvent.ApplicationFocus);
             }
             else // 应用程序失去焦点
             {
-                DispatchEvent(MessageEvent.NotApplicationFocus);
+                DispatchEvent(MsgEvent.NotApplicationFocus);
             }
         }
 
         private void OnApplicationQuit()
         {
-            DispatchEvent(MessageEvent.ApplicationQuit);
+            DispatchEvent(MsgEvent.ApplicationQuit);
         }
 
         // 清空调用栈

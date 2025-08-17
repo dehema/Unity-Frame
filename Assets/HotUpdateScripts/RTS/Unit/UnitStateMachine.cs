@@ -19,7 +19,7 @@
 
 using UnityEngine;
 
-namespace Rain.Core.RTS
+namespace Rain.RTS.Core
 {
     public class UnitStateMachine
     {

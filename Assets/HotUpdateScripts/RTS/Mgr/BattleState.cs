@@ -1,4 +1,4 @@
-﻿namespace Rain.Core.RTS
+﻿namespace Rain.RTS.Core
 {
     /// <summary>
     /// 战斗阶段

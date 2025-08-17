@@ -6,7 +6,6 @@ using Rain.Core;
 using Rain.UI;
 using UnityEngine;
 using UnityEngine.UI;
-using static SettingField;
 
 public partial class RTSUnitTestView : BaseView
 {
@@ -16,10 +15,15 @@ public partial class RTSUnitTestView : BaseView
     public override void Init(IViewParam _viewParams = null)
     {
         base.Init(_viewParams);
+
         ui.btShowUnitList_Button.SetButton(OnClickShowUnitList);
         ui.btAddDummy_Button.SetButton(() => { RTSUnitTestSceneMgr.Ins.CreateDummy(); });
         InitUnitList();
 
+    }
+
+    private void Start()
+    {
         //场景默认创建一个假人一个士兵
         ui.btAddDummy_Button.onClick.Invoke();
         btUnits.First().onClick.Invoke();

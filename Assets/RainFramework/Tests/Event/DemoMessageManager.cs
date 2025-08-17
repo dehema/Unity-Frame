@@ -10,16 +10,16 @@ namespace Rain.Tests
 
         private void Awake()
         {
-            RA.Msg.AddEventListener(MessageEvent.ApplicationFocus, OnPlayerSpawned, this);
+            RA.Msg.AddEventListener(MsgEvent.ApplicationFocus, OnPlayerSpawned, this);
             RA.Msg.AddEventListener(10001, OnPlayerSpawned2, this);
         }
 
         private void Start()
         {
-            RA.Msg.DispatchEvent(MessageEvent.ApplicationFocus);
+            RA.Msg.DispatchEvent(MsgEvent.ApplicationFocus);
             RA.Msg.DispatchEvent(10001, data);
             //全局时需要执行RemoveEventListener
-            RA.Msg.RemoveEventListener(MessageEvent.ApplicationFocus, OnPlayerSpawned, this);
+            RA.Msg.RemoveEventListener(MsgEvent.ApplicationFocus, OnPlayerSpawned, this);
             RA.Msg.RemoveEventListener(10001, OnPlayerSpawned2, this);
         }
 

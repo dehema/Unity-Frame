@@ -1,4 +1,4 @@
-﻿namespace Rain.Core.RTS
+﻿namespace Rain.RTS.Core
 {
     public class DieState : BaseState
     {

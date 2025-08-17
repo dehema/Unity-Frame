@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Rain.Core.RTS
+namespace Rain.RTS.Core
 {
     public enum UnitStateType
     {

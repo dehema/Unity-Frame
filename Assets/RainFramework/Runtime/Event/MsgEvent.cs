@@ -1,6 +1,6 @@
 namespace Rain.Core
 {
-    public enum MessageEvent
+    public enum MsgEvent
     {
         // 框架事件，10000起步
         Empty = 10000,
@@ -18,6 +18,13 @@ namespace Rain.Core
         SDKOnPayFail = 10011,
         SDKOnPayCancel = 10012,
         SDKOnExitSuccess = 10013,
+
+        //RTS
+        RTSBattleStart,
+        RTSBattleUnitAdd,
+        RTSBattleUnitRemove,
+        RTSBattleUnitMove,
+        RTSBattleEnd,
     }
 }
 

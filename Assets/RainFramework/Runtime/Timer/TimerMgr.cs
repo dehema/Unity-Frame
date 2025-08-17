@@ -72,8 +72,8 @@ namespace Rain.Core
         /// </summary>
         public void OnTermination()
         {
-            MsgMgr.Ins.RemoveEventListener(MessageEvent.ApplicationFocus, OnApplicationFocus, this);
-            MsgMgr.Ins.RemoveEventListener(MessageEvent.NotApplicationFocus, NotApplicationFocus, this);
+            MsgMgr.Ins.RemoveEventListener(MsgEvent.ApplicationFocus, OnApplicationFocus, this);
+            MsgMgr.Ins.RemoveEventListener(MsgEvent.NotApplicationFocus, NotApplicationFocus, this);
             times.Clear();
             base.Destroy();
         }
@@ -305,8 +305,8 @@ namespace Rain.Core
         /// </summary>
         public void AddListenerApplicationFocus()
         {
-            MsgMgr.Ins.AddEventListener(MessageEvent.ApplicationFocus, OnApplicationFocus, this);
-            MsgMgr.Ins.AddEventListener(MessageEvent.NotApplicationFocus, NotApplicationFocus, this);
+            MsgMgr.Ins.AddEventListener(MsgEvent.ApplicationFocus, OnApplicationFocus, this);
+            MsgMgr.Ins.AddEventListener(MsgEvent.NotApplicationFocus, NotApplicationFocus, this);
         }
 
         /// <summary>

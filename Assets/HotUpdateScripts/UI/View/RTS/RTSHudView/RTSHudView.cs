@@ -1,17 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
+using Rain.Core;
+using Rain.RTS.Core;
 using Rain.UI;
 using UnityEngine;
 
 public partial class RTSHudView : BaseView
 {
     ObjPool stateBarPool;
-    Dictionary<int, BasePoolItem> pools = new Dictionary<int, BasePoolItem>();
+    Dictionary<string, HudUnitStateBar> pools = new Dictionary<string, HudUnitStateBar>();
 
     public override void Init(IViewParam _viewParams = null)
     {
         base.Init(_viewParams);
         stateBarPool = PoolMgr.Ins.CreatePool(ui.hudUnitStateBar);
+
+        MsgMgr.Ins.AddEventListener(MsgEvent.RTSBattleUnitAdd, OnBattleUnitAdd, this);
+        MsgMgr.Ins.AddEventListener(MsgEvent.RTSBattleUnitRemove, OnBattleUnitRemove, this);
+        MsgMgr.Ins.AddEventListener(MsgEvent.RTSBattleUnitMove, OnBattleUnitMove, this);
     }
 
     public override void OnOpen(IViewParam _viewParams = null)
@@ -19,19 +25,41 @@ public partial class RTSHudView : BaseView
         base.OnOpen(_viewParams);
     }
 
-    public void CreateStateBar(int unitID, float height, Vector3 pos)
+    public void OnBattleUnitAdd(params object[] obj)
     {
-        if (pools.ContainsKey(unitID))
+        BattleUnit battleUnit = obj[0] as BattleUnit;
+        Camera camera = obj[1] as Camera;
+        HudUnitStateBarParam param = new HudUnitStateBarParam(battleUnit, camera, rect);
+        CreateStateBar(param);
+    }
+
+    public void OnBattleUnitRemove(params object[] obj)
+    {
+        BattleUnit battleUnit = obj[0] as BattleUnit;
+        if (pools.ContainsKey(battleUnit.Data.unitId))
+        {
+            stateBarPool.CollectOne(pools[battleUnit.Data.unitId].gameObject);
+        }
+    }
+
+    public void OnBattleUnitMove(params object[] obj)
+    {
+        BattleUnit battleUnit = obj[0] as BattleUnit;
+        if (pools.ContainsKey(battleUnit.Data.unitId))
+        {
+            HudUnitStateBar bar = pools[battleUnit.Data.unitId];
+            bar.UpdatePos(battleUnit.transform.position);
+        }
+    }
+
+    public void CreateStateBar(HudUnitStateBarParam param)
+    {
+        if (pools.ContainsKey(param.unitID))
         {
             return;
         }
-        HudUnitStateBarParam param = new HudUnitStateBarParam();
-        param.camera = RTSUnitTestSceneMgr.Ins.mainCamera;
-        param.unitHeight = height;
-        stateBarPool.Get<HudUnitStateBar>(param);
-    }
-
-    public void RemoveStateBar(int unitID)
-    {
+        HudUnitStateBar bar = stateBarPool.Get<HudUnitStateBar>(param);
+        bar.UpdatePos(param.pos);
+        pools[param.unitID] = bar;
     }
 }

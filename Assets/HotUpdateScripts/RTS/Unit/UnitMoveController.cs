@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace Rain.Core.RTS
+namespace Rain.RTS.Core
 {
     /// <summary>
     /// 战斗角色控制器
@@ -12,6 +12,7 @@ namespace Rain.Core.RTS
     {
         public NavMeshAgent agent;
         private UnitData data; // 引用角色数据
+
 
 
         private void Awake()

@@ -11,16 +11,16 @@ namespace Rain.Tests
 
         private void Awake()
         {
-            AddEventListener(MessageEvent.ApplicationFocus, OnPlayerSpawned);
+            AddEventListener(MsgEvent.ApplicationFocus, OnPlayerSpawned);
             AddEventListener(10001, OnPlayerSpawned2);
         }
 
         private void Start()
         {
-            DispatchEvent(MessageEvent.ApplicationFocus);
+            DispatchEvent(MsgEvent.ApplicationFocus);
             DispatchEvent(10001, data);
             //可不执行，OnDestroy时会清理此脚本所有监听
-            RemoveEventListener(MessageEvent.ApplicationFocus, OnPlayerSpawned);
+            RemoveEventListener(MsgEvent.ApplicationFocus, OnPlayerSpawned);
             RemoveEventListener(10001, OnPlayerSpawned2);
         }
 

@@ -2,7 +2,7 @@
 using UnityEngine.AI;
 using static UnityEngine.UI.CanvasScaler;
 
-namespace Rain.Core.RTS
+namespace Rain.RTS.Core
 {
     public class MoveState : BaseState
     {

@@ -2,7 +2,7 @@
 using System.Xml.Linq;
 using UnityEngine;
 
-namespace Rain.Core.RTS
+namespace Rain.RTS.Core
 {
     /// <summary>
     /// 单位属性数据类
@@ -14,7 +14,7 @@ namespace Rain.Core.RTS
         private UnitConfig unitConfig;
         public UnitConfig UnitConfig => unitConfig;
         [Header("基础属性")]
-        public int unitId;              // 单位ID
+        public string unitId;           // 唯一ID
         public bool isPlayerUnit;       // 是否为玩家单位
         public int hp;                  // 生命值
         public float moveSpeed;         // 移动速度
@@ -49,6 +49,7 @@ namespace Rain.Core.RTS
 
         public void Init(UnitConfig config)
         {
+            unitId = Guid.NewGuid().ToString("N");
             currentHealth = maxHealth;
             unitConfig = config;
             UpdateAttributes();

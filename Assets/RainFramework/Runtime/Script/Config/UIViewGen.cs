@@ -110,4 +110,8 @@ public class ViewName
     /// RTS单位
     /// </summary>
 	public const string RTSUnitTestView = "RTSUnitTestView";
+    /// <summary>
+    /// RTS HUD
+    /// </summary>
+	public const string RTSHudView = "RTSHudView";
 }

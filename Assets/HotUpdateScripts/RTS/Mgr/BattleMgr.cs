@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
-using System.Xml.Linq;
-using UnityEditor;
 using UnityEngine;
+using Rain.Core;
 
-namespace Rain.Core.RTS
+namespace Rain.RTS.Core
 {
     /// <summary>
     /// 战斗管理器单例
     /// </summary>
     public class BattleMgr : MonoSingleton<BattleMgr>
     {
+        public Camera unitCamera;
         // 当前战斗状态
         public BattleState CurrentState { get; private set; }
         // 所有战斗单位列表
@@ -25,6 +25,26 @@ namespace Rain.Core.RTS
             CurrentState = BattleState.Prepare;
         }
 
+        /// <summary>
+        /// 创建单位
+        /// </summary>
+        /// <param name="unitConfig"></param>
+        public BattleUnit CreateUnit(UnitConfig unitConfig)
+        {
+            BattleUnit battleUnit = null;
+            GameObject prefab = Resources.Load<GameObject>("Prefab/Unit/" + unitConfig.fullID);
+            if (prefab != null)
+            {
+                // 实例化单位预制体
+                GameObject item = Instantiate(prefab, Vector3.zero, Quaternion.identity);
+                battleUnit = item.GetComponent<BattleUnit>();
+                battleUnit.InitData(unitConfig);
+
+                MsgMgr.Ins.DispatchEvent(MsgEvent.RTSBattleUnitAdd, battleUnit, unitCamera);
+            }
+            return battleUnit;
+        }
+
         // 注册单位
         public void RegisterUnit(BattleUnit unit)
         {
@@ -37,6 +57,8 @@ namespace Rain.Core.RTS
             {
                 _factionUnits[unit.Data.faction].Add(unit);
             }
+
+
 
             CheckBattleState();
         }

@@ -1,9 +1,10 @@
 {
-    "name": "Rain.RTS",
+    "name": "Rain.RTS.Core",
     "rootNamespace": "",
     "references": [
         "GUID:f774ecce4920052458871f649ea9fc50",
-        "GUID:e9dd896ebf2606340aae3d7c223890a6"
+        "GUID:e9dd896ebf2606340aae3d7c223890a6",
+        "GUID:e7e53514cbc78694bb9d8db5fe1c8e1a"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

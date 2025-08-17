@@ -8,18 +8,13 @@ public partial class HudUnitStateBar : BasePoolItem
 {
     float rectWidth;
     float rectHeight;
-    Camera unitCamera;
+    HudUnitStateBarParam param;
 
-    /// <summary>
-    /// 单位高度
-    /// </summary>
-    float unitHeight = 0;
     public override void OnCreate(params object[] _params)
     {
+
         base.OnCreate(_params);
-        HudUnitStateBarParam param = _params[0] as HudUnitStateBarParam;
-        unitCamera = param.camera;
-        unitHeight = param.unitHeight;
+        param = _params[0] as HudUnitStateBarParam;
         rectWidth = rect.rect.width;
         rectHeight = rect.rect.height;
     }
@@ -40,22 +35,15 @@ public partial class HudUnitStateBar : BasePoolItem
         ui.greenHp_Rect.DOSizeDelta(new Vector2(hpNow * rectWidth, rectHeight), 0.5f);
     }
 
-
-
     public void UpdatePos(Vector3 _pos)
     {
-        //屏幕坐标
-        //模型坐标在脚下 + 身高 + 0.2偏移值
-        Vector3 sPos = unitCamera.WorldToScreenPoint(_pos + new Vector3(0, unitHeight + 0.2f));
-        //Debug.LogError($"X:{sPos.y}  Y:{sPos.y}");
+        // 将3D世界坐标转换为屏幕UI坐标
+        Vector3 screenPos = param.camera.WorldToScreenPoint(_pos);
         //
-        Vector2 uiPos = new Vector3(sPos.x - Screen.width / 2, sPos.y - Screen.height / 2);
-        GetComponent<RectTransform>().anchoredPosition = uiPos;
+        // UI坐标需转换为RectTransform的局部坐标
+        if (RectTransformUtility.ScreenPointToLocalPointInRectangle(param.canvasRect, screenPos, Camera.main, out Vector2 localPos))
+        {
+            rect.localPosition = localPos;
+        }
     }
-}
-
-public class HudUnitStateBarParam
-{
-    public Camera camera;
-    public float unitHeight;
 }
