@@ -11,6 +11,8 @@ public partial class HudUnitStateBar : BasePoolItem
     float rectHeight;
     HudUnitStateBarParam param;
     float cameraOffsetY = 0;
+    public Vector3 lastPos;
+    float lastHp = 0;
 
     public override void OnCreate(params object[] _params)
     {
@@ -25,21 +27,21 @@ public partial class HudUnitStateBar : BasePoolItem
     /// <summary>
     /// 生命值动画
     /// </summary>
-    /// <param name="_baseUnit">标注的单位</param>
     /// <param name="_realHp">被攻击后的生命值</param>
-    /// <param name="_hpJust">被攻击前的生命值</param>
+    /// <param name="_lastHp">被攻击前的生命值</param>
     /// <param name="_max">生命最大值</param>
-    public void ShowTween(float _realHp, float _hpJust, float _max)
+    public void ShowTween(float _realHp, float _lastHp, float _max)
     {
-        float hpJust = _hpJust / _max;
+        float lastHp = _lastHp / _max;
         float hpNow = _realHp / _max;
-        ui.redHp_Rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, hpJust * rectWidth);
-        ui.greenHp_Rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, hpJust * rectWidth);
+        //ui.redHp_Rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, lastHp * rectWidth);
+        //ui.greenHp_Rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, lastHp * rectWidth);
         ui.greenHp_Rect.DOSizeDelta(new Vector2(hpNow * rectWidth, rectHeight), 0.5f);
     }
 
     public void UpdatePos(Vector3 _pos)
     {
+        lastPos = _pos;
         // 将3D世界坐标转换为屏幕UI坐标
         Vector3 screenPos = param.camera.WorldToScreenPoint(_pos + new Vector3(0, cameraOffsetY, 0));
         screenPos += new Vector3(0, 20, 0);

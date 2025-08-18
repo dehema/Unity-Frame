@@ -25,6 +25,15 @@ namespace Rain.Core
         RTSBattleUnitRemove,
         RTSBattleUnitMove,
         RTSBattleEnd,
+
+        //RTS 单位
+        RTSUnitHPChange,
+
+        //鼠标
+        CameraZoomingIn,        //视角放大
+        CameraZoomingOut,       //视角缩小
+        CameraZoomRatioChange,  //相机缩放倍率改变
+
     }
 }
 

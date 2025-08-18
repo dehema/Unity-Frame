@@ -145,7 +145,7 @@ namespace Rain.RTS.Core
 			if (Data.AttackTarget != null && !Data.AttackTarget.Data.isDead && IsEnemy(Data.AttackTarget))
 			{
 				AttackTimer = Time.time;
-				Data.AttackTarget.TakeDamage(Data.attack);
+				Data.AttackTarget.Hurt(Data.attack);
 				Debug.Log($"{Data.Name} 攻击了 {Data.AttackTarget.Data.Name}，造成 {Data.attack} 点伤害");
 			}
 		}
@@ -154,16 +154,19 @@ namespace Rain.RTS.Core
 		/// 受到伤害
 		/// </summary>
 		/// <param name="damage"></param>
-		public void TakeDamage(int damage)
+		public void Hurt(int damage)
 		{
-			if (Data.isDead) return;
+			if (Data.isDead)
+				return;
 
-			Data.currentHealth -= damage;
-			if (Data.currentHealth <= 0)
+			float lastHp = Data.hp;
+			Data.hp -= damage;
+			if (Data.hp <= 0)
 			{
-				Data.currentHealth = 0;
+				Data.hp = 0;
 				stateMachine.ChangeState(new DieState());
 			}
+			MsgMgr.Ins.DispatchEvent(MsgEvent.RTSUnitHPChange, this, lastHp);
 		}
 
 		/// <summary>

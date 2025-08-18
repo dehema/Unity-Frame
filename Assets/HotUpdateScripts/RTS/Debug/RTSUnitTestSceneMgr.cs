@@ -71,7 +71,7 @@ public class RTSUnitTestSceneMgr : MonoBehaviour
     /// <param name="unitConfig"></param>
     public BattleUnit CreateUnit(UnitConfig unitConfig)
     {
-        BattleUnit battleUnit =  BattleMgr.Ins.CreateUnit(unitConfig);
+        BattleUnit battleUnit = BattleMgr.Ins.CreateUnit(unitConfig);
         return battleUnit;
     }
 
