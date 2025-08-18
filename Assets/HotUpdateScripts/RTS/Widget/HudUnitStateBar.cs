@@ -1,4 +1,5 @@
 using DG.Tweening;
+using Rain.RTS.Core;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,7 @@ public partial class HudUnitStateBar : BasePoolItem
     float rectWidth;
     float rectHeight;
     HudUnitStateBarParam param;
+    float cameraOffsetY = 0;
 
     public override void OnCreate(params object[] _params)
     {
@@ -17,6 +19,7 @@ public partial class HudUnitStateBar : BasePoolItem
         param = _params[0] as HudUnitStateBarParam;
         rectWidth = rect.rect.width;
         rectHeight = rect.rect.height;
+        cameraOffsetY = Mathf.Cos(param.camera.transform.localEulerAngles.z) * param.height;
     }
 
     /// <summary>
@@ -38,7 +41,8 @@ public partial class HudUnitStateBar : BasePoolItem
     public void UpdatePos(Vector3 _pos)
     {
         // 将3D世界坐标转换为屏幕UI坐标
-        Vector3 screenPos = param.camera.WorldToScreenPoint(_pos);
+        Vector3 screenPos = param.camera.WorldToScreenPoint(_pos + new Vector3(0, cameraOffsetY, 0));
+        screenPos += new Vector3(0, 20, 0);
         //
         // UI坐标需转换为RectTransform的局部坐标
         if (RectTransformUtility.ScreenPointToLocalPointInRectangle(param.canvasRect, screenPos, Camera.main, out Vector2 localPos))
