@@ -28,7 +28,7 @@ namespace Rain.RTS.Core
 
 		[Header("运行时状态")]
 		public int hp;                  // 生命值
-		public bool isDead = false;      // 是否死亡
+		public bool isDead = false;     // 是否死亡
 		private Vector3? movePos;       // 目标位置
 		public Vector3? MovePos { get => movePos; set => movePos = value; }
 		private BattleUnit attackTarget;  // 目标敌人

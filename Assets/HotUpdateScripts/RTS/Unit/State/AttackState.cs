@@ -2,6 +2,9 @@
 
 namespace Rain.RTS.Core
 {
+    /// <summary>
+    /// 攻击状态机
+    /// </summary>
     public class AttackState : BaseState
     {
         Animator animator;
@@ -19,6 +22,7 @@ namespace Rain.RTS.Core
 
         public override void Update()
         {
+            base.Update();
             // 面向目标
             unit.LookAtTarget();
 

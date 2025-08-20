@@ -57,7 +57,8 @@ public class RTSUnitTestSceneMgr : MonoBehaviour
         {
             return;
         }
-        UnitConfig unitConfig = ConfigMgr.Ins.allUnitConfig.unit.Find((x) => x.ID == 1101);
+        UnitConfig _unitConfig = ConfigMgr.Ins.allUnitConfig.unit.Find((x) => x.ID == 1101);
+        UnitConfig unitConfig = new UnitConfig(_unitConfig);
         unitConfig.hp = 100000;                 // 设置假人生命值
         unitConfig.unitType = UnitType.Dummy;   // 设置单位类型为假人
         unitConfig.faction = Faction.Dummy;   // 设置单位类型为假人

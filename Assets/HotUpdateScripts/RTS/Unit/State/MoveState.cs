@@ -4,13 +4,15 @@ using static UnityEngine.UI.CanvasScaler;
 
 namespace Rain.RTS.Core
 {
+    /// <summary>
+    /// 移动状态机
+    /// </summary>
     public class MoveState : BaseState
     {
         public override UnitStateType stateType => UnitStateType.Move;
 
         private int _speedHash = Animator.StringToHash("Speed");
         NavMeshAgent agent;
-        Animator animator;
         MoveStateType moveStateType = MoveStateType.Move;
 
         // 构造函数初始化动画哈希和参数
@@ -22,7 +24,6 @@ namespace Rain.RTS.Core
         {
             base.Enter(unit);
             agent = unit.moveController.agent;
-            animator = unit.animator;
 
             // 进入移动状态时启动导航
             if (unit.MovePos != null)
@@ -43,6 +44,7 @@ namespace Rain.RTS.Core
 
         public override void Update()
         {
+            base.Update();
             if (agent.pathPending)
             {
                 //等待路径计算完成

@@ -2,6 +2,9 @@
 
 namespace Rain.RTS.Core
 {
+    /// <summary>
+    /// 空闲状态机
+    /// </summary>
     public class IdleState : BaseState
     {
         public override UnitStateType stateType => UnitStateType.Idle;
@@ -12,6 +15,7 @@ namespace Rain.RTS.Core
 
         public override void Update()
         {
+            base.Update();
             // 检查是否需要移动
             if (unit.agent.remainingDistance > unit.agent.stoppingDistance)
             {

@@ -80,6 +80,28 @@ public class UnitConfig
     public int upkeep;
     public string fullID;
 
+    public UnitConfig() { }
+    public UnitConfig(UnitConfig _other)
+    {
+        this.ID = _other.ID;
+        this._unitType = _other._unitType;
+        this.unitType = _other.unitType;
+        this.faction = _other.faction;
+        this.name = _other.name;
+        this.hp = _other.hp;
+        this.moveSpeed = _other.moveSpeed;
+        this.attack = _other.attack;
+        this.attackInterval = _other.attackInterval;
+        this.attackRange = _other.attackRange;
+        this.attackHurtTime = _other.attackHurtTime;
+        this.attackDuration = _other.attackDuration;
+        this.angularSpeed = _other.angularSpeed;
+        this.height = _other.height;
+        this.value = _other.value;
+        this.value_pre = _other.value_pre;
+        this.upkeep = _other.upkeep;
+        this.fullID = _other.fullID;
+    }
 }
 
 public enum UnitType
@@ -87,7 +109,7 @@ public enum UnitType
     /// <summary>
     /// 假人
     /// </summary>
-    Dummy,
+    Dummy = -2,
     /// <summary>
     /// 玩家
     /// </summary>

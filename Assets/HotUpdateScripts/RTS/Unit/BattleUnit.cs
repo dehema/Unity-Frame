@@ -7,359 +7,361 @@ using static UnityEngine.UI.CanvasScaler;
 
 namespace Rain.RTS.Core
 {
-	/// <summary>
-	/// 战斗单位逻辑组件
-	/// </summary>
-	[RequireComponent(typeof(Animator))]
-	public class BattleUnit : MonoBehaviour
-	{
-		// 组件引用
-		public Animator animator;
-		public CapsuleCollider capsuleCollider;
+    /// <summary>
+    /// 战斗单位逻辑组件
+    /// </summary>
+    [RequireComponent(typeof(Animator))]
+    public class BattleUnit : MonoBehaviour
+    {
+        // 组件引用
+        public Animator animator;
+        public CapsuleCollider capsuleCollider;
 
-		//事件
-		public event Action<BattleUnit> OnDeath;
+        //事件
+        public event Action<BattleUnit> OnDeath;
 
-		//数据
-		[SerializeField] private UnitData _data;        // 角色数据
+        //数据
+        [SerializeField] private UnitData _data;        // 角色数据
 
-		// 属性访问器
-		public UnitData Data => _data;
-		public bool IsDead => Data.isDead;
-		public string UnitName => Data.Name;
-		public float AttackTimer { get => Data.attackTimer; set => Data.attackTimer = value; }
-		public Vector3? MovePos { get => Data.MovePos; set => Data.MovePos = value; }
-		public BattleUnit AttackTarget { get => Data.AttackTarget; set => Data.AttackTarget = value; }
-		public bool HasMoveTarget { get => Data.MovePos != null || Data.AttackTarget != null; }
+        // 属性访问器
+        public UnitData Data => _data;
+        public bool IsDead => Data.isDead;
+        public string UnitName => Data.Name;
+        public float AttackTimer { get => Data.attackTimer; set => Data.attackTimer = value; }
+        public Vector3? MovePos { get => Data.MovePos; set => Data.MovePos = value; }
+        public BattleUnit AttackTarget { get => Data.AttackTarget; set => Data.AttackTarget = value; }
+        public bool HasMoveTarget { get => Data.MovePos != null || Data.AttackTarget != null; }
 
-		public UnitMoveController moveController;
-		public UnitStateMachine stateMachine;
-		public UnitStateType unitStateType => stateMachine.currentState.stateType;
-		public NavMeshAgent agent => moveController.agent;
+        public UnitMoveController moveController;
+        public UnitStateMachine stateMachine;
+        public UnitStateType unitStateType => stateMachine.currentState.stateType;
+        public NavMeshAgent agent => moveController.agent;
 
-		/// <summary>
-		/// 上次的位置
-		/// </summary>
-		Vector3 lastPos;
+        /// <summary>
+        /// 上次的位置
+        /// </summary>
+        Vector3 lastPos;
 
 
-		private void Awake()
-		{
-			// 获取组件引用
-			animator = GetComponent<Animator>();
-			capsuleCollider = GetComponent<CapsuleCollider>() ?? gameObject.AddComponent<CapsuleCollider>();
-			moveController = GetComponent<UnitMoveController>() ?? gameObject.AddComponent<UnitMoveController>();
-			stateMachine = new UnitStateMachine(this);
-		}
+        private void Awake()
+        {
+            // 获取组件引用
+            animator = GetComponent<Animator>();
+            capsuleCollider = GetComponent<CapsuleCollider>() ?? gameObject.AddComponent<CapsuleCollider>();
+            moveController = GetComponent<UnitMoveController>() ?? gameObject.AddComponent<UnitMoveController>();
+            stateMachine = new UnitStateMachine(this);
+        }
 
-		private void Start()
-		{
-		}
+        private void Start()
+        {
+        }
 
-		private void Update()
-		{
-			if (lastPos != transform.position)
-			{
-				lastPos = transform.position;
-				MsgMgr.Ins.DispatchEvent(MsgEvent.RTSBattleUnitMove, this);
-			}
-			if (!Data.isDead)
-			{
-				stateMachine.Update();
-			}
-		}
+        private void Update()
+        {
+            if (lastPos != transform.position)
+            {
+                lastPos = transform.position;
+                MsgMgr.Ins.DispatchEvent(MsgEvent.RTSBattleUnitMove, this);
+            }
+            if (!Data.isDead)
+            {
+                stateMachine.Update();
+            }
+        }
 
-		private void OnDestroy()
-		{
-			// 从战斗管理器注销
-			BattleMgr.Ins.UnregisterUnit(this);
-		}
+        private void OnDestroy()
+        {
+            // 从战斗管理器注销
+            BattleMgr.Ins.UnregisterUnit(this);
+        }
 
-		public void InitData(UnitConfig unitConfig)
-		{
-			Data.Init(unitConfig);
-			moveController.Init(Data);
+        public void InitData(UnitConfig unitConfig)
+        {
+            Data.Init(unitConfig);
+            moveController.Init(Data);
 
-			// 注册到战斗管理器
-			BattleMgr.Ins.RegisterUnit(this);
+            // 注册到战斗管理器
+            BattleMgr.Ins.RegisterUnit(this);
 
-			// 初始状态为空闲
-			stateMachine.ChangeState(new IdleState());
-		}
+            // 初始状态为空闲
+            stateMachine.ChangeState(new IdleState());
+        }
 
-		/// <summary>
-		/// 设置移动目标
-		/// </summary>
-		/// <param name="target"></param>
-		public void SetMoveTarget(Vector3 target)
-		{
-			moveController.SetMoveTarget(target);
-			stateMachine.UpdateState();
-		}
+        /// <summary>
+        /// 设置移动目标
+        /// </summary>
+        /// <param name="target"></param>
+        public void SetMoveTarget(Vector3 target)
+        {
+            moveController.SetMoveTarget(target);
+            stateMachine.UpdateState();
+        }
 
-		/// <summary>
-		/// 清除移动目标
-		/// </summary>
-		public void ClearMoveTarget()
-		{
-			moveController.ClearMoveTarget();
-		}
+        /// <summary>
+        /// 清除移动目标
+        /// </summary>
+        public void ClearMoveTarget()
+        {
+            moveController.ClearMoveTarget();
+        }
 
-		/// <summary>
-		/// 设置攻击目标
-		/// </summary>
-		/// <param name="target"></param>
-		public void SetAttackTarget(BattleUnit target)
-		{
-			if (IsEnemy(target))
-			{
-				Data.AttackTarget = target;
-			}
-		}
+        /// <summary>
+        /// 设置攻击目标
+        /// </summary>
+        /// <param name="target"></param>
+        public void SetAttackTarget(BattleUnit target)
+        {
+            if (IsEnemy(target))
+            {
+                Data.AttackTarget = target;
+            }
+        }
 
-		/// <summary>
-		/// 清除攻击目标
-		/// </summary>
-		public void ClearAttackTarget()
-		{
-			Data.AttackTarget = null;
-		}
+        /// <summary>
+        /// 清除攻击目标
+        /// </summary>
+        public void ClearAttackTarget()
+        {
+            Data.AttackTarget = null;
+        }
 
-		/// <summary>
-		/// 检查目标是否在攻击范围内
-		/// </summary>
-		/// <returns></returns>
-		public bool IsTargetInAttackRange()
-		{
-			if (Data.AttackTarget == null) return false;
+        /// <summary>
+        /// 检查目标是否在攻击范围内
+        /// </summary>
+        /// <returns></returns>
+        public bool IsTargetInAttackRange()
+        {
+            if (Data.AttackTarget == null) return false;
 
-			float distance = Vector3.Distance(transform.position, Data.AttackTarget.transform.position);
-			return distance <= Data.attackRange;
-		}
+            float distance = Vector3.Distance(transform.position, Data.AttackTarget.transform.position);
+            return distance <= Data.attackRange;
+        }
 
-		/// <summary>
-		/// 执行攻击
-		/// </summary>
-		public void Attack()
-		{
-			if (Data.AttackTarget != null && !Data.AttackTarget.Data.isDead && IsEnemy(Data.AttackTarget))
-			{
-				AttackTimer = Time.time;
-				Data.AttackTarget.Hurt(Data.attack);
-				Debug.Log($"{Data.Name} 攻击了 {Data.AttackTarget.Data.Name}，造成 {Data.attack} 点伤害");
-			}
-		}
+        /// <summary>
+        /// 执行攻击
+        /// </summary>
+        public void Attack()
+        {
+            if (Data.AttackTarget != null && !Data.AttackTarget.Data.isDead && IsEnemy(Data.AttackTarget))
+            {
+                AttackTimer = Time.time;
+                Data.AttackTarget.Hurt(Data.attack);
+                Debug.Log($"{Data.Name} 攻击了 {Data.AttackTarget.Data.Name}，造成 {Data.attack} 点伤害");
+            }
+        }
 
-		/// <summary>
-		/// 受到伤害
-		/// </summary>
-		/// <param name="damage"></param>
-		public void Hurt(int damage)
-		{
-			if (Data.isDead)
-				return;
+        /// <summary>
+        /// 受到伤害
+        /// </summary>
+        /// <param name="damage"></param>
+        public void Hurt(int damage)
+        {
+            if (Data.isDead)
+                return;
 
-			float lastHp = Data.hp;
-			Data.hp -= damage;
-			if (Data.hp <= 0)
-			{
-				Data.hp = 0;
-				stateMachine.ChangeState(new DieState());
-			}
-			MsgMgr.Ins.DispatchEvent(MsgEvent.RTSUnitHPChange, this, lastHp);
-		}
+            float lastHp = Data.hp;
+            Data.hp -= damage;
+            if (Data.hp <= 0)
+            {
+                Data.hp = 0;
+                stateMachine.ChangeState(new DieState());
+            }
+            MsgMgr.Ins.DispatchEvent(MsgEvent.RTSUnitHPChange, this, lastHp);
+        }
 
-		/// <summary>
-		/// 面向目标
-		/// </summary>
-		/// <param name="target"></param>
-		public void FaceTarget(Transform target)
-		{
-			Vector3 direction = (target.position - transform.position).normalized;
-			direction.y = 0; // 保持在同一水平面上
+        /// <summary>
+        /// 死亡
+        /// </summary>
+        public void Dead()
+        {
+            Data.isDead = true;
+        }
 
-			if (direction.sqrMagnitude > 0.01f)
-			{
-				Quaternion targetRotation = Quaternion.LookRotation(direction);
-				transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 10f);
-			}
-		}
+        /// <summary>
+        /// 面向目标
+        /// </summary>
+        /// <param name="target"></param>
+        public void FaceTarget(Transform target)
+        {
+            Vector3 direction = (target.position - transform.position).normalized;
+            direction.y = 0; // 保持在同一水平面上
 
-		/// <summary>
-		/// 检查是否为有效目标
-		/// </summary>
-		/// <param name="target"></param>
-		/// <returns></returns>
-		public bool IsValidTarget(BattleUnit target)
-		{
-			return target != null && !target.Data.isDead && IsEnemy(target);
-		}
+            if (direction.sqrMagnitude > 0.01f)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(direction);
+                transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 10f);
+            }
+        }
 
-		/// <summary>
-		/// 检查两个单位是否为敌对关系
-		/// </summary>
-		/// <param name="other"></param>
-		/// <returns></returns>
-		public bool IsEnemy(BattleUnit other)
-		{
-			bool res = BattleMgr.Ins.IsEnemy(this, other);
-			return res;
-		}
+        /// <summary>
+        /// 检查是否为有效目标
+        /// </summary>
+        /// <param name="target"></param>
+        /// <returns></returns>
+        public bool IsValidTarget(BattleUnit target)
+        {
+            return target != null && !target.Data.isDead && IsEnemy(target);
+        }
 
-		/// <summary>
-		/// 获取阵营关系
-		/// </summary>
-		/// <param name="ownFaction"></param>
-		/// <param name="_otherFaction"></param>
-		/// <returns></returns>
-		public Relation GetFactionRelation(Faction _otherFaction)
-		{
-			Relation relation = BattleMgr.Ins.GetFactionRelation(Data.faction, _otherFaction);
-			return relation;
-		}
+        /// <summary>
+        /// 检查两个单位是否为敌对关系
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public bool IsEnemy(BattleUnit other)
+        {
+            bool res = BattleMgr.Ins.IsEnemy(this, other);
+            return res;
+        }
 
-		// 检查单位是否存活
-		public bool IsAlive()
-		{
-			return !Data.isDead;
-		}
+        /// <summary>
+        /// 获取阵营关系
+        /// </summary>
+        /// <param name="ownFaction"></param>
+        /// <param name="_otherFaction"></param>
+        /// <returns></returns>
+        public Relation GetFactionRelation(Faction _otherFaction)
+        {
+            Relation relation = BattleMgr.Ins.GetFactionRelation(Data.faction, _otherFaction);
+            return relation;
+        }
 
-		/// <summary>
-		/// 面向目标
-		/// </summary>
-		public void LookAtTarget()
-		{
-			if (Data.AttackTarget == null) return;
+        // 检查单位是否存活
+        public bool IsAlive()
+        {
+            return !Data.isDead;
+        }
 
-			Vector3 targetPosition = new Vector3(
-				Data.AttackTarget.transform.position.x,
-				transform.position.y,
-				Data.AttackTarget.transform.position.z
-			);
-			transform.LookAt(targetPosition);
-		}
+        /// <summary>
+        /// 面向目标
+        /// </summary>
+        public void LookAtTarget()
+        {
+            if (Data.AttackTarget == null) return;
 
-		/// <summary>
-		/// 单位移动
-		/// </summary>
-		public void UnitMove(Vector3 targetPos)
-		{
+            Vector3 targetPosition = new Vector3(
+                Data.AttackTarget.transform.position.x,
+                transform.position.y,
+                Data.AttackTarget.transform.position.z
+            );
+            transform.LookAt(targetPosition);
+        }
 
-		}
+        /// <summary>
+        /// 单位移动
+        /// </summary>
+        public void UnitMove(Vector3 targetPos)
+        {
 
-		////////////////////////////////////////////////////
+        }
 
-		///// <summary>
-		///// 设置移动目标点
-		///// </summary>
-		//public void SetDestination(Vector3 targetPosition)
-		//{
-		//    if (_data.isDead || StateMachine.CurrentState == BattleUnitState.Hurt) return;
+        ////////////////////////////////////////////////////
 
-		//    agent.SetDestination(targetPosition);
+        ///// <summary>
+        ///// 设置移动目标点
+        ///// </summary>
+        //public void SetDestination(Vector3 targetPosition)
+        //{
+        //    if (_data.isDead || StateMachine.CurrentState == BattleUnitState.Hurt) return;
 
-		//    // 根据距离自动选择走或跑
-		//    float distance = Vector3.Distance(transform.position, targetPosition);
-		//    currentState = distance > 5f ? BattleUnitState.Run : BattleUnitState.Walk;
-		//    agent.speed = currentState == BattleUnitState.Run ? runSpeed : walkSpeed;
-		//}
+        //    agent.SetDestination(targetPosition);
 
-		///// <summary>
-		///// 触发攻击
-		///// </summary>
-		//public void TriggerAttack(Transform target)
-		//{
-		//    if (isDead || currentState == BattleUnitState.Hurt || attackTimer > 0) return;
+        //    // 根据距离自动选择走或跑
+        //    float distance = Vector3.Distance(transform.position, targetPosition);
+        //    currentState = distance > 5f ? BattleUnitState.Run : BattleUnitState.Walk;
+        //    agent.speed = currentState == BattleUnitState.Run ? runSpeed : walkSpeed;
+        //}
 
-		//    attackTarget = target;
-		//    currentState = BattleUnitState.Attack;
-		//    isAttacking = true;
-		//    animator.SetBool(isAttackingHash, true);
-		//    agent.ResetPath(); // 停止移动
-		//}
+        ///// <summary>
+        ///// 触发攻击
+        ///// </summary>
+        //public void TriggerAttack(Transform target)
+        //{
+        //    if (isDead || currentState == BattleUnitState.Hurt || attackTimer > 0) return;
 
-		//public void SetCamp(bool isPlayer)
-		//{
-		//    IsPlayerCamp = isPlayer;
-		//}
+        //    attackTarget = target;
+        //    currentState = BattleUnitState.Attack;
+        //    isAttacking = true;
+        //    animator.SetBool(isAttackingHash, true);
+        //    agent.ResetPath(); // 停止移动
+        //}
 
-		//public void PrepareForBattle()
-		//{
-		//    IsDead = false;
-		//    // 准备战斗的逻辑
-		//}
+        //public void SetCamp(bool isPlayer)
+        //{
+        //    IsPlayerCamp = isPlayer;
+        //}
 
-		///// <summary>
-		///// 死亡
-		///// </summary>
-		//public void Die()
-		//{
-		//    if (isDead) return;
+        //public void PrepareForBattle()
+        //{
+        //    IsDead = false;
+        //    // 准备战斗的逻辑
+        //}
 
-		//    isDead = true;
-		//    currentState = BattleUnitState.Death;
-		//    animator.SetBool(isDeadHash, true);
-		//    agent.enabled = false; // 死亡后停止移动
-		//    capsuleCollider.enabled = false; // 死亡后禁用碰撞体
-		//}
+        ///// <summary>
+        ///// 死亡
+        ///// </summary>
+        //public void Die()
+        //{
+        //    if (isDead) return;
 
-		//public void Pause()
-		//{
-		//    // 暂停单位行为
-		//}
+        //    isDead = true;
+        //    currentState = BattleUnitState.Death;
+        //    animator.SetBool(isDeadHash, true);
+        //    agent.enabled = false; // 死亡后停止移动
+        //    capsuleCollider.enabled = false; // 死亡后禁用碰撞体
+        //}
 
-		//public void Resume()
-		//{
-		//    // 恢复单位行为
-		//}
+        //public void Pause()
+        //{
+        //    // 暂停单位行为
+        //}
 
-		//public void OnBattleEnd(bool isVictory)
-		//{
-		//    // 战斗结束时的处理
-		//}
+        //public void Resume()
+        //{
+        //    // 恢复单位行为
+        //}
 
-		/// <summary>
-		/// 检查是否可以攻击
-		/// </summary>
-		public bool CanAttack()
-		{
-			if (Data.AttackTarget == null)
-				return false;
-			if (Time.time - AttackTimer <= Data.attackInterval) return false;
+        //public void OnBattleEnd(bool isVictory)
+        //{
+        //    // 战斗结束时的处理
+        //}
 
-			// 检查距离是否在攻击范围内
-			bool isTargetInAttackRange = IsTargetInAttackRange();
-			return isTargetInAttackRange;
-		}
+        /// <summary>
+        /// 检查是否可以攻击
+        /// </summary>
+        public bool CanAttack()
+        {
+            if (Data.AttackTarget == null)
+                return false;
+            if (Time.time - AttackTimer <= Data.attackInterval) return false;
 
-		///// <summary>
-		///// 朝向目标方向旋转
-		///// </summary>
-		//private void RotateTowards(Vector3 direction)
-		//{
-		//    if (direction.sqrMagnitude < 0.1f) return;
+            // 检查距离是否在攻击范围内
+            bool isTargetInAttackRange = IsTargetInAttackRange();
+            return isTargetInAttackRange;
+        }
 
-		//    Quaternion targetRotation = Quaternion.LookRotation(direction);
-		//    transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-		//}
+        ///// <summary>
+        ///// 朝向目标方向旋转
+        ///// </summary>
+        //private void RotateTowards(Vector3 direction)
+        //{
+        //    if (direction.sqrMagnitude < 0.1f) return;
 
-		///// <summary>
-		///// 攻击动画事件（需在动画关键帧中设置）
-		///// </summary>
-		//public void OnAttackHit()
-		//{
-		//    if (attackTarget != null && CanAttack())
-		//    {
-		//        // 这里可以添加对目标造成伤害的逻辑
-		//        Debug.Log($"对 {attackTarget.name} 造成 {attackDamage} 点伤害");
-		//    }
-		//}
+        //    Quaternion targetRotation = Quaternion.LookRotation(direction);
+        //    transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        //}
 
-		/// <summary>
-		/// 播放受伤动画
-		/// </summary>
-		public void PlayHurtAnimation()
-		{
-		}
-	}
+        ///// <summary>
+        ///// 攻击动画事件（需在动画关键帧中设置）
+        ///// </summary>
+        //public void OnAttackHit()
+        //{
+        //    if (attackTarget != null && CanAttack())
+        //    {
+        //        // 这里可以添加对目标造成伤害的逻辑
+        //        Debug.Log($"对 {attackTarget.name} 造成 {attackDamage} 点伤害");
+        //    }
+        //}
+
+    }
 }

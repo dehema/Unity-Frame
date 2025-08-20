@@ -33,8 +33,9 @@ public partial class RTSUnitTestView : BaseView
     {
         unitPool = PoolMgr.Ins.CreatePool(ui.unitItem);
 
-        foreach (UnitConfig unitConfig in ConfigMgr.Ins.allUnitConfig.unit)
+        foreach (UnitConfig _unitConfig in ConfigMgr.Ins.allUnitConfig.unit)
         {
+            UnitConfig unitConfig = _unitConfig;
             GameObject item = unitPool.Get();
             Text textName = item.transform.Find("text").GetComponent<Text>();
             textName.text = LangMgr.Ins.Get(unitConfig.name);

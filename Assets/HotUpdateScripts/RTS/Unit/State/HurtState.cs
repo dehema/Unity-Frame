@@ -9,6 +9,7 @@ namespace Rain.RTS.Core
         private float _hurtDuration; // 受伤硬直时长
         private float _enterTime;    // 进入状态的时间
         private BaseState _previousState; // 受伤前的状态
+        private int _hurtHash = Animator.StringToHash("IsHurt");
 
         // 构造函数，接收受伤硬直时长和之前的状态
         public HurtState(float duration, BaseState previousState)
@@ -21,8 +22,9 @@ namespace Rain.RTS.Core
         {
             base.Enter(unit);
             _enterTime = Time.time;
+            animator = unit.animator;
             // 播放受伤动画
-            unit.PlayHurtAnimation();
+            animator.SetTrigger(_hurtHash);
             // 受伤时停止移动
             unit.moveController.Stop();
             Debug.Log($"{unit.Data.Name} 进入受伤状态");
@@ -30,6 +32,7 @@ namespace Rain.RTS.Core
 
         public override void Update()
         {
+            base.Update();
             // 受伤硬直结束后返回之前的状态
             if (Time.time - _enterTime >= _hurtDuration)
             {
