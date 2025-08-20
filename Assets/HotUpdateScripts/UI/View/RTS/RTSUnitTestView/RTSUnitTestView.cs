@@ -35,7 +35,8 @@ public partial class RTSUnitTestView : BaseView
 
         foreach (UnitConfig _unitConfig in ConfigMgr.Ins.allUnitConfig.unit)
         {
-            UnitConfig unitConfig = _unitConfig;
+            UnitConfig unitConfig = new UnitConfig(_unitConfig);
+            unitConfig.attack = 100000;
             GameObject item = unitPool.Get();
             Text textName = item.transform.Find("text").GetComponent<Text>();
             textName.text = LangMgr.Ins.Get(unitConfig.name);
@@ -43,6 +44,7 @@ public partial class RTSUnitTestView : BaseView
             btUnits.Add(bt);
             bt.SetButton(() =>
             {
+
                 RTSUnitTestSceneMgr.Ins.CreatePlayerUnit(unitConfig);
             });
         }

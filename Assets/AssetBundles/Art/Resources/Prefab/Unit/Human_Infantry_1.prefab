@@ -898,7 +898,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 438990, guid: bcc60fdbd3a37b44cbc0cb99db483477, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 438990, guid: bcc60fdbd3a37b44cbc0cb99db483477, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1051,12 +1051,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75e710cd043985d4087e2115182f7062, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackTarget: {fileID: 0}
   animator: {fileID: 0}
+  unitCollider: {fileID: 0}
   _data:
     unitId: 0
     isPlayerUnit: 0
-    hp: 0
     moveSpeed: 0
     runSpeed: 0
     rotationSpeed: 0
@@ -1065,9 +1064,8 @@ MonoBehaviour:
     attackInterval: 0
     maxHealth: 100
     faction: 0
-    currentHealth: 0
+    unitType: 0
+    hp: 0
     isDead: 0
-    targetPosition: {x: 0, y: 0, z: 0}
-    targetEnemy: {fileID: 0}
     attackTimer: 0
   moveController: {fileID: 0}

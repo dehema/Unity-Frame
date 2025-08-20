@@ -15,7 +15,7 @@ namespace Rain.RTS.Core
     {
         // 组件引用
         public Animator animator;
-        public CapsuleCollider capsuleCollider;
+        public Collider unitCollider;
 
         //事件
         public event Action<BattleUnit> OnDeath;
@@ -47,7 +47,7 @@ namespace Rain.RTS.Core
         {
             // 获取组件引用
             animator = GetComponent<Animator>();
-            capsuleCollider = GetComponent<CapsuleCollider>() ?? gameObject.AddComponent<CapsuleCollider>();
+            unitCollider = GetComponent<Collider>() ?? gameObject.AddComponent<CapsuleCollider>();
             moveController = GetComponent<UnitMoveController>() ?? gameObject.AddComponent<UnitMoveController>();
             stateMachine = new UnitStateMachine(this);
         }
@@ -113,6 +113,8 @@ namespace Rain.RTS.Core
         {
             if (IsEnemy(target))
             {
+                float distance = Vector3.Distance(transform.position, target.transform.position);
+                Debug.Log($"命令{Data.Name}攻击{target.Data.Name},距离{distance}");
                 Data.AttackTarget = target;
             }
         }
@@ -175,6 +177,9 @@ namespace Rain.RTS.Core
         public void Dead()
         {
             Data.isDead = true;
+            unitCollider.enabled = false;
+            agent.isStopped = true;
+            agent.enabled = false;
         }
 
         /// <summary>
@@ -255,77 +260,6 @@ namespace Rain.RTS.Core
 
         }
 
-        ////////////////////////////////////////////////////
-
-        ///// <summary>
-        ///// 设置移动目标点
-        ///// </summary>
-        //public void SetDestination(Vector3 targetPosition)
-        //{
-        //    if (_data.isDead || StateMachine.CurrentState == BattleUnitState.Hurt) return;
-
-        //    agent.SetDestination(targetPosition);
-
-        //    // 根据距离自动选择走或跑
-        //    float distance = Vector3.Distance(transform.position, targetPosition);
-        //    currentState = distance > 5f ? BattleUnitState.Run : BattleUnitState.Walk;
-        //    agent.speed = currentState == BattleUnitState.Run ? runSpeed : walkSpeed;
-        //}
-
-        ///// <summary>
-        ///// 触发攻击
-        ///// </summary>
-        //public void TriggerAttack(Transform target)
-        //{
-        //    if (isDead || currentState == BattleUnitState.Hurt || attackTimer > 0) return;
-
-        //    attackTarget = target;
-        //    currentState = BattleUnitState.Attack;
-        //    isAttacking = true;
-        //    animator.SetBool(isAttackingHash, true);
-        //    agent.ResetPath(); // 停止移动
-        //}
-
-        //public void SetCamp(bool isPlayer)
-        //{
-        //    IsPlayerCamp = isPlayer;
-        //}
-
-        //public void PrepareForBattle()
-        //{
-        //    IsDead = false;
-        //    // 准备战斗的逻辑
-        //}
-
-        ///// <summary>
-        ///// 死亡
-        ///// </summary>
-        //public void Die()
-        //{
-        //    if (isDead) return;
-
-        //    isDead = true;
-        //    currentState = BattleUnitState.Death;
-        //    animator.SetBool(isDeadHash, true);
-        //    agent.enabled = false; // 死亡后停止移动
-        //    capsuleCollider.enabled = false; // 死亡后禁用碰撞体
-        //}
-
-        //public void Pause()
-        //{
-        //    // 暂停单位行为
-        //}
-
-        //public void Resume()
-        //{
-        //    // 恢复单位行为
-        //}
-
-        //public void OnBattleEnd(bool isVictory)
-        //{
-        //    // 战斗结束时的处理
-        //}
-
         /// <summary>
         /// 检查是否可以攻击
         /// </summary>
@@ -339,29 +273,5 @@ namespace Rain.RTS.Core
             bool isTargetInAttackRange = IsTargetInAttackRange();
             return isTargetInAttackRange;
         }
-
-        ///// <summary>
-        ///// 朝向目标方向旋转
-        ///// </summary>
-        //private void RotateTowards(Vector3 direction)
-        //{
-        //    if (direction.sqrMagnitude < 0.1f) return;
-
-        //    Quaternion targetRotation = Quaternion.LookRotation(direction);
-        //    transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-        //}
-
-        ///// <summary>
-        ///// 攻击动画事件（需在动画关键帧中设置）
-        ///// </summary>
-        //public void OnAttackHit()
-        //{
-        //    if (attackTarget != null && CanAttack())
-        //    {
-        //        // 这里可以添加对目标造成伤害的逻辑
-        //        Debug.Log($"对 {attackTarget.name} 造成 {attackDamage} 点伤害");
-        //    }
-        //}
-
     }
 }
