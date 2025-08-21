@@ -61,11 +61,13 @@ namespace Rain.RTS.Core
             }
             else if (moveStateType == MoveStateType.MoveAndAttack)
             {
+                //到达攻击范围
                 if (unit.IsTargetInAttackRange())
                 {
                     unit.stateMachine.ChangeState(new AttackState());
                     return;
                 }
+                //到目的地但是敌人逃出攻击范围
                 else if (agent.remainingDistance <= agent.stoppingDistance && !unit.IsTargetInAttackRange())
                 {
                     if (unit.MovePos != null)

@@ -27,7 +27,7 @@ namespace Rain.RTS.Core
 
             agent.speed = this.data.moveSpeed;
             agent.updateRotation = false;                       // 禁用自动旋转，由脚本控制
-            agent.stoppingDistance = this.data.attackRange - 0.1f;  // 停止距离,稍微小于攻击范围
+            agent.stoppingDistance = 0.1f;
             agent.acceleration = 999;
         }
 
