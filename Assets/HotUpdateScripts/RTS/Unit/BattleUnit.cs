@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json;
 using Rain.Core;
 using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
@@ -13,9 +14,10 @@ namespace Rain.RTS.Core
     [RequireComponent(typeof(Animator))]
     public class BattleUnit : MonoBehaviour
     {
-        // 组件引用
+        [Header("组件")]
         public Animator animator;
         public Collider unitCollider;
+        public GameObject shootPos;
 
         //事件
         public event Action<BattleUnit> OnDeath;
@@ -47,8 +49,20 @@ namespace Rain.RTS.Core
         {
             // 获取组件引用
             animator = GetComponent<Animator>();
+            if (animator == null)
+            {
+                Debug.Log($"BattleUnit找不到[动画]组件");
+            }
             unitCollider = GetComponent<Collider>() ?? gameObject.AddComponent<CapsuleCollider>();
+            if (unitCollider == null)
+            {
+                Debug.Log($"BattleUnit找不到[碰撞体]组件");
+            }
             moveController = GetComponent<UnitMoveController>() ?? gameObject.AddComponent<UnitMoveController>();
+            if (moveController == null)
+            {
+                Debug.Log($"BattleUnit找不到[UnitMoveController]组件");
+            }
             stateMachine = new UnitStateMachine(this);
         }
 

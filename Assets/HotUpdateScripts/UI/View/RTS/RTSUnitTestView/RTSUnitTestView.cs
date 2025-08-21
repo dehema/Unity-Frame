@@ -24,9 +24,10 @@ public partial class RTSUnitTestView : BaseView
 
     private void Start()
     {
-        //场景默认创建一个假人一个士兵
+        //场景默认创建一个假人
         ui.btAddDummy_Button.onClick.Invoke();
-        btUnits.First().onClick.Invoke();
+        //一个士兵
+        btUnits[5].onClick.Invoke();
     }
 
     void InitUnitList()
@@ -44,7 +45,6 @@ public partial class RTSUnitTestView : BaseView
             btUnits.Add(bt);
             bt.SetButton(() =>
             {
-
                 RTSUnitTestSceneMgr.Ins.CreatePlayerUnit(unitConfig);
             });
         }

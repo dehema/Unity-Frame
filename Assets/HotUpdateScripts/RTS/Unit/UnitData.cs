@@ -11,6 +11,7 @@ namespace Rain.RTS.Core
 	public class UnitData
 	{
 		[Header("数据源")]
+		[SerializeField]
 		private UnitConfig unitConfig;
 		public UnitConfig UnitConfig => unitConfig;
 		[Header("基础属性")]
