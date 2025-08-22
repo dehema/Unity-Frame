@@ -11,14 +11,14 @@ public class RTSUnitTestSceneMgr : MonoBehaviour
 {
     public static RTSUnitTestSceneMgr Ins;
 
-    List<BattleUnit> playerUnits = new List<BattleUnit>();
+    List<BaseBattleUnit> playerUnits = new List<BaseBattleUnit>();
     NavMeshAgent agent;
 
     [Header("射线设置")]
     [SerializeField]
     public Camera mainCamera;     // 主相机引用
 
-    BattleUnit dummy; //假人
+    BaseBattleUnit dummy; //假人
 
     void Awake()
     {
@@ -40,7 +40,7 @@ public class RTSUnitTestSceneMgr : MonoBehaviour
         }
         playerUnits.Clear();
         unitConfig.faction = Faction.Player; // 设置单位阵营为玩家
-        BattleUnit battleUnit = CreateUnit(unitConfig);
+        BaseBattleUnit battleUnit = CreateUnit(unitConfig);
         if (battleUnit == null)
         {
             return;
@@ -70,9 +70,9 @@ public class RTSUnitTestSceneMgr : MonoBehaviour
     /// 创建单位
     /// </summary>
     /// <param name="unitConfig"></param>
-    public BattleUnit CreateUnit(UnitConfig unitConfig)
+    public BaseBattleUnit CreateUnit(UnitConfig unitConfig)
     {
-        BattleUnit battleUnit = BattleMgr.Ins.CreateUnit(unitConfig);
+        BaseBattleUnit battleUnit = BattleMgr.Ins.CreateUnit(unitConfig);
         return battleUnit;
     }
 
@@ -102,7 +102,7 @@ public class RTSUnitTestSceneMgr : MonoBehaviour
         // 如果射线击中了地面
         if (Physics.Raycast(ray, out hit, 1000f, 1 << GameObjectLayer.Scene3D))
         {
-            BattleUnit battleUnit = hit.collider.gameObject.GetComponent<BattleUnit>();
+            BaseBattleUnit battleUnit = hit.collider.gameObject.GetComponent<BaseBattleUnit>();
             if (battleUnit != null)
             {
                 //如果是个单位
@@ -115,7 +115,7 @@ public class RTSUnitTestSceneMgr : MonoBehaviour
             }
 
             // 设置导航目标位置
-            BattleMgr.Ins.AllUnitMove(hit.point);
+            BattleMgr.Ins.AllPlayerUnitMove(hit.point);
         }
     }
 

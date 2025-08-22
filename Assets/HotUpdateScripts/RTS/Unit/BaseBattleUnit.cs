@@ -1,18 +1,16 @@
-﻿using System;
-using Newtonsoft.Json;
+using System;
+using System.Xml.Linq;
 using Rain.Core;
-using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.AI;
-using static UnityEngine.UI.CanvasScaler;
 
 namespace Rain.RTS.Core
 {
     /// <summary>
-    /// 战斗单位逻辑组件
+    /// 战斗单位基类，所有具体兵种类型都应该继承此类
     /// </summary>
     [RequireComponent(typeof(Animator))]
-    public class BattleUnit : MonoBehaviour
+    public abstract class BaseBattleUnit : MonoBehaviour
     {
         [Header("组件")]
         public Animator animator;
@@ -20,10 +18,10 @@ namespace Rain.RTS.Core
         public GameObject shootPos;
 
         //事件
-        public event Action<BattleUnit> OnDeath;
+        public event Action<BaseBattleUnit> OnDeath;
 
         //数据
-        [SerializeField] private UnitData _data;        // 角色数据
+        [SerializeField] protected UnitData _data;        // 角色数据
 
         // 属性访问器
         public UnitData Data => _data;
@@ -31,7 +29,7 @@ namespace Rain.RTS.Core
         public string UnitName => Data.Name;
         public float AttackTimer { get => Data.attackTimer; set => Data.attackTimer = value; }
         public Vector3? MovePos { get => Data.MovePos; set => Data.MovePos = value; }
-        public BattleUnit AttackTarget { get => Data.AttackTarget; set => Data.AttackTarget = value; }
+        public BaseBattleUnit AttackTarget { get => Data.AttackTarget; set => Data.AttackTarget = value; }
         public bool HasMoveTarget { get => Data.MovePos != null || Data.AttackTarget != null; }
 
         public UnitMoveController moveController;
@@ -40,12 +38,56 @@ namespace Rain.RTS.Core
         public NavMeshAgent agent => moveController.agent;
 
         /// <summary>
+        /// 攻击策略
+        /// </summary>
+        protected IAttackStrategy attackStrategy;
+
+        /// <summary>
         /// 上次的位置
         /// </summary>
-        Vector3 lastPos;
+        protected Vector3 lastPos;
+        /// <summary>
+        /// 当前帧是否改变位置
+        /// </summary>
+        public bool isChangePosThisFrame = false;
 
+        protected virtual void Awake()
+        {
+        }
 
-        private void Awake()
+        protected virtual void Start()
+        {
+        }
+
+        protected virtual void Update()
+        {
+            isChangePosThisFrame = lastPos != transform.position;
+            if (isChangePosThisFrame)
+            {
+                lastPos = transform.position;
+                MsgMgr.Ins.DispatchEvent(MsgEvent.RTSBattleUnitMove, this);
+            }
+            if (!Data.isDead)
+            {
+                stateMachine.Update();
+            }
+        }
+
+        protected virtual void OnDestroy()
+        {
+            // 从战斗管理器注销
+            BattleMgr.Ins.UnregisterUnit(this);
+        }
+
+        /// <summary>
+        /// 初始化攻击策略，由子类实现
+        /// </summary>
+        protected abstract void InitAttackStrategy();
+
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        public virtual void Init()
         {
             // 获取组件引用
             animator = GetComponent<Animator>();
@@ -64,35 +106,18 @@ namespace Rain.RTS.Core
                 Debug.Log($"BattleUnit找不到[UnitMoveController]组件");
             }
             stateMachine = new UnitStateMachine(this);
+
+            // 初始化攻击策略
+            InitAttackStrategy();
         }
 
-        private void Start()
+        public virtual void InitData(UnitConfig unitConfig)
         {
-        }
-
-        private void Update()
-        {
-            if (lastPos != transform.position)
-            {
-                lastPos = transform.position;
-                MsgMgr.Ins.DispatchEvent(MsgEvent.RTSBattleUnitMove, this);
-            }
-            if (!Data.isDead)
-            {
-                stateMachine.Update();
-            }
-        }
-
-        private void OnDestroy()
-        {
-            // 从战斗管理器注销
-            BattleMgr.Ins.UnregisterUnit(this);
-        }
-
-        public void InitData(UnitConfig unitConfig)
-        {
+            _data = new UnitData();
             Data.Init(unitConfig);
-            moveController.Init(Data);
+            moveController.Init();
+            moveController.InitData(Data);
+
 
             // 注册到战斗管理器
             BattleMgr.Ins.RegisterUnit(this);
@@ -105,7 +130,7 @@ namespace Rain.RTS.Core
         /// 设置移动目标
         /// </summary>
         /// <param name="target"></param>
-        public void SetMoveTarget(Vector3 target)
+        public virtual void SetMoveTarget(Vector3 target)
         {
             moveController.SetMoveTarget(target);
             stateMachine.UpdateState();
@@ -114,7 +139,7 @@ namespace Rain.RTS.Core
         /// <summary>
         /// 清除移动目标
         /// </summary>
-        public void ClearMoveTarget()
+        public virtual void ClearMoveTarget()
         {
             moveController.ClearMoveTarget();
         }
@@ -123,7 +148,7 @@ namespace Rain.RTS.Core
         /// 设置攻击目标
         /// </summary>
         /// <param name="target"></param>
-        public void SetAttackTarget(BattleUnit target)
+        public virtual void SetAttackTarget(BaseBattleUnit target)
         {
             if (IsEnemy(target))
             {
@@ -136,7 +161,7 @@ namespace Rain.RTS.Core
         /// <summary>
         /// 清除攻击目标
         /// </summary>
-        public void ClearAttackTarget()
+        public virtual void ClearAttackTarget()
         {
             Data.AttackTarget = null;
         }
@@ -145,7 +170,7 @@ namespace Rain.RTS.Core
         /// 检查目标是否在攻击范围内
         /// </summary>
         /// <returns></returns>
-        public bool IsTargetInAttackRange()
+        public virtual bool IsTargetInAttackRange()
         {
             if (Data.AttackTarget == null) return false;
 
@@ -156,21 +181,17 @@ namespace Rain.RTS.Core
         /// <summary>
         /// 执行攻击
         /// </summary>
-        public void Attack()
+        public virtual void Attack()
         {
-            if (Data.AttackTarget != null && !Data.AttackTarget.Data.isDead && IsEnemy(Data.AttackTarget))
-            {
-                AttackTimer = Time.time;
-                Data.AttackTarget.Hurt(Data.attack);
-                Debug.Log($"{Data.Name} 攻击了 {Data.AttackTarget.Data.Name}，造成 {Data.attack} 点伤害");
-            }
+            Debug.Log($"{Data.Name}进攻了{AttackTarget.Data.Name}");
+            AttackTimer = Time.time;
         }
 
         /// <summary>
         /// 受到伤害
         /// </summary>
         /// <param name="damage"></param>
-        public void Hurt(int damage)
+        public virtual void Hurt(int damage)
         {
             if (Data.isDead)
                 return;
@@ -188,19 +209,22 @@ namespace Rain.RTS.Core
         /// <summary>
         /// 死亡
         /// </summary>
-        public void Dead()
+        public virtual void Dead()
         {
             Data.isDead = true;
             unitCollider.enabled = false;
             agent.isStopped = true;
             agent.enabled = false;
+
+            // 触发死亡事件
+            OnDeath?.Invoke(this);
         }
 
         /// <summary>
         /// 面向目标
         /// </summary>
         /// <param name="target"></param>
-        public void FaceTarget(Transform target)
+        public virtual void FaceTarget(Transform target)
         {
             Vector3 direction = (target.position - transform.position).normalized;
             direction.y = 0; // 保持在同一水平面上
@@ -217,7 +241,7 @@ namespace Rain.RTS.Core
         /// </summary>
         /// <param name="target"></param>
         /// <returns></returns>
-        public bool IsValidTarget(BattleUnit target)
+        public virtual bool IsValidTarget(BaseBattleUnit target)
         {
             return target != null && !target.Data.isDead && IsEnemy(target);
         }
@@ -227,7 +251,7 @@ namespace Rain.RTS.Core
         /// </summary>
         /// <param name="other"></param>
         /// <returns></returns>
-        public bool IsEnemy(BattleUnit other)
+        public virtual bool IsEnemy(BaseBattleUnit other)
         {
             bool res = BattleMgr.Ins.IsEnemy(this, other);
             return res;
@@ -236,17 +260,16 @@ namespace Rain.RTS.Core
         /// <summary>
         /// 获取阵营关系
         /// </summary>
-        /// <param name="ownFaction"></param>
         /// <param name="_otherFaction"></param>
         /// <returns></returns>
-        public Relation GetFactionRelation(Faction _otherFaction)
+        public virtual Relation GetFactionRelation(Faction _otherFaction)
         {
             Relation relation = BattleMgr.Ins.GetFactionRelation(Data.faction, _otherFaction);
             return relation;
         }
 
         // 检查单位是否存活
-        public bool IsAlive()
+        public virtual bool IsAlive()
         {
             return !Data.isDead;
         }
@@ -254,7 +277,7 @@ namespace Rain.RTS.Core
         /// <summary>
         /// 面向目标
         /// </summary>
-        public void LookAtTarget()
+        public virtual void LookAtTarget()
         {
             if (Data.AttackTarget == null) return;
 
@@ -269,15 +292,15 @@ namespace Rain.RTS.Core
         /// <summary>
         /// 单位移动
         /// </summary>
-        public void UnitMove(Vector3 targetPos)
+        public virtual void UnitMove(Vector3 targetPos)
         {
-
+            // 子类可以实现特定的移动逻辑
         }
 
         /// <summary>
         /// 检查是否可以攻击
         /// </summary>
-        public bool CanAttack()
+        public virtual bool CanAttack()
         {
             if (Data.AttackTarget == null)
                 return false;

@@ -12,7 +12,7 @@ namespace Rain.RTS.Core
         public override UnitStateType stateType => UnitStateType.Attack;
         AnimatorStateInfo stateInfo;
         bool isStartAttack = false;     // 是否开始攻击
-        public override void Enter(BattleUnit unit)
+        public override void Enter(BaseBattleUnit unit)
         {
             base.Enter(unit);
             animator = unit.animator;

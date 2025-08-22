@@ -25,7 +25,7 @@ public class HudUnitStateBarParam
     public Camera camera;
     public RectTransform canvasRect;
     public HudUnitStateBarParam() { }
-    public HudUnitStateBarParam(BattleUnit _battleUnit, Camera _camera, RectTransform _canvasRect)
+    public HudUnitStateBarParam(BaseBattleUnit _battleUnit, Camera _camera, RectTransform _canvasRect)
     {
 
         unitID = _battleUnit.Data.unitId;

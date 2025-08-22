@@ -24,9 +24,9 @@ namespace Rain.RTS.Core
     public class UnitStateMachine
     {
         public BaseState currentState { get; private set; }
-        private BattleUnit _unit;
+        private BaseBattleUnit _unit;
 
-        public UnitStateMachine(BattleUnit unit)
+        public UnitStateMachine(BaseBattleUnit unit)
         {
             _unit = unit;
         }

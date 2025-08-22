@@ -15,13 +15,13 @@ namespace Rain.RTS.Core
 
 
 
-        private void Awake()
+        public void Init()
         {
             agent = GetComponent<NavMeshAgent>() ?? gameObject.AddComponent<NavMeshAgent>();
         }
 
         // 初始化：关联角色数据并设置初始速度
-        public void Init(UnitData _data)
+        public void InitData(UnitData _data)
         {
             this.data = _data;
 
@@ -40,7 +40,7 @@ namespace Rain.RTS.Core
             agent.isStopped = false;
         }
 
-        public void MoveTo(BattleUnit battleUnit)
+        public void MoveTo(BaseBattleUnit battleUnit)
         {
             ClearMoveTarget();
             data.AttackTarget = battleUnit;
@@ -70,7 +70,7 @@ namespace Rain.RTS.Core
         /// 设置移动目标
         /// </summary>
         /// <param name="target"></param>
-        public void SetMoveTarget(BattleUnit _battleUnit)
+        public void SetMoveTarget(BaseBattleUnit _battleUnit)
         {
             ClearMoveTarget();
             data.AttackTarget = _battleUnit;

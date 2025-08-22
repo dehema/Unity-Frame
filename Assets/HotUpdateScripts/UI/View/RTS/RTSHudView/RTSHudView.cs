@@ -33,15 +33,14 @@ public partial class RTSHudView : BaseView
 
     public void OnBattleUnitAdd(params object[] obj)
     {
-        BattleUnit battleUnit = obj[0] as BattleUnit;
-        Camera camera = obj[1] as Camera;
-        HudUnitStateBarParam param = new HudUnitStateBarParam(battleUnit, camera, rect);
+        BaseBattleUnit battleUnit = obj[0] as BaseBattleUnit;
+        HudUnitStateBarParam param = new HudUnitStateBarParam(battleUnit, BattleMgr.Ins.unitCamera, rect);
         CreateStateBar(param);
     }
 
     public void OnBattleUnitRemove(params object[] obj)
     {
-        BattleUnit battleUnit = obj[0] as BattleUnit;
+        BaseBattleUnit battleUnit = obj[0] as BaseBattleUnit;
         if (barPools.ContainsKey(battleUnit.Data.unitId))
         {
             stateBarPool.CollectOne(barPools[battleUnit.Data.unitId].gameObject);
@@ -50,7 +49,7 @@ public partial class RTSHudView : BaseView
 
     public void OnBattleUnitMove(params object[] obj)
     {
-        BattleUnit battleUnit = obj[0] as BattleUnit;
+        BaseBattleUnit battleUnit = obj[0] as BaseBattleUnit;
         if (barPools.ContainsKey(battleUnit.Data.unitId))
         {
             HudUnitStateBar bar = barPools[battleUnit.Data.unitId];
@@ -77,7 +76,7 @@ public partial class RTSHudView : BaseView
 
     private void OnRTSUnitHPChange(params object[] obj)
     {
-        BattleUnit battleUnit = obj[0] as BattleUnit;
+        BaseBattleUnit battleUnit = obj[0] as BaseBattleUnit;
         float lastHp = (float)(obj[1] as float?);
         if (!barPools.ContainsKey(battleUnit.Data.unitId))
             return;

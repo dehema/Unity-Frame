@@ -906,7 +906,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 438990, guid: bcc60fdbd3a37b44cbc0cb99db483477, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 438990, guid: bcc60fdbd3a37b44cbc0cb99db483477, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1009,7 +1009,7 @@ PrefabInstance:
       addedObject: {fileID: 3547153167786251056}
     - targetCorrespondingSourceObject: {fileID: 155132, guid: bcc60fdbd3a37b44cbc0cb99db483477, type: 3}
       insertIndex: -1
-      addedObject: {fileID: -5440869718161416930}
+      addedObject: {fileID: -6744241960358515888}
   m_SourcePrefab: {fileID: 100100000, guid: bcc60fdbd3a37b44cbc0cb99db483477, type: 3}
 --- !u!1 &7818915393125361202 stripped
 GameObject:
@@ -1039,33 +1039,25 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-5440869718161416930
-MonoBehaviour:
+--- !u!195 &-6744241960358515888
+NavMeshAgent:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7818915393125361202}
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75e710cd043985d4087e2115182f7062, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  unitCollider: {fileID: 0}
-  _data:
-    unitId: 0
-    isPlayerUnit: 0
-    moveSpeed: 0
-    runSpeed: 0
-    rotationSpeed: 0
-    attack: 0
-    attackRange: 0
-    attackInterval: 0
-    maxHealth: 100
-    faction: 0
-    unitType: 0
-    hp: 0
-    isDead: 0
-    attackTimer: 0
-  moveController: {fileID: 0}
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 999
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0.1
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4

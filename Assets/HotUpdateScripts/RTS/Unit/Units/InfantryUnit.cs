@@ -1,0 +1,37 @@
+using UnityEngine;
+
+namespace Rain.RTS.Core
+{
+    /// <summary>
+    /// 步兵单位类，使用近战攻击策略
+    /// </summary>
+    public class InfantryUnit : BaseBattleUnit
+    {
+        [Header("步兵特有属性")]
+        [SerializeField] private float chargeSpeed = 1.5f;  // 冲锋速度倍率
+
+        protected override void Awake()
+        {
+            base.Awake();
+        }
+
+        protected override void Update()
+        {
+            base.Update();
+        }
+
+        protected override void InitAttackStrategy()
+        {
+            // 步兵使用近战攻击策略
+            attackStrategy = new InfantryAttackStrategy();
+        }
+
+        public override void Attack()
+        {
+            if (Data.AttackTarget != null && !Data.AttackTarget.IsDead && IsEnemy(Data.AttackTarget))
+            {
+                attackStrategy.PerformAttack(this, Data.AttackTarget);
+            }
+        }
+    }
+}

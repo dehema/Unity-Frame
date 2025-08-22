@@ -18,7 +18,7 @@ namespace Rain.RTS.Core
             _previousState = previousState;
         }
 
-        public override void Enter(BattleUnit unit)
+        public override void Enter(BaseBattleUnit unit)
         {
             base.Enter(unit);
             _enterTime = Time.time;

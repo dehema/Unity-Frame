@@ -8,7 +8,7 @@ namespace Rain.RTS.Core
     public class IdleState : BaseState
     {
         public override UnitStateType stateType => UnitStateType.Idle;
-        public override void Enter(BattleUnit unit)
+        public override void Enter(BaseBattleUnit unit)
         {
             base.Enter(unit);
         }

@@ -9,11 +9,11 @@ namespace Rain.RTS.Core
 {
     public abstract class BaseState : IState
     {
-        public BattleUnit unit;
+        public BaseBattleUnit unit;
         protected Animator animator;
         public abstract UnitStateType stateType { get; }
 
-        public virtual void Enter(BattleUnit unit)
+        public virtual void Enter(BaseBattleUnit unit)
         {
             this.unit = unit;
             this.animator = unit.animator;

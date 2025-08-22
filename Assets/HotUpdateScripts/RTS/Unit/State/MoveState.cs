@@ -20,7 +20,7 @@ namespace Rain.RTS.Core
         {
         }
 
-        public override void Enter(BattleUnit unit)
+        public override void Enter(BaseBattleUnit unit)
         {
             base.Enter(unit);
             agent = unit.moveController.agent;
