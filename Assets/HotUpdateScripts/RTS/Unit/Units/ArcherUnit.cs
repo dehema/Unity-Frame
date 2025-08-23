@@ -9,6 +9,7 @@ namespace Rain.RTS.Core
     {
         [Header("弓箭手特有属性")]
         const string arrowPrefabPath = "Prefab/Weapon/Arrow";
+        ArrowAttackStrategy arrowAttackStrategy;
 
 
         protected override void Awake()
@@ -16,11 +17,18 @@ namespace Rain.RTS.Core
             base.Awake();
         }
 
+        public override void Init()
+        {
+            base.Init();
+            shootPos = transform.Find("Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 R Clavicle/Bip001 R UpperArm/Bip001 R Forearm/Bip001 R Hand/R_hand_container/shootPos").gameObject;
+        }
+
         protected override void InitAttackStrategy()
         {
             // 弓箭手使用远程攻击策略，传入箭矢预制体
             attackStrategy = new ArrowAttackStrategy();
-            attackStrategy.SetProjectilePrefabPath(arrowPrefabPath);
+            arrowAttackStrategy = attackStrategy as ArrowAttackStrategy;
+            arrowAttackStrategy.SetProjectilePrefabPath(arrowPrefabPath);
         }
 
         public override void Attack()

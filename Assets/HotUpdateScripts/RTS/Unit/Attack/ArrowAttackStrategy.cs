@@ -27,13 +27,15 @@ namespace Rain.RTS.Core
             {
                 arrowPool.Clear();
             }
-            //arrowPool = PoolMgr.Ins.CreatePool(_arrowPath);
+            arrowPool = PoolMgr.Ins.CreatePoolFromPath(_arrowPath);
         }
 
 
         public void PerformAttack(BaseBattleUnit attacker, BaseBattleUnit target)
         {
             if (target == null || target.IsDead)
+                return;
+            if (arrowPool == null)
                 return;
 
             // 检查是否有射击位置
@@ -45,18 +47,15 @@ namespace Rain.RTS.Core
                 return;
             }
 
-            // 如果有预制体，创建投射物
-            if (arrowPrefab == null)
-                return;
-            GameObject projectileObj = GameObject.Instantiate(arrowPrefab, attacker.shootPos.transform.position, Quaternion.identity);
+            GameObject projectileObj = arrowPool.Get();
 
             ProjectileController projectile = projectileObj.GetComponent<ProjectileController>();
             if (projectile == null)
             {
                 projectile = projectileObj.AddComponent<ProjectileController>();
             }
-
-            projectile.Initialize(attacker, target, attacker.Data.attack, projectileSpeed);
+            projectile.SetActionCollect((go) => { arrowPool.CollectOne(go); });
+            projectile.Init(attacker, target, attacker.Data.attack, projectileSpeed);
             Debug.Log($"{attacker.UnitName} 向 {target.UnitName} 发射了一个投射物");
         }
     }
