@@ -1,4 +1,7 @@
+using System;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using static UnityEngine.UI.CanvasScaler;
 
 namespace Rain.RTS.Core
 {
@@ -9,6 +12,7 @@ namespace Rain.RTS.Core
     {
         private float projectileSpeed = 1f;
         public static ObjPool arrowPool;
+        BaseBattleUnit attacker;
 
         public ArrowAttackStrategy()
         {
@@ -31,6 +35,7 @@ namespace Rain.RTS.Core
             if (arrowPool == null)
                 return;
 
+            attacker = _attacker;
             GameObject projectileObj = arrowPool.Get();
 
             ProjectileController projectile = projectileObj.GetComponent<ProjectileController>();
@@ -39,9 +44,20 @@ namespace Rain.RTS.Core
             {
                 projectile = projectileObj.AddComponent<ProjectileController>();
             }
-            projectile.SetActionCollect((go) => { arrowPool.CollectOne(go); });
+            projectile.SetCollectAction(SetCollectAction);
+            projectile.SetHitAction(SetHitAction);
             projectile.Init(_attacker, _target, projectileSpeed);
             Debug.Log($"{_attacker.UnitName} 向 {_target.UnitName} 发射了一个投射物");
+        }
+
+        public void SetCollectAction(GameObject _go)
+        {
+            arrowPool.CollectOne(_go);
+        }
+
+        public void SetHitAction(BaseBattleUnit _unit)
+        {
+            _unit.Hurt(attacker.Data.attack);
         }
     }
 }

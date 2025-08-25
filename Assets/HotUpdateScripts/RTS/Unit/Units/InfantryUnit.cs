@@ -30,6 +30,7 @@ namespace Rain.RTS.Core
 
         public override void Attack()
         {
+            base.Attack();
             if (Data.AttackTarget != null && !Data.AttackTarget.IsDead && IsEnemy(Data.AttackTarget))
             {
                 infantryAttackStrategy.Attack(this, Data.AttackTarget);

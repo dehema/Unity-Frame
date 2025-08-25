@@ -32,6 +32,37 @@ Transform:
   - {fileID: 6719245854855457462}
   m_Father: {fileID: 2229214743055358894}
   m_LocalEulerAnglesHint: {x: -16.786, y: -9.088, z: 98.052}
+--- !u!1 &8737884684416655926
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5878262798506895357}
+  m_Layer: 7
+  m_Name: shootPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5878262798506895357
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8737884684416655926}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.04, z: 0.613}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2229214743055401586}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2229214743055698188
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1047,6 +1078,9 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 494462, guid: 04c79b5f6e9ebab48af48fdcf7b6d570, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5878262798506895357}
     - targetCorrespondingSourceObject: {fileID: 447138, guid: 04c79b5f6e9ebab48af48fdcf7b6d570, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4668171078357786451}
@@ -1064,6 +1098,11 @@ PrefabInstance:
 --- !u!4 &2229214743055358894 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 447138, guid: 04c79b5f6e9ebab48af48fdcf7b6d570, type: 3}
+  m_PrefabInstance: {fileID: 2229214743055698188}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &2229214743055401586 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 494462, guid: 04c79b5f6e9ebab48af48fdcf7b6d570, type: 3}
   m_PrefabInstance: {fileID: 2229214743055698188}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &2229214743055610552 stripped
@@ -1128,7 +1167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 034eb4a8091979a4bbe3e3309a66b2eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shootPos: {fileID: 4668171078357786451}
+  shootPos: {fileID: 5878262798506895357}
 --- !u!1001 &5167442886351902350
 PrefabInstance:
   m_ObjectHideFlags: 0

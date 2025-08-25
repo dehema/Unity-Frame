@@ -188,7 +188,7 @@ namespace Rain.RTS.Core
         /// </summary>
         public virtual void Attack()
         {
-            Debug.Log($"{Data.Name}进攻了{AttackTarget.Data.Name}");
+            Debug.Log($"{Data.Name}攻击了{AttackTarget.Data.Name}");
             AttackTimer = Time.time;
         }
 

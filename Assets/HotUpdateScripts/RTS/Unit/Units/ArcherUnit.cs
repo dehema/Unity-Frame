@@ -32,6 +32,7 @@ namespace Rain.RTS.Core
 
         public override void Attack()
         {
+            base.Attack();
             if (Data.AttackTarget != null && !Data.AttackTarget.IsDead && IsEnemy(Data.AttackTarget))
             {
                 arrowAttackStrategy.Attack(this, Data.AttackTarget, bodyPart.shootPos.transform.position);

@@ -53,7 +53,7 @@ public partial class RTSUnitTestView : BaseView
             bt.SetButton(() =>
             {
                 BaseBattleUnit unit = RTSUnitTestSceneMgr.Ins.CreatePlayerUnit(unitConfig);
-                unit.transform.position = new Vector3(0, 0, -10);
+                unit.transform.position = new Vector3(0, 0, 10);
             });
         }
     }
