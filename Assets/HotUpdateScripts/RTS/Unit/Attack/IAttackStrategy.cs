@@ -7,11 +7,6 @@ namespace Rain.RTS.Core
     /// </summary>
     public interface IAttackStrategy
     {
-        /// <summary>
-        /// 执行攻击
-        /// </summary>
-        /// <param name="attacker">攻击者</param>
-        /// <param name="target">目标</param>
-        void PerformAttack(BaseBattleUnit attacker, BaseBattleUnit target);
+
     }
 }

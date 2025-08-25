@@ -9,6 +9,7 @@ namespace Rain.RTS.Core
     {
         [Header("步兵特有属性")]
         [SerializeField] private float chargeSpeed = 1.5f;  // 冲锋速度倍率
+        InfantryAttackStrategy infantryAttackStrategy;
 
         protected override void Awake()
         {
@@ -24,13 +25,14 @@ namespace Rain.RTS.Core
         {
             // 步兵使用近战攻击策略
             attackStrategy = new InfantryAttackStrategy();
+            infantryAttackStrategy = attackStrategy as InfantryAttackStrategy;
         }
 
         public override void Attack()
         {
             if (Data.AttackTarget != null && !Data.AttackTarget.IsDead && IsEnemy(Data.AttackTarget))
             {
-                attackStrategy.PerformAttack(this, Data.AttackTarget);
+                infantryAttackStrategy.Attack(this, Data.AttackTarget);
             }
         }
     }

@@ -7,13 +7,13 @@ namespace Rain.RTS.Core
     /// </summary>
     public class InfantryAttackStrategy : IAttackStrategy
     {
-        public void PerformAttack(BaseBattleUnit attacker, BaseBattleUnit target)
+        public void Attack(BaseBattleUnit _attacker, BaseBattleUnit _target)
         {
             // 近战攻击逻辑 - 直接造成伤害
-            if (target != null && !target.IsDead)
+            if (_target != null && !_target.IsDead)
             {
-                target.Hurt(attacker.Data.attack);
-                Debug.Log($"{attacker.UnitName} 近战攻击了 {target.UnitName}，造成 {attacker.Data.attack} 点伤害");
+                _target.Hurt(_attacker.Data.attack);
+                Debug.Log($"{_attacker.UnitName} 近战攻击了 {_target.UnitName}，造成 {_attacker.Data.attack} 点伤害");
             }
         }
     }

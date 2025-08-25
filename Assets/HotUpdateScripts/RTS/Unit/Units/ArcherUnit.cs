@@ -20,7 +20,6 @@ namespace Rain.RTS.Core
         public override void Init()
         {
             base.Init();
-            shootPos = transform.Find("Bip001/Bip001 Pelvis/Bip001 Spine/Bip001 R Clavicle/Bip001 R UpperArm/Bip001 R Forearm/Bip001 R Hand/R_hand_container/shootPos").gameObject;
         }
 
         protected override void InitAttackStrategy()
@@ -35,7 +34,7 @@ namespace Rain.RTS.Core
         {
             if (Data.AttackTarget != null && !Data.AttackTarget.IsDead && IsEnemy(Data.AttackTarget))
             {
-                attackStrategy.PerformAttack(this, Data.AttackTarget);
+                arrowAttackStrategy.Attack(this, Data.AttackTarget, bodyPart.shootPos.transform.position);
             }
         }
 

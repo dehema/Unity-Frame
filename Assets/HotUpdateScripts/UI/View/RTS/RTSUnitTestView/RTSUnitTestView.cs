@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using Rain.Core;
+using Rain.RTS.Core;
 using Rain.UI;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,7 +18,7 @@ public partial class RTSUnitTestView : BaseView
         base.Init(_viewParams);
 
         ui.btShowUnitList_Button.SetButton(OnClickShowUnitList);
-        ui.btAddDummy_Button.SetButton(() => { RTSUnitTestSceneMgr.Ins.CreateDummy(); });
+        ui.btAddDummy_Button.SetButton(AddDummy);
         InitUnitList();
 
     }
@@ -28,6 +29,12 @@ public partial class RTSUnitTestView : BaseView
         ui.btAddDummy_Button.onClick.Invoke();
         //Ò»¸öÊ¿±ø
         btUnits[5].onClick.Invoke();
+    }
+
+    void AddDummy()
+    {
+        BaseBattleUnit unit = RTSUnitTestSceneMgr.Ins.CreateDummy();
+        unit.gameObject.name = "Dummy";
     }
 
     void InitUnitList()

@@ -51,11 +51,11 @@ public class RTSUnitTestSceneMgr : MonoBehaviour
     /// <summary>
     /// 创建假人
     /// </summary>
-    public void CreateDummy()
+    public BaseBattleUnit CreateDummy()
     {
         if (dummy != null)
         {
-            return;
+            return null;
         }
         UnitConfig _unitConfig = ConfigMgr.Ins.allUnitConfig.unit.Find((x) => x.ID == 1101);
         UnitConfig unitConfig = new UnitConfig(_unitConfig);
@@ -64,6 +64,7 @@ public class RTSUnitTestSceneMgr : MonoBehaviour
         unitConfig.faction = Faction.Dummy;   // 设置单位类型为假人
         dummy = CreateUnit(unitConfig);
         dummy.transform.position = new Vector3(0, 0, -5);
+        return dummy;
     }
 
     /// <summary>

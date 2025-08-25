@@ -7,18 +7,11 @@ namespace Rain.RTS.Core
     /// </summary>
     public class ArrowAttackStrategy : IAttackStrategy
     {
-        private float projectileSpeed = 15f;
+        private float projectileSpeed = 1f;
         public static ObjPool arrowPool;
 
         public ArrowAttackStrategy()
         {
-            // 如果没有提供预制体，尝试加载默认的
-            //this.projectilePrefab = projectilePrefab ?? Resources.Load<GameObject>(arrowPrefabPath);
-            //if (this.projectilePrefab == null)
-            //{
-            //    Debug.LogWarning("无法加载投射物预制体，将使用直接伤害模式");
-            //}
-            //arrowPool = PoolMgr.Ins.CreatePool()
         }
 
         public void SetProjectilePrefabPath(string _arrowPath)
@@ -31,32 +24,24 @@ namespace Rain.RTS.Core
         }
 
 
-        public void PerformAttack(BaseBattleUnit attacker, BaseBattleUnit target)
+        public void Attack(BaseBattleUnit _attacker, BaseBattleUnit _target, Vector3 _shootPos)
         {
-            if (target == null || target.IsDead)
+            if (_target == null || _target.IsDead)
                 return;
             if (arrowPool == null)
                 return;
 
-            // 检查是否有射击位置
-            if (attacker.shootPos == null)
-            {
-                Debug.LogWarning($"{attacker.UnitName} 没有设置射击位置 (shootPos)，无法正确发射投射物");
-                // 退化为直接伤害
-                target.Hurt(attacker.Data.attack);
-                return;
-            }
-
             GameObject projectileObj = arrowPool.Get();
 
             ProjectileController projectile = projectileObj.GetComponent<ProjectileController>();
+            projectileObj.transform.position = _attacker.bodyPart.shootPos.transform.position;
             if (projectile == null)
             {
                 projectile = projectileObj.AddComponent<ProjectileController>();
             }
             projectile.SetActionCollect((go) => { arrowPool.CollectOne(go); });
-            projectile.Init(attacker, target, attacker.Data.attack, projectileSpeed);
-            Debug.Log($"{attacker.UnitName} 向 {target.UnitName} 发射了一个投射物");
+            projectile.Init(_attacker, _target, projectileSpeed);
+            Debug.Log($"{_attacker.UnitName} 向 {_target.UnitName} 发射了一个投射物");
         }
     }
 }

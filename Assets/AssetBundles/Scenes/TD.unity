@@ -319,7 +319,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: -10
+  near clip plane: -100
   far clip plane: 1000
   field of view: 60
   orthographic: 1
@@ -370,6 +370,8 @@ MonoBehaviour:
   minOrthographicSize: 3
   maxOrthographicSize: 15
   zoomDampening: 5
+  panSpeed: 2
+  panDampening: 2
 --- !u!1 &1935498352
 GameObject:
   m_ObjectHideFlags: 0

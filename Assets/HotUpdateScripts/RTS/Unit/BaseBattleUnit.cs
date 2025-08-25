@@ -1,6 +1,7 @@
 using System;
 using System.Xml.Linq;
 using Rain.Core;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -15,7 +16,7 @@ namespace Rain.RTS.Core
         [Header("组件")]
         public Animator animator;
         public Collider unitCollider;
-        public GameObject shootPos;
+        public UnitBodyPart bodyPart;
 
         //事件
         public event Action<BaseBattleUnit> OnDeath;
@@ -105,6 +106,9 @@ namespace Rain.RTS.Core
             {
                 Debug.Log($"BattleUnit找不到[UnitMoveController]组件");
             }
+            bodyPart = GetComponent<UnitBodyPart>();
+
+            // 状态机
             stateMachine = new UnitStateMachine(this);
 
             // 初始化攻击策略
@@ -118,6 +122,7 @@ namespace Rain.RTS.Core
             moveController.Init();
             moveController.InitData(Data);
 
+            gameObject.name = $"{Data.unitType}_{Data.unitId}";
 
             // 注册到战斗管理器
             BattleMgr.Ins.RegisterUnit(this);
@@ -281,11 +286,7 @@ namespace Rain.RTS.Core
         {
             if (Data.AttackTarget == null) return;
 
-            Vector3 targetPosition = new Vector3(
-                Data.AttackTarget.transform.position.x,
-                transform.position.y,
-                Data.AttackTarget.transform.position.z
-            );
+            Vector3 targetPosition = new Vector3(Data.AttackTarget.transform.position.x, transform.position.y, Data.AttackTarget.transform.position.z);
             transform.LookAt(targetPosition);
         }
 
@@ -294,7 +295,6 @@ namespace Rain.RTS.Core
         /// </summary>
         public virtual void UnitMove(Vector3 targetPos)
         {
-            // 子类可以实现特定的移动逻辑
         }
 
         /// <summary>

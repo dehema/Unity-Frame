@@ -11,7 +11,7 @@ namespace Rain.RTS.Core
         private BaseBattleUnit owner;        // 发射者
         private BaseBattleUnit target;       // 目标
         private int damage;              // 伤害值
-        private float speed = 15f;       // 飞行速度
+        private float speed = 0f;       // 飞行速度
         private bool isInited = false;
         private float maxLifetime = 5f;  // 最大生命周期，防止永远不会销毁
         private float lifeTime = 0f;
@@ -25,15 +25,16 @@ namespace Rain.RTS.Core
         /// <param name="_target">目标</param>
         /// <param name="damage">伤害值</param>
         /// <param name="speed">飞行速度</param>
-        public void Init(BaseBattleUnit _owner, BaseBattleUnit _target, int damage, float speed = 15f)
+        public void Init(BaseBattleUnit _owner, BaseBattleUnit _target, float _speed)
         {
-            this.owner = _owner;
-            this.target = _target;
-            this.damage = _owner.Data.attack;
-            this.speed = speed;
-            this.isInited = true;
-            this.lifeTime = maxLifetime;
+            owner = _owner;
+            target = _target;
+            damage = _owner.Data.attack;
+            speed = _speed;
+            isInited = true;
+            lifeTime = maxLifetime;
             transform.position = _owner.transform.position;
+            transform.LookAt(_target.transform.position);
         }
 
         public void Update()

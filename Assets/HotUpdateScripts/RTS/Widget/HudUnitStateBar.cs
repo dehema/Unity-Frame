@@ -34,8 +34,6 @@ public partial class HudUnitStateBar : BasePoolItem
     {
         float lastHp = _lastHp / _max;
         float hpNow = _realHp / _max;
-        //ui.redHp_Rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, lastHp * rectWidth);
-        //ui.greenHp_Rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, lastHp * rectWidth);
         ui.greenHp_Rect.DOSizeDelta(new Vector2(hpNow * rectWidth, rectHeight), 0.5f);
     }
 
