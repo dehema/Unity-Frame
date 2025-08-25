@@ -27,7 +27,7 @@ public class CameraController_RTS : MonoBehaviour
 
     [Header("平移设置")]
     [Tooltip("相机移动速度")]
-    public float panSpeed = 2f;               // 相机平移速度
+    public float panSpeed = 1;               // 相机平移速度
     [Tooltip("相机移动平滑度")]
     public float panDampening = 2f;            // 相机平移平滑度
 
@@ -45,6 +45,7 @@ public class CameraController_RTS : MonoBehaviour
     // 初始化
     void Start()
     {
+        panSpeed = 1;
         // 如果没有指定相机，则使用当前物体上的相机组件
         if (mainCamera == null)
         {
@@ -113,14 +114,13 @@ public class CameraController_RTS : MonoBehaviour
 
             // 限制缩放范围
             targetOrthographicSize = Mathf.Clamp(targetOrthographicSize, minOrthographicSize, maxOrthographicSize);
+        }
 
-
-            // 平滑过渡到目标正交尺寸
-            if (mainCamera.orthographicSize != targetOrthographicSize)
-            {
-                mainCamera.orthographicSize = Mathf.Lerp(mainCamera.orthographicSize, targetOrthographicSize, Time.deltaTime * zoomDampening);
-                MsgMgr.Ins.DispatchEvent(MsgEvent.CameraZoomRatioChange, defaultOrthographicSize - mainCamera.orthographicSize);
-            }
+        // 平滑过渡到目标正交尺寸
+        if (mainCamera.orthographicSize != targetOrthographicSize)
+        {
+            mainCamera.orthographicSize = Mathf.Lerp(mainCamera.orthographicSize, targetOrthographicSize, Time.deltaTime * zoomDampening);
+            MsgMgr.Ins.DispatchEvent(MsgEvent.CameraZoomRatioChange, defaultOrthographicSize - mainCamera.orthographicSize);
         }
     }
 

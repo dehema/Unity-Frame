@@ -33,8 +33,9 @@ public partial class RTSUnitTestView : BaseView
 
     void AddDummy()
     {
-        BaseBattleUnit unit = RTSUnitTestSceneMgr.Ins.CreateDummy();
-        unit.gameObject.name = "Dummy";
+        BaseBattleUnit dummy = RTSUnitTestSceneMgr.Ins.CreateDummy();
+        dummy.gameObject.name = "Dummy";
+        dummy.transform.position = new Vector3(0, 0, -10);
     }
 
     void InitUnitList()
@@ -51,7 +52,8 @@ public partial class RTSUnitTestView : BaseView
             btUnits.Add(bt);
             bt.SetButton(() =>
             {
-                RTSUnitTestSceneMgr.Ins.CreatePlayerUnit(unitConfig);
+                BaseBattleUnit unit = RTSUnitTestSceneMgr.Ins.CreatePlayerUnit(unitConfig);
+                unit.transform.position = new Vector3(0, 0, -10);
             });
         }
     }

@@ -32,7 +32,7 @@ public class RTSUnitTestSceneMgr : MonoBehaviour
     /// <summary>
     /// 创建玩家单位
     /// </summary>
-    public void CreatePlayerUnit(UnitConfig unitConfig)
+    public BaseBattleUnit CreatePlayerUnit(UnitConfig unitConfig)
     {
         foreach (var item in playerUnits)
         {
@@ -41,11 +41,11 @@ public class RTSUnitTestSceneMgr : MonoBehaviour
         playerUnits.Clear();
         unitConfig.faction = Faction.Player; // 设置单位阵营为玩家
         BaseBattleUnit battleUnit = CreateUnit(unitConfig);
-        if (battleUnit == null)
+        if (battleUnit != null)
         {
-            return;
+            playerUnits.Add(battleUnit);
         }
-        playerUnits.Add(battleUnit);
+        return battleUnit;
     }
 
     /// <summary>
@@ -63,7 +63,6 @@ public class RTSUnitTestSceneMgr : MonoBehaviour
         unitConfig.unitType = UnitType.Dummy;   // 设置单位类型为假人
         unitConfig.faction = Faction.Dummy;   // 设置单位类型为假人
         dummy = CreateUnit(unitConfig);
-        dummy.transform.position = new Vector3(0, 0, -5);
         return dummy;
     }
 

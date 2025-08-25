@@ -33,7 +33,6 @@ namespace Rain.RTS.Core
             speed = _speed;
             isInited = true;
             lifeTime = maxLifetime;
-            transform.position = _owner.transform.position;
             transform.LookAt(_target.transform.position);
         }
 
@@ -61,15 +60,15 @@ namespace Rain.RTS.Core
             }
 
             // 移动到目标
-            Vector3 targetPosition = target.transform.position;
-            Vector3 direction = (targetPosition - transform.position).normalized;
+            Vector3 targetPos = target.transform.position;
+            Vector3 direction = (targetPos - transform.position).normalized;
             transform.position += direction * speed * Time.deltaTime;
 
             // 旋转投射物朝向目标
             transform.rotation = Quaternion.LookRotation(direction);
 
             // 检测是否击中目标
-            float distanceToTarget = Vector3.Distance(transform.position, targetPosition);
+            float distanceToTarget = Vector3.Distance(transform.position, targetPos);
             if (distanceToTarget < hitDistance)
             {
                 // 造成伤害

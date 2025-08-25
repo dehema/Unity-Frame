@@ -370,7 +370,7 @@ MonoBehaviour:
   minOrthographicSize: 3
   maxOrthographicSize: 15
   zoomDampening: 5
-  panSpeed: 2
+  panSpeed: 1
   panDampening: 2
 --- !u!1 &1935498352
 GameObject:
