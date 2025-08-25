@@ -25,6 +25,7 @@ namespace Rain.RTS.Core
 
         private Action<GameObject> collectAction;    // 回收回调
         private Action<BaseBattleUnit> hitAction;    // 击中回调
+        Rigidbody rigidbody;
 
         /// <summary>
         /// 初始化投射物
@@ -34,6 +35,16 @@ namespace Rain.RTS.Core
         /// <param name="_speed">飞行速度</param>
         public void Init(BaseBattleUnit _owner, BaseBattleUnit _target, float _speed)
         {
+            if (rigidbody == null)
+            {
+                rigidbody = GetComponent<Rigidbody>();
+                if (rigidbody == null)
+                {
+                    rigidbody = gameObject.AddComponent<Rigidbody>();
+                }
+                rigidbody.useGravity = false;
+            }
+
             owner = _owner;
             target = _target;
             speed = _speed;
@@ -110,7 +121,7 @@ namespace Rain.RTS.Core
             }
 
             // 更新目标位置（目标可能在移动）
-            targetPos = target.transform.position;
+            targetPos = target.transform.position + new Vector3(0, target.Data.UnitConfig.height / 2, 0);
 
             // 计算抛物线轨迹
             UpdateParabolicTrajectory();
@@ -152,12 +163,11 @@ namespace Rain.RTS.Core
             }
         }
 
-        private void OnCollisionEnter(Collision collision)
+        private void OnTriggerEnter(Collider other)
         {
             if (!isInited) return;
-            GetComponent<Collider>().enabled = false; // 防止多次触发
             // 检查是否碰到了目标单位
-            BaseBattleUnit hitUnit = collision.gameObject.GetComponent<BaseBattleUnit>();
+            BaseBattleUnit hitUnit = other.gameObject.GetComponent<BaseBattleUnit>();
             if (hitUnit != null)
             {
                 // 敌人检测
