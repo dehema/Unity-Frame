@@ -14,25 +14,26 @@ namespace Rain.RTS.Core
         private float speed = 15f;       // 飞行速度
         private bool isInited = false;
         private float maxLifetime = 5f;  // 最大生命周期，防止永远不会销毁
-        private float lifetime = 0f;
+        private float lifeTime = 0f;
         private float hitDistance = 0.5f; // 命中距离
         Action<GameObject> actionCollect;
 
         /// <summary>
         /// 初始化投射物
         /// </summary>
-        /// <param name="owner">发射者</param>
-        /// <param name="target">目标</param>
+        /// <param name="_owner">发射者</param>
+        /// <param name="_target">目标</param>
         /// <param name="damage">伤害值</param>
         /// <param name="speed">飞行速度</param>
-        public void Init(BaseBattleUnit owner, BaseBattleUnit target, int damage, float speed = 15f)
+        public void Init(BaseBattleUnit _owner, BaseBattleUnit _target, int damage, float speed = 15f)
         {
-            this.owner = owner;
-            this.target = target;
-            this.damage = damage;
+            this.owner = _owner;
+            this.target = _target;
+            this.damage = _owner.Data.attack;
             this.speed = speed;
             this.isInited = true;
-            this.lifetime = 0f;
+            this.lifeTime = maxLifetime;
+            transform.position = _owner.transform.position;
         }
 
         public void Update()
@@ -44,8 +45,8 @@ namespace Rain.RTS.Core
             }
 
             // 更新生命周期
-            lifetime += Time.deltaTime;
-            if (lifetime > maxLifetime)
+            lifeTime -= Time.deltaTime;
+            if (lifeTime <= 0)
             {
                 Collect();
                 return;
