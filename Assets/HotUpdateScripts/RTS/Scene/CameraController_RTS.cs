@@ -27,7 +27,7 @@ public class CameraController_RTS : MonoBehaviour
 
     [Header("平移设置")]
     [Tooltip("相机移动速度")]
-    public float panSpeed = 10f;               // 相机平移速度
+    public float panSpeed = 2f;               // 相机平移速度
     [Tooltip("相机移动平滑度")]
     public float panDampening = 2f;            // 相机平移平滑度
 
@@ -147,19 +147,23 @@ public class CameraController_RTS : MonoBehaviour
             Vector3 mouseDelta = Input.mousePosition - lastMousePosition;
 
             // 根据相机正交尺寸调整移动速度（缩放越大，移动速度越快）
-            float moveSpeedFactor = mainCamera.orthographicSize / defaultOrthographicSize;
+            //float moveSpeedFactor = mainCamera.orthographicSize / defaultOrthographicSize;
+            float moveSpeedFactor = 1;
+            float aspectRatio = mainCamera.aspect;
 
             // 计算相机移动方向和距离
             // 注意：鼠标向右移动，相机应该向左移动，所以使用负值
+            // 使用世界坐标系的XZ平面移动
             Vector3 moveDirection = new Vector3(
                 -mouseDelta.x * moveSpeedFactor * panSpeed * Time.deltaTime,
-                -mouseDelta.y * moveSpeedFactor * panSpeed * Time.deltaTime,
-                0
+                0,
+                -mouseDelta.y * moveSpeedFactor * aspectRatio * panSpeed * Time.deltaTime
             );
 
-            // 将屏幕空间移动转换为世界空间移动
-            moveDirection = transform.TransformDirection(moveDirection);
-            moveDirection.z = 0; // 确保相机只在XY平面移动
+            // 直接在世界坐标系中移动，不需要转换
+            // 考虑相机的旋转角度，确保移动方向正确
+            moveDirection = Quaternion.Euler(0, transform.eulerAngles.y, 0) * moveDirection;
+            moveDirection.y = 0; // 确保Y轴不变
 
             // 更新目标位置
             targetPosition += moveDirection;
