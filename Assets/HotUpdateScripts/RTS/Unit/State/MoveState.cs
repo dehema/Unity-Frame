@@ -14,6 +14,10 @@ namespace Rain.RTS.Core
         private int _speedHash = Animator.StringToHash("Speed");
         NavMeshAgent agent;
         MoveStateType moveStateType = MoveStateType.Move;
+        // 移动速度系数
+        float moveSpeedFactor = 1;
+        float moveSpeedFactorMax = 1;
+        float moveAnimationFactor = 1;
 
         // 构造函数初始化动画哈希和参数
         public MoveState()
@@ -37,14 +41,34 @@ namespace Rain.RTS.Core
             }
 
             // 计算动画速度并设置
-            float animationSpeed = 1;
-            animator.SetFloat(_speedHash, animationSpeed);
-            agent.speed = unit.Data.moveSpeed;
+
+            if (unit.Data.UnitConfig.unitType == UnitType.Cavalry)
+            {
+                moveSpeedFactor = 0.4f;
+                moveAnimationFactor = 1.2f;
+            }
+            else
+            {
+                moveSpeedFactor = 1;
+            }
+            animator.SetFloat(_speedHash, moveSpeedFactor);
+            agent.speed = unit.Data.moveSpeed * moveSpeedFactor;
         }
 
         public override void Update()
         {
             base.Update();
+            if (unit.Data.UnitConfig.unitType == UnitType.Cavalry)
+            {
+                if (moveSpeedFactor < moveSpeedFactorMax)
+                {
+                    moveSpeedFactor += 0.4f * Time.deltaTime;
+                    moveSpeedFactor = Mathf.Clamp(moveSpeedFactor, 0, moveSpeedFactorMax);
+                    animator.SetFloat(_speedHash, moveSpeedFactor / moveSpeedFactorMax * moveAnimationFactor);
+                    agent.speed = unit.Data.moveSpeed * moveSpeedFactor;
+                }
+            }
+            Debug.Log(moveSpeedFactor);
             if (agent.pathPending)
             {
                 //等待路径计算完成

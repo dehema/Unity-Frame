@@ -17,7 +17,7 @@ namespace Rain.RTS.Core
         {
             this.unit = unit;
             this.animator = unit.animator;
-            Debug.Log($"[ {unit.Data.Name} ] 进入【 {stateType} 】状态 ");
+            //Debug.Log($"[ {unit.Data.Name} ] 进入【 {stateType} 】状态 ");
         }
 
         public virtual void Update()
@@ -27,7 +27,7 @@ namespace Rain.RTS.Core
 
         public virtual void Exit()
         {
-            Debug.Log($"[ {unit.Data.Name} ] 退出【 {stateType} 】状态 ");
+            //Debug.Log($"[ {unit.Data.Name} ] 退出【 {stateType} 】状态 ");
         }
 
         public abstract void UpdateState();
