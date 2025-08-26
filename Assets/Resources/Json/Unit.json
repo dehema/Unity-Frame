@@ -207,7 +207,7 @@
       "value_pre": 5,
       "upkeep": 1,
       "race": "Human",
-      "fullID": "Human_Cavalry _1"
+      "fullID": "Human_Cavalry_1"
     },
     {
       "ID": 1302,
@@ -226,7 +226,7 @@
       "value_pre": 5,
       "upkeep": 1,
       "race": "Human",
-      "fullID": "Human_Cavalry _1"
+      "fullID": "Human_Cavalry_1"
     },
     {
       "ID": 1303,
@@ -245,7 +245,7 @@
       "value_pre": 5,
       "upkeep": 1,
       "race": "Human",
-      "fullID": "Human_Cavalry _1"
+      "fullID": "Human_Cavalry_1"
     },
     {
       "ID": 1304,
@@ -264,7 +264,7 @@
       "value_pre": 5,
       "upkeep": 1,
       "race": "Human",
-      "fullID": "Human_Cavalry _1"
+      "fullID": "Human_Cavalry_1"
     },
     {
       "ID": 1305,
@@ -283,7 +283,7 @@
       "value_pre": 5,
       "upkeep": 1,
       "race": "Human",
-      "fullID": "Human_Cavalry _1"
+      "fullID": "Human_Cavalry_1"
     }
   ]
 }

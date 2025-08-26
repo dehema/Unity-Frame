@@ -28,7 +28,7 @@ public partial class RTSUnitTestView : BaseView
         //场景默认创建一个假人
         ui.btAddDummy_Button.onClick.Invoke();
         //一个士兵
-        btUnits[5].onClick.Invoke();
+        btUnits[10].onClick.Invoke();
     }
 
     void AddDummy()

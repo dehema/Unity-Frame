@@ -1050,7 +1050,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 197908, guid: 892bd1c95e4ec2f43a7e0a49c68f27f1, type: 3}
       propertyPath: m_Name
-      value: TT_Heavy_Cavalry Variant
+      value: Human_Cavalry_1
       objectReference: {fileID: 0}
     - target: {fileID: 197908, guid: 892bd1c95e4ec2f43a7e0a49c68f27f1, type: 3}
       propertyPath: m_Layer
@@ -1103,7 +1103,7 @@ PrefabInstance:
     - target: {fileID: 9597688, guid: 892bd1c95e4ec2f43a7e0a49c68f27f1, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 44ba79522e94b4f48ac1ceace8d26bb8, type: 2}
+      objectReference: {fileID: 9100000, guid: 1efe5085ff7bea842a51423bf7ddd16c, type: 2}
     - target: {fileID: 492924484778780681, guid: 892bd1c95e4ec2f43a7e0a49c68f27f1, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -1187,9 +1187,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 197908, guid: 892bd1c95e4ec2f43a7e0a49c68f27f1, type: 3}
       insertIndex: -1
       addedObject: {fileID: -1449612984189435342}
-    - targetCorrespondingSourceObject: {fileID: 197908, guid: 892bd1c95e4ec2f43a7e0a49c68f27f1, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: -5781649665193525935}
   m_SourcePrefab: {fileID: 100100000, guid: 892bd1c95e4ec2f43a7e0a49c68f27f1, type: 3}
 --- !u!1 &4822488130447553901 stripped
 GameObject:
@@ -1219,35 +1216,3 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-5781649665193525935
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4822488130447553901}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75e710cd043985d4087e2115182f7062, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attackTarget: {fileID: 0}
-  animator: {fileID: 0}
-  _data:
-    unitId: 0
-    isPlayerUnit: 0
-    hp: 0
-    moveSpeed: 0
-    runSpeed: 0
-    rotationSpeed: 0
-    attack: 0
-    attackRange: 0
-    attackInterval: 0
-    maxHealth: 100
-    faction: 0
-    currentHealth: 0
-    isDead: 0
-    targetPosition: {x: 0, y: 0, z: 0}
-    targetEnemy: {fileID: 0}
-    attackTimer: 0
-  moveController: {fileID: 0}
