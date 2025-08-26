@@ -174,16 +174,25 @@ namespace Rain.RTS.Core
                 if (owner.IsEnemy(hitUnit))
                 {
                     hitAction?.Invoke(hitUnit);
-
-                    // 回收投射物
-                    Collect();
                 }
             }
-            else
+            Collect();
+        }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (!isInited) return;
+            // 检查是否碰到了目标单位
+            BaseBattleUnit hitUnit = collision.gameObject.GetComponent<BaseBattleUnit>();
+            if (hitUnit != null)
             {
-                // 碰到了其他物体（地形、障碍物等）
-                Collect();
+                // 敌人检测
+                if (owner.IsEnemy(hitUnit))
+                {
+                    hitAction?.Invoke(hitUnit);
+                }
             }
+            Collect();
         }
     }
 }
