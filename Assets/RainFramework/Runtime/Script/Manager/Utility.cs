@@ -9,9 +9,9 @@ using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using DG.Tweening;
 using Newtonsoft.Json;
-using Rain.UI;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 namespace Rain.Core
 {
@@ -75,6 +75,7 @@ namespace Rain.Core
             }
         }
         #endregion
+
 
         /// <summary>
         /// 十六进制转颜色

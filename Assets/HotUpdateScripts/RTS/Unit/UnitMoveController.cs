@@ -13,22 +13,20 @@ namespace Rain.RTS.Core
         public NavMeshAgent agent;
         private UnitData data; // 引用角色数据
 
-
-
         public void Init()
         {
             agent = GetComponent<NavMeshAgent>() ?? gameObject.AddComponent<NavMeshAgent>();
+            agent.speed = this.data.moveSpeed;
+            agent.updateRotation = false;                       // 禁用自动旋转，由脚本控制
+            agent.stoppingDistance = 0.1f;
+            agent.acceleration = 999;
+            agent.height = data.UnitConfig.height;
         }
 
         // 初始化：关联角色数据并设置初始速度
         public void InitData(UnitData _data)
         {
             this.data = _data;
-
-            agent.speed = this.data.moveSpeed;
-            agent.updateRotation = false;                       // 禁用自动旋转，由脚本控制
-            agent.stoppingDistance = 0.1f;
-            agent.acceleration = 999;
         }
 
         // 移动到目标点

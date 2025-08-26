@@ -10,7 +10,7 @@ namespace Rain.RTS.Core
     /// </summary>
     public class ArrowAttackStrategy : IAttackStrategy
     {
-        private float speed = 15f;
+        private float speed = 20f;
         public static ObjPool arrowPool;
         BaseBattleUnit attacker;
 
@@ -47,7 +47,7 @@ namespace Rain.RTS.Core
             projectile.SetCollectAction(SetCollectAction);
             projectile.SetHitAction(SetHitAction);
             projectile.Init(_attacker, _target, speed);
-            Debug.Log($"{_attacker.UnitName}向{_target.UnitName}射箭");
+            Debug.Log($"[{_attacker.UnitName}] 向 [{_target.UnitName}] 射箭");
         }
 
         public void SetCollectAction(GameObject _go)
@@ -58,7 +58,7 @@ namespace Rain.RTS.Core
         public void SetHitAction(BaseBattleUnit _unit)
         {
             _unit.Hurt(attacker.Data.attack);
-            Debug.Log($"{attacker.UnitName}的箭命中了{_unit.UnitName}");
+            Debug.Log($"[{attacker.UnitName}] 的箭命中了 [{_unit.UnitName}] ,造成 [{attacker.Data.attack}] 点伤害");
         }
     }
 }

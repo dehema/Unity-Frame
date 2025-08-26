@@ -101,11 +101,20 @@ namespace Rain.RTS.Core
             {
                 Debug.Log($"BattleUnit找不到[碰撞体]组件");
             }
+            if (unitCollider is CapsuleCollider)
+            {
+                CapsuleCollider capsuleCollider = unitCollider as CapsuleCollider;
+                capsuleCollider.height = Data.UnitConfig.height;
+                capsuleCollider.center = new Vector3(0, Data.UnitConfig.height / 2, 0);
+            }
             moveController = GetComponent<UnitMoveController>() ?? gameObject.AddComponent<UnitMoveController>();
             if (moveController == null)
             {
                 Debug.Log($"BattleUnit找不到[UnitMoveController]组件");
             }
+            moveController.InitData(Data);
+            moveController.Init();
+
             bodyPart = GetComponent<UnitBodyPart>();
 
             // 状态机
@@ -113,22 +122,19 @@ namespace Rain.RTS.Core
 
             // 初始化攻击策略
             InitAttackStrategy();
-        }
-
-        public virtual void InitData(UnitConfig unitConfig)
-        {
-            _data = new UnitData();
-            Data.Init(unitConfig);
-            moveController.Init();
-            moveController.InitData(Data);
-
-            gameObject.name = $"{Data.unitType}_{Data.unitId}";
 
             // 注册到战斗管理器
             BattleMgr.Ins.RegisterUnit(this);
 
             // 初始状态为空闲
             stateMachine.ChangeState(new IdleState());
+        }
+
+        public virtual void InitData(UnitConfig unitConfig)
+        {
+            _data = new UnitData();
+            Data.Init(unitConfig);
+            gameObject.name = $"{Data.unitType}_{Data.unitId}";
         }
 
         /// <summary>
@@ -188,7 +194,7 @@ namespace Rain.RTS.Core
         /// </summary>
         public virtual void Attack()
         {
-            Debug.Log($"{Data.Name}攻击了{AttackTarget.Data.Name}");
+            Debug.Log($"[{Data.Name}] 攻击了 [{AttackTarget.Data.Name}]");
             AttackTimer = Time.time;
         }
 

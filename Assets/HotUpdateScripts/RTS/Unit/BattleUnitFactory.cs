@@ -64,8 +64,8 @@ namespace Rain.RTS.Core
 
             if (unit != null)
             {
-                unit.Init();
                 unit.InitData(unitConfig);
+                unit.Init();
             }
 
             return unit;

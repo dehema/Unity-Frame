@@ -1,17 +1,18 @@
 using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Rain.RTS.Core
 {
     /// <summary>
     /// 投射物控制器，用于处理箭矢、魔法弹等投射物的行为
     /// </summary>
-    [RequireComponent(typeof(Collider))]
+    [RequireComponent(typeof(Collider), typeof(Rigidbody))]
     public class ProjectileController : MonoBehaviour
     {
         private BaseBattleUnit owner;        // 发射者
         private BaseBattleUnit target;       // 目标
-        private float speed = 15f;           // 飞行速度
+        private float speed = 0;           // 飞行速度
         private bool isInited = false;
         private float maxLifetime = 5f;       // 最大生命周期，防止永远不会销毁
         private float lifeTime = 0f;
@@ -43,6 +44,8 @@ namespace Rain.RTS.Core
                     rigidbody = gameObject.AddComponent<Rigidbody>();
                 }
                 rigidbody.useGravity = false;
+                rigidbody.isKinematic = false; // 确保不是运动学刚体，以便能够触发碰撞
+                rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous; // 使用连续碰撞检测，防止高速穿透
             }
 
             owner = _owner;
@@ -54,6 +57,8 @@ namespace Rain.RTS.Core
             // 记录起始位置和目标位置
             startPos = transform.position;
             targetPos = _target.transform.position;
+            // 精度散布
+            targetPos += new Vector3(Random.Range(-0.5f, 0.5f), target.Data.UnitConfig.height / 2, Random.Range(-0.5f, 0.5f));
 
             // 重置飞行进度
             flightProgress = 0f;
@@ -120,9 +125,6 @@ namespace Rain.RTS.Core
                 return;
             }
 
-            // 更新目标位置（目标可能在移动）
-            targetPos = target.transform.position + new Vector3(0, target.Data.UnitConfig.height / 2, 0);
-
             // 计算抛物线轨迹
             UpdateParabolicTrajectory();
         }
@@ -143,23 +145,17 @@ namespace Rain.RTS.Core
             float heightOffset = Mathf.Sin(flightProgress * Mathf.PI) * arcHeight;
             currentPos.y += heightOffset;
 
-            // 更新位置
-            transform.position = currentPos;
+            // 计算移动方向和速度
+            Vector3 direction = (currentPos - transform.position).normalized;
+            Vector3 velocity = direction * speed;
+
+            // 使用刚体移动，而不是直接修改transform位置
+            rigidbody.velocity = velocity;
 
             // 更新朝向（始终朝向飞行方向）
-            if (flightProgress < 1.0f)
+            if (direction != Vector3.zero)
             {
-                // 计算下一帧的位置来确定方向
-                float nextProgress = Mathf.Clamp01(flightProgress + 0.01f);
-                Vector3 nextPos = Vector3.Lerp(startPos, targetPos, nextProgress);
-                nextPos.y += Mathf.Sin(nextProgress * Mathf.PI) * arcHeight;
-
-                // 朝向下一个位置
-                Vector3 direction = (nextPos - transform.position).normalized;
-                if (direction != Vector3.zero)
-                {
-                    transform.rotation = Quaternion.LookRotation(direction);
-                }
+                transform.rotation = Quaternion.LookRotation(direction);
             }
         }
 
@@ -170,22 +166,11 @@ namespace Rain.RTS.Core
             BaseBattleUnit hitUnit = other.gameObject.GetComponent<BaseBattleUnit>();
             if (hitUnit != null)
             {
-                // 敌人检测
-                if (owner.IsEnemy(hitUnit))
+                //自己
+                if (hitUnit == owner)
                 {
-                    hitAction?.Invoke(hitUnit);
+                    return;
                 }
-            }
-            Collect();
-        }
-
-        private void OnCollisionEnter(Collision collision)
-        {
-            if (!isInited) return;
-            // 检查是否碰到了目标单位
-            BaseBattleUnit hitUnit = collision.gameObject.GetComponent<BaseBattleUnit>();
-            if (hitUnit != null)
-            {
                 // 敌人检测
                 if (owner.IsEnemy(hitUnit))
                 {
