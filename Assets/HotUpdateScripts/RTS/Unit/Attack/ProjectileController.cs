@@ -7,7 +7,6 @@ namespace Rain.RTS.Core
     /// <summary>
     /// 投射物控制器，用于处理箭矢、魔法弹等投射物的行为
     /// </summary>
-    [RequireComponent(typeof(Collider), typeof(Rigidbody))]
     public class ProjectileController : MonoBehaviour
     {
         private BaseBattleUnit owner;        // 发射者
@@ -26,7 +25,9 @@ namespace Rain.RTS.Core
 
         private Action<GameObject> collectAction;    // 回收回调
         private Action<BaseBattleUnit> hitAction;    // 击中回调
-        Rigidbody rigidbody;
+        Rigidbody rigid;
+        DireType direType = DireType.Follow;
+        Collider collider;
 
         /// <summary>
         /// 初始化投射物
@@ -36,16 +37,21 @@ namespace Rain.RTS.Core
         /// <param name="_speed">飞行速度</param>
         public void Init(BaseBattleUnit _owner, BaseBattleUnit _target, float _speed)
         {
-            if (rigidbody == null)
+            if (rigid == null)
             {
-                rigidbody = GetComponent<Rigidbody>();
-                if (rigidbody == null)
+                rigid = GetComponent<Rigidbody>();
+
+                if (rigid == null)
                 {
-                    rigidbody = gameObject.AddComponent<Rigidbody>();
+                    rigid = gameObject.AddComponent<Rigidbody>();
                 }
-                rigidbody.useGravity = false;
-                rigidbody.isKinematic = false; // 确保不是运动学刚体，以便能够触发碰撞
-                rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous; // 使用连续碰撞检测，防止高速穿透
+                rigid.useGravity = false;
+                rigid.isKinematic = false; // 确保不是运动学刚体，以便能够触发碰撞
+                rigid.collisionDetectionMode = CollisionDetectionMode.Continuous; // 使用连续碰撞检测，防止高速穿透
+            }
+            if (collider == null)
+            {
+                collider = GetComponent<Collider>();
             }
 
             owner = _owner;
@@ -56,15 +62,43 @@ namespace Rain.RTS.Core
 
             // 记录起始位置和目标位置
             startPos = transform.position;
-            targetPos = _target.transform.position;
-            // 精度散布
-            targetPos += new Vector3(Random.Range(-0.5f, 0.5f), target.Data.UnitConfig.height / 2, Random.Range(-0.5f, 0.5f));
+            targetPos = GetTargetPos();
 
             // 重置飞行进度
             flightProgress = 0f;
 
             // 初始朝向目标
             transform.LookAt(targetPos);
+
+            //处理轨迹类型
+
+            if (direType == DireType.Fixed)
+            {
+            }
+            else if (direType == DireType.Follow)
+            {
+                if (rigid != null)
+                {
+                    Destroy(rigid);
+                }
+            }
+            collider.enabled = direType == DireType.Fixed;
+        }
+
+        /// <summary>
+        /// 获得目标点
+        /// </summary>
+        /// <returns></returns>
+        Vector3 GetTargetPos()
+        {
+            Vector3 targetPos = target.transform.position + new Vector3(0, target.Data.UnitConfig.height / 2, 0);
+
+            if (direType == DireType.Fixed)
+            {
+                // 精度散布
+                targetPos += new Vector3(Random.Range(-0.5f, 0.5f), 0, Random.Range(-0.5f, 0.5f));
+            }
+            return targetPos;
         }
 
         /// <summary>
@@ -125,14 +159,22 @@ namespace Rain.RTS.Core
                 return;
             }
 
-            // 计算抛物线轨迹
-            UpdateParabolicTrajectory();
+            if (direType == DireType.Fixed)
+            {
+                // 固定抛物线轨迹
+                UpdateFixedDire();
+            }
+            else if (true)
+            {
+                //跟随抛物线轨迹
+                UpdateFllowDire();
+            }
         }
 
         /// <summary>
-        /// 计算并更新抛物线轨迹
+        /// 固定抛物线轨迹
         /// </summary>
-        private void UpdateParabolicTrajectory()
+        private void UpdateFixedDire()
         {
             // 增加飞行进度
             flightProgress += Time.deltaTime * speed / Vector3.Distance(startPos, targetPos);
@@ -150,12 +192,45 @@ namespace Rain.RTS.Core
             Vector3 velocity = direction * speed;
 
             // 使用刚体移动，而不是直接修改transform位置
-            rigidbody.velocity = velocity;
+            rigid.velocity = velocity;
 
             // 更新朝向（始终朝向飞行方向）
             if (direction != Vector3.zero)
             {
                 transform.rotation = Quaternion.LookRotation(direction);
+            }
+        }
+
+        /// <summary>
+        /// 跟随抛物线轨迹
+        /// </summary>
+        void UpdateFllowDire()
+        {
+            // 获取目标当前位置
+            if (target.isChangePosThisFrame)
+                targetPos = GetTargetPos();
+
+            // 计算方向向量
+            Vector3 direction = (targetPos - transform.position).normalized;
+
+            // 计算本帧移动距离
+            float moveDistance = speed * Time.deltaTime;
+
+            // 直接更新位置
+            transform.position += direction * moveDistance;
+
+            // 更新朝向（始终朝向目标）
+            if (direction != Vector3.zero)
+            {
+                transform.rotation = Quaternion.LookRotation(direction);
+            }
+
+            // 检查是否已经足够接近目标，如果是则触发击中效果
+            float distanceToTarget = Vector3.Distance(transform.position, targetPos);
+            if (distanceToTarget < 0.5f) // 可以根据需要调整这个阈值
+            {
+                hitAction?.Invoke(target);
+                Collect();
             }
         }
 
@@ -179,5 +254,14 @@ namespace Rain.RTS.Core
             }
             Collect();
         }
+    }
+
+    /// <summary>
+    /// 跟随类型
+    /// </summary>
+    public enum DireType
+    {
+        Fixed,  //固定轨迹
+        Follow  //跟随
     }
 }

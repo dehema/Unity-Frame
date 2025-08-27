@@ -14,7 +14,7 @@ namespace Rain.RTS.Core
             {
                 float hurtVal = _attacker.Data.attack * _attacker.Data.damageFactor;
                 _target.Hurt(hurtVal);
-                Debug.Log($"[{_attacker.UnitName}] 近战攻击了 [{_target.UnitName}]，造成 [{hurtVal}] 点伤害");
+                Debug.Log($"[{_attacker.UnitName}] 近战攻击了 [{_target.UnitName}]，造成 [{hurtVal}] 点伤害 (攻击力加成x{_attacker.Data.damageFactor})");
             }
         }
     }
