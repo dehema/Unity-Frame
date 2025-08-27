@@ -10,9 +10,9 @@ namespace Rain.RTS.Core
         public override UnitStateType stateType => UnitStateType.Die;
         int _deadHash = Animator.StringToHash("IsDead");
 
-        public override void Enter(params object[] _param)
+        public override void Enter(BaseBattleUnit unit, params object[] _param)
         {
-            base.Enter(_param);
+            base.Enter(unit, _param);
             unit.Dead();
             animator.SetTrigger(_deadHash);
         }

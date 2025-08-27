@@ -16,9 +16,9 @@ namespace Rain.RTS.Core
         bool isStartAttack = false;     // 是否开始攻击
         AttackStateParam attackStateParam;
 
-        public override void Enter(params object[] _param)
+        public override void Enter(BaseBattleUnit unit, params object[] _param)
         {
-            base.Enter(_param);
+            base.Enter(unit, _param);
             if (_param.Length > 0)
             {
                 attackStateParam = _param[0] as AttackStateParam;

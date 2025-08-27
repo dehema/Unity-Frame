@@ -10,7 +10,6 @@ namespace Rain.RTS.Core
     public class InfantryUnit : BaseBattleUnit
     {
         [Header("步兵特有属性")]
-        [SerializeField] private float chargeSpeed = 1.5f;  // 冲锋速度倍率
         InfantryAttackStrategy infantryAttackStrategy;
 
         protected override void Awake()

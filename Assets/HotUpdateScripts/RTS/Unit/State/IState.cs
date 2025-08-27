@@ -12,7 +12,7 @@ namespace Rain.RTS.Core
         /// 进入状态
         /// </summary>
         /// <param name="unit"></param>
-        void Enter(params object[] _param);
+        void Enter(BaseBattleUnit unit, params object[] _param);
 
         /// <summary>
         /// 每帧更新

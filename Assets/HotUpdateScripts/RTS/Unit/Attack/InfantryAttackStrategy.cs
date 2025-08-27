@@ -12,8 +12,9 @@ namespace Rain.RTS.Core
             // 近战攻击逻辑 - 直接造成伤害
             if (_target != null && !_target.IsDead)
             {
-                _target.Hurt(_attacker.Data.attack * _attacker.Data.damageFactor);
-                Debug.Log($"[{_attacker.UnitName}] 近战攻击了 [{_target.UnitName}]，造成 [{_attacker.Data.attack}] 点伤害");
+                float hurtVal = _attacker.Data.attack * _attacker.Data.damageFactor;
+                _target.Hurt(hurtVal);
+                Debug.Log($"[{_attacker.UnitName}] 近战攻击了 [{_target.UnitName}]，造成 [{hurtVal}] 点伤害");
             }
         }
     }

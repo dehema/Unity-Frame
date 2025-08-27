@@ -13,9 +13,9 @@ namespace Rain.RTS.Core
         protected Animator animator;
         public abstract UnitStateType stateType { get; }
 
-        public virtual void Enter(params object[] _param)
+        public virtual void Enter(BaseBattleUnit unit, params object[] _param)
         {
-            unit = _param[0] as BaseBattleUnit;
+            this.unit = unit;
             animator = unit.animator;
             //Debug.Log($"[ {unit.Data.Name} ] 进入【 {stateType} 】状态 ");
         }

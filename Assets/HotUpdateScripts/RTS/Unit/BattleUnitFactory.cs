@@ -40,7 +40,7 @@ namespace Rain.RTS.Core
                 case UnitType.Cavalry:
                     // 骑兵单位可以在未来实现
                     Debug.LogWarning($"骑兵单位类型尚未实现，使用默认步兵类型: {prefab.name}");
-                    unit = prefab.AddComponent<InfantryUnit>();
+                    unit = prefab.AddComponent<CavalryUnit>();
                     break;
 
                 default:

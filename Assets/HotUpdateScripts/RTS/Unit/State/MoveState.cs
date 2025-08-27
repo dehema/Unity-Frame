@@ -24,9 +24,9 @@ namespace Rain.RTS.Core
         {
         }
 
-        public override void Enter(params object[] _param)
+        public override void Enter(BaseBattleUnit unit, params object[] _param)
         {
-            base.Enter(_param);
+            base.Enter(unit, _param);
             agent = unit.moveController.agent;
 
             // 进入移动状态时启动导航
@@ -68,7 +68,6 @@ namespace Rain.RTS.Core
                     agent.speed = unit.Data.moveSpeed * moveSpeedFactor;
                 }
             }
-            Debug.Log(moveSpeedFactor);
             if (agent.pathPending)
             {
                 //等待路径计算完成

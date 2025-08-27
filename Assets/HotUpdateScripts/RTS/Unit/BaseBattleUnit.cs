@@ -208,6 +208,7 @@ namespace Rain.RTS.Core
                 return;
 
             float lastHp = Data.hp;
+            Debug.Log($"[{UnitName}] 受到 {damage} 点伤害");
             Data.hp -= damage;
             if (Data.hp <= 0)
             {
