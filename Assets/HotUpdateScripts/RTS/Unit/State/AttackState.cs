@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using Rain.Core;
+using UnityEngine;
 
 namespace Rain.RTS.Core
 {
@@ -12,9 +14,15 @@ namespace Rain.RTS.Core
         public override UnitStateType stateType => UnitStateType.Attack;
         AnimatorStateInfo stateInfo;
         bool isStartAttack = false;     // 是否开始攻击
-        public override void Enter(BaseBattleUnit unit)
+        AttackStateParam attackStateParam;
+
+        public override void Enter(params object[] _param)
         {
-            base.Enter(unit);
+            base.Enter(_param);
+            if (_param.Length > 0)
+            {
+                attackStateParam = _param[0] as AttackStateParam;
+            }
             animator = unit.animator;
 
             unit.moveController.Stop();
@@ -57,20 +65,83 @@ namespace Rain.RTS.Core
             // 是否可以攻击
             if (!isStartAttack && unit.CanAttack())
             {
-                animator.SetBool(_isAttackingHash, true);
-                isStartAttack = true;
+                Attack();
                 return;
+            }
+        }
+
+        //攻击计时器ID
+        int attackTimerID;
+        void Attack()
+        {
+            animator.SetBool(_isAttackingHash, true);
+            isStartAttack = true;
+
+            // 设置攻击伤害系数
+            if (attackStateParam != null)
+            {
+                unit.SetDamageFactor(attackStateParam.attackFactor);
+            }
+            else
+            {
+                unit.SetDamageFactor();
+            }
+
+
+            Action action = () =>
+            {
+                unit.Attack();
+            };
+            attackTimerID = TimerMgr.Ins.AddTimer(this, GetAttackDelay(), onComplete: action);
+        }
+
+        float GetAttackDelay()
+        {
+            switch (unit.Data.unitType)
+            {
+                case UnitType.Infantry:
+                default:
+                    return 0.15f;
+                case UnitType.Archer:
+                    return 0.14f;
+                case UnitType.Cavalry:
+                    return 0.12f;
             }
         }
 
         public override void Exit()
         {
-            animator.SetBool(_isAttackingHash, false);
             base.Exit();
+            animator.SetBool(_isAttackingHash, false);
+            TimerMgr.Ins.RemoveTimer(attackTimerID);
         }
 
         public override void UpdateState()
         {
         }
+    }
+
+    /// <summary>
+    /// 攻击状态参数
+    /// </summary>
+    public class AttackStateParam : IBaseStateParam
+    {
+        //public AttackStateParam(BaseBattleUnit _unit)
+        //{
+        //    this.unit = _unit;
+        //}
+
+        //private BaseBattleUnit _unit;
+
+        //public override BaseBattleUnit unit
+        //{
+        //    get => _unit;
+        //    set => _unit = value;
+        //}
+
+        /// <summary>
+        /// 攻击力系数
+        /// </summary>
+        public float attackFactor = 1;
     }
 }

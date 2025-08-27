@@ -18,9 +18,9 @@ namespace Rain.RTS.Core
             _previousState = previousState;
         }
 
-        public override void Enter(BaseBattleUnit unit)
+        public override void Enter(params object[] _param)
         {
-            base.Enter(unit);
+            base.Enter(_param);
             _enterTime = Time.time;
             animator = unit.animator;
             // 播放受伤动画

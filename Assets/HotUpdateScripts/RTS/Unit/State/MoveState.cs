@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
-using static UnityEngine.UI.CanvasScaler;
+
 
 namespace Rain.RTS.Core
 {
@@ -24,9 +24,9 @@ namespace Rain.RTS.Core
         {
         }
 
-        public override void Enter(BaseBattleUnit unit)
+        public override void Enter(params object[] _param)
         {
-            base.Enter(unit);
+            base.Enter(_param);
             agent = unit.moveController.agent;
 
             // 进入移动状态时启动导航
@@ -88,7 +88,7 @@ namespace Rain.RTS.Core
                 //到达攻击范围
                 if (unit.IsTargetInAttackRange())
                 {
-                    unit.stateMachine.ChangeState(new AttackState());
+                    Attack();
                     return;
                 }
                 //到目的地但是敌人逃出攻击范围
@@ -103,6 +103,20 @@ namespace Rain.RTS.Core
             }
             // 面向移动方向
             RotateTowards(unit.transform, agent.velocity.normalized);
+        }
+
+        void Attack()
+        {
+            AttackStateParam attackStateParam = new AttackStateParam();
+            if (unit.Data.UnitConfig.unitType == UnitType.Cavalry)
+            {
+                attackStateParam.attackFactor = 1 + moveSpeedFactor;
+            }
+            else
+            {
+                attackStateParam.attackFactor = moveSpeedFactor;
+            }
+            unit.stateMachine.ChangeState(new AttackState(), attackStateParam);
         }
 
         public override void Exit()

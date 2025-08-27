@@ -32,11 +32,11 @@ namespace Rain.RTS.Core
         }
 
         // 切换状态
-        public void ChangeState(BaseState newState)
+        public void ChangeState(BaseState newState, params object[] _param)
         {
             currentState?.Exit();
             currentState = newState;
-            currentState?.Enter(_unit);
+            currentState?.Enter(_unit, _param);
         }
 
         // 每帧更新状态

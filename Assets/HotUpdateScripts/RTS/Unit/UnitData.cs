@@ -28,7 +28,7 @@ namespace Rain.RTS.Core
         public UnitType unitType;       // 单位类型
 
         [Header("运行时状态")]
-        public int hp;                  // 生命值
+        public float hp;                  // 生命值
         public bool isDead = false;     // 是否死亡
         private Vector3? movePos;       // 目标位置
         public Vector3? MovePos { get => movePos; set => movePos = value; }
@@ -36,6 +36,7 @@ namespace Rain.RTS.Core
         public BaseBattleUnit AttackTarget { get => attackTarget; set => attackTarget = value; }
         public float attackTimer;        // 上次攻击时间
         public const float walkRange = 3;// 切换走路的距离
+        public float damageFactor = 1.0f;// 伤害系数属性
 
         [Header("运行时状态")]
         /// <summary>

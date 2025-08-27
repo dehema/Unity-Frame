@@ -1,3 +1,5 @@
+using System;
+using Rain.Core;
 using UnityEngine;
 
 namespace Rain.RTS.Core

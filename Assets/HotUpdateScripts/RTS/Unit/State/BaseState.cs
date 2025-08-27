@@ -13,10 +13,10 @@ namespace Rain.RTS.Core
         protected Animator animator;
         public abstract UnitStateType stateType { get; }
 
-        public virtual void Enter(BaseBattleUnit unit)
+        public virtual void Enter(params object[] _param)
         {
-            this.unit = unit;
-            this.animator = unit.animator;
+            unit = _param[0] as BaseBattleUnit;
+            animator = unit.animator;
             //Debug.Log($"[ {unit.Data.Name} ] 进入【 {stateType} 】状态 ");
         }
 
@@ -31,5 +31,10 @@ namespace Rain.RTS.Core
         }
 
         public abstract void UpdateState();
+    }
+
+    public abstract class IBaseStateParam
+    {
+        //public abstract BaseBattleUnit unit { get; set; }
     }
 }

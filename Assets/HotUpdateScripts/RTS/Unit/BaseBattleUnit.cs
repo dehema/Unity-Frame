@@ -41,7 +41,7 @@ namespace Rain.RTS.Core
         /// <summary>
         /// 攻击策略
         /// </summary>
-        protected IAttackStrategy attackStrategy;
+        public IAttackStrategy attackStrategy;
 
         /// <summary>
         /// 上次的位置
@@ -202,7 +202,7 @@ namespace Rain.RTS.Core
         /// 受到伤害
         /// </summary>
         /// <param name="damage"></param>
-        public virtual void Hurt(int damage)
+        public virtual void Hurt(float damage)
         {
             if (Data.isDead)
                 return;
@@ -315,6 +315,15 @@ namespace Rain.RTS.Core
             // 检查距离是否在攻击范围内
             bool isTargetInAttackRange = IsTargetInAttackRange();
             return isTargetInAttackRange;
+        }
+
+        /// <summary>
+        /// 伤害系数
+        /// </summary>
+        /// <param name="_damageFactor"></param>
+        public void SetDamageFactor(float _damageFactor = 1)
+        {
+            Data.damageFactor = _damageFactor;
         }
     }
 }
