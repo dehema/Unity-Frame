@@ -1,4 +1,6 @@
 using System;
+using System.Threading;
+using Rain.Core;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -23,8 +25,9 @@ namespace Rain.RTS.Core
         private float flightProgress = 0f;   // 飞行进度(0-1)
 
 
-        private Action<GameObject> collectAction;    // 回收回调
-        private Action<BaseBattleUnit> hitAction;    // 击中回调
+        private Action<GameObject> collectTraceAction;      // 轨迹回收回调
+        ObjPool hitEffectPool;                              // 命中特效对象池
+        private Action<BaseBattleUnit> hitAction;           // 击中回调
         Rigidbody rigid;
         DireType direType = DireType.Follow;
         Collider collider;
@@ -107,12 +110,17 @@ namespace Rain.RTS.Core
         /// <param name="action">回收回调函数</param>
         public void SetCollectAction(Action<GameObject> action)
         {
-            collectAction = action;
+            collectTraceAction = action;
         }
 
         public void SetHitAction(Action<BaseBattleUnit> action)
         {
             hitAction = action;
+        }
+
+        public void SetHitEffectPool(ObjPool _hitEffectPool)
+        {
+            hitEffectPool = _hitEffectPool;
         }
 
         /// <summary>
@@ -122,13 +130,37 @@ namespace Rain.RTS.Core
         {
             isInited = false;
 
-            if (collectAction != null)
+            if (collectTraceAction != null)
             {
-                collectAction(gameObject);
+                collectTraceAction(gameObject);
             }
             else
             {
                 Destroy(gameObject);
+            }
+        }
+
+        /// <summary>
+        /// 击中
+        /// </summary>
+        private void Hit()
+        {
+            ///
+            hitAction?.Invoke(target);
+            if (hitEffectPool == null)
+            {
+                Collect();
+            }
+            else
+            {
+                GameObject hitEffect = hitEffectPool.Get();
+                hitEffect.transform.SetParent(transform);
+                hitEffect.transform.position = Vector3.zero;
+                TimerMgr.Ins.AddTimer(this, 2f, onComplete: () =>
+                {
+                    hitEffectPool.CollectOne(hitEffect);
+                    Collect();
+                });
             }
         }
 
@@ -229,8 +261,7 @@ namespace Rain.RTS.Core
             float distanceToTarget = Vector3.Distance(transform.position, targetPos);
             if (distanceToTarget < 0.5f) // 可以根据需要调整这个阈值
             {
-                hitAction?.Invoke(target);
-                Collect();
+                Hit();
             }
         }
 

@@ -12,6 +12,11 @@ public class AllUnitConfig : ConfigBase
             item.unitType = (UnitType)Enum.Parse(typeof(UnitType), item._unitType);
         }
     }
+
+    public UnitConfig GetUnitConfig(int _id)
+    {
+        return unit.Find(u => u.ID == _id);
+    }
 }
 
 public class UnitConfig
@@ -125,7 +130,11 @@ public enum UnitType
     /// <summary>
     /// 骑兵
     /// </summary>
-    Cavalry
+    Cavalry,
+    /// <summary>
+    /// 魔法师
+    /// </summary>
+    Mage,
 }
 
 public enum Faction

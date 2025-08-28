@@ -29,22 +29,19 @@ namespace Rain.RTS.Core
             {
                 case UnitType.Infantry:
                     unit = prefab.AddComponent<InfantryUnit>();
-                    Debug.Log($"创建步兵单位: {prefab.name}");
                     break;
 
                 case UnitType.Archer:
                     unit = prefab.AddComponent<ArcherUnit>();
-                    Debug.Log($"创建弓箭手单位: {prefab.name}");
                     break;
-
                 case UnitType.Cavalry:
-                    // 骑兵单位可以在未来实现
-                    Debug.LogWarning($"骑兵单位类型尚未实现，使用默认步兵类型: {prefab.name}");
                     unit = prefab.AddComponent<CavalryUnit>();
                     break;
-
+                case UnitType.Mage:
+                    unit = prefab.AddComponent<MageUnit>();
+                    break;
                 default:
-                    Debug.LogWarning($"未知单位类型 {unitType}，使用默认步兵类型: {prefab.name}");
+                    Debug.LogError($"未知单位类型 {unitType}，使用默认步兵类型: {prefab.name}");
                     unit = prefab.AddComponent<InfantryUnit>();
                     break;
             }

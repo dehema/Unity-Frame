@@ -3,11 +3,16 @@ using System.Collections.Generic;
 using Rain.RTS.Core;
 using UnityEngine;
 
-public class MageAttackStrategy : MonoBehaviour
+/// <summary>
+/// 魔法师攻击策略
+/// </summary>
+public class MageAttackStrategy : IAttackStrategy
 {
     private float speed = 10f;
+    // 轨迹
     public static ObjPool trackPool;
-    public static ObjPool explodePool;
+    // 爆炸
+    public static ObjPool hitEffectPool;
     BaseBattleUnit attacker;
 
     public void SetProjectilePrefabPath(string _arrowPath)
@@ -17,11 +22,11 @@ public class MageAttackStrategy : MonoBehaviour
             trackPool.Clear();
         }
         trackPool = PoolMgr.Ins.CreatePoolFromPath("FX/JMO Assets/Cartoon FX Remaster/CFXR Prefabs/Light/CFXR3 LightGlow A (Loop)");
-        if (explodePool != null)
+        if (hitEffectPool != null)
         {
-            explodePool.Clear();
+            hitEffectPool.Clear();
         }
-        explodePool = PoolMgr.Ins.CreatePoolFromPath("FX/JMO Assets/Cartoon FX Remaster/CFXR Prefabs/Light/CFXR3 Hit Fire B");
+        hitEffectPool = PoolMgr.Ins.CreatePoolFromPath("FX/JMO Assets/Cartoon FX Remaster/CFXR Prefabs/Light/CFXR3 Hit Fire B");
     }
 
 
@@ -43,8 +48,9 @@ public class MageAttackStrategy : MonoBehaviour
         }
         projectile.SetCollectAction(SetCollectAction);
         projectile.SetHitAction(SetHitAction);
+        projectile.SetHitEffectPool(hitEffectPool);
         projectile.Init(_attacker, _target, speed);
-        Debug.Log($"[{_attacker.UnitName}] 向 [{_target.UnitName}] 射箭");
+        Debug.Log($"[{_attacker.UnitName}] 向 [{_target.UnitName}] 发起了魔法攻击");
     }
 
     public void SetCollectAction(GameObject _go)
@@ -55,6 +61,6 @@ public class MageAttackStrategy : MonoBehaviour
     public void SetHitAction(BaseBattleUnit _unit)
     {
         _unit.Hurt(attacker.Data.attack);
-        Debug.Log($"[{attacker.UnitName}] 的箭命中了 [{_unit.UnitName}] ,造成 [{attacker.Data.attack}] 点伤害");
+        Debug.Log($"[{attacker.UnitName}] 的魔法攻击命中了 [{_unit.UnitName}] ,造成 [{attacker.Data.attack}] 点伤害");
     }
 }

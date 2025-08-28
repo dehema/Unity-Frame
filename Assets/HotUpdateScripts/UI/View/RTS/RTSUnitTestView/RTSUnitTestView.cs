@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using DG.Tweening;
 using Rain.Core;
 using Rain.RTS.Core;
@@ -28,7 +29,7 @@ public partial class RTSUnitTestView : BaseView
         //场景默认创建一个假人
         ui.btAddDummy_Button.onClick.Invoke();
         //一个士兵
-        btUnits[10].onClick.Invoke();
+        btUnits[3].onClick.Invoke();
     }
 
     void AddDummy()
@@ -41,9 +42,10 @@ public partial class RTSUnitTestView : BaseView
     void InitUnitList()
     {
         unitPool = PoolMgr.Ins.CreatePool(ui.unitItem);
-
-        foreach (UnitConfig _unitConfig in ConfigMgr.Ins.allUnitConfig.unit)
+        List<int> idList = new List<int>() { 1101, 1201, 1301, 1401 };
+        foreach (int _id in idList)
         {
+            UnitConfig _unitConfig = ConfigMgr.Ins.allUnitConfig.GetUnitConfig(_id);
             UnitConfig unitConfig = new UnitConfig(_unitConfig);
             GameObject item = unitPool.Get();
             Text textName = item.transform.Find("text").GetComponent<Text>();

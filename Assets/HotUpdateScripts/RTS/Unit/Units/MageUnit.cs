@@ -1,16 +1,14 @@
-using System;
-using Rain.Core;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Rain.RTS.Core
 {
     /// <summary>
     /// 步兵单位类，使用近战攻击策略
     /// </summary>
-    public class InfantryUnit : BaseBattleUnit
+    public class MageUnit : BaseBattleUnit
     {
         [Header("步兵特有属性")]
-        InfantryAttackStrategy infantryAttackStrategy;
+        MageAttackStrategy mageAttackStrategy;
 
         protected override void Awake()
         {
@@ -24,8 +22,8 @@ namespace Rain.RTS.Core
 
         protected override void InitAttackStrategy()
         {
-            attackStrategy = new InfantryAttackStrategy();
-            infantryAttackStrategy = attackStrategy as InfantryAttackStrategy;
+            attackStrategy = new MageAttackStrategy();
+            mageAttackStrategy = attackStrategy as MageAttackStrategy;
         }
 
         public override void Attack()
@@ -33,7 +31,7 @@ namespace Rain.RTS.Core
             base.Attack();
             if (Data.AttackTarget != null && !Data.AttackTarget.IsDead && IsEnemy(Data.AttackTarget))
             {
-                infantryAttackStrategy.Attack(this, Data.AttackTarget);
+                mageAttackStrategy.Attack(this, Data.AttackTarget, bodyPart.shootPos.transform.position);
             }
         }
     }
