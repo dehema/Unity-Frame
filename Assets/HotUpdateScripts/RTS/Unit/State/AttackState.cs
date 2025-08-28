@@ -92,7 +92,7 @@ namespace Rain.RTS.Core
             {
                 unit.Attack();
             };
-            attackTimerID = TimerMgr.Ins.AddTimer(this, GetAttackDelay(), onComplete: action);
+            attackTimerID = TimerMgr.Ins.AddTimer(this, delay: GetAttackDelay(), onComplete: action);
         }
 
         float GetAttackDelay()

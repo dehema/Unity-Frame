@@ -24,7 +24,11 @@ namespace Rain.RTS.Core
             {
                 arrowPool.Clear();
             }
-            arrowPool = PoolMgr.Ins.CreatePoolFromPath(_arrowPath);
+            else
+            {
+                //PoolMgr.Ins.DestroyPool(arrowPool.id);
+                arrowPool = PoolMgr.Ins.CreatePoolFromPath(_arrowPath);
+            }
         }
 
 

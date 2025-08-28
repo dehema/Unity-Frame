@@ -28,6 +28,7 @@ namespace Rain.RTS.Core
             switch (unitType)
             {
                 case UnitType.Infantry:
+                case UnitType.Dummy:
                     unit = prefab.AddComponent<InfantryUnit>();
                     break;
 

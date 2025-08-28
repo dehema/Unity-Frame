@@ -9,6 +9,8 @@ namespace Rain.RTS.Core
     {
         [Header("步兵特有属性")]
         MageAttackStrategy mageAttackStrategy;
+        const string trackPrefabPath = "FX/LightGlow";
+        const string hitEffectPrefabPath = "FX/Hit Fire";
 
         protected override void Awake()
         {
@@ -24,6 +26,8 @@ namespace Rain.RTS.Core
         {
             attackStrategy = new MageAttackStrategy();
             mageAttackStrategy = attackStrategy as MageAttackStrategy;
+            mageAttackStrategy.SetTrackPrefabPath(trackPrefabPath);
+            mageAttackStrategy.SetHitEffectPrefabPath(hitEffectPrefabPath);
         }
 
         public override void Attack()

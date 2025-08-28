@@ -74,7 +74,6 @@ namespace Rain.RTS.Core
             transform.LookAt(targetPos);
 
             //处理轨迹类型
-
             if (direType == DireType.Fixed)
             {
             }
@@ -85,7 +84,10 @@ namespace Rain.RTS.Core
                     Destroy(rigid);
                 }
             }
-            collider.enabled = direType == DireType.Fixed;
+            if (collider != null)
+            {
+                collider.enabled = direType == DireType.Fixed;
+            }
         }
 
         /// <summary>
@@ -154,9 +156,9 @@ namespace Rain.RTS.Core
             else
             {
                 GameObject hitEffect = hitEffectPool.Get();
-                hitEffect.transform.SetParent(transform);
-                hitEffect.transform.position = Vector3.zero;
-                TimerMgr.Ins.AddTimer(this, 2f, onComplete: () =>
+                gameObject.SetActive(false);
+                hitEffect.transform.position = transform.position;
+                TimerMgr.Ins.AddTimer(this, delay: 2f, onComplete: () =>
                 {
                     hitEffectPool.CollectOne(hitEffect);
                     Collect();

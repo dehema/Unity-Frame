@@ -15,18 +15,30 @@ public class MageAttackStrategy : IAttackStrategy
     public static ObjPool hitEffectPool;
     BaseBattleUnit attacker;
 
-    public void SetProjectilePrefabPath(string _arrowPath)
+    public void SetTrackPrefabPath(string _path)
     {
         if (trackPool != null)
         {
             trackPool.Clear();
         }
-        trackPool = PoolMgr.Ins.CreatePoolFromPath("FX/JMO Assets/Cartoon FX Remaster/CFXR Prefabs/Light/CFXR3 LightGlow A (Loop)");
+        else
+        {
+            //PoolMgr.Ins.DestroyPool(trackPool.id);
+            trackPool = PoolMgr.Ins.CreatePoolFromPath("FX/LightGlow");
+        }
+    }
+
+    public void SetHitEffectPrefabPath(string _path)
+    {
         if (hitEffectPool != null)
         {
             hitEffectPool.Clear();
         }
-        hitEffectPool = PoolMgr.Ins.CreatePoolFromPath("FX/JMO Assets/Cartoon FX Remaster/CFXR Prefabs/Light/CFXR3 Hit Fire B");
+        else
+        {
+            //PoolMgr.Ins.DestroyPool(hitEffectPool.id);
+            hitEffectPool = PoolMgr.Ins.CreatePoolFromPath("FX/Hit Fire");
+        }
     }
 
 

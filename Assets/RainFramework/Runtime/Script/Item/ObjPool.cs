@@ -7,6 +7,10 @@ using UnityEngine;
 public class ObjPool
 {
     /// <summary>
+    /// id
+    /// </summary>
+    public string id;
+    /// <summary>
     /// 已激活对象列表 - 当前正在使用的对象
     /// </summary>
     public List<GameObject> activePool = new List<GameObject>();
