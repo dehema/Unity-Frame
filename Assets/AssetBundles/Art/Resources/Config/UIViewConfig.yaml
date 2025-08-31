@@ -114,4 +114,9 @@ view:
             layer: MenuLayer
             bgColor: "#00000000"
             hasBg: false
+        RTSBattleDeployView:
+            comment: 战斗部署
+            layer: NormalLayer
+            bgColor: "#00000000"
+            hasBg: false
         
