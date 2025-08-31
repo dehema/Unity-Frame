@@ -1,7 +1,5 @@
 using System;
-using System.Xml.Linq;
 using Rain.Core;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -192,7 +190,7 @@ namespace Rain.RTS.Core
         /// <summary>
         /// 执行攻击
         /// </summary>
-        public virtual void Attack()
+        public virtual void PerformAttackOrder()
         {
             Debug.Log($"[{Data.Name}] 攻击了 [{AttackTarget.Data.Name}]");
             AttackTimer = Time.time;
@@ -326,5 +324,71 @@ namespace Rain.RTS.Core
         {
             Data.damageFactor = _damageFactor;
         }
+
+        /// <summary>
+        /// 移动（会切换状态机）
+        /// </summary>
+        /// <param name="_targetPos"></param>
+        public void UnitMoveAndChangeState(Vector3 _targetPos)
+        {
+            if (!IsAlive())
+            {
+                return;
+            }
+            if (stateMachine.currentState.stateType != UnitStateType.Move)
+            {
+                SetMoveTarget(_targetPos);
+                stateMachine.ChangeState(new MoveState());
+            }
+            else
+            {
+                MoveState moveState = stateMachine.currentState as MoveState;
+                moveState.MoveTo(_targetPos);
+            }
+        }
+
+        /// <summary>
+        /// 攻击（会切换状态机）
+        /// </summary>
+        /// <param name="_target"></param>
+        public void AttackUnitAndChangeState(BaseBattleUnit _target)
+        {
+            if (!IsAlive())
+            {
+                return;
+            }
+            if (IsAlive() && IsEnemy(_target))
+            {
+                ClearMoveTarget();
+                SetAttackTarget(_target);
+
+                if (IsTargetInAttackRange())
+                {
+                    if (stateMachine.currentState.stateType != UnitStateType.Attack && CanAttack())
+                    {
+                        //直接攻击
+                        stateMachine.ChangeState(new AttackState());
+                    }
+                    else
+                    {
+                        stateMachine.ChangeState(new IdleState());
+                    }
+                }
+                else
+                {
+                    //移动&攻击
+                    if (stateMachine.currentState.stateType == UnitStateType.Move)
+                    {
+                        MoveState moveState = stateMachine.currentState as MoveState;
+                        moveState.MoveAndAttack(_target);
+                    }
+                    else
+                    {
+                        stateMachine.ChangeState(new MoveState());
+                    }
+                }
+            }
+        }
     }
+
 }

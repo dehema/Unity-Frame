@@ -1,5 +1,4 @@
-﻿using System.Xml.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 
 namespace Rain.RTS.Core

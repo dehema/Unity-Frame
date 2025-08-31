@@ -28,9 +28,9 @@ namespace Rain.RTS.Core
             infantryAttackStrategy = attackStrategy as InfantryAttackStrategy;
         }
 
-        public override void Attack()
+        public override void PerformAttackOrder()
         {
-            base.Attack();
+            base.PerformAttackOrder();
             if (Data.AttackTarget != null && !Data.AttackTarget.IsDead && IsEnemy(Data.AttackTarget))
             {
                 infantryAttackStrategy.Attack(this, Data.AttackTarget);

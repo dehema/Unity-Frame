@@ -168,19 +168,7 @@ namespace Rain.RTS.Core
         {
             foreach (var unit in units)
             {
-                if (unit.IsAlive())
-                {
-                    if (unit.stateMachine.currentState.stateType != UnitStateType.Move)
-                    {
-                        unit.SetMoveTarget(targetPos);
-                        unit.stateMachine.ChangeState(new MoveState());
-                    }
-                    else
-                    {
-                        MoveState moveState = unit.stateMachine.currentState as MoveState;
-                        moveState.MoveTo(targetPos);
-                    }
-                }
+                unit.UnitMoveAndChangeState(targetPos);
             }
         }
 
@@ -190,37 +178,7 @@ namespace Rain.RTS.Core
             List<BaseBattleUnit> units = _factionUnits[_faction];
             foreach (var unit in units)
             {
-                if (unit.IsAlive() && unit.IsEnemy(target))
-                {
-                    unit.ClearMoveTarget();
-                    unit.SetAttackTarget(target);
-
-                    if (unit.IsTargetInAttackRange())
-                    {
-                        if (unit.stateMachine.currentState.stateType != UnitStateType.Attack && unit.CanAttack())
-                        {
-                            //直接攻击
-                            unit.stateMachine.ChangeState(new AttackState());
-                        }
-                        else
-                        {
-                            unit.stateMachine.ChangeState(new IdleState());
-                        }
-                    }
-                    else
-                    {
-                        //移动&攻击
-                        if (unit.stateMachine.currentState.stateType == UnitStateType.Move)
-                        {
-                            MoveState moveState = unit.stateMachine.currentState as MoveState;
-                            moveState.MoveAndAttack(target);
-                        }
-                        else
-                        {
-                            unit.stateMachine.ChangeState(new MoveState());
-                        }
-                    }
-                }
+                unit.AttackUnitAndChangeState(target);
             }
         }
 

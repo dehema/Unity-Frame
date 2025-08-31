@@ -30,9 +30,9 @@ namespace Rain.RTS.Core
             mageAttackStrategy.SetHitEffectPrefabPath(hitEffectPrefabPath);
         }
 
-        public override void Attack()
+        public override void PerformAttackOrder()
         {
-            base.Attack();
+            base.PerformAttackOrder();
             if (Data.AttackTarget != null && !Data.AttackTarget.IsDead && IsEnemy(Data.AttackTarget))
             {
                 mageAttackStrategy.Attack(this, Data.AttackTarget, bodyPart.shootPos.transform.position);

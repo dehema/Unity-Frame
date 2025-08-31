@@ -30,9 +30,9 @@ namespace Rain.RTS.Core
             arrowAttackStrategy.SetProjectilePrefabPath(arrowPrefabPath);
         }
 
-        public override void Attack()
+        public override void PerformAttackOrder()
         {
-            base.Attack();
+            base.PerformAttackOrder();
             if (Data.AttackTarget != null && !Data.AttackTarget.IsDead && IsEnemy(Data.AttackTarget))
             {
                 arrowAttackStrategy.Attack(this, Data.AttackTarget, bodyPart.shootPos.transform.position);
