@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using Rain.UI;
 using UnityEngine;
 
+/// <summary>
+/// #Comments#
+/// </summary>
 public partial class #ViewName# : BaseView
 {
 }

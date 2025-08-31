@@ -201,7 +201,9 @@ namespace Rain.UI.Editor
                 return false;
             }
             string viewTemp = File.ReadAllText(GetAutoCreateViewTemplatePath());
-            string viewScript = viewTemp.Replace("#ViewName#", _viewName);
+            string viewScript = viewTemp;
+            viewScript = viewScript.Replace("#ViewName#", _viewName);
+            viewScript = viewScript.Replace("#Comments#", string.IsNullOrEmpty(_viewConfig.comment) ? _viewConfig.viewName : _viewConfig.comment);
             File.WriteAllText(viewPath, viewScript);
             Debug.Log("生成View脚本" + viewPath);
             AssetDatabase.Refresh();
