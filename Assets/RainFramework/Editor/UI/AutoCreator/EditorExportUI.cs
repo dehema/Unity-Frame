@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using UnityEditor;
 using UnityEditor.Callbacks;
@@ -401,7 +400,7 @@ namespace Rain.UI.Editor
                         }
                         else
                         {
-                            bool res = EditorUtility.DisplayDialog("错误", $"在名为{componentFullName}的对象上找不到{componentName}组件", "确定", "自动添加");
+                            bool res = EditorUtility.DisplayDialog("错误", $"在名为{componentFullName}的对象上找不到{componentFullName}组件", "确定", "自动添加");
                             if (res == false)
                             {
                                 try
@@ -422,7 +421,7 @@ namespace Rain.UI.Editor
                                 }
                                 catch (Exception)
                                 {
-                                    EditorUtility.DisplayDialog("错误", $"在名为{componentFullName}的对象上尝试添加{componentName}组件失败，请手动添加", "确定");
+                                    EditorUtility.DisplayDialog("错误", $"在名为{componentFullName}的对象上尝试添加{componentFullName}组件失败，请手动添加", "确定");
                                 }
                             }
                         }
@@ -448,8 +447,8 @@ namespace Rain.UI.Editor
                 case "Hor":
                     name = "HorizontalLayoutGroup";
                     break;
-                case "Ver":
-                    name = "VerticalLayoutGroup";
+                case "Text":
+                    name = "TextMeshProUGUI";
                     break;
             }
             return name;

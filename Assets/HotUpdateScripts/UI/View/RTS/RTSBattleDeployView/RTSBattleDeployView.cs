@@ -9,4 +9,7 @@ using UnityEngine;
 public partial class RTSBattleDeployView : BaseView
 {
 
+    private void Start()
+    {
+    }
 }

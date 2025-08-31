@@ -14,6 +14,7 @@ public partial class RTSBattleDeployView : BaseView
         [SerializeField] public Button bg_Button;
         [SerializeField] public GameObject content;
         [SerializeField] public RectTransform content_Rect;
+        [SerializeField] public GameObject t;
     }
 
     [Header("自动序列化组件")]
