@@ -70,7 +70,7 @@ namespace Rain.RTS.Core
             }
         }
 
-        //攻击计时器ID
+        // 触发攻击函数计时器ID
         int attackTimerID;
         void Attack()
         {

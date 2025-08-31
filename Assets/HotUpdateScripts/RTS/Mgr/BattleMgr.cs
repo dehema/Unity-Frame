@@ -197,11 +197,28 @@ namespace Rain.RTS.Core
 
                     if (unit.IsTargetInAttackRange())
                     {
-                        unit.stateMachine.ChangeState(new AttackState());
+                        if (unit.stateMachine.currentState.stateType != UnitStateType.Attack && unit.CanAttack())
+                        {
+                            //直接攻击
+                            unit.stateMachine.ChangeState(new AttackState());
+                        }
+                        else
+                        {
+                            unit.stateMachine.ChangeState(new IdleState());
+                        }
                     }
                     else
                     {
-                        unit.stateMachine.ChangeState(new MoveState());
+                        //移动&攻击
+                        if (unit.stateMachine.currentState.stateType == UnitStateType.Move)
+                        {
+                            MoveState moveState = unit.stateMachine.currentState as MoveState;
+                            moveState.MoveAndAttack(target);
+                        }
+                        else
+                        {
+                            unit.stateMachine.ChangeState(new MoveState());
+                        }
                     }
                 }
             }

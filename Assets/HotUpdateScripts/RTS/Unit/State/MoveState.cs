@@ -16,7 +16,9 @@ namespace Rain.RTS.Core
         MoveStateType moveStateType = MoveStateType.Move;
         // 移动速度系数
         float moveSpeedFactor = 1;
+        // 移动速度系数最大值
         float moveSpeedFactorMax = 1;
+        // 移动动画系数
         float moveAnimationFactor = 1;
 
         // 构造函数初始化动画哈希和参数
@@ -32,12 +34,11 @@ namespace Rain.RTS.Core
             // 进入移动状态时启动导航
             if (unit.MovePos != null)
             {
-                unit.moveController.MoveTo((Vector3)unit.MovePos);
+                MoveTo((Vector3)unit.MovePos);
             }
             else if (unit.AttackTarget != null)
             {
-                unit.moveController.MoveTo(unit.Data.AttackTarget);
-                moveStateType = MoveStateType.MoveAndAttack;
+                MoveAndAttack(unit.Data.AttackTarget);
             }
 
             // 计算动画速度并设置
@@ -147,9 +148,23 @@ namespace Rain.RTS.Core
             }
         }
 
+        /// <summary>
+        /// 重新设置移动目标
+        /// </summary>
+        /// <param name="targetPos"></param>
         public void MoveTo(Vector3 targetPos)
         {
+            moveStateType = MoveStateType.Move;
             unit.moveController.MoveTo(targetPos);
+        }
+
+        /// <summary>
+        /// 设置攻击目标
+        /// </summary>
+        public void MoveAndAttack(BaseBattleUnit _target)
+        {
+            moveStateType = MoveStateType.MoveAndAttack;
+            unit.moveController.MoveTo(_target);
         }
     }
 
