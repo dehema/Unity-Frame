@@ -36,5 +36,5 @@ public enum SceneID
     /// <summary>
     /// RTS单位测试场景
     /// </summary>
-	RTSUnitTest,
+	RTSUnitDummyTest,
 }

@@ -21,7 +21,7 @@ EditorBuildSettings:
     path: Assets/AssetBundles/Art/ToonyTinyPeople/sample_scene/TT_RTS_sample_scene.unity
     guid: b0726ebb49a5b894caadeb01cc596516
   - enabled: 1
-    path: Assets/AssetBundles/Scenes/RTSUnitTest.unity
+    path: Assets/AssetBundles/Scenes/RTSUnitDummyTest.unity
     guid: 9a90e4e4bfd35f545b53f4dffea43e02
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}

@@ -16,7 +16,7 @@ public partial class DebugView : BaseView
         ui.viewList_Rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, canvas.pixelRect.height / 2 - 140);
         ui.btStartGame_Button.SetButton(() => { ChangeScene(SceneID.MainScene); });
         ui.tdScene_Button.SetButton(() => { ChangeScene(SceneID.TD); });
-        ui.rtsUnitTest_Button.SetButton(() => { ChangeScene(SceneID.RTSUnitTest); });
+        ui.rtsUnitTest_Button.SetButton(() => { ChangeScene(SceneID.RTSUnitDummyTest); });
     }
 
     private void ChangeScene(SceneID _sceneID, Action _cb = null)
