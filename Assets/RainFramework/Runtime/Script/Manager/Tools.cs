@@ -7,45 +7,6 @@ namespace Rain.Core
 {
     public class Tools : MonoSingleton<Tools>
     {
-        public void SetButton(Button _button, Action _action)
-        {
-            _button.onClick.AddListener(() =>
-            {
-                //AudioMgr.Ins.PlaySound(_music);
-                _action();
-            });
-        }
-
-        public void SetDebugButton(Button _button, Action _action)
-        {
-            if (!Application.isEditor)
-            {
-                _button.gameObject.SetActive(false);
-                return;
-            }
-            _button.image.color = new Color(0.03f, 0.94f, 1);
-            SetButton(_button, _action);
-        }
-
-        public void SetToggle(Toggle _toggle, Action<bool> _action = null)
-        {
-            _toggle.onValueChanged.AddListener((_ison) =>
-            {
-                //AudioMgr.Ins.PlaySound(_music);
-                _action?.Invoke(_ison);
-            });
-        }
-
-        public void SetDebugToggle(Toggle _toggle, Action<bool> _action = null)
-        {
-            if (!Application.isEditor)
-            {
-                _toggle.gameObject.SetActive(false);
-                return;
-            }
-            _toggle.image.color = new Color(0.03f, 0.94f, 1);
-            SetToggle(_toggle, _action);
-        }
 
         public GameObject Create2DGo(string _name, Transform _parent)
         {

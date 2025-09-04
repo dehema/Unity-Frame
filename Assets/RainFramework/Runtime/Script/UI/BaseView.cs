@@ -47,7 +47,7 @@ namespace Rain.UI
             if (viewConfig.hasBg && viewConfig.bgClose)
             {
                 Button bt = __imgBg.GetComponent<Button>();
-                Tools.Ins.SetButton(bt, Close);
+                bt.SetButton(Close);
             }
         }
 

@@ -66,14 +66,45 @@ namespace Rain.Core
             return @this;
         }
 
+        // 设置按钮点击事件
         public static void SetButton(this Button _button, Action _action)
         {
-            Tools.Ins.SetButton(_button, _action);
+            _button.onClick.AddListener(() =>
+            {
+                //AudioMgr.Ins.PlaySound(_music);
+                _action();
+            });
         }
 
         public static void SetDebugButton(this Button _button, Action _action)
         {
-            Tools.Ins.SetDebugButton(_button, _action);
+            if (!Application.isEditor)
+            {
+                _button.gameObject.SetActive(false);
+                return;
+            }
+            _button.image.color = new Color(0.03f, 0.94f, 1);
+            SetButton(_button, _action);
+        }
+
+        public static void SetToggle(this Toggle _toggle, Action<bool> _action = null)
+        {
+            _toggle.onValueChanged.AddListener((_ison) =>
+            {
+                //AudioMgr.Ins.PlaySound(_music);
+                _action?.Invoke(_ison);
+            });
+        }
+
+        public static void SetDebugToggle(this Toggle _toggle, Action<bool> _action = null)
+        {
+            if (!Application.isEditor)
+            {
+                _toggle.gameObject.SetActive(false);
+                return;
+            }
+            _toggle.image.color = new Color(0.03f, 0.94f, 1);
+            SetToggle(_toggle, _action);
         }
 
         public static Button RemoveListener(this Button @this, EventTriggerType triggerType, UnityAction<BaseEventData> handle)
