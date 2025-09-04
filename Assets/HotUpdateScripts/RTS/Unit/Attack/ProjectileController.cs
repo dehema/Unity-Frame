@@ -240,6 +240,13 @@ namespace Rain.RTS.Core
         /// </summary>
         void UpdateFllowDire()
         {
+            // 目标丢失 直接触发击中
+            if (target == null)
+            {
+                Hit();
+                return;
+            }
+
             // 获取目标当前位置
             if (target.isChangePosThisFrame)
                 targetPos = GetTargetPos();

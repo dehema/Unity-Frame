@@ -41,7 +41,6 @@ public class MageAttackStrategy : IAttackStrategy
         }
     }
 
-
     public void Attack(BaseBattleUnit _attacker, BaseBattleUnit _target, Vector3 _shootPos)
     {
         if (_target == null || _target.IsDead)
