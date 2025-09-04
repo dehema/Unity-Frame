@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Rain.UI;
+using TMPro;
 
 public partial class RTSBattleDeployView : BaseView
 {
@@ -15,6 +16,7 @@ public partial class RTSBattleDeployView : BaseView
         [SerializeField] public GameObject content;
         [SerializeField] public RectTransform content_Rect;
         [SerializeField] public GameObject t;
+        [SerializeField] public TextMeshProUGUI t_Text;
     }
 
     [Header("自动序列化组件")]

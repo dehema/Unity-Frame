@@ -84,7 +84,7 @@ GameObject:
   - component: {fileID: 1765808327013143848}
   - component: {fileID: 3576054674665992064}
   m_Layer: 5
-  m_Name: $t#Text
+  m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -517,11 +517,13 @@ MonoBehaviour:
   _viewName: 
   canvasGroup: {fileID: 0}
   ui:
-    bg: {fileID: 0}
-    bg_Image: {fileID: 0}
-    bg_Button: {fileID: 0}
-    content: {fileID: 0}
-    content_Rect: {fileID: 0}
+    bg: {fileID: 2760947263321165665}
+    bg_Image: {fileID: 8087151183306619462}
+    bg_Button: {fileID: 7541514614093923291}
+    content: {fileID: 1424452215517118282}
+    content_Rect: {fileID: 2256323811260098599}
+    t: {fileID: 1822521559125707981}
+    t_Text: {fileID: 3576054674665992064}
 --- !u!1 &5199323149776388713
 GameObject:
   m_ObjectHideFlags: 0
