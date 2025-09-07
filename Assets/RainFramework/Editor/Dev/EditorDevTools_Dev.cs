@@ -115,6 +115,19 @@ public class EditorDevTools_Dev : EditorDevTools_Base
             ExportExcel2Json();
         }
         GUILayout.EndHorizontal();
+
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("打开Excel配置目录", style.bt))
+        {
+            string path = Directory.GetParent(Application.dataPath).FullName + @"\Config\Excel";
+            System.Diagnostics.Process.Start("Explorer.exe", path);
+        }
+        if (GUILayout.Button("导出Excel", style.bt))
+        {
+            ExportExcel2Json_Luban();
+        }
+        GUILayout.EndHorizontal();
+
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("中文表", style.bt))
         {
@@ -396,6 +409,35 @@ public class EditorDevTools_Dev : EditorDevTools_Base
         {
             string batPath = Directory.GetParent(Application.dataPath).FullName;
             batPath += "/Product/excel2json/excel2json.bat";
+            if (!File.Exists(batPath))
+            {
+                EditorUtility.DisplayDialog("错误", "没有找到文件" + batPath, "确定");
+                return;
+            }
+            System.Diagnostics.Process pro = new System.Diagnostics.Process();
+            FileInfo file = new FileInfo(batPath);
+            pro.StartInfo.WorkingDirectory = file.Directory.FullName;
+            pro.StartInfo.FileName = batPath;
+            pro.StartInfo.CreateNoWindow = false;
+            pro.Start();
+            pro.WaitForExit();
+            Debug.Log("导出完成->Resources/Json/");
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError("执行失败 错误原因:" + ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// 导出json_luban
+    /// </summary>
+    public static void ExportExcel2Json_Luban()
+    {
+        try
+        {
+            string batPath = Directory.GetParent(Application.dataPath).FullName;
+            batPath += "/Config/luban/MiniTemplate/gen.bat";
             if (!File.Exists(batPath))
             {
                 EditorUtility.DisplayDialog("错误", "没有找到文件" + batPath, "确定");

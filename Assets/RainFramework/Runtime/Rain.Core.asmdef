@@ -10,7 +10,8 @@
         "Telepathy",
         "SimpleWebTransport",
         "DOTween.Modules",
-        "Rain.Common"
+        "Rain.Common",
+        "Luban.Runtime"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -5,6 +5,7 @@ using Rain.UI;
 using UnityEngine;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
+using cfg;
 
 public class ConfigMgr : MonoSingleton<ConfigMgr>
 {
@@ -12,11 +13,8 @@ public class ConfigMgr : MonoSingleton<ConfigMgr>
     public ImageTextMixConfig imageTextMix;
     public GameSettingConfig settingConfig;
     public AllUnitConfig allUnitConfig;
-    public AllCityConfig allCityConfig;
-    public WorldConfig worldConfig;
     private UIViewConfig uiViewConfig;
     public UIViewConfig UIViewConfig => uiViewConfig;
-
 
     public void Init()
     {
@@ -28,9 +26,8 @@ public class ConfigMgr : MonoSingleton<ConfigMgr>
         //imageTextMix = LoadConfig<ImageTextMixConfig>("ImageTextMix");
         //settingConfig = LoadConfig<GameSettingConfig>("Setting");
         allUnitConfig = LoadConfig<AllUnitConfig>("Unit");
-        //allCityConfig = LoadConfig<AllCityConfig>("City");
-        //worldConfig = LoadConfig<WorldConfig>("World");
         AllLoadComplete();
+        //cfg.Setting
     }
 
     private void AllLoadComplete()
@@ -108,15 +105,6 @@ public class ConfigMgr : MonoSingleton<ConfigMgr>
     public Dictionary<string, ViewConfig> GetAllViewConfig()
     {
         return uiViewConfig.allViewConfig;
-    }
-
-    /// <summary>
-    /// 读取城镇配置
-    /// </summary>
-    /// <returns></returns>
-    public CityConfig GetCityConfig(int _cityID)
-    {
-        return allCityConfig.city[_cityID];
     }
 
     /// <summary>

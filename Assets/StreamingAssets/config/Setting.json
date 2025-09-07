@@ -1,0 +1,58 @@
+[
+  {
+    "ID": "HPSliderDisplay",
+    "val": "1.5"
+  },
+  {
+    "ID": "World_Size",
+    "val": "200,200"
+  },
+  {
+    "ID": "World_UnitPixelSize",
+    "val": "256"
+  },
+  {
+    "ID": "World_Camera_MoveSpeed",
+    "val": "15"
+  },
+  {
+    "ID": "World_Camera_DragSpeed",
+    "val": "0.015"
+  },
+  {
+    "ID": "World_Camera_ZoomHeight",
+    "val": "10,20"
+  },
+  {
+    "ID": "World_Camera_ZoomRot",
+    "val": "40,50"
+  },
+  {
+    "ID": "World_Camera_ZoomSpeed",
+    "val": "0.3"
+  },
+  {
+    "ID": "World_Player_MoveSpeed",
+    "val": "5"
+  },
+  {
+    "ID": "World_Unit_RotX",
+    "val": "45"
+  },
+  {
+    "ID": "World_Time_NormalSpeed",
+    "val": "0.8"
+  },
+  {
+    "ID": "World_Time_QuickSpeed",
+    "val": "2"
+  },
+  {
+    "ID": "World_Trade_MoveSpeed",
+    "val": "2.0"
+  },
+  {
+    "ID": "World_Trade_InitGold",
+    "val": "100"
+  }
+]
