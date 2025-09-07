@@ -15,8 +15,8 @@ public partial class RTSBattleDeployView : BaseView
         [SerializeField] public Button bg_Button;
         [SerializeField] public GameObject content;
         [SerializeField] public RectTransform content_Rect;
-        [SerializeField] public GameObject t;
-        [SerializeField] public TextMeshProUGUI t_Text;
+        [SerializeField] public GameObject tgFormation;
+        [SerializeField] public Toggle tgFormation_Toggle;
     }
 
     [Header("自动序列化组件")]

@@ -474,21 +474,29 @@ PrefabInstance:
       propertyPath: m_Name
       value: RTSBattleDeployView
       objectReference: {fileID: 0}
+    - target: {fileID: 4194405352967199818, guid: baa09b68efd15e043820a7cd0f360634, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5199323149776388713, guid: baa09b68efd15e043820a7cd0f360634, type: 3}
+      propertyPath: m_Name
+      value: $Button
+      objectReference: {fileID: 0}
     - target: {fileID: 6019014460618477620, guid: baa09b68efd15e043820a7cd0f360634, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6019014460618477620, guid: baa09b68efd15e043820a7cd0f360634, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6019014460618477620, guid: baa09b68efd15e043820a7cd0f360634, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 960
       objectReference: {fileID: 0}
     - target: {fileID: 6019014460618477620, guid: baa09b68efd15e043820a7cd0f360634, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -96.17075
       objectReference: {fileID: 0}
     - target: {fileID: 6902434054686989018, guid: baa09b68efd15e043820a7cd0f360634, type: 3}
       propertyPath: m_Pivot.x
