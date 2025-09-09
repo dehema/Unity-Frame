@@ -11,36 +11,36 @@ using Luban;
 using SimpleJSON;
 
 
-namespace cfg
+namespace Rain.Config
 {
 /// <summary>
 /// 设置
 /// </summary>
 public partial class Setting
 {
-    private readonly System.Collections.Generic.Dictionary<string, common.GameSetting> _dataMap;
-    private readonly System.Collections.Generic.List<common.GameSetting> _dataList;
+    private readonly System.Collections.Generic.Dictionary<string, GameSettingConfig> _dataMap;
+    private readonly System.Collections.Generic.List<GameSettingConfig> _dataList;
     
     public Setting(JSONNode _buf)
     {
-        _dataMap = new System.Collections.Generic.Dictionary<string, common.GameSetting>();
-        _dataList = new System.Collections.Generic.List<common.GameSetting>();
+        _dataMap = new System.Collections.Generic.Dictionary<string, GameSettingConfig>();
+        _dataList = new System.Collections.Generic.List<GameSettingConfig>();
         
         foreach(JSONNode _ele in _buf.Children)
         {
-            common.GameSetting _v;
-            { if(!_ele.IsObject) { throw new SerializationException(); }  _v = global::cfg.common.GameSetting.DeserializeGameSetting(_ele);  }
+            GameSettingConfig _v;
+            { if(!_ele.IsObject) { throw new SerializationException(); }  _v = global::Rain.Config.GameSettingConfig.DeserializeGameSettingConfig(_ele);  }
             _dataList.Add(_v);
             _dataMap.Add(_v.ID, _v);
         }
     }
 
-    public System.Collections.Generic.Dictionary<string, common.GameSetting> DataMap => _dataMap;
-    public System.Collections.Generic.List<common.GameSetting> DataList => _dataList;
+    public System.Collections.Generic.Dictionary<string, GameSettingConfig> DataMap => _dataMap;
+    public System.Collections.Generic.List<GameSettingConfig> DataList => _dataList;
 
-    public common.GameSetting GetOrDefault(string key) => _dataMap.TryGetValue(key, out var v) ? v : null;
-    public common.GameSetting Get(string key) => _dataMap[key];
-    public common.GameSetting this[string key] => _dataMap[key];
+    public GameSettingConfig GetOrDefault(string key) => _dataMap.TryGetValue(key, out var v) ? v : null;
+    public GameSettingConfig Get(string key) => _dataMap[key];
+    public GameSettingConfig this[string key] => _dataMap[key];
 
     public void ResolveRef(Tables tables)
     {

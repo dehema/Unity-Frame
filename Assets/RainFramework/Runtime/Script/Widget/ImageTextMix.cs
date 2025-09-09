@@ -37,7 +37,7 @@ public class ImageTextMix : MonoBehaviour
     }
     private void OnEnable()
     {
-        config = ConfigMgr.Ins.imageTextMix.Mix[mixID];
+        //config = ConfigMgr.Ins.imageTextMix.Mix[mixID];
         textStr = LangMgr.Ins.Get(config.tid);
         GetSpaceUnitWidth();
         InitGenerator();

@@ -10,7 +10,7 @@
 using Luban;
 using SimpleJSON;
 
-namespace cfg
+namespace Rain.Config
 {
 public partial class Tables
 {
@@ -18,16 +18,28 @@ public partial class Tables
     /// 设置
     /// </summary>
     public Setting Setting {get; }
+    /// <summary>
+    /// 设置
+    /// </summary>
+    public ImageTextMix ImageTextMix {get; }
+    /// <summary>
+    /// 设置
+    /// </summary>
+    public Unit Unit {get; }
 
     public Tables(System.Func<string, JSONNode> loader)
     {
-        Setting = new Setting(loader("Setting"));
+        Setting = new Setting(loader("setting"));
+        ImageTextMix = new ImageTextMix(loader("imagetextmix"));
+        Unit = new Unit(loader("unit"));
         ResolveRef();
     }
     
     private void ResolveRef()
     {
         Setting.ResolveRef(this);
+        ImageTextMix.ResolveRef(this);
+        Unit.ResolveRef(this);
     }
 }
 

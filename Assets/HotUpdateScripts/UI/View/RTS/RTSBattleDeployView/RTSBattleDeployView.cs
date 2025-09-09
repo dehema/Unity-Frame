@@ -32,12 +32,12 @@ public partial class RTSBattleDeployView : BaseView
     void RefreshFormation()
     {
         ui.tgFormation_Toggle.SetToggle(OnValueChangeFormation);
-        foreach (var _val in formationTextArr)
-        {
-            GameObject formationItem = poolFormation.Get();
-            TextMeshProUGUI text = formationItem.transform.Find("Text").GetComponent<TextMeshProUGUI>();
-            text.text = _val;
-        }
+        //foreach (var _val in Rain.Config.common.DeployFormation)
+        //{
+        //    GameObject formationItem = poolFormation.Get();
+        //    TextMeshProUGUI text = formationItem.transform.Find("Text").GetComponent<TextMeshProUGUI>();
+        //    text.text = _val;
+        //}
     }
 
     /// <summary>

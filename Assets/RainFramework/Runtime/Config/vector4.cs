@@ -11,7 +11,7 @@ using Luban;
 using SimpleJSON;
 
 
-namespace cfg
+namespace Rain.Config
 {
 public partial struct vector4
 {

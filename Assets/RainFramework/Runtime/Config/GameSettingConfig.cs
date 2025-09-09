@@ -11,25 +11,25 @@ using Luban;
 using SimpleJSON;
 
 
-namespace cfg.common
+namespace Rain.Config
 {
-public sealed partial class GameSetting : Luban.BeanBase
+public sealed partial class GameSettingConfig : Luban.BeanBase
 {
-    public GameSetting(JSONNode _buf) 
+    public GameSettingConfig(JSONNode _buf) 
     {
         { if(!_buf["ID"].IsString) { throw new SerializationException(); }  ID = _buf["ID"]; }
         { if(!_buf["val"].IsString) { throw new SerializationException(); }  Val = _buf["val"]; }
     }
 
-    public static GameSetting DeserializeGameSetting(JSONNode _buf)
+    public static GameSettingConfig DeserializeGameSettingConfig(JSONNode _buf)
     {
-        return new common.GameSetting(_buf);
+        return new GameSettingConfig(_buf);
     }
 
     public readonly string ID;
     public readonly string Val;
    
-    public const int __ID__ = -355506597;
+    public const int __ID__ = -253681984;
     public override int GetTypeId() => __ID__;
 
     public  void ResolveRef(Tables tables)

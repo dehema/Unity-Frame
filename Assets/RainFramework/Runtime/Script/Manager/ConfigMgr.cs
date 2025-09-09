@@ -5,19 +5,20 @@ using Rain.UI;
 using UnityEngine;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
-using cfg;
 
 public class ConfigMgr : MonoSingleton<ConfigMgr>
 {
     const string configPath = "Json/";
-    public ImageTextMixConfig imageTextMix;
     public GameSettingConfig settingConfig;
     public AllUnitConfig allUnitConfig;
     private UIViewConfig uiViewConfig;
     public UIViewConfig UIViewConfig => uiViewConfig;
 
+
+    //DeployFormation deployFormation;
     public void Init()
     {
+        //deployFormation = new DeployFormation();
     }
 
     public void LoadAllConfig(bool _localConfig = true)
