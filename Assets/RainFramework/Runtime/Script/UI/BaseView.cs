@@ -5,7 +5,6 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 using Ease = DG.Tweening.Ease;
-using static UnityEngine.Rendering.VirtualTexturing.Debugging;
 
 namespace Rain.UI
 {

@@ -17,111 +17,111 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Text))]
 public class ImageTextMix : MonoBehaviour
 {
-    Text text;
-    public string mixID;
-    ImageTextMixUnitConfig config;
-    RectTransform rect;
-    string textStr;
-    //空格宽度
-    float spaceUnitLenth;
-    TextGenerator generator;
-    int spaceNum;
-    List<int> replaceStrIndex = new List<int>();
+    //Text text;
+    //public string mixID;
+    //ImageTextMixUnitConfig config;
+    //RectTransform rect;
+    //string textStr;
+    ////空格宽度
+    //float spaceUnitLenth;
+    //TextGenerator generator;
+    //int spaceNum;
+    //List<int> replaceStrIndex = new List<int>();
 
-    List<GameObject> createImages = new List<GameObject>();
+    //List<GameObject> createImages = new List<GameObject>();
 
-    private void Awake()
-    {
-        text = GetComponent<Text>();
-        rect = GetComponent<RectTransform>();
-    }
-    private void OnEnable()
-    {
-        //config = ConfigMgr.Ins.imageTextMix.Mix[mixID];
-        textStr = LangMgr.Ins.Get(config.tid);
-        GetSpaceUnitWidth();
-        InitGenerator();
-        InitStr();
-        CreateImages();
-    }
+    //private void Awake()
+    //{
+    //    text = GetComponent<Text>();
+    //    rect = GetComponent<RectTransform>();
+    //}
+    //private void OnEnable()
+    //{
+    //    //config = ConfigMgr.Ins.imageTextMix.Mix[mixID];
+    //    textStr = LangMgr.Ins.Get(config.tid);
+    //    GetSpaceUnitWidth();
+    //    InitGenerator();
+    //    InitStr();
+    //    CreateImages();
+    //}
 
-    private void GetSpaceUnitWidth()
-    {
-        string _textStr = " " + textStr.Remove(0, 1);
-        generator = new TextGenerator();
-        var size = rect.rect.size;
-        var settings = text.GetGenerationSettings(size);
-        generator.Populate(_textStr, settings);
-        spaceUnitLenth = generator.characters[0].charWidth;
-    }
+    //private void GetSpaceUnitWidth()
+    //{
+    //    string _textStr = " " + textStr.Remove(0, 1);
+    //    generator = new TextGenerator();
+    //    var size = rect.rect.size;
+    //    var settings = text.GetGenerationSettings(size);
+    //    generator.Populate(_textStr, settings);
+    //    spaceUnitLenth = generator.characters[0].charWidth;
+    //}
 
-    void InitStr()
-    {
-        replaceStrIndex.Clear();
-        string replaceStr;
-        for (int i = 0; i < config.imgConfigs.Count; i++)
-        {
-            TIMix_Image imgConfig = config.imgConfigs[i];
-            int charIndex = 0;
-            replaceStr = GetReplaceStr(imgConfig, i, ref charIndex);
-            string spaceIndexStr = "{" + i + "}";
-            textStr = textStr.Replace(spaceIndexStr, replaceStr);
-            InitGenerator();
-            if (string.IsNullOrEmpty(replaceStr)) continue;
-            replaceStrIndex.Add(charIndex);
-        }
-        text.text = textStr;
-    }
+    //void InitStr()
+    //{
+    //    replaceStrIndex.Clear();
+    //    string replaceStr;
+    //    for (int i = 0; i < config.imgConfigs.Count; i++)
+    //    {
+    //        TIMix_Image imgConfig = config.imgConfigs[i];
+    //        int charIndex = 0;
+    //        replaceStr = GetReplaceStr(imgConfig, i, ref charIndex);
+    //        string spaceIndexStr = "{" + i + "}";
+    //        textStr = textStr.Replace(spaceIndexStr, replaceStr);
+    //        InitGenerator();
+    //        if (string.IsNullOrEmpty(replaceStr)) continue;
+    //        replaceStrIndex.Add(charIndex);
+    //    }
+    //    text.text = textStr;
+    //}
 
-    private void InitGenerator()
-    {
-        generator = new TextGenerator();
-        var size = rect.rect.size;
-        var settings = text.GetGenerationSettings(size);
-        generator.Populate(textStr, settings);
-    }
+    //private void InitGenerator()
+    //{
+    //    generator = new TextGenerator();
+    //    var size = rect.rect.size;
+    //    var settings = text.GetGenerationSettings(size);
+    //    generator.Populate(textStr, settings);
+    //}
 
-    private string GetReplaceStr(TIMix_Image _imgConfig, int _index, ref int charIndex)
-    {
-        charIndex = textStr.IndexOf("{" + _index + "}");
-        if (generator.characters.Count <= charIndex)
-        {
-            return "";
-        }
-        //计算空格数量 
-        spaceNum = Mathf.CeilToInt(_imgConfig.width / spaceUnitLenth);
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < spaceNum; i++)
-        {
-            sb.Append(" ");
-        }
-        return sb.ToString();
-    }
+    //private string GetReplaceStr(TIMix_Image _imgConfig, int _index, ref int charIndex)
+    //{
+    //    charIndex = textStr.IndexOf("{" + _index + "}");
+    //    if (generator.characters.Count <= charIndex)
+    //    {
+    //        return "";
+    //    }
+    //    //计算空格数量 
+    //    spaceNum = Mathf.CeilToInt(_imgConfig.width / spaceUnitLenth);
+    //    StringBuilder sb = new StringBuilder();
+    //    for (int i = 0; i < spaceNum; i++)
+    //    {
+    //        sb.Append(" ");
+    //    }
+    //    return sb.ToString();
+    //}
 
-    void CreateImages()
-    {
-        foreach (var item in createImages)
-        {
-            Destroy(item);
-        }
-        createImages.Clear();
-        for (int i = 0; i < replaceStrIndex.Count; i++)
-        {
-            int charIndex = replaceStrIndex[i];
-            TIMix_Image _imgConfig = config.imgConfigs[i];
-            //创建图片
-            GameObject go = Tools.Ins.Create2DGo("img1", transform);
-            createImages.Add(go);
-            Image img = go.AddComponent<Image>();
-            img.preserveAspect = true;
-            img.sprite = Resources.Load<Sprite>(_imgConfig.imagePath);
-            RectTransform imgRect = go.GetComponent<RectTransform>();
-            imgRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, _imgConfig.width);
-            imgRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, _imgConfig.height);
-            //获取位置
-            Vector2 cursorPos = generator.characters[charIndex].cursorPos;
-            cursorPos += new Vector2(spaceNum * (spaceUnitLenth / 2), -generator.lines[0].height / 2);
-            imgRect.anchoredPosition = cursorPos;
-        }
-    }
+    //void CreateImages()
+    //{
+    //    foreach (var item in createImages)
+    //    {
+    //        Destroy(item);
+    //    }
+    //    createImages.Clear();
+    //    for (int i = 0; i < replaceStrIndex.Count; i++)
+    //    {
+    //        int charIndex = replaceStrIndex[i];
+    //        TIMix_Image _imgConfig = config.imgConfigs[i];
+    //        //创建图片
+    //        GameObject go = Tools.Ins.Create2DGo("img1", transform);
+    //        createImages.Add(go);
+    //        Image img = go.AddComponent<Image>();
+    //        img.preserveAspect = true;
+    //        img.sprite = Resources.Load<Sprite>(_imgConfig.imagePath);
+    //        RectTransform imgRect = go.GetComponent<RectTransform>();
+    //        imgRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, _imgConfig.width);
+    //        imgRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, _imgConfig.height);
+    //        //获取位置
+    //        Vector2 cursorPos = generator.characters[charIndex].cursorPos;
+    //        cursorPos += new Vector2(spaceNum * (spaceUnitLenth / 2), -generator.lines[0].height / 2);
+    //        imgRect.anchoredPosition = cursorPos;
+    //    }
+    //}
 }

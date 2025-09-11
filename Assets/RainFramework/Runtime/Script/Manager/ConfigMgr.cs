@@ -1,21 +1,29 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
-using Rain.Core;
-using Rain.UI;
 using UnityEngine;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
+using Rain.Config;
+using Rain.UI;
+using SimpleJSON;
+using Rain.Core;
+using System.IO;
+
 
 public class ConfigMgr : MonoSingleton<ConfigMgr>
 {
-    const string configPath = "Json/";
-    public GameSettingConfig settingConfig;
+    Tables cfg;
+    //public GameSettingConfig settingConfig;
     public AllUnitConfig allUnitConfig;
+    public ImageTextMix imageTextMix;
+
     private UIViewConfig uiViewConfig;
     public UIViewConfig UIViewConfig => uiViewConfig;
 
+    public GameSettingTable GameSetting => cfg.GameSettingTable;
 
-    //DeployFormation deployFormation;
+
+
     public void Init()
     {
         //deployFormation = new DeployFormation();
@@ -23,41 +31,60 @@ public class ConfigMgr : MonoSingleton<ConfigMgr>
 
     public void LoadAllConfig(bool _localConfig = true)
     {
-        uiViewConfig = LoadViewConfig(); ;
+        uiViewConfig = LoadViewConfig();
+
+        Tables cfg = new Tables(LoadJson);
+        //imageTextMix = cfg.ImageTextMix;
+        //settingConfig = new GameSettingConfig();
         //imageTextMix = LoadConfig<ImageTextMixConfig>("ImageTextMix");
         //settingConfig = LoadConfig<GameSettingConfig>("Setting");
-        allUnitConfig = LoadConfig<AllUnitConfig>("Unit");
+        //allUnitConfig = LoadConfig<AllUnitConfig>("Unit");
         AllLoadComplete();
-        //cfg.Setting
+    }
+
+    private JSONNode LoadJson(string _tableName)
+    {
+        string filePath = "";
+        string result = "";
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX
+        // 编辑器、Windows、Mac平台：直接使用文件路径
+        filePath = Path.Combine(Application.streamingAssetsPath, "Config", _tableName + ".json");
+        if (File.Exists(filePath))
+        {
+            // 同步读取（也可使用File.ReadAllTextAsync异步读取）
+            result = File.ReadAllText(filePath);
+        }
+        else
+        {
+            Debug.LogError($"文件不存在: {filePath}");
+        }
+
+#elif UNITY_ANDROID
+        // Android平台：需使用WWW或UnityWebRequest读取
+        filePath = Path.Combine("jar:file://" + Application.dataPath, "Config", "!/assets/", _tableName);
+        using (var www = new WWW(filePath))
+        {
+            // 等待WWW加载完成（异步）
+            await Task.Yield();
+            while (!www.isDone)
+                await Task.Yield();
+
+            if (!string.IsNullOrEmpty(www.error))
+            {
+                Debug.LogError($"Android读取失败: {www.error}");
+            }
+            else
+            {
+                result = www.text;
+            }
+        }
+#endif
+
+        return JSONNode.Parse(result);
     }
 
     private void AllLoadComplete()
     {
-    }
-
-    /// <summary>
-    /// 读取配置
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="key"></param>
-    /// <param name="_config"></param>
-    /// <returns></returns>
-    private T LoadConfig<T>(string key, string _config = "")
-    {
-        if (string.IsNullOrEmpty(_config))
-        {
-            string filePath = configPath + key;
-            _config = Resources.Load<TextAsset>(filePath).text;
-            Debug.Log("读取到配置文件" + filePath + "\n" + _config);
-        }
-        else
-        {
-            Debug.Log("读取到远端配置" + typeof(T).ToString() + "\n" + _config);
-        }
-        T t = JsonConvert.DeserializeObject<T>(_config);
-        ConfigBase configBase = t as ConfigBase;
-        configBase.OnLoadComplete();
-        return t;
     }
 
     /// <summary>
@@ -108,12 +135,12 @@ public class ConfigMgr : MonoSingleton<ConfigMgr>
         return uiViewConfig.allViewConfig;
     }
 
-    /// <summary>
-    /// 读取单位配置
-    /// </summary>
-    /// <returns></returns>
-    public UnitConfig GetUnitConfig(int _unitID)
-    {
-        return allUnitConfig.unit[_unitID];
-    }
+    ///// <summary>
+    ///// 读取单位配置
+    ///// </summary>
+    ///// <returns></returns>
+    //public UnitConfig GetUnitConfig(int _unitID)
+    //{
+    //    return allUnitConfig.unit[_unitID];
+    //}
 }

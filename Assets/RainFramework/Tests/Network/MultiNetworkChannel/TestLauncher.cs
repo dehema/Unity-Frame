@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Rain.Core;
-using Rain.F8ExcelDataClass;
 using Rain.Launcher;
 using Rain.UI;
 using UnityEngine;
@@ -31,7 +30,6 @@ namespace Rain.Tests
 #if UNITY_WEBGL
             yield return AssetBundleManager.Instance.LoadAssetBundleManifest(); // WebGL专用，如果游戏中没有使用任何AB包加载资源，可以删除此方法的调用！
 #endif
-            RA.Config = ModuleCenter.CreateModule<F8DataManager>();
             RA.Audio = ModuleCenter.CreateModule<AudioMgr>();
             RA.Tween = ModuleCenter.CreateModule<F8Tween>();
             RA.UI = ModuleCenter.CreateModule<UIManager>();

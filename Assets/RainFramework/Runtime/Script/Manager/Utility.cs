@@ -174,44 +174,44 @@ namespace Rain.Core
             return "127.0.0.1";
         }
 
-        /// <summary>
-        /// 读取设置配置
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="_id"></param>
-        /// <returns></returns>
-        public static string GetSetting(string _id)
-        {
-            string val = ConfigMgr.Ins.settingConfig.Common[_id].val;
-            return val;
-        }
+        ///// <summary>
+        ///// 读取设置配置
+        ///// </summary>
+        ///// <typeparam name="T"></typeparam>
+        ///// <param name="_id"></param>
+        ///// <returns></returns>
+        //public static string GetSetting(string _id)
+        //{
+        //    string val = ConfigMgr.Ins.settingConfig.Common[_id].val;
+        //    return val;
+        //}
 
-        /// <summary>
-        /// 读取设置配置
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="_id"></param>
-        /// <returns></returns>
-        public static Vector2 GetSetting_Vector2(string _id)
-        {
-            string val = ConfigMgr.Ins.settingConfig.Common[_id].val;
-            string[] par = val.Split(',');
-            Vector2 vec = new Vector2(float.Parse(par[0]), float.Parse(par[1]));
-            return vec;
-        }
+        ///// <summary>
+        ///// 读取设置配置
+        ///// </summary>
+        ///// <typeparam name="T"></typeparam>
+        ///// <param name="_id"></param>
+        ///// <returns></returns>
+        //public static Vector2 GetSetting_Vector2(string _id)
+        //{
+        //    string val = ConfigMgr.Ins.settingConfig.Common[_id].val;
+        //    string[] par = val.Split(',');
+        //    Vector2 vec = new Vector2(float.Parse(par[0]), float.Parse(par[1]));
+        //    return vec;
+        //}
 
 
-        /// <summary>
-        /// 读取设置配置
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="_id"></param>
-        /// <returns></returns>
-        public static T GetSetting<T>(string _id)
-        {
-            string val = ConfigMgr.Ins.settingConfig.Common[_id].val;
-            return JsonConvert.DeserializeObject<T>(val);
-        }
+        ///// <summary>
+        ///// 读取设置配置
+        ///// </summary>
+        ///// <typeparam name="T"></typeparam>
+        ///// <param name="_id"></param>
+        ///// <returns></returns>
+        //public static T GetSetting<T>(string _id)
+        //{
+        //    string val = ConfigMgr.Ins.settingConfig.Common[_id].val;
+        //    return JsonConvert.DeserializeObject<T>(val);
+        //}
 
         /// <summary>
         /// /是否是调试模式 

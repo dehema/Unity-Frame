@@ -1,11 +1,8 @@
 {
-    "name": "Rain.Common.UI",
+    "name": "Rain.Config",
     "rootNamespace": "",
     "references": [
-        "Rain.Core",
-        "Rain.Common",
-        "DOTween.Modules",
-        "Unity.TextMeshPro"
+        "Luban.Runtime"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

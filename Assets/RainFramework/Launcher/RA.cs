@@ -1,4 +1,3 @@
-using Rain.F8ExcelDataClass;
 using Rain.Core;
 using Rain.UI;
 
@@ -27,8 +26,6 @@ namespace Rain.Launcher
         private static GameObjectPool _gameObjectPool;
         // 资产管理
         private static AssetMgr _asset;
-        // 读取配置表-->使用了资产模块
-        private static F8DataManager _config;
         // 音频管理-->使用了资产模块-->使用了游戏对象池模块-->使用了补间动画模块-->使用了时间模块
         private static AudioMgr _audio;
         // 补间动画
@@ -189,21 +186,6 @@ namespace Rain.Launcher
             {
                 if (_asset == null)
                     _asset = value;
-            }
-        }
-
-        public static F8DataManager Config
-        {
-            get
-            {
-                if (_config == null)
-                    _config = ModuleCenter.CreateModule<F8DataManager>();
-                return _config;
-            }
-            set
-            {
-                if (_config == null)
-                    _config = value;
             }
         }
 
