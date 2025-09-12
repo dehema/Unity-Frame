@@ -114,4 +114,8 @@ public class ViewName
     /// RTS HUD
     /// </summary>
 	public const string RTSHudView = "RTSHudView";
+    /// <summary>
+    /// 战斗部署
+    /// </summary>
+	public const string RTSBattleDeployView = "RTSBattleDeployView";
 }

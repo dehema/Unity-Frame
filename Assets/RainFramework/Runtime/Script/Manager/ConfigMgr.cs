@@ -10,7 +10,7 @@ using System.IO;
 
 public class ConfigMgr : MonoSingleton<ConfigMgr>
 {
-    public static Tables cfg;
+    private static Tables cfg;
 
     private UIViewConfig uiViewConfig;
     public UIViewConfig UIViewConfig => uiViewConfig;
@@ -19,6 +19,7 @@ public class ConfigMgr : MonoSingleton<ConfigMgr>
     public static TbSLGSetting SLGSetting => cfg.TbSLGSetting;
     public static TbImageTextMix ImageTextMix => cfg.TbImageTextMix;
     public static TbUnit Unit => cfg.TbUnit;
+    public static TbDeployFormation DeployFormation => cfg.TbDeployFormation;
 
 
 

@@ -15,6 +15,7 @@ public partial class RTSBattleDeployView : BaseView
         [SerializeField] public Button bg_Button;
         [SerializeField] public GameObject content;
         [SerializeField] public RectTransform content_Rect;
+        [SerializeField] public GameObject sandBox;
         [SerializeField] public GameObject tgFormation;
         [SerializeField] public Toggle tgFormation_Toggle;
     }

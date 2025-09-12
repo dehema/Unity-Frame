@@ -4,6 +4,7 @@ using Rain.Core;
 using Rain.UI;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 /// <summary>
@@ -13,6 +14,9 @@ public partial class RTSBattleDeployView : BaseView
 {
     // 阵型对象池
     ObjPool poolFormation = null;
+    // 当前显示的阵型
+    GameObject currShowFormation;
+    int formationID;
     public override void Init(IViewParam _viewParams = null)
     {
         base.Init(_viewParams);
@@ -20,24 +24,24 @@ public partial class RTSBattleDeployView : BaseView
         RefreshFormation();
     }
 
-    string[] formationTextArr = new[]
-    {
-        "盾墙推进阵（防御型）",
-        "楔形突破阵（进攻型）",
-        "雁形狙击阵（远程压制型）",
-        "环形防御阵（应急型）",
-        "菱形突袭阵（游击型）",
-    };
-
     void RefreshFormation()
     {
-        ui.tgFormation_Toggle.SetToggle(OnValueChangeFormation);
-        //foreach (var _val in Rain.Config.common.DeployFormation)
-        //{
-        //    GameObject formationItem = poolFormation.Get();
-        //    TextMeshProUGUI text = formationItem.transform.Find("Text").GetComponent<TextMeshProUGUI>();
-        //    text.text = _val;
-        //}
+        int index = 1;
+        foreach (var item in ConfigMgr.DeployFormation.DataList)
+        {
+            GameObject formationItem = poolFormation.Get();
+            formationItem.name = index.ToString();
+            Toggle toggle = formationItem.GetComponent<Toggle>();
+            toggle.onValueChanged.RemoveAllListeners();
+            toggle.SetToggle(OnValueChangeFormation);
+            TextMeshProUGUI text = formationItem.transform.Find("Text").GetComponent<TextMeshProUGUI>();
+            text.text = item.Name;
+            index++;
+        }
+        if (poolFormation.activePool.Count > 0)
+        {
+            poolFormation.activePool.First().GetComponent<Toggle>().isOn = true;
+        }
     }
 
     /// <summary>
@@ -45,6 +49,25 @@ public partial class RTSBattleDeployView : BaseView
     /// </summary>
     public void OnValueChangeFormation(bool _ison)
     {
+        if (_ison)
+        {
+            if (int.TryParse(EventSystem.current.currentSelectedGameObject.name, out formationID))
+            {
+                RefreshShowFormation();
+            }
+        }
+    }
+
+    public void RefreshShowFormation()
+    {
+        GameObject go = Resources.Load<GameObject>($"Prefab/Formation/{formationID}");
+        if (go == null)
+        {
+            return;
+        }
+        currShowFormation?.DestroyNow();
+        currShowFormation = Instantiate(go, ui.sandBox.transform);
+        currShowFormation.transform.localPosition = Vector3.zero;
 
     }
 }

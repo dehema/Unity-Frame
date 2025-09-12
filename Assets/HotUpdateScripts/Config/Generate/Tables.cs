@@ -30,6 +30,10 @@ public partial class Tables
     /// 单位
     /// </summary>
     public TbUnit TbUnit {get; }
+    /// <summary>
+    /// 阵型
+    /// </summary>
+    public TbDeployFormation TbDeployFormation {get; }
 
     public Tables(System.Func<string, JSONNode> loader)
     {
@@ -37,6 +41,7 @@ public partial class Tables
         TbSLGSetting = new TbSLGSetting(loader("tbslgsetting"));
         TbImageTextMix = new TbImageTextMix(loader("tbimagetextmix"));
         TbUnit = new TbUnit(loader("tbunit"));
+        TbDeployFormation = new TbDeployFormation(loader("tbdeployformation"));
         ResolveRef();
     }
     
@@ -46,6 +51,7 @@ public partial class Tables
         TbSLGSetting.ResolveRef(this);
         TbImageTextMix.ResolveRef(this);
         TbUnit.ResolveRef(this);
+        TbDeployFormation.ResolveRef(this);
     }
 }
 
