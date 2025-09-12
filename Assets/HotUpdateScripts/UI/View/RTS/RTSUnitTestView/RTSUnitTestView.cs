@@ -21,7 +21,6 @@ public partial class RTSUnitTestView : BaseView
         ui.btShowUnitList_Button.SetButton(OnClickShowUnitList);
         ui.btAddDummy_Button.SetButton(AddDummy);
         InitUnitList();
-
     }
 
     private void Start()
@@ -45,11 +44,10 @@ public partial class RTSUnitTestView : BaseView
         List<int> idList = new List<int>() { 1101, 1201, 1301, 1401 };
         foreach (int _id in idList)
         {
-            UnitConfig _unitConfig = ConfigMgr.Ins.allUnitConfig.GetUnitConfig(_id);
-            UnitConfig unitConfig = new UnitConfig(_unitConfig);
+            UnitConfig unitConfig = ConfigMgr.Unit.Get(_id);
             GameObject item = unitPool.Get();
             Text textName = item.transform.Find("text").GetComponent<Text>();
-            textName.text = LangMgr.Ins.Get(unitConfig.name);
+            textName.text = LangMgr.Ins.Get(unitConfig.Name);
             Button bt = item.GetComponent<Button>();
             btUnits.Add(bt);
             bt.SetButton(() =>

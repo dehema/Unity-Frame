@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Rain.Core;
 using UnityEngine;
 
 public class RTSUnitTestSceneGUI : MonoBehaviour
@@ -47,7 +48,7 @@ public class RTSUnitTestSceneGUI : MonoBehaviour
         float startY = buttonHeight + 20;
 
         int index = 0;
-        foreach (var item in ConfigMgr.Ins.allUnitConfig.unit)
+        foreach (var item in ConfigMgr.Unit.DataList)
         {
             UnitConfig unitConfig = item;
             // 计算每个按钮的位置
@@ -55,9 +56,9 @@ public class RTSUnitTestSceneGUI : MonoBehaviour
             Rect buttonRect = new Rect(10, yPos, buttonWidth, buttonHeight);
 
             // 绘制按钮并检测点击
-            if (GUI.Button(buttonRect, LangMgr.Ins.Get(unitConfig.name)))
+            if (GUI.Button(buttonRect, LangMgr.Ins.Get(unitConfig.Name)))
             {
-                Debug.Log(unitConfig.fullID);
+                Debug.Log(unitConfig.FullID);
                 unitTestMgr.CreateUnit(unitConfig);
             }
             index++;
@@ -70,9 +71,9 @@ public class RTSUnitTestSceneGUI : MonoBehaviour
     Dictionary<string, string> unitNameDict = new Dictionary<string, string>();
     private void GetUnitInfo()
     {
-        foreach (var item in ConfigMgr.Ins.allUnitConfig.unit)
+        foreach (var item in ConfigMgr.Unit.DataList)
         {
-            unitNameDict[item.name] = LangMgr.Ins.Get(item.name);
+            unitNameDict[item.Name] = LangMgr.Ins.Get(item.Name);
         }
     }
 }

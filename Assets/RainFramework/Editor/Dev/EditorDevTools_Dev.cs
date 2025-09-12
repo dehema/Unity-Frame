@@ -105,15 +105,15 @@ public class EditorDevTools_Dev : EditorDevTools_Base
         {
             ExportSceneConfig();
         }
-        if (GUILayout.Button("打开Excel配置目录", style.bt))
-        {
-            string path = Directory.GetParent(Application.dataPath).FullName + @"\Product\StaticData";
-            System.Diagnostics.Process.Start("Explorer.exe", path);
-        }
-        if (GUILayout.Button("导出Excel", style.bt))
-        {
-            ExportExcel2Json();
-        }
+        //if (GUILayout.Button("打开Excel配置目录", style.bt))
+        //{
+        //    string path = Directory.GetParent(Application.dataPath).FullName + @"\Product\StaticData";
+        //    System.Diagnostics.Process.Start("Explorer.exe", path);
+        //}
+        //if (GUILayout.Button("导出Excel", style.bt))
+        //{
+        //    ExportExcel2Json();
+        //}
         GUILayout.EndHorizontal();
 
         GUILayout.BeginHorizontal();

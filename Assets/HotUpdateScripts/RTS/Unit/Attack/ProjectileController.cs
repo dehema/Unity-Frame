@@ -96,7 +96,7 @@ namespace Rain.RTS.Core
         /// <returns></returns>
         Vector3 GetTargetPos()
         {
-            Vector3 targetPos = target.transform.position + new Vector3(0, target.Data.UnitConfig.height / 2, 0);
+            Vector3 targetPos = target.transform.position + new Vector3(0, target.Data.UnitConfig.Height / 2, 0);
 
             if (direType == DireType.Fixed)
             {

@@ -102,8 +102,8 @@ namespace Rain.RTS.Core
             if (unitCollider is CapsuleCollider)
             {
                 CapsuleCollider capsuleCollider = unitCollider as CapsuleCollider;
-                capsuleCollider.height = Data.UnitConfig.height;
-                capsuleCollider.center = new Vector3(0, Data.UnitConfig.height / 2, 0);
+                capsuleCollider.height = Data.UnitConfig.Height;
+                capsuleCollider.center = new Vector3(0, Data.UnitConfig.Height / 2, 0);
             }
             moveController = GetComponent<UnitMoveController>() ?? gameObject.AddComponent<UnitMoveController>();
             if (moveController == null)

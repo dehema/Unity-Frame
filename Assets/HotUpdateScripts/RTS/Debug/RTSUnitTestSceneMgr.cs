@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Rain.Core;
 using Rain.RTS.Core;
 using Rain.UI;
 using UnityEngine;
@@ -55,11 +56,8 @@ public class RTSUnitTestSceneMgr : MonoBehaviour
         {
             return null;
         }
-        UnitConfig _unitConfig = ConfigMgr.Ins.allUnitConfig.unit.Find((x) => x.ID == 1101);
-        UnitConfig unitConfig = new UnitConfig(_unitConfig);
-        unitConfig.hp = 100000;                 // 设置假人生命值
-        unitConfig.unitType = UnitType.Dummy;   // 设置单位类型为假人
-        unitConfig.faction = Faction.Dummy;   // 设置单位类型为假人
+        UnitConfig unitConfig = ConfigMgr.Unit.Get(1);
+        unitConfig.faction = Faction.Dummy;
         dummy = CreateUnit(unitConfig);
         return dummy;
     }

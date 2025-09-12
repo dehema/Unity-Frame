@@ -1,3 +1,4 @@
+using Rain.Core;
 using UnityEngine;
 
 namespace Rain.RTS.Core
@@ -58,7 +59,7 @@ namespace Rain.RTS.Core
         /// <returns>创建的战斗单位</returns>
         public static BaseBattleUnit CreateUnitFromConfig(UnitConfig unitConfig, GameObject prefab)
         {
-            BaseBattleUnit unit = CreateUnit(unitConfig.unitType, prefab);
+            BaseBattleUnit unit = CreateUnit(unitConfig.UnitType, prefab);
 
             if (unit != null)
             {

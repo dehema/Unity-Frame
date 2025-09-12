@@ -4,7 +4,8 @@
     "references": [
         "Rain.Core",
         "Rain.Common",
-        "DOTween.Modules"
+        "DOTween.Modules",
+        "Rain.Config"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

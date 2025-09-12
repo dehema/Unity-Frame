@@ -19,7 +19,7 @@ namespace Rain.RTS.Core
             agent.updateRotation = false;                       // 禁用自动旋转，由脚本控制
             agent.stoppingDistance = 0.1f;
             agent.acceleration = 999;
-            agent.height = data.UnitConfig.height;
+            agent.height = data.UnitConfig.Height;
         }
 
         // 初始化：关联角色数据并设置初始速度

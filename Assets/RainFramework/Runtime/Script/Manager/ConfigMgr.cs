@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
 using UnityEngine;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
-using Rain.Config;
 using Rain.UI;
 using SimpleJSON;
 using Rain.Core;
@@ -12,15 +10,15 @@ using System.IO;
 
 public class ConfigMgr : MonoSingleton<ConfigMgr>
 {
-    Tables cfg;
-    //public GameSettingConfig settingConfig;
-    public AllUnitConfig allUnitConfig;
-    public ImageTextMix imageTextMix;
+    public static Tables cfg;
 
     private UIViewConfig uiViewConfig;
     public UIViewConfig UIViewConfig => uiViewConfig;
 
-    public GameSettingTable GameSetting => cfg.GameSettingTable;
+    public static TbGameSetting GameSetting => cfg.TbGameSetting;
+    public static TbSLGSetting SLGSetting => cfg.TbSLGSetting;
+    public static TbImageTextMix ImageTextMix => cfg.TbImageTextMix;
+    public static TbUnit Unit => cfg.TbUnit;
 
 
 
@@ -33,12 +31,7 @@ public class ConfigMgr : MonoSingleton<ConfigMgr>
     {
         uiViewConfig = LoadViewConfig();
 
-        Tables cfg = new Tables(LoadJson);
-        //imageTextMix = cfg.ImageTextMix;
-        //settingConfig = new GameSettingConfig();
-        //imageTextMix = LoadConfig<ImageTextMixConfig>("ImageTextMix");
-        //settingConfig = LoadConfig<GameSettingConfig>("Setting");
-        //allUnitConfig = LoadConfig<AllUnitConfig>("Unit");
+        cfg = new Tables(LoadJson);
         AllLoadComplete();
     }
 
@@ -48,7 +41,7 @@ public class ConfigMgr : MonoSingleton<ConfigMgr>
         string result = "";
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX
         // 编辑器、Windows、Mac平台：直接使用文件路径
-        filePath = Path.Combine(Application.streamingAssetsPath, "Config", _tableName + ".json");
+        filePath = Path.Combine(Application.streamingAssetsPath, "Config", "Generate", _tableName + ".json");
         if (File.Exists(filePath))
         {
             // 同步读取（也可使用File.ReadAllTextAsync异步读取）
@@ -134,13 +127,4 @@ public class ConfigMgr : MonoSingleton<ConfigMgr>
     {
         return uiViewConfig.allViewConfig;
     }
-
-    ///// <summary>
-    ///// 读取单位配置
-    ///// </summary>
-    ///// <returns></returns>
-    //public UnitConfig GetUnitConfig(int _unitID)
-    //{
-    //    return allUnitConfig.unit[_unitID];
-    //}
 }

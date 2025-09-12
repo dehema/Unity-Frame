@@ -29,7 +29,7 @@ public class HudUnitStateBarParam
     {
 
         unitID = _battleUnit.Data.unitId;
-        height = _battleUnit.Data.UnitConfig.height;
+        height = _battleUnit.Data.UnitConfig.Height;
         pos = _battleUnit.transform.position;
         camera = _camera;
         canvasRect = _canvasRect;

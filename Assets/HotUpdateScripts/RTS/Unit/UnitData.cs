@@ -1,4 +1,5 @@
 ﻿using System;
+using Rain.Core;
 using UnityEngine;
 
 namespace Rain.RTS.Core
@@ -27,7 +28,7 @@ namespace Rain.RTS.Core
         public UnitType unitType;       // 单位类型
 
         [Header("运行时状态")]
-        public float hp;                  // 生命值
+        public float hp;                // 生命值
         public bool isDead = false;     // 是否死亡
         private Vector3? movePos;       // 目标位置
         public Vector3? MovePos { get => movePos; set => movePos = value; }
@@ -44,29 +45,29 @@ namespace Rain.RTS.Core
         public const float runAnimationSpeed = 0.3f;
 
         //名字
-        public string Name => LangMgr.Ins.Get(unitConfig.name);
+        public string Name => LangMgr.Ins.Get(unitConfig.Name);
 
 
         public void Init(UnitConfig config)
         {
             unitId = Guid.NewGuid().ToString("N");
-            unitConfig = new UnitConfig(config);
-            maxHealth = unitConfig.hp;
+            unitConfig = config;
+            maxHealth = unitConfig.Hp;
             hp = maxHealth;
             UpdateAttributes();
         }
 
         private void UpdateAttributes()
         {
-            unitType = unitConfig.unitType;
+            unitType = unitConfig.UnitType;
             faction = unitConfig.faction;
-            hp = unitConfig.hp;
-            moveSpeed = unitConfig.moveSpeed;
+            hp = unitConfig.Hp;
+            moveSpeed = unitConfig.MoveSpeed;
             runSpeed = moveSpeed * 1.5f;
             rotationSpeed = 10f;
-            attack = unitConfig.attack;
-            attackRange = unitConfig.attackRange;
-            attackInterval = unitConfig.attackInterval;
+            attack = unitConfig.Attack;
+            attackRange = unitConfig.AttackRange;
+            attackInterval = unitConfig.AttackInterval;
         }
     }
 

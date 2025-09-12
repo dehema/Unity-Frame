@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Rain.Core;
+using UnityEngine;
 using UnityEngine.AI;
 
 
@@ -43,7 +44,7 @@ namespace Rain.RTS.Core
 
             // 计算动画速度并设置
 
-            if (unit.Data.UnitConfig.unitType == UnitType.Cavalry)
+            if (unit.Data.UnitConfig.UnitType == UnitType.Cavalry)
             {
                 moveSpeedFactor = 0.4f;
                 moveAnimationFactor = 1.2f;
@@ -59,7 +60,7 @@ namespace Rain.RTS.Core
         public override void Update()
         {
             base.Update();
-            if (unit.Data.UnitConfig.unitType == UnitType.Cavalry)
+            if (unit.Data.UnitConfig.UnitType == UnitType.Cavalry)
             {
                 if (moveSpeedFactor < moveSpeedFactorMax)
                 {
@@ -108,7 +109,7 @@ namespace Rain.RTS.Core
         void Attack()
         {
             AttackStateParam attackStateParam = new AttackStateParam();
-            if (unit.Data.UnitConfig.unitType == UnitType.Cavalry)
+            if (unit.Data.UnitConfig.UnitType == UnitType.Cavalry)
             {
                 attackStateParam.attackFactor = 1 + moveSpeedFactor;
             }
