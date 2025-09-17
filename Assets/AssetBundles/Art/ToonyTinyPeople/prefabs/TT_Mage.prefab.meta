@@ -1,8 +1,7 @@
 fileFormatVersion: 2
 guid: 1854a3b64b66724429ff0b04e0891fc1
-timeCreated: 1544658944
-licenseType: Store
-NativeFormatImporter:
+PrefabImporter:
+  externalObjects: {}
   userData: 
-  assetBundleName: 
+  assetBundleName: art/toonytinypeople/prefabs/tt_mage
   assetBundleVariant: 

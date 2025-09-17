@@ -1,43 +1,107 @@
 fileFormatVersion: 2
 guid: fb60e017e1d2e7c4e809bb61cf2d175f
 ModelImporter:
-  serializedVersion: 23
-  fileIDToRecycleName:
-    100000: //RootNode
-    100002: BONE_arch_L
-    100004: BONE_arch_R
-    100006: BONE_BASE
-    100008: BONE_bolt
-    100010: BONE_BOW
-    100012: BONE_front
-    100014: BONE_Platform
-    100016: BONE_rope
-    100018: BONE_side
-    100020: BONE_side 1
-    100022: BONE_wheel
-    100024: BONE_wheel 1
-    100026: BONE_wheel 2
-    100028: BONE_wheel 3
-    400000: //RootNode
-    400002: BONE_arch_L
-    400004: BONE_arch_R
-    400006: BONE_BASE
-    400008: BONE_bolt
-    400010: BONE_BOW
-    400012: BONE_front
-    400014: BONE_Platform
-    400016: BONE_rope
-    400018: BONE_side
-    400020: BONE_side 1
-    400022: BONE_wheel
-    400024: BONE_wheel 1
-    400026: BONE_wheel 2
-    400028: BONE_wheel 3
-    7400000: ballista_02_move
-    9500000: //RootNode
+  serializedVersion: 22200
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: //RootNode
+  - first:
+      1: 100002
+    second: BONE_arch_L
+  - first:
+      1: 100004
+    second: BONE_arch_R
+  - first:
+      1: 100006
+    second: BONE_BASE
+  - first:
+      1: 100008
+    second: BONE_bolt
+  - first:
+      1: 100010
+    second: BONE_BOW
+  - first:
+      1: 100012
+    second: BONE_front
+  - first:
+      1: 100014
+    second: BONE_Platform
+  - first:
+      1: 100016
+    second: BONE_rope
+  - first:
+      1: 100018
+    second: BONE_side
+  - first:
+      1: 100020
+    second: BONE_side 1
+  - first:
+      1: 100022
+    second: BONE_wheel
+  - first:
+      1: 100024
+    second: BONE_wheel 1
+  - first:
+      1: 100026
+    second: BONE_wheel 2
+  - first:
+      1: 100028
+    second: BONE_wheel 3
+  - first:
+      4: 400000
+    second: //RootNode
+  - first:
+      4: 400002
+    second: BONE_arch_L
+  - first:
+      4: 400004
+    second: BONE_arch_R
+  - first:
+      4: 400006
+    second: BONE_BASE
+  - first:
+      4: 400008
+    second: BONE_bolt
+  - first:
+      4: 400010
+    second: BONE_BOW
+  - first:
+      4: 400012
+    second: BONE_front
+  - first:
+      4: 400014
+    second: BONE_Platform
+  - first:
+      4: 400016
+    second: BONE_rope
+  - first:
+      4: 400018
+    second: BONE_side
+  - first:
+      4: 400020
+    second: BONE_side 1
+  - first:
+      4: 400022
+    second: BONE_wheel
+  - first:
+      4: 400024
+    second: BONE_wheel 1
+  - first:
+      4: 400026
+    second: BONE_wheel 2
+  - first:
+      4: 400028
+    second: BONE_wheel 3
+  - first:
+      74: 7400000
+    second: ballista_02_move
+  - first:
+      95: 9500000
+    second: //RootNode
   externalObjects: {}
   materials:
-    importMaterials: 0
+    materialImportMode: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -46,6 +110,7 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
     motionNodeName: 
     rigImportErrors: 
     rigImportWarnings: 
@@ -66,6 +131,7 @@ ModelImporter:
     - serializedVersion: 16
       name: ballista_02_move
       takeName: Take 001
+      internalID: 0
       firstFrame: 0
       lastFrame: 40
       wrapMode: 0
@@ -98,25 +164,36 @@ ModelImporter:
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importPhysicalCameras: 1
     importVisibility: 0
     importBlendShapes: 0
     importCameras: 0
     importLights: 0
+    nodeNameCollisionStrategy: 0
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 0
+    bakeAxisConversion: 0
     preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 0
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 1
-    previousCalculatedGlobalScale: 0.0254
-    hasPreviousCalculatedGlobalScale: 1
+    strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 2
@@ -125,10 +202,10 @@ ModelImporter:
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 2
     normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
-  copyAvatar: 0
   humanDescription:
-    serializedVersion: 2
+    serializedVersion: 3
     human: []
     skeleton: []
     armTwist: 0.5
@@ -138,14 +215,20 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
+  avatarSetup: 1
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
+  importBlendShapeDeformPercent: 0
+  remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 
-  assetBundleName: 
+  assetBundleName: art/toonytinypeople/animation/animation_machines/ballista/ballista_02_move
   assetBundleVariant: 

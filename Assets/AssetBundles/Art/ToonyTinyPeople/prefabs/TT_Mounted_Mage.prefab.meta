@@ -1,8 +1,7 @@
 fileFormatVersion: 2
 guid: bc0e691c888319a4daf7fd1c112e7d03
-timeCreated: 1547834169
-licenseType: Store
-NativeFormatImporter:
+PrefabImporter:
+  externalObjects: {}
   userData: 
-  assetBundleName: 
+  assetBundleName: art/toonytinypeople/prefabs/tt_mounted_mage
   assetBundleVariant: 

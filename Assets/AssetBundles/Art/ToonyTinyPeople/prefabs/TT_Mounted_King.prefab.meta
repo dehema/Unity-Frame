@@ -1,8 +1,7 @@
 fileFormatVersion: 2
 guid: a36479667d1b0f74bbd661b17c3f9476
-timeCreated: 1547834165
-licenseType: Store
-NativeFormatImporter:
+PrefabImporter:
+  externalObjects: {}
   userData: 
-  assetBundleName: 
+  assetBundleName: art/toonytinypeople/prefabs/tt_mounted_king
   assetBundleVariant: 

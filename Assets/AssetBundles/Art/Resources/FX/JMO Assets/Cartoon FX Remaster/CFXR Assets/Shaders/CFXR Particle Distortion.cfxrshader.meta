@@ -5,14 +5,16 @@ ScriptedImporter:
   externalObjects: {}
   serializedVersion: 2
   userData: 
-  assetBundleName: 
+  assetBundleName: art/resources/fx/jmo assets/cartoon fx remaster/cfxr assets/shaders/cfxr
+    particle distortion
   assetBundleVariant: 
   script: {fileID: 11500000, guid: fe56ec25963759b49955809beeb4324b, type: 3}
+  renderPipelineDetection: 0
   detectedRenderPipeline: Built-In Render Pipeline
   strippedLinesCount: 70
   shaderSourceCode: "//--------------------------------------------------------------------------------------------------------------------------------\r\n//
     Cartoon FX\r\n// (c) 2012-2020 Jean Moreno\r\n//--------------------------------------------------------------------------------------------------------------------------------\r\n\r\nShader
-    \"Cartoon FX/Remaster/Particle Screen Distortion NEW\"\r\n{\r\n\tProperties\r\n\t{
+    \"Cartoon FX/Remaster/Particle Screen Distortion\"\r\n{\r\n\tProperties\r\n\t{
     \r\n\t\t[Toggle(_ALPHATEST_ON)] _UseAlphaClip (\"Alpha Clipping (Cutout)\", Float)
     = 0\r\n\t//# IF_KEYWORD _ALPHATEST_ON\r\n\t\t_Cutoff (\"Cutoff Threshold\", Range(0.001,1))
     = 0.1\r\n\t//# END_IF\r\n\t\r\n\t//# --------------------------------------------------------\r\n\t\r\n\t\t[Toggle(_FADING_ON)]
@@ -38,11 +40,11 @@ ScriptedImporter:
     multi_compile_fwdbase\r\n\t\t\t\t//#pragma multi_compile SHADOWS_SCREEN\r\n\t\t\t\t\r\n\t\t\t\t//
     Using the same keywords as Unity's Standard Particle shader to minimize project-wide
     keyword usage\r\n\t\t\t\t#pragma shader_feature_local _ _FADING_ON\r\n\t\t\t\t#pragma
-    shader_feature_local _ _ALPHATEST_ON\r\n\t\t\t\t#pragma shader_feature_local
+    shader_feature_local_fragment _ _ALPHATEST_ON\r\n\t\t\t\t#pragma shader_feature_local
     _ _DEBUG_VISUALIZE_DISTORTION\r\n\r\n\t\t\t\t#include \"UnityStandardParticleInstancing.cginc\"\r\n\r\n\t\t\t\t#define
     CFXR_SCREEN_DISTORTION_SHADER\r\n\t\t\t\t#include \"CFXR_PASSES.cginc\"\r\n\r\n\t\t\t\tENDCG\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n\t\r\n\tCustomEditor
     \"CartoonFX.MaterialInspector\"\r\n}\r\n\r\n"
-  shaderName: Cartoon FX/Remaster/Particle Screen Distortion NEW
+  shaderName: Cartoon FX/Remaster/Particle Screen Distortion
   shaderErrors: []
   variantCount: 64
   variantCountUsed: 2

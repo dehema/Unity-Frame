@@ -105,12 +105,5 @@ ModelImporter:
   remapMaterialsIfMaterialImportModeIsNone: 0
   additionalBone: 0
   userData: 
-  assetBundleName: 
+  assetBundleName: art/shotgun/models/weapons/shotgun_g
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 299660
-  packageName: Low Poly ShotGun Weapon Pack 2
-  packageVersion: 1.0
-  assetPath: Assets/Low Poly ShotGun Weapon Pack 2/Models/Weapons/ShotGun_G.fbx
-  uploadId: 705000

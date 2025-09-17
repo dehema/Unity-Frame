@@ -1,8 +1,7 @@
 fileFormatVersion: 2
 guid: 4cc2bcf001dff1841ab60befad39294b
-timeCreated: 1542945796
-licenseType: Store
-NativeFormatImporter:
+PrefabImporter:
+  externalObjects: {}
   userData: 
-  assetBundleName: 
+  assetBundleName: art/toonytinypeople/fx/fx_prefabs/fx_building_burning_small
   assetBundleVariant: 

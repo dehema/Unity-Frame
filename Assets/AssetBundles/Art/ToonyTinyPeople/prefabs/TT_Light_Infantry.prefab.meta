@@ -1,8 +1,7 @@
 fileFormatVersion: 2
 guid: 46628851bff3fa341a13534728534ea3
-timeCreated: 1544658899
-licenseType: Store
-NativeFormatImporter:
+PrefabImporter:
+  externalObjects: {}
   userData: 
-  assetBundleName: 
+  assetBundleName: art/toonytinypeople/prefabs/tt_light_infantry
   assetBundleVariant: 

@@ -1,8 +1,7 @@
 fileFormatVersion: 2
 guid: a9733678a87478b4689672067b7718fb
-timeCreated: 1544658927
-licenseType: Store
-NativeFormatImporter:
+PrefabImporter:
+  externalObjects: {}
   userData: 
-  assetBundleName: 
+  assetBundleName: art/toonytinypeople/prefabs/tt_commander
   assetBundleVariant: 

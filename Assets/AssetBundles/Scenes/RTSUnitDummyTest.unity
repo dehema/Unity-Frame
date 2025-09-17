@@ -258,7 +258,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.16666667
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: 5a29f8c7382a4b748b820237d5cca805, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 1a2d1b26506a6db40a2ce64f4fa484a9, type: 2}
   m_BuildHeightMesh: 0
 --- !u!1 &915524311
 GameObject:
@@ -372,7 +372,7 @@ Transform:
   m_GameObject: {fileID: 1781974263}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.97891384, z: -0.20427392, w: 0}
-  m_LocalPosition: {x: 0, y: 9.6, z: 16.48}
+  m_LocalPosition: {x: 0, y: 10, z: 25.004179}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -390,7 +390,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91451112671a04544908b51a7ea0f930, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainCamera: {fileID: 0}
+  mainCamera: {fileID: 1781974265}
   minOrthographicSize: 3
   maxOrthographicSize: 15
   zoomDampening: 5
@@ -405,10 +405,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1781974263}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f814ef4e6dfccde48807580671132c9c, type: 3}
+  m_Script: {fileID: 11500000, guid: 544ba0bd19cc31e4b8b5f81f23f1a00a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 0}
+  playerBirthPos: {fileID: 0}
+  enemyBirthPos: {fileID: 0}
 --- !u!1 &1935498352
 GameObject:
   m_ObjectHideFlags: 0

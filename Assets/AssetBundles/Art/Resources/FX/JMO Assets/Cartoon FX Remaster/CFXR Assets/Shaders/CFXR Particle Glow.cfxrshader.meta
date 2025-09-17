@@ -5,14 +5,16 @@ ScriptedImporter:
   externalObjects: {}
   serializedVersion: 2
   userData: 
-  assetBundleName: 
+  assetBundleName: art/resources/fx/jmo assets/cartoon fx remaster/cfxr assets/shaders/cfxr
+    particle glow
   assetBundleVariant: 
   script: {fileID: 11500000, guid: fe56ec25963759b49955809beeb4324b, type: 3}
+  renderPipelineDetection: 0
   detectedRenderPipeline: Built-In Render Pipeline
-  strippedLinesCount: 108
+  strippedLinesCount: 107
   shaderSourceCode: "//--------------------------------------------------------------------------------------------------------------------------------\r\n//
     Cartoon FX\r\n// (c) 2012-2020 Jean Moreno\r\n//--------------------------------------------------------------------------------------------------------------------------------\r\n\r\nShader
-    \"Cartoon FX/Remaster/Particle Procedural Glow NEW\"\r\n{\r\n\tProperties\r\n\t{\r\n\t//#
+    \"Cartoon FX/Remaster/Particle Procedural Glow\"\r\n{\r\n\tProperties\r\n\t{\r\n\t//#
     Blending\r\n\t//#\r\n\r\n\t\t[Enum(UnityEngine.Rendering.BlendMode)] _SrcBlend
     (\"Blend Source\", Float) = 5\r\n\t\t[Enum(UnityEngine.Rendering.BlendMode)]
     _DstBlend (\"Blend Destination\", Float) = 10\r\n\t\r\n\t//# --------------------------------------------------------\r\n\r\n\t\t[Toggle(_CFXR_DISSOLVE)]
@@ -23,9 +25,8 @@ ScriptedImporter:
     Procedural Circle\r\n\t//#\r\n\r\n\t\t[KeywordEnum(P0, P2, P4, P8)] _CFXR_GLOW_POW
     (\"Apply Power of\", Float) = 0\r\n\t\t_GlowMin (\"Circle Min\", Float) = 0\r\n\t\t_GlowMax
     (\"Circle Max\", Float) = 1\r\n\t//#\r\n\t\t_MaxValue (\"Max Value\", Float)
-    = 10\r\n\r\n\t//# --------------------------------------------------------\r\n\r\n\t\t[Toggle(_CFXR_HDR_BOOST)]
-    _HdrBoost (\"Enable HDR Multiplier\", Float) = 0\r\n\t//# IF_KEYWORD _CFXR_HDR_BOOST\r\n\t\t_HdrMultiply
-    (\"HDR Multiplier\", Float) = 2\r\n\t//# END_IF\r\n\r\n\t//# --------------------------------------------------------\r\n\t\r\n\t\t[Toggle(_FADING_ON)]
+    = 10\r\n\r\n\t//# --------------------------------------------------------\r\n\r\n\t\t_HdrMultiply
+    (\"HDR Multiplier\", Float) = 2\r\n\r\n\t//# --------------------------------------------------------\r\n\t\r\n\t\t[Toggle(_FADING_ON)]
     _UseSP (\"Soft Particles\", Float) = 0\r\n\t//# IF_KEYWORD _FADING_ON\r\n\t\t_SoftParticlesFadeDistanceNear
     (\"Near Fade\", Float) = 0\r\n\t\t_SoftParticlesFadeDistanceFar (\"Far Fade\",
     Float) = 1\r\n\t//# END_IF\r\n\r\n\t//# ========================================================\r\n\t//#
@@ -43,12 +44,11 @@ ScriptedImporter:
     #pragma instancing_options procedural:vertInstancingSetup\r\n\r\n\t\t\t\t#pragma
     multi_compile_particles\r\n\t\t\t\t#pragma multi_compile_fog\r\n\t\t\t\t\r\n\t\t\t\t#pragma
     shader_feature_local _ _CFXR_GLOW_POW_P2 _CFXR_GLOW_POW_P4 _CFXR_GLOW_POW_P8\r\n\t\t\t\t#pragma
-    shader_feature_local _ _CFXR_HDR_BOOST\r\n\t\t\t\t#pragma shader_feature_local
-    _ _CFXR_DISSOLVE\r\n\r\n\t\t\t\t#pragma shader_feature_local _FADING_ON\r\n\t\t\t\t#pragma
-    shader_feature_local _ _ALPHATEST_ON\r\n\t\t\t\t#pragma shader_feature_local
-    _ _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON _ALPHAMODULATE_ON _CFXR_ADDITIVE\r\n\r\n\t\t\t\t#include
-    \"UnityStandardParticleInstancing.cginc\"\r\n\r\n\t\t\t\t#define CFXR_GLOW_SHADER\r\n\t\t\t\t#include
-    \"CFXR_PASSES.cginc\"\r\n\r\n\t\t\t\tENDCG\r\n\t\t\t}\r\n\r\n\t\t\t//--------------------------------------------------------------------------------------------------------------------------------\r\n\r\n\t\t\tPass\r\n\t\t\t{\r\n\t\t\t\tName
+    shader_feature_local _ _CFXR_DISSOLVE\r\n\r\n\t\t\t\t#pragma shader_feature_local
+    _FADING_ON\r\n\t\t\t\t#pragma shader_feature_local_fragment _ _ALPHATEST_ON\r\n\t\t\t\t#pragma
+    shader_feature_local_fragment _ _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON _ALPHAMODULATE_ON
+    _CFXR_ADDITIVE\r\n\r\n\t\t\t\t#include \"UnityStandardParticleInstancing.cginc\"\r\n\r\n\t\t\t\t#define
+    CFXR_GLOW_SHADER\r\n\t\t\t\t#include \"CFXR_PASSES.cginc\"\r\n\r\n\t\t\t\tENDCG\r\n\t\t\t}\r\n\r\n\t\t\t//--------------------------------------------------------------------------------------------------------------------------------\r\n\r\n\t\t\tPass\r\n\t\t\t{\r\n\t\t\t\tName
     \"ShadowCaster\"\r\n\t\t\t\tTags { \"LightMode\" = \"ShadowCaster\" }\r\n\r\n\t\t\t\tBlendOp
     Add\r\n\t\t\t\tBlend One Zero\r\n\t\t\t\tZWrite On\r\n\t\t\t\tCull Off\r\n\t\t\t\r\n\t\t\t\tCGPROGRAM\r\n\r\n\t\t\t\t#pragma
     vertex vertex_program\r\n\t\t\t\t#pragma fragment fragment_program\r\n\r\n\t\t\t\t//vertInstancingSetup
@@ -57,14 +57,15 @@ ScriptedImporter:
     #pragma instancing_options procedural:vertInstancingSetup\r\n\r\n\t\t\t\t#pragma
     shader_feature_local _ _CFXR_GLOW_POW_P2 _CFXR_GLOW_POW_P4 _CFXR_GLOW_POW_P8\r\n\t\t\t\t#pragma
     shader_feature_local _ _CFXR_DISSOLVE\r\n\r\n\t\t\t\t#pragma shader_feature_local
-    _FADING_ON\r\n\t\t\t\t#pragma shader_feature_local _ _ALPHATEST_ON _ALPHABLEND_ON
-    _ALPHAPREMULTIPLY_ON _ALPHAMODULATE_ON\r\n\r\n\t\t\t\t#pragma multi_compile_shadowcaster\r\n\t\t\t\t#pragma
+    _FADING_ON\r\n\t\t\t\t#pragma shader_feature_local_fragment _ _ALPHATEST_ON\r\n\t\t\t\t#pragma
+    shader_feature_local_fragment _ _ALPHABLEND_ON _ALPHAPREMULTIPLY_ON _ALPHAMODULATE_ON
+    _CFXR_ADDITIVE\r\n\r\n\t\t\t\t#pragma multi_compile_shadowcaster\r\n\t\t\t\t#pragma
     shader_feature_local _ _CFXR_DITHERED_SHADOWS_ON _CFXR_DITHERED_SHADOWS_CUSTOMTEXTURE\r\n\r\n\t\t\t#if
     (_CFXR_DITHERED_SHADOWS_ON || _CFXR_DITHERED_SHADOWS_CUSTOMTEXTURE) && !defined(SHADER_API_GLES)\r\n\t\t\t\t#pragma
     target 3.0\t\t//needed for VPOS\r\n\t\t\t#endif\r\n\r\n\t\t\t\t#include \"UnityStandardParticleInstancing.cginc\"\r\n\r\n\t\t\t\t#define
     PASS_SHADOW_CASTER\r\n\t\t\t\t#define CFXR_GLOW_SHADER\r\n\t\t\t\t#include \"CFXR_PASSES.cginc\"\r\n\r\n\t\t\t\tENDCG\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n\t\r\n\tCustomEditor
     \"CartoonFX.MaterialInspector\"\r\n}\r\n\r\n"
-  shaderName: Cartoon FX/Remaster/Particle Procedural Glow NEW
+  shaderName: Cartoon FX/Remaster/Particle Procedural Glow
   shaderErrors: []
-  variantCount: 3040
+  variantCount: 2240
   variantCountUsed: 4

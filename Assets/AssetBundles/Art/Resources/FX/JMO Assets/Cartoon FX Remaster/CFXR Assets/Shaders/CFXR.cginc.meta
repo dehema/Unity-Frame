@@ -1,9 +1,7 @@
 fileFormatVersion: 2
 guid: b3dab2eb6bcf5df42a6c45d4638e0f46
-ShaderImporter:
+ShaderIncludeImporter:
   externalObjects: {}
-  defaultTextures: []
-  nonModifiableTextures: []
   userData: 
-  assetBundleName: 
+  assetBundleName: art/resources/fx/jmo assets/cartoon fx remaster/cfxr assets/shaders/cfxr
   assetBundleVariant: 

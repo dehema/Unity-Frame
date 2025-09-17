@@ -4,12 +4,5 @@ NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 2100000
   userData: 
-  assetBundleName: 
+  assetBundleName: art/shotgun/materials/low poly weapon
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 299660
-  packageName: Low Poly ShotGun Weapon Pack 2
-  packageVersion: 1.0
-  assetPath: Assets/Low Poly ShotGun Weapon Pack 2/Materials/Low Poly Weapon.mat
-  uploadId: 705000
