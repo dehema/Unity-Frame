@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Rain.UI;
+using TMPro;
 
 public partial class DebugView : BaseView
 {
@@ -17,8 +18,8 @@ public partial class DebugView : BaseView
         [SerializeField] public GameObject viewList;
         [SerializeField] public RectTransform viewList_Rect;
         [SerializeField] public GameObject btUIItem;
-        [SerializeField] public GameObject closeAfterOpenView;
-        [SerializeField] public Toggle closeAfterOpenView_Toggle;
+        [SerializeField] public GameObject keepOpenView;
+        [SerializeField] public Toggle keepOpenView_Toggle;
         [SerializeField] public GameObject btStartGame;
         [SerializeField] public Button btStartGame_Button;
         [SerializeField] public GameObject tdScene;

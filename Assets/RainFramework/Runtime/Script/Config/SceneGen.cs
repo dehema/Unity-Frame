@@ -17,6 +17,14 @@ public class SceneName
     /// RTS单位测试场景
     /// </summary>
 	public const string RTSUnitTest = "RTSUnitTest";
+    /// <summary>
+    /// RTS战斗场景
+    /// </summary>
+	public const string RTSBattle = "RTSBattle";
+    /// <summary>
+    /// RTS单位测试
+    /// </summary>
+	public const string RTSUnitDummyTest = "RTSUnitDummyTest";
 }
 
 public enum SceneID
@@ -35,6 +43,14 @@ public enum SceneID
 	TD,
     /// <summary>
     /// RTS单位测试场景
+    /// </summary>
+	RTSUnitTest,
+    /// <summary>
+    /// RTS战斗场景
+    /// </summary>
+	RTSBattle,
+    /// <summary>
+    /// RTS单位测试
     /// </summary>
 	RTSUnitDummyTest,
 }

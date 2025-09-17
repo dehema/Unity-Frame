@@ -3,7 +3,7 @@
     /// <summary>
     /// 阵营关系
     /// </summary>
-    public enum Relation
+    public enum CampRelation
     {
         /// <summary>
         /// 友好关系

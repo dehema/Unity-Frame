@@ -272,9 +272,9 @@ namespace Rain.RTS.Core
         /// </summary>
         /// <param name="_otherFaction"></param>
         /// <returns></returns>
-        public virtual Relation GetFactionRelation(Faction _otherFaction)
+        public virtual CampRelation GetFactionRelation(Faction _otherFaction)
         {
-            Relation relation = BattleMgr.Ins.GetFactionRelation(Data.faction, _otherFaction);
+            CampRelation relation = BattleMgr.Ins.GetFactionRelation(Data.faction, _otherFaction);
             return relation;
         }
 

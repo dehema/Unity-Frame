@@ -18,6 +18,8 @@ public partial class RTSBattleDeployView : BaseView
         [SerializeField] public GameObject sandBox;
         [SerializeField] public GameObject tgFormation;
         [SerializeField] public Toggle tgFormation_Toggle;
+        [SerializeField] public GameObject btBattle;
+        [SerializeField] public Button btBattle_Button;
     }
 
     [Header("自动序列化组件")]

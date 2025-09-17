@@ -64,11 +64,11 @@ public partial class DebugView : BaseView
                 else
                 {
                     UIMgr.Ins.OpenView(uiName);
-                }
-                if (ui.closeAfterOpenView_Toggle.isOn)
-                {
                     Close();
                 }
+                if (ui.keepOpenView_Toggle.isOn)
+                    return;
+                Close();
             });
             GetComponentInChildren<Text>("Text", item.transform).text = GetUINameInChinese(uiConfig);
         }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RTSUnitTestSceneGUI : MonoBehaviour
 {
-    RTSUnitTestSceneMgr unitTestMgr;
+    RTSUnitSceneMgr unitTestMgr;
 
     const float buttonWidth = 150f;
     const float buttonHeight = 50f;
@@ -14,7 +14,7 @@ public class RTSUnitTestSceneGUI : MonoBehaviour
 
     private void Start()
     {
-        unitTestMgr = GetComponent<RTSUnitTestSceneMgr>();
+        unitTestMgr = GetComponent<RTSUnitSceneMgr>();
         GetUnitInfo();
     }
 

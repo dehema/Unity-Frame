@@ -8,10 +8,8 @@ using System.Text;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using DG.Tweening;
-using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.UI;
-using Random = UnityEngine.Random;
 
 namespace Rain.Core
 {

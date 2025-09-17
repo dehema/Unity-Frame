@@ -600,6 +600,7 @@ public class EditorDevTools_Dev : EditorDevTools_Base
               .Build();
         AllSceneConfig allSceneConfig = deserializer.Deserialize<AllSceneConfig>(config);
         Utility.Log(allSceneConfig);
+
         //创建模板
         string template = File.ReadAllText(SceneTemplatePath);
         Template temp = Template.Parse(template);
@@ -612,5 +613,29 @@ public class EditorDevTools_Dev : EditorDevTools_Base
         string result = temp.Render(hash);
         File.WriteAllText(SceneGenPath, result);
         AssetDatabase.Refresh();
+
+        //向Build Setting中 添加场景
+        EditorBuildSettingsScene[] currentScenes = EditorBuildSettings.scenes;
+        if (currentScenes.Length != allSceneConfig.scenes.Count)
+        {
+            List<EditorBuildSettingsScene> sceneList = currentScenes.ToList();
+            foreach (var item in allSceneConfig.scenes)
+            {
+                string scenePath = "Assets/AssetBundles/Scenes/" + item.Key + ".unity";
+                if (!File.Exists(scenePath))
+                {
+                    Debug.LogError($"场景不存在: {scenePath}");
+                    continue;
+                }
+                if (sceneList.Any(s => s.path == scenePath))
+                {
+                    Debug.LogWarning($"场景已存在于BuildSettings中: {scenePath}");
+                    continue;
+                }
+                sceneList.Add(new EditorBuildSettingsScene(scenePath, true));
+            }
+            currentScenes = sceneList.ToArray();
+        }
+        EditorBuildSettings.scenes = currentScenes;
     }
 }

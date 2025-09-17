@@ -12,4 +12,8 @@ scenes:
         comment: 塔防场景
     RTSUnitTest:
         comment: RTS单位测试场景
+    RTSBattle:
+        comment: RTS战斗场景
+    RTSUnitDummyTest:
+        comment: RTS单位测试
 

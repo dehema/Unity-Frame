@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using Rain.Core;
+using Rain.UI;
 
 namespace Rain.RTS.Core
 {
@@ -15,6 +16,20 @@ namespace Rain.RTS.Core
         // 所有战斗单位列表
         private Dictionary<Faction, List<BaseBattleUnit>> _factionUnits = new Dictionary<Faction, List<BaseBattleUnit>>();
 
+        public StartBattleParam startBattleParam;
+        public BattleData battleData;
+
+        /// <summary>
+        /// 开始战斗参数
+        /// </summary>
+        public class StartBattleParam
+        {
+            /// <summary>
+            /// 阵型ID
+            /// </summary>
+            public int formationID;
+        }
+
         private void Awake()
         {
             // 初始化阵营单位字典
@@ -23,6 +38,14 @@ namespace Rain.RTS.Core
                 _factionUnits[faction] = new List<BaseBattleUnit>();
             }
             CurrentState = BattleState.Prepare;
+        }
+
+        public BaseBattleUnit CreateUnit(int _unitID, Vector3 _pos)
+        {
+            UnitConfig unitConfig = ConfigMgr.Unit.Get(_unitID);
+            BaseBattleUnit battleUnit = CreateUnit(unitConfig);
+            battleUnit.transform.position = _pos;
+            return battleUnit;
         }
 
         /// <summary>
@@ -91,8 +114,8 @@ namespace Rain.RTS.Core
         /// <returns></returns>
         public bool isFactionEnemy(BaseBattleUnit _battleUnit1, BaseBattleUnit _battleUnit2)
         {
-            Relation relation = _battleUnit1.GetFactionRelation(_battleUnit2.Data.faction);
-            return relation == Relation.Hostile;
+            CampRelation relation = _battleUnit1.GetFactionRelation(_battleUnit2.Data.faction);
+            return relation == CampRelation.Hostile;
         }
 
         // 检查战斗状态
@@ -121,9 +144,45 @@ namespace Rain.RTS.Core
             }
         }
 
+        public void InitBattle(StartBattleParam _startBattleParam)
+        {
+            startBattleParam = _startBattleParam;
+            battleData = new BattleData();
+            battleData.playerFormationID = startBattleParam.formationID;
+            battleData.AnalyseFormation();
+            battleData.DistributeUnitsUnitItem();
+            battleData.DistributeUnitToArea();
+            battleData.DistributeUnitPositions();
+
+
+            foreach (var item in battleData.unitsPos)
+            {
+                Vector2 pos = item.Key;
+                int unitID = item.Value;
+                BaseBattleUnit battleUnit = CreateUnit(unitID, new Vector3(pos.x / 20, 0, pos.y / 20));
+                battleUnit.Data.faction = Faction.Player;
+            }
+
+
+            foreach (var item in battleData.unitsPos)
+            {
+                Vector2 pos = item.Key;
+                int unitID = item.Value;
+                BaseBattleUnit battleUnit = CreateUnit(unitID, new Vector3(-pos.x / 20, 0, -pos.y / 20));
+                battleUnit.Data.faction = Faction.Enemy;
+            }
+
+            // 打开HUD
+            //UIMgr.Ins.OpenView(ViewName.RTSHudView);
+
+            // 战斗开始
+            StartBattle();
+        }
+
         // 开始战斗
         public void StartBattle()
         {
+            // 战斗开始
             CurrentState = BattleState.InProgress;
             Debug.Log("战斗开始！");
         }
@@ -190,7 +249,7 @@ namespace Rain.RTS.Core
         /// <returns></returns>
         public bool IsEnemy(BaseBattleUnit _unit1, BaseBattleUnit _unit2)
         {
-            bool res = GetFactionRelation(_unit1.Data.faction, _unit2.Data.faction) == Relation.Hostile;
+            bool res = GetFactionRelation(_unit1.Data.faction, _unit2.Data.faction) == CampRelation.Hostile;
             return res;
         }
 
@@ -200,27 +259,27 @@ namespace Rain.RTS.Core
         /// <param name="ownFaction"></param>
         /// <param name="_faction2"></param>
         /// <returns></returns>
-        public Relation GetFactionRelation(Faction _faction1, Faction _faction2)
+        public CampRelation GetFactionRelation(Faction _faction1, Faction _faction2)
         {
             // 相同阵营为友好
             if (_faction1 == _faction2)
-                return Relation.Friendly;
+                return CampRelation.Friendly;
 
             if (_faction1 == Faction.Dummy || _faction2 == Faction.Dummy)
-                return Relation.Hostile;
+                return CampRelation.Hostile;
 
             // 玩家与敌人、怪物为敌对
             if ((_faction1 == Faction.Player && _faction2 == Faction.Enemy) ||
                 (_faction1 == Faction.Enemy && _faction2 == Faction.Player))
-                return Relation.Hostile;
+                return CampRelation.Hostile;
 
             // 玩家与友方为友好
             if ((_faction1 == Faction.Player && _faction2 == Faction.Ally) ||
                 (_faction1 == Faction.Ally && _faction2 == Faction.Player))
-                return Relation.Friendly;
+                return CampRelation.Friendly;
 
             // 其他情况为中立
-            return Relation.Neutral;
+            return CampRelation.Neutral;
         }
     }
 }

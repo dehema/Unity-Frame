@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using Rain.Core;
+using Rain.RTS.Core;
 using Rain.UI;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 /// <summary>
@@ -21,6 +19,7 @@ public partial class RTSBattleDeployView : BaseView
     {
         base.Init(_viewParams);
         poolFormation = PoolMgr.Ins.CreatePool(ui.tgFormation);
+        ui.btBattle_Button.SetButton(OnClickStartBattle);
         RefreshFormation();
     }
 
@@ -49,12 +48,20 @@ public partial class RTSBattleDeployView : BaseView
     /// </summary>
     public void OnValueChangeFormation(bool _ison)
     {
-        if (_ison)
+        //EventSystem.current.currentSelectedGameObject
+        foreach (var item in poolFormation.activePool)
         {
-            if (int.TryParse(EventSystem.current.currentSelectedGameObject.name, out formationID))
+            Toggle tg = item.GetComponent<Toggle>();
+            if (tg.isOn)
             {
-                RefreshShowFormation();
+                if (int.TryParse(item.name, out formationID))
+                {
+                    RefreshShowFormation();
+                }
             }
+
+            TextMeshProUGUI text = item.transform.Find("Text").GetComponent<TextMeshProUGUI>();
+            text.color = tg.isOn ? Utility.ColorHexToRGB("#0073CC") : Color.white;
         }
     }
 
@@ -69,5 +76,16 @@ public partial class RTSBattleDeployView : BaseView
         currShowFormation = Instantiate(go, ui.sandBox.transform);
         currShowFormation.transform.localPosition = Vector3.zero;
 
+    }
+
+    public void OnClickStartBattle()
+    {
+        BattleMgr.StartBattleParam startBattleParam = new BattleMgr.StartBattleParam();
+        startBattleParam.formationID = formationID;
+        SceneMgr.Ins.ChangeScene(SceneID.RTSBattle, () =>
+        {
+            BattleMgr.Ins.InitBattle(startBattleParam);
+        });
+        Close();
     }
 }

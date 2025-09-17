@@ -5,25 +5,27 @@ using Rain.UI;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
-public class RTSUnitTestSceneMgr : MonoBehaviour
+public class RTSUnitSceneMgr : MonoBehaviour
 {
-    public static RTSUnitTestSceneMgr Ins;
+    public static RTSUnitSceneMgr Ins;
 
     List<BaseBattleUnit> playerUnits = new List<BaseBattleUnit>();
     NavMeshAgent agent;
+    BaseBattleUnit dummy;           //假人
 
-    [Header("射线设置")]
-    [SerializeField]
-    public Camera mainCamera;     // 主相机引用
+    public Camera mainCamera;           // 主相机引用
+    public GameObject playerBirthPos;       // 玩家出生地
 
-    BaseBattleUnit dummy; //假人
 
     void Awake()
     {
         Ins = this;
-        UIMgr.Ins.OpenView(ViewName.RTSHudView);
-        UIMgr.Ins.OpenView(ViewName.RTSUnitTestView);
+        if (SceneManager.GetActiveScene().name == SceneName.RTSUnitDummyTest)
+        {
+            UIMgr.Ins.OpenView(ViewName.RTSUnitTestView);
+        }
         mainCamera = GetComponent<Camera>();
         BattleMgr.Ins.unitCamera = mainCamera;
     }
@@ -102,8 +104,8 @@ public class RTSUnitTestSceneMgr : MonoBehaviour
             if (battleUnit != null)
             {
                 //如果是个单位
-                Relation relation = BattleMgr.Ins.GetFactionRelation(Faction.Player, battleUnit.Data.faction);
-                if (relation == Relation.Hostile)
+                CampRelation relation = BattleMgr.Ins.GetFactionRelation(Faction.Player, battleUnit.Data.faction);
+                if (relation == CampRelation.Hostile)
                 {
                     BattleMgr.Ins.FactionUnitAttackUnit(Faction.Player, battleUnit);
                     return;

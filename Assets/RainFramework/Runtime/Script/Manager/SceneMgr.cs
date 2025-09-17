@@ -7,6 +7,7 @@ public class SceneMgr : MonoSingleton<SceneMgr>
     //要切换的场景名称
     string targetSceneName;
     SceneID currSceneID;
+
     /// <summary>
     /// 切换场景
     /// </summary>
@@ -19,9 +20,8 @@ public class SceneMgr : MonoSingleton<SceneMgr>
         viewParams.CloseCB = () =>
         {
             currSceneID = _sceneID;
-            _changeSuccess?.Invoke();
-            Debug.Log("切换至场景" + viewParams.targetSceneName);
             OnSceneChangeComplete();
+            _changeSuccess?.Invoke();
         };
         OnSceneStartChange();
         UIMgr.Ins.OpenView<LoadSceneView>(viewParams);

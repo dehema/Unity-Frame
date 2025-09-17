@@ -18,7 +18,6 @@ public sealed partial class DeployFormationConfig : Luban.BeanBase
     public DeployFormationConfig(JSONNode _buf) 
     {
         { if(!_buf["ID"].IsNumber) { throw new SerializationException(); }  ID = _buf["ID"]; }
-        { if(!_buf["val"].IsString) { throw new SerializationException(); }  Val = _buf["val"]; }
         { if(!_buf["name"].IsString) { throw new SerializationException(); }  Name = _buf["name"]; }
     }
 
@@ -31,10 +30,6 @@ public sealed partial class DeployFormationConfig : Luban.BeanBase
     /// 阵型 ID（主键）
     /// </summary>
     public readonly int ID;
-    /// <summary>
-    /// 阵型名称
-    /// </summary>
-    public readonly string Val;
     public readonly string Name;
    
     public const int __ID__ = 1669643084;
@@ -48,7 +43,6 @@ public sealed partial class DeployFormationConfig : Luban.BeanBase
     {
         return "{ "
         + "ID:" + ID + ","
-        + "val:" + Val + ","
         + "name:" + Name + ","
         + "}";
     }
