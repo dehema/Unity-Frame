@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Rain.Core;
 using UnityEngine;
 
@@ -455,7 +456,8 @@ namespace Rain.UI
         {
             viewConfig.uiLoader = new UILoader();
             viewConfig.uiLoader.SetOnCompleted(onComplete);
-            AssetMgr.Ins.LoadAsync<GameObject>(viewConfig.viewName, (res) =>
+            string prefabPath = Path.Combine(viewConfig.viewName);
+            AssetMgr.Ins.LoadAsync<GameObject>(prefabPath, (res) =>
             {
                 GameObject viewGo = Instantiate(res);
                 AddView(viewGo, viewConfig, viewParams);

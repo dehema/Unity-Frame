@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Rain.Core;
 using UnityEngine;
+using Rain.Core;
 
 namespace Rain.RTS.Core
 {
@@ -11,72 +11,81 @@ namespace Rain.RTS.Core
     /// </summary>
     public class BattleData
     {
-        /// <summary>
-        /// 区域内单位数据
-        /// </summary>
-        public struct AreaUnitData
-        {
-            public Vector4 area;                        // 区域矩形 左上角起始点 长宽
-            public List<int> units;                     // 区域内的单位ID列表
-            public UnitType unitType;                   // 区域单位类型
-        }
+        // 战斗场景
+        public BattleType battleType;
+        // 所有参战军队数据
+        public List<BattleArmyData> battleArmyDatas = new List<BattleArmyData>();
 
-        /// <summary>
-        /// 玩家阵营ID
-        /// </summary>
-        public int playerFormationID;
-        /// <summary>
-        /// 初始单位数量 <UnitID,UnitNum>
-        /// </summary>
-        public Dictionary<int, int> initUnitNum = new Dictionary<int, int>();
-
-        /// <summary>
-        /// 所有区域的单位数据
-        /// </summary>
-        public List<AreaUnitData> areaUnitDatas = new List<AreaUnitData>();
-
-        /// <summary>
-        /// 单位位置 <位置,兵种ID>
-        /// </summary>
-        public Dictionary<Vector2, int> unitsPos = new Dictionary<Vector2, int>();
-
-        // 临时字典，用于处理过程中的数据
-        private Dictionary<UnitType, List<int>> _tempUnitsByType = new Dictionary<UnitType, List<int>>();
+        //军队单位坐标缩放系数
+        private const float armyScaleFactor = 20;
 
         public BattleData()
         {
-            initUnitNum[1101] = 10;
-            initUnitNum[1201] = 10;
-            initUnitNum[1301] = 10;
-            initUnitNum[1401] = 10;
 
-            //计算单位的平均属性
-            //foreach (var item in initUnitNum)
-            //{
-            //    UnitConfig unitConfig = ConfigMgr.Unit.Get(item.Key);
+        }
 
-            //}
+        public BattleData(StartBattleParam startBattleParam)
+        {
+            foreach (StartBattleArmyParam param in startBattleParam.startBattleArmyParams)
+            {
+                BattleArmyData battleArmyData = new BattleArmyData(param);
+                battleArmyDatas.Add(battleArmyData);
+            }
+        }
+
+        /// <summary>
+        /// 设置军队朝向并重新计算位置
+        /// </summary>
+        /// <param name="faction">军队阵营</param>
+        /// <param name="rotation">朝向角度（Y轴旋转）</param>
+        public void SetArmyRotation(Faction faction, float rotation)
+        {
+            var army = battleArmyDatas.FirstOrDefault(a => a.faction == faction);
+            if (army != null)
+            {
+                army.spawnRot = rotation;
+                // 重新计算该军队的位置（应用旋转）
+                AnalyseArmy(army);
+            }
+        }
+
+        /// <summary>
+        /// 分析单位位置
+        /// </summary>
+        public void AnalyseAllArmy()
+        {
+            foreach (var army in battleArmyDatas)
+            {
+                AnalyseArmy(army);
+            }
+        }
+
+        public void AnalyseArmy(BattleArmyData army)
+        {
+            AnalyseFormation(army);
+            DistributeUnitsToAreas(army);
+            DistributeUnitPositions(army);
         }
 
         /// <summary>
         /// 分析阵型
         /// </summary>
-        public void AnalyseFormation()
+        private void AnalyseFormation(BattleArmyData army)
         {
             // 清空现有数据
-            areaUnitDatas.Clear();
+            army.areaUnitDatas.Clear();
 
-            GameObject prefab = Resources.Load<GameObject>($"Prefab/Formation/{playerFormationID}");
+            GameObject prefab = Resources.Load<GameObject>($"Prefab/Formation/{army.formationID}");
             if (prefab == null)
             {
-                Debug.LogError($"无法加载阵型预制体: {playerFormationID}");
+                Debug.LogError($"无法加载阵型预制体: {army.formationID}");
                 return;
             }
 
             foreach (Transform item in prefab.transform)
             {
                 string rootName = item.name;
-                Debug.Log(rootName);
+                //Debug.Log(rootName);
 
                 if (Enum.TryParse(rootName, out UnitType unitType))
                 {
@@ -92,80 +101,54 @@ namespace Rain.RTS.Core
                         };
 
                         // 添加到列表
-                        areaUnitDatas.Add(areaData);
+                        army.areaUnitDatas.Add(areaData);
                     }
                     else
                     {
-                        Debug.LogWarning($"阵型元素 {rootName} 没有RectTransform组件");
+                        Debug.LogError($"阵型元素 {rootName} 没有RectTransform组件");
                     }
                 }
                 else
                 {
-                    Debug.LogWarning($"无法将 {rootName} 解析为单位类型");
+                    Debug.LogError($"无法将 {rootName} 解析为单位类型");
                 }
             }
 
-            Debug.Log($"分析阵型完成，找到 {areaUnitDatas.Count} 个部署区域");
+            //Debug.Log($"分析阵型完成，找到 {army.areaUnitDatas.Count} 个部署区域");
         }
 
         /// <summary>
-        /// 分配单位类型
+        /// 直接分配单位到对应区域
         /// </summary>
-        public void DistributeUnitsUnitItem()
+        private void DistributeUnitsToAreas(BattleArmyData army)
         {
-            // 清空临时字典
-            _tempUnitsByType.Clear();
+            // 按单位类型分组处理初始单位数据
+            var unitTypeGroups = army.initUnitNum
+                .GroupBy(kv => ConfigMgr.Unit.Get(kv.Key).UnitType)
+                .ToList();
 
-            // 根据初始单位数量分类收集各类型单位
-            foreach (var item in initUnitNum)
+            foreach (var typeGroup in unitTypeGroups)
             {
-                int unitID = item.Key;
-                int count = item.Value;
+                UnitType unitType = typeGroup.Key;
 
-                // 获取单位配置
-                UnitConfig unitConfig = ConfigMgr.Unit.Get(unitID);
-
-                // 根据单位类型分组
-                if (!_tempUnitsByType.TryGetValue(unitConfig.UnitType, out List<int> unitList))
+                // 收集该类型的所有单位ID（展开数量）
+                List<int> unitIDs = new List<int>();
+                foreach (var unitEntry in typeGroup)
                 {
-                    unitList = new List<int>();
-                    _tempUnitsByType[unitConfig.UnitType] = unitList;
+                    int unitID = unitEntry.Key;
+                    int count = unitEntry.Value;
+                    unitIDs.AddRange(Enumerable.Repeat(unitID, count));
                 }
-
-                // 添加指定数量的单位
-                unitList.AddRange(Enumerable.Repeat(unitID, count));
-            }
-
-            Debug.Log($"分类完成，共有 {_tempUnitsByType.Count} 种单位类型");
-
-            // 检查是否有类型没有对应的区域
-            foreach (var unitType in _tempUnitsByType.Keys)
-            {
-                bool hasArea = areaUnitDatas.Any(area => area.unitType == unitType);
-                if (!hasArea)
-                {
-                    Debug.LogWarning($"单位类型 {unitType} 没有对应的部署区域");
-                }
-            }
-        }
-
-        /// <summary>
-        /// 单位分配到区域内
-        /// </summary>
-        public void DistributeUnitToArea()
-        {
-            // 逐个处理每种单位类型
-            foreach (var unitTypeEntry in _tempUnitsByType)
-            {
-                UnitType unitType = unitTypeEntry.Key;
-                List<int> unitIDs = unitTypeEntry.Value;
 
                 // 找出该类型的所有区域
-                var areasForType = areaUnitDatas.FindAll(area => area.unitType == unitType);
+                var areasForType = army.areaUnitDatas
+                    .Select((area, index) => new { area, index })
+                    .Where(x => x.area.unitType == unitType)
+                    .ToList();
 
                 if (areasForType.Count == 0)
                 {
-                    Debug.LogError($"没有找到类型 {unitType} 的部署区域");
+                    Debug.LogError($"单位类型 {unitType} 没有对应的部署区域");
                     continue;
                 }
 
@@ -173,24 +156,15 @@ namespace Rain.RTS.Core
                 int unitsPerArea = unitIDs.Count / areasForType.Count;
                 int remainingUnits = unitIDs.Count % areasForType.Count;
 
-                // 分配单位到每个区域
+                // 直接分配单位到区域
                 int unitIndex = 0;
-
-                // 创建一个新的区域列表，因为我们需要修改原始列表中的元素
-                List<AreaUnitData> updatedAreas = new List<AreaUnitData>();
-
-                for (int areaIndex = 0; areaIndex < areasForType.Count; areaIndex++)
+                for (int areaIdx = 0; areaIdx < areasForType.Count; areaIdx++)
                 {
-                    // 获取当前区域数据
-                    AreaUnitData areaData = areasForType[areaIndex];
+                    var areaInfo = areasForType[areaIdx];
+                    int originalIndex = areaInfo.index;
 
                     // 确定当前区域应分配的单位数量
-                    int unitsForThisArea = unitsPerArea;
-                    if (remainingUnits > 0)
-                    {
-                        unitsForThisArea++;
-                        remainingUnits--;
-                    }
+                    int unitsForThisArea = unitsPerArea + (areaIdx < remainingUnits ? 1 : 0);
 
                     // 为当前区域分配单位
                     List<int> unitsForArea = new List<int>();
@@ -200,199 +174,180 @@ namespace Rain.RTS.Core
                         unitIndex++;
                     }
 
-                    // 更新区域数据的单位列表
-                    AreaUnitData updatedArea = areaData;
+                    // 直接更新原始区域数据
+                    AreaUnitData updatedArea = army.areaUnitDatas[originalIndex];
                     updatedArea.units = unitsForArea;
-                    updatedAreas.Add(updatedArea);
+                    army.areaUnitDatas[originalIndex] = updatedArea;
 
-                    Debug.Log($"区域 {areaData.area} 分配了 {unitsForArea.Count} 个 {unitType} 类型的单位");
-                }
-
-                // 更新原始列表中的区域数据
-                for (int i = 0; i < areaUnitDatas.Count; i++)
-                {
-                    if (areaUnitDatas[i].unitType == unitType)
-                    {
-                        int index = areasForType.FindIndex(a => a.area == areaUnitDatas[i].area);
-                        if (index >= 0 && index < updatedAreas.Count)
-                        {
-                            areaUnitDatas[i] = updatedAreas[index];
-                        }
-                    }
+                    //Debug.Log($"区域 {updatedArea.area} 分配了 {unitsForArea.Count} 个 {unitType} 类型的单位");
                 }
             }
 
-            // 清空临时字典，释放内存
-            _tempUnitsByType.Clear();
-
-            Debug.Log($"单位分配完成，共有 {areaUnitDatas.Count} 个区域被分配了单位");
+            //Debug.Log($"单位分配完成，共有 {army.areaUnitDatas.Count} 个区域被分配了单位");
         }
-        
+
         /// <summary>
-        /// 分配单位在区域内的具体位置（网格形式）
+        /// 分配单位在区域内的具体位置（优化的对称布局）
+        /// 确保军队中心在spawnPos，整体朝向为spawnRot
         /// </summary>
-        /// <param name="unitSpacing">单位之间的最小间距（如果为0则自动计算）</param>
-        public void DistributeUnitPositions(float unitSpacing = 0)
+        private void DistributeUnitPositions(BattleArmyData army)
         {
             // 清空现有位置数据
-            unitsPos.Clear();
-            
-            // 如果没有指定间距，计算一个合理的默认值
-            if (unitSpacing <= 0)
+            army.unitsPos.Clear();
+
+            // 先计算所有区域的边界框，用于确定军队整体中心
+            float minX = float.MaxValue, minY = float.MaxValue;
+            float maxX = float.MinValue, maxY = float.MinValue;
+
+            foreach (var areaData in army.areaUnitDatas)
             {
-                unitSpacing = 1.0f; // 默认间距
-            }
-            
-            // 遍历每个区域
-            foreach (var areaData in areaUnitDatas)
-            {
-                // 跳过没有单位的区域
                 if (areaData.units == null || areaData.units.Count == 0)
                     continue;
-                
+
+                float areaX = areaData.area.x;
+                float areaY = areaData.area.y;
+                float areaWidth = areaData.area.z;
+                float areaHeight = areaData.area.w;
+
+                minX = Mathf.Min(minX, areaX);
+                minY = Mathf.Min(minY, areaY);
+                maxX = Mathf.Max(maxX, areaX + areaWidth);
+                maxY = Mathf.Max(maxY, areaY + areaHeight);
+            }
+
+            // 计算军队整体中心点（阵型的几何中心）
+            Vector2 formationCenter = new Vector2((minX + maxX) * 0.5f, (minY + maxY) * 0.5f);
+
+            // 遍历每个区域，生成单位位置
+            foreach (var areaData in army.areaUnitDatas)
+            {
+                if (areaData.units == null || areaData.units.Count == 0)
+                    continue;
+
                 // 获取区域信息
-                float areaX = areaData.area.x;        // 区域左上角X坐标
-                float areaY = areaData.area.y;        // 区域左上角Y坐标
-                float areaWidth = areaData.area.z;    // 区域宽度
-                float areaHeight = areaData.area.w;   // 区域高度
-                
-                // 计算可以放置的最大单位数量（网格）
-                int unitCount = areaData.units.Count;
-                
-                // 计算网格行列数（尽量接近正方形网格）
-                int cols = Mathf.CeilToInt(Mathf.Sqrt(unitCount));
-                int rows = Mathf.CeilToInt((float)unitCount / cols);
-                
-                // 计算实际使用的间距，使单位均匀分布在区域内
-                float effectiveWidth = areaWidth - unitSpacing;
-                float effectiveHeight = areaHeight - unitSpacing;
-                
-                float xSpacing = cols > 1 ? effectiveWidth / (cols - 1) : 0;
-                float ySpacing = rows > 1 ? effectiveHeight / (rows - 1) : 0;
-                
-                // 如果只有一行或一列，则居中放置
-                float xOffset = cols > 1 ? 0 : effectiveWidth / 2;
-                float yOffset = rows > 1 ? 0 : effectiveHeight / 2;
-                
-                // 分配单位位置
-                int index = 0;
-                for (int row = 0; row < rows; row++)
+                float areaX = areaData.area.x;
+                float areaY = areaData.area.y;
+                float areaWidth = areaData.area.z;
+                float areaHeight = areaData.area.w;
+
+                int total = areaData.units.Count;
+
+                // 基于区域宽高比计算最优行列数，确保布局合理
+                float aspect = areaWidth / Mathf.Max(0.0001f, areaHeight);
+                int cols = Mathf.Max(1, Mathf.CeilToInt(Mathf.Sqrt(total * aspect)));
+                int rows = Mathf.Max(1, Mathf.CeilToInt((float)total / cols));
+
+                // 计算每一行的Y位置，在区域高度内等距分布，避免贴边且上下对称
+                List<float> rowYPositions = new List<float>();
+                float rowStep = areaHeight / (rows + 1);
+                for (int r = 0; r < rows; r++)
                 {
-                    for (int col = 0; col < cols; col++)
+                    float y = areaY + rowStep * (r + 1);
+                    rowYPositions.Add(y);
+                }
+
+                // 计算各行应分配的单位数量，使各行数量差不超过1
+                int basePerRow = total / rows;
+                int remainder = total % rows;
+                int[] rowCounts = new int[rows];
+                for (int r = 0; r < rows; r++)
+                {
+                    rowCounts[r] = basePerRow + (r < remainder ? 1 : 0);
+                }
+
+                // 按行布置单位
+                int idx = 0;
+                for (int r = 0; r < rows; r++)
+                {
+                    if (idx >= total) break;
+                    int countInRow = rowCounts[r];
+
+                    // 在本行内等分宽度，避免贴边且左右对称
+                    float xStep = areaWidth / (countInRow + 1);
+                    float y = rowYPositions[Mathf.Min(r, rowYPositions.Count - 1)];
+
+                    for (int c = 0; c < countInRow; c++)
                     {
-                        if (index >= unitCount)
-                            break;
-                            
-                        // 计算单位位置（相对于区域左上角）
-                        float x = areaX + xOffset + col * xSpacing;
-                        float y = areaY + yOffset + row * ySpacing;
-                        
-                        // 存储单位位置
-                        Vector2 position = new Vector2(x, y);
-                        unitsPos[position] = areaData.units[index];
-                        
-                        index++;
+                        int unitId = areaData.units[idx++];
+                        float x = areaX + xStep * (c + 1);
+
+                        // 计算相对于阵型中心的位置
+                        Vector2 localPos = new Vector2(x, y) - formationCenter;
+
+                        // 应用军队旋转
+                        Vector2 rotatedPos = RotatePosition(localPos, army.spawnRot);
+
+                        // 平移到最终的世界位置（以spawnPos为中心）
+                        Vector2 finalPos = rotatedPos / armyScaleFactor + new Vector2(army.spawnPos.x, army.spawnPos.z);
+
+                        army.unitsPos[finalPos] = unitId;
                     }
                 }
-                
-                Debug.Log($"区域 {areaData.area} 分配了 {unitCount} 个单位位置");
+
+                //Debug.Log($"区域 {areaData.area} 布置了 {total} 个单位，rows={rows}, cols={cols}");
             }
-            
-            // 调整相邻区域间的单位间隔
-            AdjustBorderUnitSpacing();
-            
-            Debug.Log($"单位位置分配完成，共有 {unitsPos.Count} 个单位被分配了位置");
+
+            //Debug.Log($"单位位置分配完成，共有 {army.unitsPos.Count} 个单位被分配了位置，中心位置: {army.spawnPos}");
         }
-        
+
         /// <summary>
-        /// 调整相邻区域边界处的单位间隔
+        /// 旋转位置坐标
         /// </summary>
-        private void AdjustBorderUnitSpacing()
+        /// <param name="position">原始位置</param>
+        /// <param name="rotationY">Y轴旋转角度（度）</param>
+        /// <returns>旋转后的位置</returns>
+        private Vector2 RotatePosition(Vector2 position, float rotationY)
         {
-            // 获取所有区域的边界单位
-            Dictionary<UnitType, List<KeyValuePair<Vector2, int>>> borderUnits = new Dictionary<UnitType, List<KeyValuePair<Vector2, int>>>();
-            
-            // 遍历每个区域，找出边界单位
-            foreach (var areaData in areaUnitDatas)
+            if (Mathf.Abs(rotationY) < 0.01f) return position; // 没有旋转
+
+            float radians = rotationY * Mathf.Deg2Rad;
+            float cos = Mathf.Cos(radians);
+            float sin = Mathf.Sin(radians);
+
+            float newX = position.x * cos - position.y * sin;
+            float newY = position.x * sin + position.y * cos;
+
+            return new Vector2(newX, newY);
+        }
+
+        /// <summary>
+        /// 区域内单位数据
+        /// </summary>
+        public struct AreaUnitData
+        {
+            public Vector4 area;                        // 区域矩形 左上角起始点 长宽
+            public List<int> units;                     // 区域内的单位ID列表
+            public UnitType unitType;                   // 区域单位类型
+        }
+
+        public class BattleArmyData
+        {
+            // 阵营ID
+            public Faction faction;
+
+            // 阵型ID
+            public int formationID;
+
+            //军队出生点
+            public Vector3 spawnPos;
+
+            // 军队朝向（Y轴旋转角度）
+            public float spawnRot = 0f;
+
+            // 初始单位数量 <UnitID,UnitNum>
+            public Dictionary<int, int> initUnitNum = new Dictionary<int, int>();
+
+            // 所有区域的单位数据
+            public List<AreaUnitData> areaUnitDatas = new List<AreaUnitData>();
+
+            // 单位位置 <位置,兵种ID>
+            public Dictionary<Vector2, int> unitsPos = new Dictionary<Vector2, int>();
+
+            public BattleArmyData(StartBattleArmyParam param)
             {
-                if (areaData.units == null || areaData.units.Count == 0)
-                    continue;
-                    
-                // 获取该区域的所有单位位置
-                var areaUnitPositions = unitsPos.Where(p => areaData.units.Contains(p.Value)).ToList();
-                
-                // 找出边界单位（最左、最右、最上、最下的单位）
-                if (areaUnitPositions.Count > 0)
-                {
-                    // 如果该类型还没有记录，创建新列表
-                    if (!borderUnits.ContainsKey(areaData.unitType))
-                    {
-                        borderUnits[areaData.unitType] = new List<KeyValuePair<Vector2, int>>();
-                    }
-                    
-                    // 添加边界单位
-                    var leftMost = areaUnitPositions.OrderBy(p => p.Key.x).First();
-                    var rightMost = areaUnitPositions.OrderByDescending(p => p.Key.x).First();
-                    var topMost = areaUnitPositions.OrderBy(p => p.Key.y).First();
-                    var bottomMost = areaUnitPositions.OrderByDescending(p => p.Key.y).First();
-                    
-                    borderUnits[areaData.unitType].Add(leftMost);
-                    if (leftMost.Key != rightMost.Key) borderUnits[areaData.unitType].Add(rightMost);
-                    if (leftMost.Key != topMost.Key && rightMost.Key != topMost.Key) borderUnits[areaData.unitType].Add(topMost);
-                    if (leftMost.Key != bottomMost.Key && rightMost.Key != bottomMost.Key && topMost.Key != bottomMost.Key) 
-                        borderUnits[areaData.unitType].Add(bottomMost);
-                }
-            }
-            
-            // 对于每种单位类型，调整相邻区域间的单位间隔
-            foreach (var unitType in borderUnits.Keys)
-            {
-                var typeBorderUnits = borderUnits[unitType];
-                
-                // 如果只有一个区域，无需调整
-                if (typeBorderUnits.Count <= 1)
-                    continue;
-                    
-                // TODO: 实现更复杂的边界单位间隔调整算法
-                // 当前简化版本只是确保边界单位不会过于拥挤
-                const float minBorderSpacing = 1.5f; // 边界单位最小间距
-                
-                // 检查边界单位间距
-                for (int i = 0; i < typeBorderUnits.Count; i++)
-                {
-                    for (int j = i + 1; j < typeBorderUnits.Count; j++)
-                    {
-                        Vector2 pos1 = typeBorderUnits[i].Key;
-                        Vector2 pos2 = typeBorderUnits[j].Key;
-                        
-                        // 计算距离
-                        float distance = Vector2.Distance(pos1, pos2);
-                        
-                        // 如果距离小于最小间距，调整位置
-                        if (distance < minBorderSpacing)
-                        {
-                            // 计算移动方向
-                            Vector2 direction = (pos2 - pos1).normalized;
-                            
-                            // 计算需要移动的距离
-                            float moveDistance = (minBorderSpacing - distance) / 2;
-                            
-                            // 移动两个单位
-                            Vector2 newPos1 = pos1 - direction * moveDistance;
-                            Vector2 newPos2 = pos2 + direction * moveDistance;
-                            
-                            // 更新位置
-                            int unitId1 = typeBorderUnits[i].Value;
-                            int unitId2 = typeBorderUnits[j].Value;
-                            
-                            unitsPos.Remove(pos1);
-                            unitsPos.Remove(pos2);
-                            
-                            unitsPos[newPos1] = unitId1;
-                            unitsPos[newPos2] = unitId2;
-                        }
-                    }
-                }
+                this.faction = param.faction;
+                this.formationID = param.formationID;
+                this.initUnitNum = param.initUnitNum;
             }
         }
     }

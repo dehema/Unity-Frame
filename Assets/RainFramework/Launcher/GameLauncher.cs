@@ -67,7 +67,10 @@ namespace Rain.Launcher
             }
             if (Application.isEditor)
             {
-                UIMgr.Ins.OpenViewAsync(ViewName.DebugView);
+                UIMgr.Ins.OpenView(ViewName.DebugView);
+
+                //ab 系统还没做好
+                //UIMgr.Ins.OpenViewAsync(ViewName.DebugView);
                 Utility.Log("hello world");
             }
             else

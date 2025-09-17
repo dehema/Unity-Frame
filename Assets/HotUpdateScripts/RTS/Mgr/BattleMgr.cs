@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 using Rain.Core;
 using Rain.UI;
@@ -16,35 +16,78 @@ namespace Rain.RTS.Core
         // 所有战斗单位列表
         private Dictionary<Faction, List<BaseBattleUnit>> _factionUnits = new Dictionary<Faction, List<BaseBattleUnit>>();
 
-        public StartBattleParam startBattleParam;
         public BattleData battleData;
 
-        /// <summary>
-        /// 开始战斗参数
-        /// </summary>
-        public class StartBattleParam
+        public void InitBattle(StartBattleParam _startBattleParam)
         {
-            /// <summary>
-            /// 阵型ID
-            /// </summary>
-            public int formationID;
-        }
-
-        private void Awake()
-        {
+            //处理数据
             // 初始化阵营单位字典
             foreach (Faction faction in System.Enum.GetValues(typeof(Faction)))
             {
                 _factionUnits[faction] = new List<BaseBattleUnit>();
             }
             CurrentState = BattleState.Prepare;
+
+            //本场战斗
+            battleData = new BattleData(_startBattleParam);
+
+            // 打开HUD
+            UIMgr.Ins.OpenView(ViewName.RTSHudView);
+
+            TimerMgr.Ins.AddTimer(this, delay: 0.5f, onComplete: () =>
+            {
+                //处理战场数据
+                foreach (var army in battleData.battleArmyDatas)
+                {
+                    Transform trans = null;
+                    if (army.faction == Faction.Player)
+                    {
+                        trans = RTSUnitSceneMgr.Ins.sceneRoot.playerBirthPos?.transform;
+                    }
+                    else if (army.faction == Faction.Enemy)
+                    {
+                        trans = RTSUnitSceneMgr.Ins.sceneRoot.enemyBirthPos?.transform;
+                    }
+                    Vector3 spawnPos = trans?.position ?? Vector3.zero;
+                    Vector3 spawnRot = trans?.eulerAngles ?? Vector3.zero;
+                    army.spawnPos = spawnPos;
+                    army.spawnRot = spawnRot.y;
+                }
+                battleData.AnalyseAllArmy();
+
+                // 按军队数据生成单位
+                foreach (var army in battleData.battleArmyDatas)
+                {
+                    foreach (var kv in army.unitsPos)
+                    {
+                        Vector2 pos = kv.Key;
+                        int unitID = kv.Value;
+                        // 位置已经包含了旋转和平移，直接使用，只需要缩放和设置Y坐标
+                        Vector3 worldPos = new Vector3(pos.x, 0, pos.y);
+                        BaseBattleUnit battleUnit = CreateUnit(unitID, worldPos, new Vector3(0, army.spawnRot, 0));
+                        battleUnit.Data.faction = army.faction;
+                    }
+                }
+
+                //战斗开始
+                StartBattle();
+            });
         }
 
-        public BaseBattleUnit CreateUnit(int _unitID, Vector3 _pos)
+        // 开始战斗
+        public void StartBattle()
+        {
+            // 战斗开始
+            CurrentState = BattleState.InProgress;
+            Debug.Log("战斗开始！");
+        }
+
+        public BaseBattleUnit CreateUnit(int _unitID, Vector3 _pos, Vector3 _rot)
         {
             UnitConfig unitConfig = ConfigMgr.Unit.Get(_unitID);
             BaseBattleUnit battleUnit = CreateUnit(unitConfig);
             battleUnit.transform.position = _pos;
+            battleUnit.transform.eulerAngles = _rot;
             return battleUnit;
         }
 
@@ -142,49 +185,6 @@ namespace Rain.RTS.Core
                 Debug.Log("战斗失败！");
                 OnBattleEnd(false);
             }
-        }
-
-        public void InitBattle(StartBattleParam _startBattleParam)
-        {
-            startBattleParam = _startBattleParam;
-            battleData = new BattleData();
-            battleData.playerFormationID = startBattleParam.formationID;
-            battleData.AnalyseFormation();
-            battleData.DistributeUnitsUnitItem();
-            battleData.DistributeUnitToArea();
-            battleData.DistributeUnitPositions();
-
-
-            foreach (var item in battleData.unitsPos)
-            {
-                Vector2 pos = item.Key;
-                int unitID = item.Value;
-                BaseBattleUnit battleUnit = CreateUnit(unitID, new Vector3(pos.x / 20, 0, pos.y / 20));
-                battleUnit.Data.faction = Faction.Player;
-            }
-
-
-            foreach (var item in battleData.unitsPos)
-            {
-                Vector2 pos = item.Key;
-                int unitID = item.Value;
-                BaseBattleUnit battleUnit = CreateUnit(unitID, new Vector3(-pos.x / 20, 0, -pos.y / 20));
-                battleUnit.Data.faction = Faction.Enemy;
-            }
-
-            // 打开HUD
-            //UIMgr.Ins.OpenView(ViewName.RTSHudView);
-
-            // 战斗开始
-            StartBattle();
-        }
-
-        // 开始战斗
-        public void StartBattle()
-        {
-            // 战斗开始
-            CurrentState = BattleState.InProgress;
-            Debug.Log("战斗开始！");
         }
 
         // 战斗结束处理

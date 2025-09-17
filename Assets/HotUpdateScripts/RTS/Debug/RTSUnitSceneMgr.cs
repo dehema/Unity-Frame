@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Rain.Core;
 using Rain.RTS.Core;
 using Rain.UI;
@@ -7,31 +8,50 @@ using UnityEngine.AI;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
+[RequireComponent(typeof(CameraController_RTS))]
+[RequireComponent(typeof(BattleSceneRoot))]
 public class RTSUnitSceneMgr : MonoBehaviour
 {
     public static RTSUnitSceneMgr Ins;
 
+    public CameraController_RTS cameraController;   //ç›¸æœºè„šæœ¬
+    public BattleSceneRoot sceneRoot;               //åœºæ™¯èŠ‚ç‚¹è„šæœ¬
+
+    public Camera MainCamera => cameraController.mainCamera;
     List<BaseBattleUnit> playerUnits = new List<BaseBattleUnit>();
     NavMeshAgent agent;
-    BaseBattleUnit dummy;           //¼ÙÈË
-
-    public Camera mainCamera;           // Ö÷Ïà»úÒıÓÃ
-    public GameObject playerBirthPos;       // Íæ¼Ò³öÉúµØ
+    BaseBattleUnit dummy;                   // å‡äºº
 
 
     void Awake()
     {
         Ins = this;
+        cameraController = GetComponent<CameraController_RTS>();
+        sceneRoot = GetComponent<BattleSceneRoot>();
+        BattleMgr.Ins.unitCamera = MainCamera;
+        // é‡ç½®é•œå¤´ä½ç½®
+        cameraController.ResetCameraToWorldCenter();
+        // æ‰“å¼€è°ƒè¯•ç•Œé¢
         if (SceneManager.GetActiveScene().name == SceneName.RTSUnitDummyTest)
         {
             UIMgr.Ins.OpenView(ViewName.RTSUnitTestView);
         }
-        mainCamera = GetComponent<Camera>();
-        BattleMgr.Ins.unitCamera = mainCamera;
+    }
+
+    void Update()
+    {
+        if (BattleMgr.Ins.battleData.battleType == BattleType.SingleUnitDemo)
+        {
+            // æ£€æµ‹é¼ æ ‡å·¦é”®ç‚¹å‡»
+            if (Input.GetMouseButtonDown(0))
+            {
+                MovePlayerUnitsToMousePosition();
+            }
+        }
     }
 
     /// <summary>
-    /// ´´½¨Íæ¼Òµ¥Î»
+    /// åˆ›å»ºç©å®¶å•ä½
     /// </summary>
     public BaseBattleUnit CreatePlayerUnit(UnitConfig unitConfig)
     {
@@ -40,7 +60,7 @@ public class RTSUnitSceneMgr : MonoBehaviour
             Destroy(item.gameObject);
         }
         playerUnits.Clear();
-        unitConfig.faction = Faction.Player; // ÉèÖÃµ¥Î»ÕóÓªÎªÍæ¼Ò
+        unitConfig.faction = Faction.Player; // è®¾ç½®å•ä½é˜µè¥ä¸ºç©å®¶
         BaseBattleUnit battleUnit = CreateUnit(unitConfig);
         if (battleUnit != null)
         {
@@ -50,7 +70,7 @@ public class RTSUnitSceneMgr : MonoBehaviour
     }
 
     /// <summary>
-    /// ´´½¨¼ÙÈË
+    /// åˆ›å»ºå‡äºº
     /// </summary>
     public BaseBattleUnit CreateDummy()
     {
@@ -65,7 +85,7 @@ public class RTSUnitSceneMgr : MonoBehaviour
     }
 
     /// <summary>
-    /// ´´½¨µ¥Î»
+    /// åˆ›å»ºå•ä½
     /// </summary>
     /// <param name="unitConfig"></param>
     public BaseBattleUnit CreateUnit(UnitConfig unitConfig)
@@ -74,36 +94,27 @@ public class RTSUnitSceneMgr : MonoBehaviour
         return battleUnit;
     }
 
-    void Update()
-    {
-        // ¼ì²âÊó±ê×ó¼üµã»÷
-        if (Input.GetMouseButtonDown(0))
-        {
-            MovePlayerUnitsToMousePosition();
-        }
-    }
-
     /// <summary>
-    /// ÒÆ¶¯µ¥Î»µ½Êó±êµã»÷Î»ÖÃ
+    /// ç§»åŠ¨å•ä½åˆ°é¼ æ ‡ç‚¹å‡»ä½ç½®
     /// </summary>
     private void MovePlayerUnitsToMousePosition()
     {
         bool isOverUI = EventSystem.current.IsPointerOverGameObject();
         if (isOverUI)
         {
-            return; // µãµ½UI
+            return; // ç‚¹åˆ°UI
         }
-        // ´ÓÏà»ú·¢ÉäÉäÏßµ½Êó±êÎ»ÖÃ
-        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-        Debug.DrawRay(mainCamera.transform.position, ray.direction, Color.red, 1);
+        // ä»ç›¸æœºå‘å°„å°„çº¿åˆ°é¼ æ ‡ä½ç½®
+        Ray ray = MainCamera.ScreenPointToRay(Input.mousePosition);
+        Debug.DrawRay(MainCamera.transform.position, ray.direction, Color.red, 1);
         RaycastHit hit;
-        // Èç¹ûÉäÏß»÷ÖĞÁËµØÃæ
+        // å¦‚æœå°„çº¿å‡»ä¸­äº†åœ°é¢
         if (Physics.Raycast(ray, out hit, 1000f, 1 << GameObjectLayer.Scene3D))
         {
             BaseBattleUnit battleUnit = hit.collider.gameObject.GetComponent<BaseBattleUnit>();
             if (battleUnit != null)
             {
-                //Èç¹ûÊÇ¸öµ¥Î»
+                //å¦‚æœæ˜¯ä¸ªå•ä½
                 CampRelation relation = BattleMgr.Ins.GetFactionRelation(Faction.Player, battleUnit.Data.faction);
                 if (relation == CampRelation.Hostile)
                 {
@@ -112,24 +123,24 @@ public class RTSUnitSceneMgr : MonoBehaviour
                 }
             }
 
-            // ÉèÖÃµ¼º½Ä¿±êÎ»ÖÃ
+            // è®¾ç½®å¯¼èˆªç›®æ ‡ä½ç½®
             BattleMgr.Ins.AllPlayerUnitMove(hit.point);
         }
     }
 
     /// <summary>
-    /// ÔÚ³¡¾°ÊÓÍ¼ÖĞ»æÖÆ¸¨ÖúÏß
+    /// åœ¨åœºæ™¯è§†å›¾ä¸­ç»˜åˆ¶è¾…åŠ©çº¿
     /// </summary>
     private void OnDrawGizmos()
     {
         if (agent != null && agent.hasPath)
         {
-            // »æÖÆµ¼º½Â·¾¶
+            // ç»˜åˆ¶å¯¼èˆªè·¯å¾„
             Gizmos.color = Color.blue;
             var path = agent.path;
             Vector3 previousCorner = agent.transform.position;
 
-            // »æÖÆÂ·¾¶ÖĞµÄÃ¿¸ö¹Õµã
+            // ç»˜åˆ¶è·¯å¾„ä¸­çš„æ¯ä¸ªæ‹ç‚¹
             foreach (var corner in path.corners)
             {
                 Gizmos.DrawLine(previousCorner, corner);

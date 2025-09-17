@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using Rain.Core;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 /// <summary>
 /// SLG类型游戏的相机控制器
@@ -23,13 +26,13 @@ public class CameraController_RTS : MonoBehaviour
     [Tooltip("缩放速度")]
     public const float zoomSpeed = 3f;          // 缩放速度
     [Tooltip("缩放平滑度")]
-    public float zoomDampening = 5f;           // 缩放平滑度
+    public float zoomDampening = 5f;            // 缩放平滑度
 
     [Header("平移设置")]
     [Tooltip("相机移动速度")]
-    public float panSpeed = 1;               // 相机平移速度
+    public float panSpeed = 1;                  // 相机平移速度
     [Tooltip("相机移动平滑度")]
-    public float panDampening = 2f;            // 相机平移平滑度
+    public float panDampening = 2f;             // 相机平移平滑度
 
 
     // 当前目标正交尺寸
@@ -58,6 +61,7 @@ public class CameraController_RTS : MonoBehaviour
             Debug.LogWarning("相机不是正交投影模式，已自动切换为正交投影模式");
             mainCamera.orthographic = true;
         }
+        mainCamera.nearClipPlane = -20;
 
         // 初始化目标正交尺寸为当前尺寸
         if (mainCamera != null)
@@ -68,7 +72,7 @@ public class CameraController_RTS : MonoBehaviour
         SetTargetOrthographicSize(defaultOrthographicSize);
 
         // 初始化目标位置为当前位置
-        targetPosition = transform.position;
+        targetPosition = mainCamera.transform.position;
     }
 
     // 每帧更新
@@ -162,7 +166,7 @@ public class CameraController_RTS : MonoBehaviour
 
             // 直接在世界坐标系中移动，不需要转换
             // 考虑相机的旋转角度，确保移动方向正确
-            moveDirection = Quaternion.Euler(0, transform.eulerAngles.y, 0) * moveDirection;
+            moveDirection = Quaternion.Euler(0, mainCamera.transform.eulerAngles.y, 0) * moveDirection;
             moveDirection.y = 0; // 确保Y轴不变
 
             // 更新目标位置
@@ -173,13 +177,100 @@ public class CameraController_RTS : MonoBehaviour
         }
 
         // 平滑过渡到目标位置
-        if (transform.position != targetPosition)
+        if (mainCamera.transform.position != targetPosition)
         {
-            transform.position = Vector3.Lerp(
-                transform.position,
+            mainCamera.transform.position = Vector3.Lerp(
+                mainCamera.transform.position,
                 targetPosition,
                 Time.deltaTime * panDampening
             );
         }
     }
+
+    /// <summary>
+    /// 调整相机位置使其视野中心对准世界原点(0,0,0)（仅修改X和Z坐标）
+    /// </summary>
+    public void ResetCameraToWorldCenter()
+    {
+        if (mainCamera != null)
+        {
+            Vector3 currentPosition = mainCamera.transform.position;
+            
+            // 计算从相机位置到世界原点的射线
+            Vector3 worldCenter = Vector3.zero;
+            
+            // 对于正交相机，我们需要计算相机应该移动到哪里才能让视野中心对准世界原点
+            // 使用相机的前向向量投影到XZ平面上
+            Vector3 cameraForward = mainCamera.transform.forward;
+            
+            // 如果相机是俯视角度，计算相机在XZ平面上应该的位置
+            if (Mathf.Abs(cameraForward.y) > 0.01f) // 确保不是完全水平的相机
+            {
+                // 计算从当前Y高度到地面(Y=0)的距离比例
+                float distanceToGround = currentPosition.y / Mathf.Abs(cameraForward.y);
+                
+                // 计算相机在XZ平面上的偏移量，使得视线中心指向世界原点
+                Vector3 offsetOnGround = new Vector3(cameraForward.x, 0, cameraForward.z).normalized * distanceToGround;
+                
+                // 计算新的相机位置（只修改X和Z）
+                Vector3 newPosition = new Vector3(
+                    worldCenter.x - offsetOnGround.x,
+                    currentPosition.y, // 保持Y坐标不变
+                    worldCenter.z - offsetOnGround.z
+                );
+
+                mainCamera.transform.position = newPosition;
+                targetPosition = newPosition;
+            }
+            else
+            {
+                // 如果是水平相机，直接将XZ坐标设为0
+                Vector3 newPosition = new Vector3(0f, currentPosition.y, 0f);
+                mainCamera.transform.position = newPosition;
+                targetPosition = newPosition;
+            }
+        }
+    }
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(CameraController_RTS))]
+public class CameraController_RTSEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        // 绘制默认的Inspector界面
+        DrawDefaultInspector();
+
+        // 添加分隔线
+        EditorGUILayout.Space();
+        EditorGUILayout.LabelField("编辑器工具", EditorStyles.boldLabel);
+
+        // 获取目标组件
+        CameraController_RTS cameraController = (CameraController_RTS)target;
+
+        // 添加重置相机位置按钮
+        if (GUILayout.Button("调整相机视野中心到世界原点 (0,0,0)"))
+        {
+            cameraController.ResetCameraToWorldCenter();
+            
+            // 标记场景为已修改（如果在编辑模式下）
+            if (!Application.isPlaying)
+            {
+                EditorUtility.SetDirty(cameraController);
+                UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(cameraController.gameObject.scene);
+            }
+        }
+
+        // 显示当前相机位置信息
+        if (cameraController.mainCamera != null)
+        {
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("当前相机信息", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField($"位置: {cameraController.mainCamera.transform.position}");
+            EditorGUILayout.LabelField($"角度: {cameraController.mainCamera.transform.eulerAngles}");
+            EditorGUILayout.LabelField($"正交尺寸: {cameraController.mainCamera.orthographicSize:F2}");
+        }
+    }
+}
+#endif

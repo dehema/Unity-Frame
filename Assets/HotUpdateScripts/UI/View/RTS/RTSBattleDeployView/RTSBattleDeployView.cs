@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Rain.Core;
 using Rain.RTS.Core;
 using Rain.UI;
@@ -80,8 +81,17 @@ public partial class RTSBattleDeployView : BaseView
 
     public void OnClickStartBattle()
     {
-        BattleMgr.StartBattleParam startBattleParam = new BattleMgr.StartBattleParam();
-        startBattleParam.formationID = formationID;
+        StartBattleParam startBattleParam = new StartBattleParam();
+        StartBattleArmyParam playerArmyParam = new StartBattleArmyParam(Faction.Player);
+        playerArmyParam.initUnitNum = new Dictionary<int, int> { { 1101, 10 }, { 1201, 10 }, { 1301, 10 }, { 1401, 10 } };
+        playerArmyParam.formationID = formationID;
+        startBattleParam.startBattleArmyParams.Add(playerArmyParam);
+
+        StartBattleArmyParam enemyArmyParam = new StartBattleArmyParam(Faction.Enemy);
+        enemyArmyParam.initUnitNum = new Dictionary<int, int> { { 1101, 10 }, { 1201, 10 }, { 1301, 10 }, { 1401, 10 } };
+        enemyArmyParam.formationID = formationID;
+        startBattleParam.startBattleArmyParams.Add(enemyArmyParam);
+
         SceneMgr.Ins.ChangeScene(SceneID.RTSBattle, () =>
         {
             BattleMgr.Ins.InitBattle(startBattleParam);
