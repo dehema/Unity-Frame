@@ -1,7 +1,4 @@
 using DG.Tweening;
-using Rain.RTS.Core;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -12,7 +9,6 @@ public partial class HudUnitStateBar : BasePoolItem
     HudUnitStateBarParam param;
     float cameraOffsetY = 0;
     public Vector3 lastPos;
-    float lastHp = 0;
 
     public override void OnCreate(params object[] _params)
     {
@@ -25,26 +21,52 @@ public partial class HudUnitStateBar : BasePoolItem
     }
 
     /// <summary>
-    /// ÉúÃüÖµ¶¯»­
+    /// ç”Ÿå‘½å€¼åŠ¨ç”»
     /// </summary>
-    /// <param name="_realHp">±»¹¥»÷ºóµÄÉúÃüÖµ</param>
-    /// <param name="_lastHp">±»¹¥»÷Ç°µÄÉúÃüÖµ</param>
-    /// <param name="_max">ÉúÃü×î´óÖµ</param>
+    /// <param name="_realHp">è¢«æ”»å‡»åçš„ç”Ÿå‘½å€¼</param>
+    /// <param name="_lastHp">è¢«æ”»å‡»å‰çš„ç”Ÿå‘½å€¼</param>
+    /// <param name="_max">ç”Ÿå‘½æœ€å¤§å€¼</param>
     public void ShowTween(float _realHp, float _lastHp, float _max)
     {
         float lastHp = _lastHp / _max;
         float hpNow = _realHp / _max;
-        ui.greenHp_Rect.DOSizeDelta(new Vector2(hpNow * rectWidth, rectHeight), 0.5f);
+
+        // è¡€æ¡å°ºå¯¸åŠ¨ç”»
+        ui.greenHp_Rect.DoWidth(hpNow * rectWidth, 0.3f);
+
+        // æ˜Ÿé™…äº‰éœ¸2é£æ ¼çš„è¡€æ¡é¢œè‰²å˜åŒ–
+        Color targetColor = GetHealthBarColor(hpNow);
+        ui.greenHp_Image.DOColor(targetColor, 0.3f);
+    }
+
+    /// <summary>
+    /// æ ¹æ®è¡€é‡ç™¾åˆ†æ¯”è·å–è¡€æ¡é¢œè‰²ï¼ˆæ˜Ÿé™…äº‰éœ¸2é£æ ¼ï¼‰
+    /// </summary>
+    /// <param name="hpPercent">è¡€é‡ç™¾åˆ†æ¯” (0-1)</param>
+    /// <returns>å¯¹åº”çš„é¢œè‰²</returns>
+    private Color GetHealthBarColor(float hpPercent)
+    {
+        hpPercent = Mathf.Clamp01(hpPercent);
+        Color color;
+        if (hpPercent > 0.3f)
+        {
+            color = new Color(1 - (hpPercent) / 0.7f, hpPercent, 0);
+        }
+        else
+        {
+            color = new Color(0.7f + hpPercent, 1, 0);
+        }
+        return color;
     }
 
     public void UpdatePos(Vector3 _pos)
     {
         lastPos = _pos;
-        // ½«3DÊÀ½ç×ø±ê×ª»»ÎªÆÁÄ»UI×ø±ê
+        // å°†3Dä¸–ç•Œåæ ‡è½¬æ¢ä¸ºå±å¹•UIåæ ‡
         Vector3 screenPos = param.camera.WorldToScreenPoint(_pos + new Vector3(0, cameraOffsetY, 0));
         screenPos += new Vector3(0, 20, 0);
         //
-        // UI×ø±êĞè×ª»»ÎªRectTransformµÄ¾Ö²¿×ø±ê
+        // UIåæ ‡éœ€è½¬æ¢ä¸ºRectTransformçš„å±€éƒ¨åæ ‡
         if (RectTransformUtility.ScreenPointToLocalPointInRectangle(param.canvasRect, screenPos, Camera.main, out Vector2 localPos))
         {
             rect.localPosition = localPos;

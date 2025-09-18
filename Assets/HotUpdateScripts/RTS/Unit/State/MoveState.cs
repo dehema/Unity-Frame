@@ -103,7 +103,6 @@ namespace Rain.RTS.Core
                     if (unit.AttackTarget.IsMoveThisFrame)
                     {
                         unit.moveController.MoveToAttack(unit.AttackTarget);
-                        return;
                     }
                 }
             }
