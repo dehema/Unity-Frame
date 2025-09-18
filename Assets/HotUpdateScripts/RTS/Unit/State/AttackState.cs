@@ -49,7 +49,7 @@ namespace Rain.RTS.Core
                 // 如果没有攻击目标，进入空闲状态
                 // 如果目标已经死亡
                 // 如果对方不是敌人
-                if (unit.Data.AttackTarget == null || !unit.Data.AttackTarget.IsAlive() || !unit.IsEnemy(unit.Data.AttackTarget))
+                if (unit.Data.attackTarget == null || !unit.Data.attackTarget.IsAlive() || !unit.IsEnemy(unit.Data.attackTarget))
                 {
                     unit.ClearAttackTarget();
                     unit.stateMachine.ChangeState(new IdleState());

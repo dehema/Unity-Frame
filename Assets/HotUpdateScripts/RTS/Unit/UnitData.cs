@@ -12,8 +12,7 @@ namespace Rain.RTS.Core
     {
         [Header("数据源")]
         [SerializeField]
-        private UnitConfig unitConfig;
-        public UnitConfig UnitConfig => unitConfig;
+        public UnitConfig unitConfig;
         [Header("基础属性")]
         public string unitId;           // 唯一ID
         public bool isPlayerUnit;       // 是否为玩家单位
@@ -30,10 +29,8 @@ namespace Rain.RTS.Core
         [Header("运行时状态")]
         public float hp;                // 生命值
         public bool isDead = false;     // 是否死亡
-        private Vector3? movePos;       // 目标位置
-        public Vector3? MovePos { get => movePos; set => movePos = value; }
-        private BaseBattleUnit attackTarget;  // 目标敌人
-        public BaseBattleUnit AttackTarget { get => attackTarget; set => attackTarget = value; }
+        public Vector3? movePos;        // 目标位置
+        public BaseBattleUnit attackTarget;  // 目标敌人
         public float attackTimer;        // 上次攻击时间
         public const float walkRange = 3;// 切换走路的距离
         public float damageFactor = 1.0f;// 伤害系数属性
@@ -69,6 +66,22 @@ namespace Rain.RTS.Core
             attack = unitConfig.Attack;
             attackRange = unitConfig.AttackRange;
             attackInterval = unitConfig.AttackInterval;
+        }
+
+        /// <summary>
+        /// 获取攻击目标的距离
+        /// </summary>
+        /// <returns></returns>
+        public float FloatAttackTargetDistance
+        {
+            get
+            {
+                if (attackTarget == null)
+                {
+                    return attackRange;
+                }
+                return attackRange + attackTarget.Data.unitConfig.ModleRadius;
+            }
         }
     }
 

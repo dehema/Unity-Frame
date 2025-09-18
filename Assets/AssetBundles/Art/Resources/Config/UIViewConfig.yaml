@@ -117,6 +117,6 @@ view:
         RTSBattleDeployView:
             comment: 战斗部署
             layer: NormalLayer
-            bgColor: "#383838FF"
+            bgColor: "#FFFFFFFF"
             hasBg: true
         

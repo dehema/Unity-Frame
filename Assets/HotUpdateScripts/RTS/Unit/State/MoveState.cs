@@ -39,12 +39,12 @@ namespace Rain.RTS.Core
             }
             else if (unit.AttackTarget != null)
             {
-                MoveAndAttack(unit.Data.AttackTarget);
+                MoveAndAttack(unit.Data.attackTarget);
             }
 
             // 计算动画速度并设置
 
-            if (unit.Data.UnitConfig.UnitType == UnitType.Cavalry)
+            if (unit.Data.unitConfig.UnitType == UnitType.Cavalry)
             {
                 moveSpeedFactor = 0.4f;
                 moveAnimationFactor = 1.2f;
@@ -60,7 +60,7 @@ namespace Rain.RTS.Core
         public override void Update()
         {
             base.Update();
-            if (unit.Data.UnitConfig.UnitType == UnitType.Cavalry)
+            if (unit.Data.unitConfig.UnitType == UnitType.Cavalry)
             {
                 if (moveSpeedFactor < moveSpeedFactorMax)
                 {
@@ -113,7 +113,7 @@ namespace Rain.RTS.Core
         void Attack()
         {
             AttackStateParam attackStateParam = new AttackStateParam();
-            if (unit.Data.UnitConfig.UnitType == UnitType.Cavalry)
+            if (unit.Data.unitConfig.UnitType == UnitType.Cavalry)
             {
                 attackStateParam.attackFactor = 1 + moveSpeedFactor;
             }

@@ -31,9 +31,9 @@ namespace Rain.RTS.Core
         public override void PerformAttackOrder()
         {
             base.PerformAttackOrder();
-            if (Data.AttackTarget != null && !Data.AttackTarget.IsDead && IsEnemy(Data.AttackTarget))
+            if (Data.attackTarget != null && !Data.attackTarget.IsDead && IsEnemy(Data.attackTarget))
             {
-                infantryAttackStrategy.Attack(this, Data.AttackTarget);
+                infantryAttackStrategy.Attack(this, Data.attackTarget);
             }
         }
     }

@@ -447,7 +447,8 @@ public class EditorDevTools_Dev : EditorDevTools_Base
             FileInfo file = new FileInfo(batPath);
             pro.StartInfo.WorkingDirectory = file.Directory.FullName;
             pro.StartInfo.FileName = batPath;
-            pro.StartInfo.CreateNoWindow = false;
+            pro.StartInfo.CreateNoWindow = true;
+            pro.StartInfo.UseShellExecute = false;
             pro.Start();
             pro.WaitForExit();
             Debug.Log("导出完成->Resources/Json/");

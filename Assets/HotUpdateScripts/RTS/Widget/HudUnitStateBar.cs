@@ -46,15 +46,15 @@ public partial class HudUnitStateBar : BasePoolItem
     /// <returns>对应的颜色</returns>
     private Color GetHealthBarColor(float hpPercent)
     {
-        hpPercent = Mathf.Clamp01(hpPercent);
         Color color;
         if (hpPercent > 0.3f)
         {
-            color = new Color(1 - (hpPercent) / 0.7f, hpPercent, 0);
+            // 线性映射公式：(当前值 - 原最小值) / (原最大值 - 原最小值) * (目标最大值 - 目标最小值) + 目标最小值
+            color = new Color(1 - (hpPercent - 0.3f) / 0.7f, hpPercent, 0);
         }
         else
         {
-            color = new Color(0.7f + hpPercent, 1, 0);
+            color = new Color(0.7f + hpPercent, 0, 0);
         }
         return color;
     }

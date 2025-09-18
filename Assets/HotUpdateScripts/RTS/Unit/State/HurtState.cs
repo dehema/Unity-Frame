@@ -42,12 +42,12 @@ namespace Rain.RTS.Core
                     unit.stateMachine.ChangeState(_previousState);
                 }
                 // 如果目标仍在攻击范围内，返回攻击状态
-                else if (unit.Data.AttackTarget != null && unit.IsTargetInAttackRange())
+                else if (unit.Data.attackTarget != null && unit.IsTargetInAttackRange())
                 {
                     unit.stateMachine.ChangeState(new AttackState());
                 }
                 // 如果有移动目标，返回移动状态
-                else if (Vector3.Distance(unit.transform.position, unit.Data.AttackTarget.transform.position) > unit.Data.attackRange)
+                else if (Vector3.Distance(unit.transform.position, unit.Data.attackTarget.transform.position) > unit.Data.attackRange)
                 {
                     unit.stateMachine.ChangeState(new MoveState());
                 }

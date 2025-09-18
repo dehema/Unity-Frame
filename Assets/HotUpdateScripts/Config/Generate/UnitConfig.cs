@@ -34,6 +34,7 @@ public sealed partial class UnitConfig : Luban.BeanBase
         { if(!_buf["upkeep"].IsNumber) { throw new SerializationException(); }  Upkeep = _buf["upkeep"]; }
         { if(!_buf["race"].IsString) { throw new SerializationException(); }  Race = _buf["race"]; }
         { if(!_buf["fullID"].IsString) { throw new SerializationException(); }  FullID = _buf["fullID"]; }
+        { if(!_buf["modleRadius"].IsNumber) { throw new SerializationException(); }  ModleRadius = _buf["modleRadius"]; }
     }
 
     public static UnitConfig DeserializeUnitConfig(JSONNode _buf)
@@ -109,6 +110,10 @@ public sealed partial class UnitConfig : Luban.BeanBase
     /// ID全名
     /// </summary>
     public readonly string FullID;
+    /// <summary>
+    /// 模型半径
+    /// </summary>
+    public readonly float ModleRadius;
    
     public const int __ID__ = -568528378;
     public override int GetTypeId() => __ID__;
@@ -137,6 +142,7 @@ public sealed partial class UnitConfig : Luban.BeanBase
         + "upkeep:" + Upkeep + ","
         + "race:" + Race + ","
         + "fullID:" + FullID + ","
+        + "modleRadius:" + ModleRadius + ","
         + "}";
     }
 }

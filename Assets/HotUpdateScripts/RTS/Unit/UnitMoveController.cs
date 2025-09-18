@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using dnlib.DotNet.Writer;
+using UnityEngine;
 using UnityEngine.AI;
 
 namespace Rain.RTS.Core
@@ -19,7 +20,8 @@ namespace Rain.RTS.Core
             agent.updateRotation = false;                       // 禁用自动旋转，由脚本控制
             agent.stoppingDistance = 0.1f;
             agent.acceleration = 999;
-            agent.height = data.UnitConfig.Height;
+            agent.height = data.unitConfig.Height;
+            agent.radius = data.unitConfig.ModleRadius;
         }
 
         // 初始化：关联角色数据并设置初始速度
@@ -32,18 +34,18 @@ namespace Rain.RTS.Core
         public void MoveTo(Vector3 targetPosition)
         {
             ClearMoveTarget();
-            data.MovePos = targetPosition;
+            data.movePos = targetPosition;
             agent.stoppingDistance = 0.1f;
             agent.SetDestination(targetPosition);
             agent.isStopped = false;
         }
 
-        public void MoveToAttack(BaseBattleUnit battleUnit)
+        public void MoveToAttack(BaseBattleUnit _target)
         {
             ClearMoveTarget();
-            data.AttackTarget = battleUnit;
-            agent.stoppingDistance = data.attackRange;
-            agent.SetDestination(battleUnit.transform.position);
+            data.attackTarget = _target;
+            agent.stoppingDistance = data.FloatAttackTargetDistance;
+            agent.SetDestination(_target.transform.position);
             agent.isStopped = false;
         }
 
@@ -62,7 +64,7 @@ namespace Rain.RTS.Core
         public void SetMoveTarget(Vector3 _movePos)
         {
             ClearMoveTarget();
-            data.MovePos = _movePos;
+            data.movePos = _movePos;
         }
 
         /// <summary>
@@ -72,13 +74,13 @@ namespace Rain.RTS.Core
         public void SetMoveTarget(BaseBattleUnit _battleUnit)
         {
             ClearMoveTarget();
-            data.AttackTarget = _battleUnit;
+            data.attackTarget = _battleUnit;
         }
 
         public void ClearMoveTarget()
         {
-            data.MovePos = null;
-            data.AttackTarget = null;
+            data.movePos = null;
+            data.attackTarget = null;
         }
 
         // 追击目标单位

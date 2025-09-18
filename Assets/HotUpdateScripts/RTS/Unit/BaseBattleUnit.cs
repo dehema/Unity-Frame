@@ -28,9 +28,9 @@ namespace Rain.RTS.Core
         public bool IsDead => Data.isDead;
         public string UnitName => Data.Name;
         public float AttackTimer { get => Data.attackTimer; set => Data.attackTimer = value; }
-        public Vector3? MovePos { get => Data.MovePos; set => Data.MovePos = value; }
-        public BaseBattleUnit AttackTarget { get => Data.AttackTarget; set => Data.AttackTarget = value; }
-        public bool HasMoveTarget { get => Data.MovePos != null || Data.AttackTarget != null; }
+        public Vector3? MovePos { get => Data.movePos; set => Data.movePos = value; }
+        public BaseBattleUnit AttackTarget { get => Data.attackTarget; set => Data.attackTarget = value; }
+        public bool HasMoveTarget { get => Data.movePos != null || Data.attackTarget != null; }
         public UnitControlMode ControlMode { get => Data.controlMode; set => Data.controlMode = value; }
 
         public UnitMoveController moveController;
@@ -106,8 +106,8 @@ namespace Rain.RTS.Core
             if (unitCollider is CapsuleCollider)
             {
                 CapsuleCollider capsuleCollider = unitCollider as CapsuleCollider;
-                capsuleCollider.height = Data.UnitConfig.Height;
-                capsuleCollider.center = new Vector3(0, Data.UnitConfig.Height / 2, 0);
+                capsuleCollider.height = Data.unitConfig.Height;
+                capsuleCollider.center = new Vector3(0, Data.unitConfig.Height / 2, 0);
             }
             moveController = GetComponent<UnitMoveController>() ?? gameObject.AddComponent<UnitMoveController>();
             if (moveController == null)
@@ -171,7 +171,7 @@ namespace Rain.RTS.Core
             {
                 float distance = Vector3.Distance(transform.position, target.transform.position);
                 //Debug.Log($"命令{Data.Name}攻击{target.Data.Name},距离{distance}");
-                Data.AttackTarget = target;
+                Data.attackTarget = target;
             }
         }
 
@@ -180,7 +180,7 @@ namespace Rain.RTS.Core
         /// </summary>
         public virtual void ClearAttackTarget()
         {
-            Data.AttackTarget = null;
+            Data.attackTarget = null;
         }
 
         /// <summary>
@@ -189,10 +189,10 @@ namespace Rain.RTS.Core
         /// <returns></returns>
         public virtual bool IsTargetInAttackRange()
         {
-            if (Data.AttackTarget == null) return false;
+            if (Data.attackTarget == null) return false;
 
-            float distance = Vector3.Distance(transform.position, Data.AttackTarget.transform.position);
-            return distance <= Data.attackRange;
+            float distance = Vector3.Distance(transform.position, Data.attackTarget.transform.position);
+            return distance <= Data.FloatAttackTargetDistance;
         }
 
         /// <summary>
@@ -299,9 +299,9 @@ namespace Rain.RTS.Core
         /// </summary>
         public virtual void LookAtTarget()
         {
-            if (Data.AttackTarget == null) return;
+            if (Data.attackTarget == null) return;
 
-            Vector3 targetPosition = new Vector3(Data.AttackTarget.transform.position.x, transform.position.y, Data.AttackTarget.transform.position.z);
+            Vector3 targetPosition = new Vector3(Data.attackTarget.transform.position.x, transform.position.y, Data.attackTarget.transform.position.z);
             transform.LookAt(targetPosition);
         }
 
@@ -317,7 +317,7 @@ namespace Rain.RTS.Core
         /// </summary>
         public virtual bool CanAttack()
         {
-            if (Data.AttackTarget == null)
+            if (Data.attackTarget == null)
                 return false;
             if (Time.time - AttackTimer <= Data.attackInterval) return false;
 
