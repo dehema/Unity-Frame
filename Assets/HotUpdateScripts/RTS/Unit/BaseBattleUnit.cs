@@ -36,7 +36,7 @@ namespace Rain.RTS.Core
         public UnitMoveController moveController;
         public UnitStateMachine stateMachine;
         public UnitStateType unitStateType => stateMachine.currentState.stateType;
-        public NavMeshAgent agent => moveController.agent;
+        public NavMeshAgent agent => moveController.navAgent;
 
         /// <summary>
         /// 攻击策略

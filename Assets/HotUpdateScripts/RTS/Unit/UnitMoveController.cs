@@ -10,18 +10,18 @@ namespace Rain.RTS.Core
     [RequireComponent(typeof(Animator), typeof(NavMeshAgent), typeof(CapsuleCollider))]
     public class UnitMoveController : MonoBehaviour
     {
-        public NavMeshAgent agent;
+        public NavMeshAgent navAgent;
         private UnitData data; // 引用角色数据
 
         public void Init()
         {
-            agent = GetComponent<NavMeshAgent>() ?? gameObject.AddComponent<NavMeshAgent>();
-            agent.speed = this.data.moveSpeed;
-            agent.updateRotation = false;                       // 禁用自动旋转，由脚本控制
-            agent.stoppingDistance = 0.1f;
-            agent.acceleration = 999;
-            agent.height = data.unitConfig.Height;
-            agent.radius = data.unitConfig.ModleRadius;
+            navAgent = GetComponent<NavMeshAgent>() ?? gameObject.AddComponent<NavMeshAgent>();
+            navAgent.speed = this.data.moveSpeed;
+            navAgent.updateRotation = false;                       // 禁用自动旋转，由脚本控制
+            navAgent.stoppingDistance = 0.1f;
+            navAgent.acceleration = 999;
+            navAgent.height = data.unitConfig.Height;
+            navAgent.radius = data.unitConfig.ModleRadius;
         }
 
         // 初始化：关联角色数据并设置初始速度
@@ -35,26 +35,39 @@ namespace Rain.RTS.Core
         {
             ClearMoveTarget();
             data.movePos = targetPosition;
-            agent.stoppingDistance = 0.1f;
-            agent.SetDestination(targetPosition);
-            agent.isStopped = false;
+            navAgent.stoppingDistance = 0.1f;
+            navAgent.SetDestination(targetPosition);
+            navAgent.isStopped = false;
         }
 
         public void MoveToAttack(BaseBattleUnit _target)
         {
             ClearMoveTarget();
             data.attackTarget = _target;
-            agent.stoppingDistance = data.FloatAttackTargetDistance;
-            agent.SetDestination(_target.transform.position);
-            agent.isStopped = false;
+            navAgent.stoppingDistance = data.FloatAttackTargetDistance;
+
+            NavMeshAgent targetNavAgent = _target.moveController.navAgent;
+            Vector3 dire = transform.position - _target.transform.position;
+            if (_target.IsMoveThisFrame && targetNavAgent != null)
+            {
+                // 目标在移动，预测位置
+                Vector3 predictedPos = _target.transform.position + dire * Time.deltaTime * targetNavAgent.speed;
+                navAgent.SetDestination(predictedPos);
+            }
+            else
+            {
+                // 目标静止，直接移动到目标附近
+                navAgent.SetDestination(_target.transform.position);
+            }
+            navAgent.isStopped = false;
         }
 
         // 停止移动
         public void Stop()
         {
-            agent.ResetPath();
-            agent.velocity = Vector3.zero;
-            agent.isStopped = true;
+            navAgent.ResetPath();
+            navAgent.velocity = Vector3.zero;
+            navAgent.isStopped = true;
         }
 
         /// <summary>
@@ -93,7 +106,7 @@ namespace Rain.RTS.Core
         // 获取当前移动速度
         public float GetCurrentSpeed()
         {
-            return agent.velocity.magnitude;
+            return navAgent.velocity.magnitude;
         }
     }
 }

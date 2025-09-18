@@ -1,4 +1,4 @@
-﻿using Rain.Core;
+using Rain.Core;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -30,7 +30,7 @@ namespace Rain.RTS.Core
         public override void Enter(BaseBattleUnit unit, params object[] _param)
         {
             base.Enter(unit, _param);
-            agent = unit.moveController.agent;
+            agent = unit.moveController.navAgent;
 
             // 进入移动状态时启动导航
             if (unit.MovePos != null)
@@ -57,6 +57,8 @@ namespace Rain.RTS.Core
             agent.speed = unit.Data.moveSpeed * moveSpeedFactor;
         }
 
+        const float SetAttackNavTargetInterval = 0.5f;  //设置攻击寻路目标的间隔
+        float _tempAttackNavTarget = 0f;                //设置攻击寻路目标的计时
         public override void Update()
         {
             base.Update();
@@ -102,7 +104,12 @@ namespace Rain.RTS.Core
                     //不在攻击范围内  且敌人在移动
                     if (unit.AttackTarget.IsMoveThisFrame)
                     {
-                        unit.moveController.MoveToAttack(unit.AttackTarget);
+                        _tempAttackNavTarget += Time.deltaTime;
+                        if (_tempAttackNavTarget >= SetAttackNavTargetInterval)
+                        {
+                            unit.moveController.MoveToAttack(unit.AttackTarget);
+                            _tempAttackNavTarget = 0;
+                        }
                     }
                 }
             }
