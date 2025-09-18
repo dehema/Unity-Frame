@@ -34,7 +34,7 @@ namespace Rain.RTS.Core
             // 面向目标
             unit.LookAtTarget();
 
-            //  攻击动画切换完毕后并切换到Idle
+            //  如果已经开始攻击 攻击动画切换完毕后并切换到Idle
             if (isStartAttack)
             {
                 stateInfo = animator.GetCurrentAnimatorStateInfo(0);
@@ -53,12 +53,14 @@ namespace Rain.RTS.Core
                 {
                     unit.ClearAttackTarget();
                     unit.stateMachine.ChangeState(new IdleState());
+                    return;
                 }
 
                 //  如果不在攻击范围内则继续追击
                 if (!unit.IsTargetInAttackRange())
                 {
                     unit.stateMachine.ChangeState(new MoveState());
+                    return;
                 }
             }
 

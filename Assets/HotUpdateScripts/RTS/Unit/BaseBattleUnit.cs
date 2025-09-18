@@ -2,6 +2,7 @@ using System;
 using Rain.Core;
 using UnityEngine;
 using UnityEngine.AI;
+using static UnityEngine.UI.CanvasScaler;
 
 namespace Rain.RTS.Core
 {
@@ -49,7 +50,7 @@ namespace Rain.RTS.Core
         /// <summary>
         /// 当前帧是否改变位置
         /// </summary>
-        public bool isChangePosThisFrame = false;
+        public bool IsMoveThisFrame = false;
 
         protected virtual void Awake()
         {
@@ -61,12 +62,14 @@ namespace Rain.RTS.Core
 
         protected virtual void Update()
         {
-            isChangePosThisFrame = lastPos != transform.position;
-            if (isChangePosThisFrame)
+            //更新自身位置
+            IsMoveThisFrame = lastPos != transform.position;
+            if (IsMoveThisFrame)
             {
                 lastPos = transform.position;
                 MsgMgr.Ins.DispatchEvent(MsgEvent.RTSBattleUnitMove, this);
             }
+            //更新状态机
             if (!Data.isDead)
             {
                 stateMachine.Update();
@@ -93,12 +96,12 @@ namespace Rain.RTS.Core
             animator = GetComponent<Animator>();
             if (animator == null)
             {
-                Debug.Log($"BattleUnit找不到[动画]组件");
+                Debug.LogError($"BattleUnit找不到[动画]组件");
             }
             unitCollider = GetComponent<Collider>() ?? gameObject.AddComponent<CapsuleCollider>();
             if (unitCollider == null)
             {
-                Debug.Log($"BattleUnit找不到[碰撞体]组件");
+                Debug.LogError($"BattleUnit找不到[碰撞体]组件");
             }
             if (unitCollider is CapsuleCollider)
             {
@@ -109,7 +112,7 @@ namespace Rain.RTS.Core
             moveController = GetComponent<UnitMoveController>() ?? gameObject.AddComponent<UnitMoveController>();
             if (moveController == null)
             {
-                Debug.Log($"BattleUnit找不到[UnitMoveController]组件");
+                Debug.LogError($"BattleUnit找不到[UnitMoveController]组件");
             }
             moveController.InitData(Data);
             moveController.Init();
@@ -167,7 +170,7 @@ namespace Rain.RTS.Core
             if (IsEnemy(target))
             {
                 float distance = Vector3.Distance(transform.position, target.transform.position);
-                Debug.Log($"命令{Data.Name}攻击{target.Data.Name},距离{distance}");
+                //Debug.Log($"命令{Data.Name}攻击{target.Data.Name},距离{distance}");
                 Data.AttackTarget = target;
             }
         }
@@ -197,7 +200,7 @@ namespace Rain.RTS.Core
         /// </summary>
         public virtual void PerformAttackOrder()
         {
-            Debug.Log($"[{Data.Name}] 攻击了 [{AttackTarget.Data.Name}]");
+            //Debug.Log($"[{Data.Name}] 攻击了 [{AttackTarget.Data.Name}]");
             AttackTimer = Time.time;
         }
 
@@ -211,7 +214,7 @@ namespace Rain.RTS.Core
                 return;
 
             float lastHp = Data.hp;
-            Debug.Log($"[{UnitName}] 受到 {damage} 点伤害");
+            //Debug.Log($"[{UnitName}] 受到 {damage} 点伤害");
             Data.hp -= damage;
             if (Data.hp <= 0)
             {
@@ -349,6 +352,19 @@ namespace Rain.RTS.Core
             {
                 MoveState moveState = stateMachine.currentState as MoveState;
                 moveState.MoveTo(_targetPos);
+            }
+        }
+
+
+        /// <summary>
+        /// 自动寻找并攻击最近的敌人
+        /// </summary>
+        public void AutoFindAndAttackNearestEnemy()
+        {
+            BaseBattleUnit nearestEnemy = BattleMgr.Ins.FindNearestEnemy(this);
+            if (nearestEnemy != null)
+            {
+                AttackUnitAndChangeState(nearestEnemy);
             }
         }
 

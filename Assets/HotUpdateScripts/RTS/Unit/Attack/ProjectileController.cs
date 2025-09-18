@@ -248,7 +248,7 @@ namespace Rain.RTS.Core
             }
 
             // 获取目标当前位置
-            if (target.isChangePosThisFrame)
+            if (target.IsMoveThisFrame)
                 targetPos = GetTargetPos();
 
             // 计算方向向量

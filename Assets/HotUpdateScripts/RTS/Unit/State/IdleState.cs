@@ -33,19 +33,7 @@ namespace Rain.RTS.Core
             // 自动控制模式下，寻找最近的敌人
             if (unit.ControlMode == UnitControlMode.Auto)
             {
-                AutoFindAndAttackNearestEnemy();
-            }
-        }
-
-        /// <summary>
-        /// 自动寻找并攻击最近的敌人
-        /// </summary>
-        private void AutoFindAndAttackNearestEnemy()
-        {
-            BaseBattleUnit nearestEnemy = BattleMgr.Ins.FindNearestEnemy(unit);
-            if (nearestEnemy != null)
-            {
-                unit.AttackUnitAndChangeState(nearestEnemy);
+                unit.AutoFindAndAttackNearestEnemy();
             }
         }
 

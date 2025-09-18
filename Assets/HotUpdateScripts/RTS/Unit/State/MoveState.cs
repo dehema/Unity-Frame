@@ -86,18 +86,23 @@ namespace Rain.RTS.Core
             }
             else if (moveStateType == MoveStateType.MoveAndAttack)
             {
+                if (!unit.AttackTarget.IsAlive())
+                {
+                    unit.AutoFindAndAttackNearestEnemy();
+                    return;
+                }
                 //到达攻击范围
                 if (unit.IsTargetInAttackRange())
                 {
                     Attack();
                     return;
                 }
-                //到目的地但是敌人逃出攻击范围
-                else if (agent.remainingDistance <= agent.stoppingDistance && !unit.IsTargetInAttackRange())
+                else
                 {
-                    if (unit.MovePos != null)
+                    //不在攻击范围内  且敌人在移动
+                    if (unit.AttackTarget.IsMoveThisFrame)
                     {
-                        unit.moveController.MoveTo((Vector3)unit.MovePos);
+                        unit.moveController.MoveTo(unit.AttackTarget);
                         return;
                     }
                 }

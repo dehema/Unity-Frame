@@ -72,16 +72,6 @@ namespace Rain.RTS.Core
                         //初始化坐标 旋转
                         battleUnit.transform.position = new Vector3(pos.x, 0, pos.y);
                         battleUnit.transform.eulerAngles = new Vector3(0, army.spawnRot, 0);
-
-                        // 设置控制模式：玩家单位默认手动控制，其他阵营自动控制
-                        if (army.faction == Faction.Player)
-                        {
-                            battleUnit.ControlMode = UnitControlMode.Manual;
-                        }
-                        else
-                        {
-                            battleUnit.ControlMode = UnitControlMode.Auto;
-                        }
                     }
                 }
 
