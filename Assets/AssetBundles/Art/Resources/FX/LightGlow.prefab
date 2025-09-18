@@ -56,6 +56,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2279940887822484597, guid: acdb90624a404aa438447006f1026065, type: 3}
+      propertyPath: prewarm
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2279940887822484597, guid: acdb90624a404aa438447006f1026065, type: 3}
+      propertyPath: startDelay.scalar
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3319026295740190429, guid: acdb90624a404aa438447006f1026065, type: 3}
       propertyPath: m_Materials.Array.size
       value: 1
@@ -74,7 +82,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7710086954383210093, guid: acdb90624a404aa438447006f1026065, type: 3}
       propertyPath: m_Intensity
-      value: 12.468721
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8366612028392416556, guid: acdb90624a404aa438447006f1026065, type: 3}
+      propertyPath: prewarm
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8366612028392416556, guid: acdb90624a404aa438447006f1026065, type: 3}
+      propertyPath: startDelay.scalar
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8366612028392416556, guid: acdb90624a404aa438447006f1026065, type: 3}
+      propertyPath: startDelay.maxCurve.m_Curve.Array.data[0].value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8366612028392416556, guid: acdb90624a404aa438447006f1026065, type: 3}
+      propertyPath: startDelay.maxCurve.m_Curve.Array.data[1].value
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8773184688824279198, guid: acdb90624a404aa438447006f1026065, type: 3}
       propertyPath: m_Layer
@@ -82,6 +106,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8986935675043883179, guid: acdb90624a404aa438447006f1026065, type: 3}
       propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9186446616439801708, guid: acdb90624a404aa438447006f1026065, type: 3}
+      propertyPath: prewarm
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []

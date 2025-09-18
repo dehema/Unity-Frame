@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Rain.Core;
 using UnityEngine;
 
@@ -37,6 +37,7 @@ namespace Rain.RTS.Core
         public float attackTimer;        // 上次攻击时间
         public const float walkRange = 3;// 切换走路的距离
         public float damageFactor = 1.0f;// 伤害系数属性
+        public UnitControlMode controlMode = UnitControlMode.Auto; // 控制模式，默认自动
 
         [Header("运行时状态")]
         /// <summary>

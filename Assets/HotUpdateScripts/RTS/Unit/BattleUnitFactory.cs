@@ -57,13 +57,13 @@ namespace Rain.RTS.Core
         /// <param name="unitConfig">单位配置</param>
         /// <param name="prefab">预制体</param>
         /// <returns>创建的战斗单位</returns>
-        public static BaseBattleUnit CreateUnitFromConfig(UnitConfig unitConfig, GameObject prefab)
+        public static BaseBattleUnit CreateUnitFromConfig(UnitConfig unitConfig, GameObject prefab, UnitInitData _initData = null)
         {
             BaseBattleUnit unit = CreateUnit(unitConfig.UnitType, prefab);
 
             if (unit != null)
             {
-                unit.InitData(unitConfig);
+                unit.InitData(unitConfig, _initData);
                 unit.Init();
             }
 

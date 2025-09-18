@@ -89,7 +89,6 @@ public partial class RTSBattleDeployView : BaseView
 
         StartBattleArmyParam enemyArmyParam = new StartBattleArmyParam(Faction.Enemy);
         enemyArmyParam.initUnitNum = new Dictionary<int, int> { { 1101, 10 }, { 1201, 10 }, { 1301, 10 }, { 1401, 10 } };
-        enemyArmyParam.formationID = formationID;
         startBattleParam.startBattleArmyParams.Add(enemyArmyParam);
 
         SceneMgr.Ins.ChangeScene(SceneID.RTSBattle, () =>

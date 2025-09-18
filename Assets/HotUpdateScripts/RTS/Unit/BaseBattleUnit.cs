@@ -30,6 +30,7 @@ namespace Rain.RTS.Core
         public Vector3? MovePos { get => Data.MovePos; set => Data.MovePos = value; }
         public BaseBattleUnit AttackTarget { get => Data.AttackTarget; set => Data.AttackTarget = value; }
         public bool HasMoveTarget { get => Data.MovePos != null || Data.AttackTarget != null; }
+        public UnitControlMode ControlMode { get => Data.controlMode; set => Data.controlMode = value; }
 
         public UnitMoveController moveController;
         public UnitStateMachine stateMachine;
@@ -128,11 +129,15 @@ namespace Rain.RTS.Core
             stateMachine.ChangeState(new IdleState());
         }
 
-        public virtual void InitData(UnitConfig unitConfig)
+        public virtual void InitData(UnitConfig unitConfig, UnitInitData _initData = null)
         {
             _data = new UnitData();
             Data.Init(unitConfig);
             gameObject.name = $"{Data.unitType}_{Data.unitId}";
+            if (_initData != null)
+            {
+                Data.faction = _initData.faction;
+            }
         }
 
         /// <summary>
