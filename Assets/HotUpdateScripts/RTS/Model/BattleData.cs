@@ -95,7 +95,10 @@ namespace Rain.RTS.Core
                         // 创建新的区域单位数据
                         AreaUnitData areaData = new AreaUnitData
                         {
-                            area = new Vector4(rectTransform.anchoredPosition.x, rectTransform.anchoredPosition.y, rectTransform.rect.width, rectTransform.rect.height),
+                            // 起始点在队伍的左上方
+                            area = new Vector4(rectTransform.anchoredPosition.x - rectTransform.rect.width / 2
+                            , rectTransform.anchoredPosition.y - rectTransform.rect.height / 2,
+                            rectTransform.rect.width, rectTransform.rect.height),
                             unitType = unitType,
                             units = new List<int>() // 初始化空列表，稍后会填充
                         };
@@ -195,29 +198,6 @@ namespace Rain.RTS.Core
             // 清空现有位置数据
             army.unitsPos.Clear();
 
-            // 先计算所有区域的边界框，用于确定军队整体中心
-            float minX = float.MaxValue, minY = float.MaxValue;
-            float maxX = float.MinValue, maxY = float.MinValue;
-
-            foreach (var areaData in army.areaUnitDatas)
-            {
-                if (areaData.units == null || areaData.units.Count == 0)
-                    continue;
-
-                float areaX = areaData.area.x;
-                float areaY = areaData.area.y;
-                float areaWidth = areaData.area.z;
-                float areaHeight = areaData.area.w;
-
-                minX = Mathf.Min(minX, areaX);
-                minY = Mathf.Min(minY, areaY);
-                maxX = Mathf.Max(maxX, areaX + areaWidth);
-                maxY = Mathf.Max(maxY, areaY + areaHeight);
-            }
-
-            // 计算军队整体中心点（阵型的几何中心）
-            Vector2 formationCenter = new Vector2((minX + maxX) * 0.5f, (minY + maxY) * 0.5f);
-
             // 遍历每个区域，生成单位位置
             foreach (var areaData in army.areaUnitDatas)
             {
@@ -272,7 +252,7 @@ namespace Rain.RTS.Core
                         float x = areaX + xStep * (c + 1);
 
                         // 计算相对于阵型中心的位置
-                        Vector2 localPos = new Vector2(x, y) - formationCenter;
+                        Vector2 localPos = new Vector2(x, y);
 
                         // 应用军队旋转
                         Vector2 rotatedPos = RotatePosition(localPos, army.spawnRot);
