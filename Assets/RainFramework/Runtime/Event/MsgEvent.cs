@@ -21,6 +21,7 @@ namespace Rain.Core
 
         //RTS
         RTSBattleStart,
+        RTSBattleUnitDie,       //µ•ŒªÀ¿Õˆ
         RTSBattleUnitAdd,
         RTSBattleUnitRemove,
         RTSBattleUnitMove,

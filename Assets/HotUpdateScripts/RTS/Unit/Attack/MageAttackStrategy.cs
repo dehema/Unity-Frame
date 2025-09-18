@@ -8,7 +8,7 @@ using UnityEngine;
 /// </summary>
 public class MageAttackStrategy : IAttackStrategy
 {
-    private float speed = 10f;
+    private float speed = 20f;
     // 轨迹
     public static ObjPool trackPool;
     // 爆炸
@@ -61,7 +61,7 @@ public class MageAttackStrategy : IAttackStrategy
         projectile.SetHitAction(SetHitAction);
         projectile.SetHitEffectPool(hitEffectPool);
         projectile.Init(_attacker, _target, speed);
-        Debug.Log($"[{_attacker.UnitName}] 向 [{_target.UnitName}] 发起了魔法攻击");
+        //Debug.Log($"[{_attacker.UnitName}] 向 [{_target.UnitName}] 发起了魔法攻击");
     }
 
     public void SetCollectAction(GameObject _go)
@@ -72,6 +72,6 @@ public class MageAttackStrategy : IAttackStrategy
     public void SetHitAction(BaseBattleUnit _unit)
     {
         _unit.Hurt(attacker.Data.attack);
-        Debug.Log($"[{attacker.UnitName}] 的魔法攻击命中了 [{_unit.UnitName}] ,造成 [{attacker.Data.attack}] 点伤害");
+        //Debug.Log($"[{attacker.UnitName}] 的魔法攻击命中了 [{_unit.UnitName}] ,造成 [{attacker.Data.attack}] 点伤害");
     }
 }

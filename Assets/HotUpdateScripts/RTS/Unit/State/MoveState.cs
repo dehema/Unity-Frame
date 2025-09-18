@@ -102,7 +102,7 @@ namespace Rain.RTS.Core
                     //不在攻击范围内  且敌人在移动
                     if (unit.AttackTarget.IsMoveThisFrame)
                     {
-                        unit.moveController.MoveTo(unit.AttackTarget);
+                        unit.moveController.MoveToAttack(unit.AttackTarget);
                         return;
                     }
                 }
@@ -170,7 +170,7 @@ namespace Rain.RTS.Core
         public void MoveAndAttack(BaseBattleUnit _target)
         {
             moveStateType = MoveStateType.MoveAndAttack;
-            unit.moveController.MoveTo(_target);
+            unit.moveController.MoveToAttack(_target);
         }
     }
 

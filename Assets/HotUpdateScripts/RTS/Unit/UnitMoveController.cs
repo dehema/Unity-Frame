@@ -33,14 +33,16 @@ namespace Rain.RTS.Core
         {
             ClearMoveTarget();
             data.MovePos = targetPosition;
+            agent.stoppingDistance = 0.1f;
             agent.SetDestination(targetPosition);
             agent.isStopped = false;
         }
 
-        public void MoveTo(BaseBattleUnit battleUnit)
+        public void MoveToAttack(BaseBattleUnit battleUnit)
         {
             ClearMoveTarget();
             data.AttackTarget = battleUnit;
+            agent.stoppingDistance = data.attackRange;
             agent.SetDestination(battleUnit.transform.position);
             agent.isStopped = false;
         }

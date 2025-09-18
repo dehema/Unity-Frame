@@ -144,7 +144,8 @@ namespace Rain.RTS.Core
         // 单位死亡时调用
         public void OnUnitDied(BaseBattleUnit unit)
         {
-            Debug.Log($"{unit.UnitName} 已被消灭");
+            //Debug.Log($"{unit.UnitName} 已被消灭");
+            MsgMgr.Ins.DispatchEvent(MsgEvent.RTSBattleUnitDie, unit);
             CheckBattleState();
         }
 

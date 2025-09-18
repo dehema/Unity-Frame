@@ -236,6 +236,8 @@ namespace Rain.RTS.Core
 
             // 触发死亡事件
             OnDeath?.Invoke(this);
+
+            BattleMgr.Ins.OnUnitDied(this);
         }
 
         /// <summary>
