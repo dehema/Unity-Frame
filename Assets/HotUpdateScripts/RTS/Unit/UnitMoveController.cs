@@ -1,6 +1,6 @@
-﻿using dnlib.DotNet.Writer;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
+using Rain.Core;
 
 namespace Rain.RTS.Core
 {
@@ -48,18 +48,51 @@ namespace Rain.RTS.Core
 
             NavMeshAgent targetNavAgent = _target.moveController.navAgent;
             Vector3 dire = transform.position - _target.transform.position;
-            if (_target.IsMoveThisFrame && targetNavAgent != null)
-            {
-                // 目标在移动，预测位置
-                Vector3 predictedPos = _target.transform.position + dire * Time.deltaTime * targetNavAgent.speed;
-                navAgent.SetDestination(predictedPos);
-            }
-            else
+            //if (_target.IsMoveThisFrame && targetNavAgent != null)
+            //{
+            //    //// 目标在移动，预测位置
+            //    //Vector3 predictedPos = _target.transform.position + dire * Time.deltaTime * targetNavAgent.speed;
+            //    //navAgent.SetDestination(predictedPos);
+
+            //    // 目标在移动，移动到两点中心
+            //    Vector3 midPoint = (_target.transform.position + transform.position) / 2;
+            //    navAgent.SetDestination(midPoint);
+            //}
+            //else
             {
                 // 目标静止，直接移动到目标附近
                 navAgent.SetDestination(_target.transform.position);
+
+
             }
             navAgent.isStopped = false;
+        }
+
+        public Color pathColor = Color.red; // 路径颜色
+        public float pointSize = 0.2f; // 路径点大小
+        private void OnDrawGizmos()
+        {
+            if (navAgent == null || !navAgent.hasPath)
+                return;
+            if (data.unitType != UnitType.Cavalry || data.faction != Faction.Player)
+                return;
+            // 绘制路径线段
+            Gizmos.color = pathColor;
+            Vector3[] pathCorners = navAgent.path.corners; // 获取路径的所有拐点
+
+            for (int i = 0; i < pathCorners.Length - 1; i++)
+            {
+                // 绘制线段连接相邻路径点
+                Gizmos.DrawLine(pathCorners[i], pathCorners[i + 1]);
+                // 绘制路径点（球体）
+                Gizmos.DrawSphere(pathCorners[i], pointSize);
+            }
+
+            // 绘制终点
+            if (pathCorners.Length > 0)
+            {
+                Gizmos.DrawSphere(pathCorners[pathCorners.Length - 1], pointSize * 1.5f);
+            }
         }
 
         // 停止移动

@@ -16,8 +16,8 @@ public class CameraController_RTS : MonoBehaviour
     [Tooltip("相机组件")]
     public Camera mainCamera;                   // 主相机引用
 
-    [Tooltip("缩放平滑度")]
-    public const float defaultOrthographicSize = 8f; // 默认正交尺寸（初始视角大小）
+    [Tooltip("默认尺寸")]
+    public float defaultOrthographicSize = 8f; // 默认正交尺寸（初始视角大小）
     [Header("缩放设置")]
     [Tooltip("最小正交尺寸")]
     public float minOrthographicSize = 3f;      // 最小缩放值（放大极限）
