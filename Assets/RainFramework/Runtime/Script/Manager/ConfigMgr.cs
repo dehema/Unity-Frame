@@ -20,6 +20,8 @@ public class ConfigMgr : MonoSingleton<ConfigMgr>
     public static TbImageTextMix ImageTextMix => cfg.TbImageTextMix;
     public static TbUnit Unit => cfg.TbUnit;
     public static TbDeployFormation DeployFormation => cfg.TbDeployFormation;
+    public static TbTech Tech => cfg.TbTech;
+    public static TbTechCategory TechCategory => cfg.TbTechCategory;
 
 
 

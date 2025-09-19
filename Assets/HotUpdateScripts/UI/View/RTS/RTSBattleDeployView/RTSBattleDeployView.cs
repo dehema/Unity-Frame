@@ -38,9 +38,9 @@ public partial class RTSBattleDeployView : BaseView
             text.text = item.Name;
             index++;
         }
-        if (poolFormation.activePool.Count > 0)
+        if (poolFormation.ShowPool.Count > 0)
         {
-            poolFormation.activePool.First().GetComponent<Toggle>().isOn = true;
+            poolFormation.ShowPool.First().GetComponent<Toggle>().isOn = true;
         }
     }
 
@@ -50,7 +50,7 @@ public partial class RTSBattleDeployView : BaseView
     public void OnValueChangeFormation(bool _ison)
     {
         //EventSystem.current.currentSelectedGameObject
-        foreach (var item in poolFormation.activePool)
+        foreach (var item in poolFormation.ShowPool)
         {
             Toggle tg = item.GetComponent<Toggle>();
             if (tg.isOn)

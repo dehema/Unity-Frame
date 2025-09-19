@@ -27,6 +27,14 @@ public partial class Tables
     /// </summary>
     public TbImageTextMix TbImageTextMix {get; }
     /// <summary>
+    /// 科技
+    /// </summary>
+    public TbTech TbTech {get; }
+    /// <summary>
+    /// 科技种类
+    /// </summary>
+    public TbTechCategory TbTechCategory {get; }
+    /// <summary>
     /// 单位
     /// </summary>
     public TbUnit TbUnit {get; }
@@ -40,6 +48,8 @@ public partial class Tables
         TbGameSetting = new TbGameSetting(loader("tbgamesetting"));
         TbSLGSetting = new TbSLGSetting(loader("tbslgsetting"));
         TbImageTextMix = new TbImageTextMix(loader("tbimagetextmix"));
+        TbTech = new TbTech(loader("tbtech"));
+        TbTechCategory = new TbTechCategory(loader("tbtechcategory"));
         TbUnit = new TbUnit(loader("tbunit"));
         TbDeployFormation = new TbDeployFormation(loader("tbdeployformation"));
         ResolveRef();
@@ -50,6 +60,8 @@ public partial class Tables
         TbGameSetting.ResolveRef(this);
         TbSLGSetting.ResolveRef(this);
         TbImageTextMix.ResolveRef(this);
+        TbTech.ResolveRef(this);
+        TbTechCategory.ResolveRef(this);
         TbUnit.ResolveRef(this);
         TbDeployFormation.ResolveRef(this);
     }

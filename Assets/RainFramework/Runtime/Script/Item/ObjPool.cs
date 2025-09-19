@@ -13,12 +13,12 @@ public class ObjPool
     /// <summary>
     /// 已激活对象列表 - 当前正在使用的对象
     /// </summary>
-    public List<GameObject> activePool = new List<GameObject>();
+    public List<GameObject> ShowPool = new List<GameObject>();
 
     /// <summary>
     /// 非激活对象列表 - 当前等待复用的对象
     /// </summary>
-    public List<GameObject> inActivePool = new List<GameObject>();
+    public List<GameObject> HidePool = new List<GameObject>();
 
     /// <summary>
     /// 原型对象 - 用于创建新实例的模板
@@ -78,11 +78,11 @@ public class ObjPool
         // 是否创建  不是则为显示
         bool isFirstCreate = false;
         // 如果非激活池中有对象，则复用它
-        if (inActivePool.Count > 0)
+        if (HidePool.Count > 0)
         {
             // 从非激活池中取出最后一个对象
-            item = inActivePool[inActivePool.Count - 1];
-            inActivePool.Remove(item);
+            item = HidePool[HidePool.Count - 1];
+            HidePool.Remove(item);
 
             // 将对象移动到原型父节点下
             item.transform.SetParent(prototypeParent);
@@ -95,7 +95,7 @@ public class ObjPool
         }
 
         // 将对象添加到激活池中
-        activePool.Add(item);
+        ShowPool.Add(item);
 
         // 设置对象属性
         item.transform.name = prototype.name;
@@ -159,12 +159,12 @@ public class ObjPool
     public GameObject GetItemByIndex(int _index)
     {
         // 检查索引是否有效
-        if (_index >= 0 && _index < activePool.Count)
+        if (_index >= 0 && _index < ShowPool.Count)
         {
-            return activePool[_index];
+            return ShowPool[_index];
         }
 
-        Debug.LogWarning($"[ObjPool] 索引 {_index} 超出范围，当前激活对象数量：{activePool.Count}");
+        Debug.LogWarning($"[ObjPool] 索引 {_index} 超出范围，当前激活对象数量：{ShowPool.Count}");
         return null;
     }
 
@@ -200,7 +200,7 @@ public class ObjPool
     public void CollectOne(GameObject go)
     {
         // 检查对象是否有效且在激活池中
-        if (go == null || !activePool.Contains(go))
+        if (go == null || !ShowPool.Contains(go))
         {
             Debug.LogWarning($"[ObjPool] 无法回收对象：对象为空或不在激活池中");
             return;
@@ -217,8 +217,8 @@ public class ObjPool
         }
 
         // 从激活池移动到非激活池
-        activePool.Remove(go);
-        inActivePool.Add(go);
+        ShowPool.Remove(go);
+        HidePool.Add(go);
 
         // 将对象移动到非激活父节点下
         go.transform.SetParent(inActiveParent);
@@ -247,11 +247,11 @@ public class ObjPool
     public void CollectAll()
     {
         // 从后向前遍历，避免在循环中修改集合导致的问题
-        for (int i = activePool.Count - 1; i >= 0; i--)
+        for (int i = ShowPool.Count - 1; i >= 0; i--)
         {
-            if (i < activePool.Count) // 再次检查索引有效性，防止在循环中集合大小变化
+            if (i < ShowPool.Count) // 再次检查索引有效性，防止在循环中集合大小变化
             {
-                CollectOne(activePool[i]);
+                CollectOne(ShowPool[i]);
             }
         }
     }
@@ -265,7 +265,7 @@ public class ObjPool
         CollectAll();
 
         // 销毁所有非激活对象
-        foreach (GameObject obj in inActivePool)
+        foreach (GameObject obj in HidePool)
         {
             if (obj != null)
             {
@@ -274,8 +274,8 @@ public class ObjPool
         }
 
         // 清空列表
-        inActivePool.Clear();
-        activePool.Clear();
+        HidePool.Clear();
+        ShowPool.Clear();
         scriptList.Clear();
     }
 
@@ -284,7 +284,7 @@ public class ObjPool
     /// </summary>
     public int ItemNum
     {
-        get { return activePool.Count; }
+        get { return ShowPool.Count; }
     }
 
     /// <summary>
@@ -292,7 +292,7 @@ public class ObjPool
     /// </summary>
     public int InactiveItemNum
     {
-        get { return inActivePool.Count; }
+        get { return HidePool.Count; }
     }
 
     /// <summary>
@@ -300,6 +300,6 @@ public class ObjPool
     /// </summary>
     public int TotalItemNum
     {
-        get { return activePool.Count + inActivePool.Count; }
+        get { return ShowPool.Count + HidePool.Count; }
     }
 }

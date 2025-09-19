@@ -5,28 +5,37 @@ using Object = UnityEngine.Object;
 public class EditorHierarchy
 {
     const string folderPath = "Prefab/EditorHierarchy/";
-    [MenuItem("GameObject/A组件/文本", priority = 0)]
+    const string RainUIMenuPrefix = "GameObject/Rain组件/";
+
+    [MenuItem(RainUIMenuPrefix + "文本", priority = 0)]
     public static void CreateText()
     {
         CreatePrefab(folderPath + "Text");
     }
 
-    [MenuItem("GameObject/A组件/按钮", priority = 1)]
+
+    [MenuItem(RainUIMenuPrefix + "按钮", priority = 1)]
     public static void CreateButton()
     {
         CreatePrefab(folderPath + "CommonButton");
     }
 
-    [MenuItem("GameObject/A组件/文本按钮", priority = 2)]
+    [MenuItem(RainUIMenuPrefix + "文本按钮", priority = 2)]
     public static void CreateTextButton()
     {
         CreatePrefab(folderPath + "TextButton");
     }
 
-    [MenuItem("GameObject/A组件/close按钮", priority = 3)]
+    [MenuItem(RainUIMenuPrefix + "close按钮", priority = 3)]
     public static void CreateCloseButton()
     {
         CreatePrefab(folderPath + "$btClose#Button");
+    }
+
+    [MenuItem(RainUIMenuPrefix + "ToggleGroup")]
+    public static void CreateToggleGroup()
+    {
+        CreatePrefab(folderPath + "toggleGroup");
     }
 
     private static void CreatePrefab(string _path)

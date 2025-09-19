@@ -45,7 +45,7 @@ view:
             bgColor: "#000000B0"
         TopView:
             comment: 资源栏
-            layer: DialogLayer
+            layer: MenuLayer
             hasBg: false
         LoadingView:
             comment: loading
@@ -103,6 +103,11 @@ view:
             comment: 倒计时
             layer: TipsLayer
             bgColor: "#00000000"
+        TechView:
+            comment: 科技
+            layer: MenuLayer
+            bgColor: "#FFFFFFFF"
+            hasBg: true
     RTS:
         RTSUnitTestView:
             comment: RTS单位

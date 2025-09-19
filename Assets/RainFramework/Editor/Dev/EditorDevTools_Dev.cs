@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using DotLiquid;
+using ICSharpCode.SharpZipLib.Zip;
 using Rain.Core;
 using Rain.UI;
 using Rain.UI.Editor;
@@ -436,6 +437,8 @@ public class EditorDevTools_Dev : EditorDevTools_Base
     {
         try
         {
+            bool hasError = false;
+            Debug.Log(">>>>>>>>>>>>>>>>>>>>>>>>开始导出配置表");
             string batPath = Directory.GetParent(Application.dataPath).FullName;
             batPath += "/Config/luban/MiniTemplate/gen.bat";
             if (!File.Exists(batPath))
@@ -443,19 +446,55 @@ public class EditorDevTools_Dev : EditorDevTools_Base
                 EditorUtility.DisplayDialog("错误", "没有找到文件" + batPath, "确定");
                 return;
             }
-            System.Diagnostics.Process pro = new System.Diagnostics.Process();
             FileInfo file = new FileInfo(batPath);
+            System.Diagnostics.Process pro = new System.Diagnostics.Process();
             pro.StartInfo.WorkingDirectory = file.Directory.FullName;
             pro.StartInfo.FileName = batPath;
+            pro.StartInfo.RedirectStandardOutput = true; // 重定向标准输出
+            pro.StartInfo.RedirectStandardError = true;  // 重定向错误输出
             pro.StartInfo.CreateNoWindow = true;
             pro.StartInfo.UseShellExecute = false;
+            // 注册输出事件（实时获取输出）
+            pro.OutputDataReceived += (sender, e) =>
+            {
+                string log = e.Data;
+                if (!string.IsNullOrEmpty(log))
+                {
+                    if (log.Contains("|ERROR|===>"))
+                    {
+                        hasError = true;
+                        Debug.LogError(log);
+                    }
+                    else
+                        Debug.Log(log);
+                }
+            };
+
+            pro.ErrorDataReceived += (sender, e) =>
+            {
+                if (!string.IsNullOrEmpty(e.Data))
+                {
+                    hasError = true;
+                    Debug.LogError(e.Data);
+                }
+            };
             pro.Start();
+            // 开始异步读取输出流
+            pro.BeginOutputReadLine();
+            pro.BeginErrorReadLine();
             pro.WaitForExit();
-            Debug.Log("导出完成->Resources/Json/");
+            if (hasError)
+            {
+                Debug.LogError("导出配置表错误<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+            }
+            else
+            {
+                Debug.Log("导出配置表完成<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+            }
         }
         catch (Exception ex)
         {
-            Debug.LogError("执行失败 错误原因:" + ex.Message);
+            Debug.LogError("导出配置表错误<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<     " + ex.Message);
         }
     }
 
