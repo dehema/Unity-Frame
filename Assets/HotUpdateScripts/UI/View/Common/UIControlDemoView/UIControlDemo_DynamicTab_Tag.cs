@@ -1,9 +1,9 @@
 using Rain.Core;
-using Rain.UIControlDemo;
+using Rain.UI;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Rain.UIControlDemo
+namespace Rain.UI
 {
     public class UIControlDemo_DynamicTab_Tag : Tab
     {

@@ -5,7 +5,8 @@
         "Rain.Core",
         "Rain.Common",
         "DOTween.Modules",
-        "Unity.TextMeshPro"
+        "Unity.TextMeshPro",
+        "Rain.UI"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

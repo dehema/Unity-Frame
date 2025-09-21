@@ -39,4 +39,6 @@ public partial class TechView : BaseView
         }
         poolTeckCategory.ShowPool.First().GetComponent<Toggle>().isOn = true;
     }
+
+
 }

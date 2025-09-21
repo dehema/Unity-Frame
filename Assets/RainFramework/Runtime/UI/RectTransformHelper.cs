@@ -1,34 +1,32 @@
 ﻿using UnityEngine;
 
-namespace Rain.Core
+
+/// <summary>
+/// This script help you convert anchored positions to absolute positions, so you can animate and position exactly ui elements witouh messing around with anchors
+/// </summary>
+
+
+//use this to position UI in absolute coordenates
+//0.0 , 1.0 _______________________1.0 , 1.0
+//          |                      |
+//          |                      |                  
+//          |                      |
+//          |                      |
+//0.0 , 0.0 |______________________| 1.0 , 0.0
+public enum PivotPreset : byte
 {
-    public enum PivotPreset : byte
-    {
-        UpperLeft,
-        UpperCenter,
-        UpperRight,
-        MiddleLeft,
-        MiddleCenter,
-        MiddleRight,
-        LowerLeft,
-        LowerCenter,
-        LowerRight
-    }
+    UpperLeft,
+    UpperCenter,
+    UpperRight,
+    MiddleLeft,
+    MiddleCenter,
+    MiddleRight,
+    LowerLeft,
+    LowerCenter,
+    LowerRight
+}
 
-    /// <summary>
-    /// This script help you convert anchored positions to absolute positions, so you can animate and position exactly ui elements witouh messing around with anchors
-    /// </summary>
-    
-
-    //use this to position UI in absolute coordenates
-    //0.0 , 1.0 _______________________1.0 , 1.0
-    //          |                      |
-    //          |                      |                  
-    //          |                      |
-    //          |                      |
-    //0.0 , 0.0 |______________________| 1.0 , 0.0
-
-    public static class RectTransformHelper
+public static class RectTransformHelper
     {
         private static RectTransform targetCanvas = null;
 
@@ -190,5 +188,4 @@ namespace Rain.Core
 
         }
     }
-}
 

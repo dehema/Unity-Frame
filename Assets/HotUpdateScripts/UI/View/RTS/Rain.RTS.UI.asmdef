@@ -6,7 +6,7 @@
         "DOTween.Modules",
         "Rain.Common",
         "Rain.RTS.Core",
-        "Rain.Common.UI",
+        "Rain.UI",
         "Unity.TextMeshPro",
         "Rain.Config"
     ],

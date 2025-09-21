@@ -1,5 +1,11 @@
-﻿using Rain.Core;
+﻿using Rain.UI;
 using UnityEngine;
+using Tools = Rain.Core.Tools;
+
+#if UNITY_EDITOR
+using UnityEditor;
+using UnityEditor.SceneManagement;
+#endif
 
 namespace Rain.UI
 {
@@ -82,3 +88,39 @@ namespace Rain.UI
         }
     }
 }
+
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(BaseUI), true)]
+public class BaseUI_Editor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        // 绘制默认的Inspector界面
+        DrawDefaultInspector();
+
+        // 添加分隔线
+        EditorGUILayout.Space();
+        EditorGUILayout.LabelField("编辑器工具", EditorStyles.boldLabel);
+
+        if (!Application.isPlaying)
+        {
+            // 添加重置相机位置按钮
+            if (GUILayout.Button("导出UI"))
+            {
+                UIMgr.ActionExportUI_Editor?.Invoke();
+
+                // 获取当前活跃的编辑阶段（Stage）
+                var stage = StageUtility.GetCurrentStage();
+
+                // 判断是否是预制体编辑阶段
+                if (stage is PrefabStage prefabStage)
+                {
+                    // 保存预制体修改
+                    PrefabUtility.SaveAsPrefabAsset(prefabStage.prefabContentsRoot, PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(prefabStage.prefabContentsRoot));
+                }
+            }
+        }
+    }
+}
+#endif

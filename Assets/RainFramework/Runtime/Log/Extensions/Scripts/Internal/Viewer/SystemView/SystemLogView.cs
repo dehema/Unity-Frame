@@ -1,8 +1,10 @@
 ﻿using System.Text;
+using Rain.Core;
+using Rain.UI;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Rain.Core
+namespace Rain.UI
 {
     public class SystemLogView : LogViewBase
     {

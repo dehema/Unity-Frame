@@ -4,8 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using Rain.UI;
 using TMPro;
+using Rain.UI;
 
-public partial class TechView : BaseView
+public partial class TechView : Rain.UI.BaseView
 {
     [System.Serializable]
     struct SerializableUIComponents
@@ -17,6 +18,8 @@ public partial class TechView : BaseView
         [SerializeField] public RectTransform content_Rect;
         [SerializeField] public GameObject tgTeckCategory;
         [SerializeField] public Toggle tgTeckCategory_Toggle;
+        [SerializeField] public GameObject techContent;
+        [SerializeField] public UIControlDemo_DynamicTab techContent_UIControlDemo_DynamicTab;
     }
 
     [Header("自动序列化组件")]

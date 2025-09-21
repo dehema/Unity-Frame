@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Rain.Core
+namespace Rain.UI
 {
     public class TabLogView : LogViewBase
     {

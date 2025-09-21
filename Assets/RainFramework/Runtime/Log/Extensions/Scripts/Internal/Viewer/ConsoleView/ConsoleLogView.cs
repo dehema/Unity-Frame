@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using Rain.Core;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Rain.Core
+namespace Rain.UI
 {
     public class ConsoleLogView : LogViewBase
     {

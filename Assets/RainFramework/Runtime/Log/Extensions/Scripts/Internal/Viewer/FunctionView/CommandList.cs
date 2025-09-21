@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using Rain.Core;
+using UnityEngine;
 
-namespace Rain.Core
+namespace Rain.UI
 {
     public class CommandList : MonoBehaviour
     {

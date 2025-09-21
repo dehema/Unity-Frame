@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Rain.Core;
 using UnityEngine;
 
-namespace Rain.UIControlDemo
+namespace Rain.UI
 {
     public class UIControlDemo_DynamicTabData : ITabData
     {

@@ -3,9 +3,8 @@
     "rootNamespace": "",
     "references": [
         "Rain.Core",
-        "Rain.Common",
         "DOTween.Modules",
-        "Rain.Config"
+        "Rain.UI"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

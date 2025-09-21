@@ -73,8 +73,8 @@ namespace Rain.Core
             {
                 float tempVolume = MusicSource.volume;
                 MusicSource.volume = 0f;
-                AudioTween = F8Tween.Ins.ValueTween(0f, tempVolume, fadeDuration)
-                    .SetOnUpdateFloat((float v) => { MusicSource.volume = v; }).ID;
+                //AudioTween = F8Tween.Ins.ValueTween(0f, tempVolume, fadeDuration)
+                //    .SetOnUpdateFloat((float v) => { MusicSource.volume = v; }).ID;
             }
         }
 

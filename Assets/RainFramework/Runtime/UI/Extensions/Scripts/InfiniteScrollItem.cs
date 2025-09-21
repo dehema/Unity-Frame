@@ -1,4 +1,5 @@
 using System;
+using Rain.UI;
 using UnityEngine;
 using DataContext = Rain.Core.InfiniteScroll.DataContext;
 
@@ -8,7 +9,7 @@ namespace Rain.Core
     {
     }
 
-    public class InfiniteScrollItem : MonoBehaviour
+    public class InfiniteScrollItem : BaseUI
     {
         public bool autoApplySize = false;
 

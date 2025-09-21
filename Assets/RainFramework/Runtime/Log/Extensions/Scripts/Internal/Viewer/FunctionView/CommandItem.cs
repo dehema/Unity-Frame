@@ -1,7 +1,8 @@
 ﻿using System.Text;
+using Rain.Core;
 using UnityEngine.UI;
 
-namespace Rain.Core
+namespace Rain.UI
 {
     public class CommandItemData : InfiniteScrollData
     {

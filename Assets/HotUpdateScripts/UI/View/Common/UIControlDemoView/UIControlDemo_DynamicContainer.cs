@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Resources = UnityEngine.Resources;
 
-namespace Rain.UIControlDemo
+namespace Rain.UI
 {
     public class UIControlDemo_DynamicContainer : MonoBehaviour
     {
@@ -19,7 +19,7 @@ namespace Rain.UIControlDemo
 
         private void InitData()
         {
-            Object[] objects = Resources.LoadAll<Sprite>("UI/Building");
+            Object[] objects = Resources.LoadAll<Sprite>("UI/Common");
             int index = 0;
             foreach (Object obj in objects)
             {

@@ -1,8 +1,9 @@
 ﻿using UnityEngine.Serialization;
 using UnityEngine;
 using UnityEngine.UI;
+using Rain.Core;
 
-namespace Rain.Core
+namespace Rain.UI
 {
     public class Viewer : MonoBehaviour
     {

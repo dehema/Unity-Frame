@@ -31,7 +31,7 @@ public partial class UIControlDemoView : BaseView
             {
                 Destroy(currControl);
             }
-            GameObject prefab = Resources.Load<GameObject>("Prefab/View/UIControlDemoView/" + prefabDict.Values.ElementAt(option));
+            GameObject prefab = Resources.Load<GameObject>("View/UIControlDemoView/" + prefabDict.Values.ElementAt(option));
             currControl = Instantiate(prefab, ui.controlParent.transform);
             RectTransform rect = currControl.GetComponent<RectTransform>();
             rect.localPosition = Vector3.zero;

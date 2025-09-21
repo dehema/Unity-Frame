@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using Rain.Core;
 using UnityEngine;
 
-namespace Rain.Core
+namespace Rain.UI
 {
     public class LogList : MonoBehaviour
     {

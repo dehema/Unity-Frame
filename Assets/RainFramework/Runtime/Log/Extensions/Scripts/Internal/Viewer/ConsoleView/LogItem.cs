@@ -1,7 +1,8 @@
-﻿using UnityEngine;
+﻿using Rain.Core;
+using UnityEngine;
 using UnityEngine.UI;
 
-namespace Rain.Core
+namespace Rain.UI
 {
     public class LogItemData : InfiniteScrollData
     {

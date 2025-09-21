@@ -28,8 +28,6 @@ namespace Rain.Launcher
         private static AssetMgr _asset;
         // 音频管理-->使用了资产模块-->使用了游戏对象池模块-->使用了补间动画模块-->使用了时间模块
         private static AudioMgr _audio;
-        // 补间动画
-        private static F8Tween _tween;
         // UI界面管理-->使用了资产模块
         private static UIManager _ui;
         private static UIMgr _uiMgr;
@@ -201,21 +199,6 @@ namespace Rain.Launcher
             {
                 if (_audio == null)
                     _audio = value;
-            }
-        }
-
-        public static F8Tween Tween
-        {
-            get
-            {
-                if (_tween == null)
-                    _tween = ModuleCenter.CreateModule<F8Tween>();
-                return _tween;
-            }
-            set
-            {
-                if (_tween == null)
-                    _tween = value;
             }
         }
 

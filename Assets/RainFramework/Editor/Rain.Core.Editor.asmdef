@@ -3,6 +3,7 @@
     "rootNamespace": "",
     "references": [
         "Rain.Core",
+        "Rain.UI",
         "ICSharpCode.SharpZipLib",
         "Excel",
         "LitJson",

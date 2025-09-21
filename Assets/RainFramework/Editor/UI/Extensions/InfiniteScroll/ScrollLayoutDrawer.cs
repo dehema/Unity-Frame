@@ -3,6 +3,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using Rain.UI;
 
 namespace Rain.Core.Editor
 {

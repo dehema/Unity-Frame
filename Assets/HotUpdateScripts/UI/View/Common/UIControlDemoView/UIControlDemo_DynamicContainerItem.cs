@@ -4,7 +4,7 @@ using Rain.Core;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Rain.UIControlDemo
+namespace Rain.UI
 {
     public class UIControlDemo_DynamicContainerItem : InfiniteScrollItem
     {
