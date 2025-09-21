@@ -109,16 +109,6 @@ public class BaseUI_Editor : Editor
             if (GUILayout.Button("导出UI"))
             {
                 UIMgr.ActionExportUI_Editor?.Invoke();
-
-                // 获取当前活跃的编辑阶段（Stage）
-                var stage = StageUtility.GetCurrentStage();
-
-                // 判断是否是预制体编辑阶段
-                if (stage is PrefabStage prefabStage)
-                {
-                    // 保存预制体修改
-                    PrefabUtility.SaveAsPrefabAsset(prefabStage.prefabContentsRoot, PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(prefabStage.prefabContentsRoot));
-                }
             }
         }
     }

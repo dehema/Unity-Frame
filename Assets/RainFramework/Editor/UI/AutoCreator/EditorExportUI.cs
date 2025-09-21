@@ -41,9 +41,10 @@ namespace Rain.UI.Editor
 
                 // 2. 获取预制体
                 uiPrefab = _uiPrefab;
+                PrefabStage stage = null;
                 if (uiPrefab == null)
                 {
-                    PrefabStage stage = PrefabStageUtility.GetCurrentPrefabStage();
+                    stage = PrefabStageUtility.GetCurrentPrefabStage();
                     if (stage == null)
                     {
                         EditorUtility.DisplayDialog("错误", "请先打开一个View的预制体，进入预制体模式", "确定");
@@ -115,6 +116,11 @@ namespace Rain.UI.Editor
                 }
 
                 Debug.Log($"成功导出UI: {viewUIPath}");
+
+                // 保存预制体修改
+                string path = PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(stage);
+                if (!string.IsNullOrEmpty(path))
+                    PrefabUtility.SaveAsPrefabAsset(uiPrefab, path);
             }
             catch (Exception ex)
             {

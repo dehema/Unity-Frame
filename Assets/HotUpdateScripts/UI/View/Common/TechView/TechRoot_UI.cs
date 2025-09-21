@@ -17,6 +17,11 @@ public partial class TechRoot : Rain.UI.BaseUI
         [SerializeField] public Image icon_Image;
         [SerializeField] public GameObject txName;
         [SerializeField] public TextMeshProUGUI txName_Text;
+        [SerializeField] public GameObject upLine;
+        [SerializeField] public RectTransform upLine_Rect;
+        [SerializeField] public Image upLine_Image;
+        [SerializeField] public GameObject downLine;
+        [SerializeField] public RectTransform downLine_Rect;
     }
 
     [Header("自动序列化组件")]

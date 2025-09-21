@@ -205,9 +205,9 @@ public class EditorDevTools_UI : EditorDevTools_Base
 
         // 标记场景为已修改
         EditorUtility.SetDirty(EditorUtility.InstanceIDToObject(0));
-
-
-        PrefabUtility.SaveAsPrefabAsset(prefabStage.prefabContentsRoot, PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(stage));
+        string path = PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(stage);
+        if (!string.IsNullOrEmpty(path))
+            PrefabUtility.SaveAsPrefabAsset(prefabStage.prefabContentsRoot, path);
     }
 
     /// <summary>
