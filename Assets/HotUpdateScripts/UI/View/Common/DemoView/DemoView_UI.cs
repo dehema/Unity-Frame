@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Rain.UI;
+using TMPro;
 
-public partial class DemoView : Rain.UI.BaseView
+public partial class DemoView : BaseView
 {
     [System.Serializable]
     struct SerializableUIComponents

@@ -35,6 +35,9 @@ namespace Rain.UI
         /// </summary>
         public Camera CameraFx { get { if (_camera_fx == null) { _camera_fx = GameObject.Find("FX Camera").GetComponent<Camera>(); } return _camera_fx; } }
 
+        //导出UI 编辑器方法
+        public static Action ActionExportUI_Editor;
+
         /// <summary>
         /// 初始化UI管理器
         /// </summary>

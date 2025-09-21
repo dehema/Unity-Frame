@@ -23,7 +23,7 @@ public partial class DemoView : BaseView
 
         //注册按钮事件
         //ui.btClose_Button.
-        ui.btClose_Button.SetButton(() => { UIMgr.Ins.CloseView<DemoView>(); });
+        ui.btClose_Button.SetButton(Close);
 
         //同步加载
         Sprite sprite = AssetMgr.Ins.Load<Sprite>("beastmen_centigors1");
@@ -69,13 +69,14 @@ public partial class DemoView : BaseView
 
         }
     }
-}
 
 
-public class DemoViewParam : IViewParam
-{
-    public int number;
-    public string tips;
-    public Action action;
-    public Action<string> actionParams;
+    public class DemoViewParam : IViewParam
+    {
+        public int number;
+        public string tips;
+        public Action action;
+        public Action<string> actionParams;
+    }
+
 }

@@ -40,7 +40,7 @@ public partial class DebugView : BaseView
                 }
                 else if (uiName == ViewName.DemoView)
                 {
-                    DemoViewParam viewParams = new DemoViewParam();
+                    DemoView.DemoViewParam viewParams = new DemoView.DemoViewParam();
                     viewParams.number = 123;
                     viewParams.tips = "hello world";
                     viewParams.action = () =>

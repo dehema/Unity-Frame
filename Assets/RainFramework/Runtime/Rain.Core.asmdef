@@ -11,8 +11,7 @@
         "SimpleWebTransport",
         "DOTween.Modules",
         "Rain.Common",
-        "Luban.Runtime",
-        "Rain.Config"
+        "Luban.Runtime"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

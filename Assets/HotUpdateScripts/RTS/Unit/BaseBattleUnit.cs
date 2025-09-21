@@ -2,7 +2,6 @@ using System;
 using Rain.Core;
 using UnityEngine;
 using UnityEngine.AI;
-using static UnityEngine.UI.CanvasScaler;
 
 namespace Rain.RTS.Core
 {

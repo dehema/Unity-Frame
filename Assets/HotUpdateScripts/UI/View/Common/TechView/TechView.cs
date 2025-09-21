@@ -6,7 +6,6 @@ using Rain.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
 
 /// <summary>
 /// 科技

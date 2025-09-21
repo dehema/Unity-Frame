@@ -7,7 +7,8 @@
         "Excel",
         "LitJson",
         "HybridCLR.Editor",
-        "Unity.EditorCoroutines.Editor"
+        "Unity.EditorCoroutines.Editor",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [
         "Editor"

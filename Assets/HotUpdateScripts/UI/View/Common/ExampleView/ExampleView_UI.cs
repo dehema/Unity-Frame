@@ -1,46 +1,36 @@
-﻿using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
+using Rain.UI;
+using TMPro;
 
 public partial class ExampleView : ExampleViewParent
 {
-    [HideInInspector]
-    public GameObject bg;
-    [HideInInspector]
-    public Image bg_Image;
-    [HideInInspector]
-    public Button bg_Button;
-    [HideInInspector]
-    public GameObject content;
-    [HideInInspector]
-    public RectTransform content_Rect;
-    [HideInInspector]
-    public GameObject btButton;
-    [HideInInspector]
-    public Button btButton_Button;
-    [HideInInspector]
-    public Image btButton_Image;
-    [HideInInspector]
-    public GameObject txtBt;
-    [HideInInspector]
-    public Text txtBt_Text;
-    [HideInInspector]
-    public GameObject btClose;
-    [HideInInspector]
-    public Button btClose_Button;
-    [HideInInspector]
-    public GameObject goldNum;
-    [HideInInspector]
-    public Text goldNum_Text;
-    [HideInInspector]
-    public GameObject btAddGold;
-    [HideInInspector]
-    public Button btAddGold_Button;
-    [HideInInspector]
-    public GameObject btUnBindAllDataBind;
-    [HideInInspector]
-    public Button btUnBindAllDataBind_Button;
-    [HideInInspector]
-    public GameObject exampleWidgetWithSuper;
-    [HideInInspector]
-    public GameObject exampleWidget;
+    [System.Serializable]
+    struct SerializableUIComponents
+    {
+        [SerializeField] public GameObject bg;
+        [SerializeField] public Image bg_Image;
+        [SerializeField] public Button bg_Button;
+        [SerializeField] public GameObject content;
+        [SerializeField] public RectTransform content_Rect;
+        [SerializeField] public GameObject btButton;
+        [SerializeField] public Button btButton_Button;
+        [SerializeField] public Image btButton_Image;
+        [SerializeField] public GameObject txtBt;
+        [SerializeField] public TextMeshProUGUI txtBt_Text;
+        [SerializeField] public GameObject btClose;
+        [SerializeField] public Button btClose_Button;
+        [SerializeField] public GameObject goldNum;
+        [SerializeField] public TextMeshProUGUI goldNum_Text;
+        [SerializeField] public GameObject btAddGold;
+        [SerializeField] public Button btAddGold_Button;
+        [SerializeField] public GameObject btUnBindAllDataBind;
+        [SerializeField] public Button btUnBindAllDataBind_Button;
+        [SerializeField] public GameObject exampleWidgetWithSuper;
+    }
+
+    [Header("自动序列化组件")]
+    [SerializeField] private SerializableUIComponents ui;
 }

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using DotLiquid;
-using ICSharpCode.SharpZipLib.Zip;
 using Rain.Core;
 using Rain.UI;
 using Rain.UI.Editor;
@@ -13,9 +13,9 @@ using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.UI;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
+using Debug = UnityEngine.Debug;
 using Path = System.IO.Path;
 
 public class EditorDevTools_Dev : EditorDevTools_Base
@@ -44,26 +44,12 @@ public class EditorDevTools_Dev : EditorDevTools_Base
         if (GUILayout.Button("打开编辑器脚本", style.bt))
         {
             OpenEditorScript();
+
         }
         if (GUILayout.Button("清除PlayerPrefs", style.bt))
         {
             PlayerPrefs.DeleteAll(); ;
         }
-        if (GUILayout.Button("删除所有丢失的脚本组件", style.bt))
-        {
-            DelAllMissScripts();
-        }
-        GUILayout.EndHorizontal();
-        GUILayout.BeginHorizontal();
-        if (GUILayout.Button("替换所有丢失字体的文本", style.bt))
-        {
-            ReplaceAllFont(true);
-        }
-        if (GUILayout.Button("替换所有文本的字体", style.bt))
-        {
-            ReplaceAllFont();
-        }
-        newfont = EditorGUILayout.ObjectField(newfont, typeof(Font), true) as Font;
         GUILayout.EndHorizontal();
     }
 
@@ -322,86 +308,6 @@ public class EditorDevTools_Dev : EditorDevTools_Base
     }
 
     /// <summary>
-    /// 删除所有丢失的脚本组件
-    /// </summary>
-    public static void DelAllMissScripts()
-    {
-        Action<GameObject, string> action = (GameObject _ui, string _uiPath) =>
-        {
-            int missNum = 0;
-            foreach (var trans in _ui.GetComponentsInChildren<Transform>(true))
-            {
-                missNum += GameObjectUtility.RemoveMonoBehavioursWithMissingScript(trans.gameObject);
-            }
-            if (missNum > 0)
-            {
-                PrefabUtility.SaveAsPrefabAsset(_ui, PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(_ui));
-                Debug.Log(string.Format("{0}删除{1}个丢失脚本", _uiPath, missNum));
-            }
-        };
-        ForeachAllUIPrefab(action);
-    }
-
-    [SerializeField]
-    static Font newfont;
-    /// 替换所有丢失字体的文本组件
-    /// </summary>
-    /// </summary>
-    /// <param name="_onlyMissFont">只有丢失字体的文本</param>
-    public static void ReplaceAllFont(bool _onlyMissFont = false)
-    {
-        if (newfont == null)
-        {
-            EditorUtility.DisplayDialog("提示", "先设置新字体", "确定");
-            return;
-        }
-        Action<GameObject, string> action = (GameObject _ui, string _uiPath) =>
-        {
-            int textNum = 0;
-            foreach (var text in _ui.GetComponentsInChildren<Text>(true))
-            {
-                if (_onlyMissFont && text.font != null)
-                {
-                    continue;
-                }
-                textNum++;
-                text.font = newfont;
-            }
-            if (textNum > 0)
-            {
-                PrefabUtility.SaveAsPrefabAsset(_ui, PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(_ui));
-                Debug.Log($"{_uiPath}替换{textNum}个文本");
-            }
-        };
-        ForeachAllUIPrefab(action);
-    }
-
-    /// <summary>
-    /// 遍历所有UI预制体
-    /// </summary>
-    public static void ForeachAllUIPrefab(Action<GameObject, string> _action)
-    {
-        List<string> PrefabPath = new List<string>();
-        Action<string, string> FindPrefabPath = (_resDirPath, prefix) =>
-        {
-            foreach (var filePath in Directory.GetFiles(_resDirPath + prefix, "*.prefab", SearchOption.AllDirectories))
-            {
-                string fileName = Path.GetFileName(filePath);
-                fileName = fileName.Replace(".prefab", string.Empty);
-                PrefabPath.Add(prefix + fileName);
-            }
-        };
-        FindPrefabPath(Application.dataPath + "/Resources/", "View/");
-        FindPrefabPath(Application.dataPath + "/Framework/Resources/", "View/");
-        foreach (var path in PrefabPath)
-        {
-            GameObject ui = PrefabUtility.InstantiatePrefab(Resources.Load(path) as GameObject) as GameObject;
-            _action(ui, path);
-            GameObject.DestroyImmediate(ui);
-        }
-    }
-
-    /// <summary>
     /// Excel导成Json
     /// </summary>
     public static void ExportExcel2Json()
@@ -501,7 +407,7 @@ public class EditorDevTools_Dev : EditorDevTools_Base
     /// <summary>
     /// 编辑器脚本路径
     /// </summary>
-    public static string EditorScriptPath { get { return Application.dataPath + "/RainFramework/Editor/Dev/EditorDevTools.cs"; } }
+    public static string EditorScriptPath { get { return Application.dataPath + "/RainFramework/Editor/Dev/EditorDevTools_Dev.cs"; } }
 
     /// <summary>
     /// 场景配置文件   必须放在 Resources 下，运行时也会读取
