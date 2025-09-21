@@ -50,12 +50,6 @@ view:
         LoadingView:
             comment: loading
             layer: DialogLayer
-        ExampleView:
-            comment: 示例UI
-            layer: DialogLayer
-            bgColor: "#000000B0"
-            showMethod: pop
-            bgClose: true
         TipsView:
             comment: 提示弹窗UI
             layer: TipsLayer
