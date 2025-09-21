@@ -64,15 +64,7 @@ namespace Rain.UI.Editor
                     EditorUtility.DisplayDialog("错误", "预制体必须包含继承自BaseUI的组件", "确定");
                     return;
                 }
-                BaseUIType baseUIType = BaseUIType.BaseUI;
-                if (baseUI is BaseView)
-                {
-                    baseUIType = BaseUIType.BaseView;
-                }
-                else if (baseUI is BasePoolItem)
-                {
-                    baseUIType = BaseUIType.BasePoolItem;
-                }
+                BaseUIType baseUIType = GetBaseUIType(baseUI);
 
                 // 设置是否为视图导出
                 string viewName = uiPrefab.name;
@@ -83,7 +75,7 @@ namespace Rain.UI.Editor
                 string uiModelContent = GetUIModelContent(tfList);
 
                 // 5. 确定父类名称
-                string superClassName = baseUIType.ToString();
+                string superClassName = GetExprotUIBaseScriptName(uiPrefab, baseUIType);
 
                 // 6. 查找脚本路径
                 string viewScriptFolderPath = FindViewScriptPath(viewName);
@@ -129,6 +121,53 @@ namespace Rain.UI.Editor
                 Debug.LogError($"导出UI时发生错误: {ex.Message}\n{ex.StackTrace}");
                 EditorUtility.DisplayDialog("错误", $"导出UI时发生错误: {ex.Message}", "确定");
             }
+        }
+
+        private static BaseUIType GetBaseUIType(Component _component)
+        {
+            if (_component is BaseView)
+            {
+                return BaseUIType.BaseView;
+            }
+            else if (_component is BasePoolItem)
+            {
+                return BaseUIType.BasePoolItem;
+            }
+            return BaseUIType.BaseUI;
+        }
+
+        private static Type GetComponentByType(BaseUIType _type)
+        {
+            switch (_type)
+            {
+                case BaseUIType.BaseUI:
+                default:
+                    return typeof(BaseUI);
+                case BaseUIType.BaseView:
+                    return typeof(BaseView);
+                case BaseUIType.BasePoolItem:
+                    return typeof(BasePoolItem);
+            }
+        }
+
+        /// <summary>
+        /// 获取导出UI的基类 如果找到一个继承BaseUI则直接返回父类，找不到就返回默认类型
+        /// </summary>
+        /// <param name="uiPrefab"></param>
+        /// <param name="defaultBaseUIType"></param>
+        /// <returns></returns>
+        private static string GetExprotUIBaseScriptName(GameObject uiPrefab, BaseUIType defaultBaseUIType)
+        {
+            Component[] allComponents = uiPrefab.GetComponents<Component>();
+            foreach (var component in allComponents)
+            {
+                if (component == null)
+                    continue;
+                if (component is not BaseUI)
+                    continue;
+                return component.GetType().BaseType.ToString();
+            }
+            return defaultBaseUIType.ToString();
         }
 
         /// <summary>

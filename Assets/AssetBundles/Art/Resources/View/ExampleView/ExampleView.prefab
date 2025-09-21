@@ -676,11 +676,11 @@ MonoBehaviour:
     btButton_Button: {fileID: 850144239263570243}
     btButton_Image: {fileID: 8097275223642611281}
     txtBt: {fileID: 7463713703441318436}
-    txtBt_Text: {fileID: 0}
+    txtBt_Text: {fileID: 835546062180689983}
     btClose: {fileID: 4809256249115183471}
     btClose_Button: {fileID: 2783577741587023459}
     goldNum: {fileID: 7131562750700421039}
-    goldNum_Text: {fileID: 0}
+    goldNum_Text: {fileID: 940426537179926845}
     btAddGold: {fileID: 1539434073578737087}
     btAddGold_Button: {fileID: 4666238208714757051}
     btUnBindAllDataBind: {fileID: 2173772937948613633}
