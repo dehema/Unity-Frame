@@ -9,9 +9,9 @@ namespace Rain.UI
     public class UIControlDemo_DynamicTab : MonoBehaviour
     {
         public TabController tabController;
-        public TabPage dynamicScrollPage;
         //∑÷“≥±Í«©
         public Tab tabOriginalPrefab;
+        public TabPage dynamicScrollPage;
 
         UIControlDemo_DynamicTabData tabData = new UIControlDemo_DynamicTabData();
 
