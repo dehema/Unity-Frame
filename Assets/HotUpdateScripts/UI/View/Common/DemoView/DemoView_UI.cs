@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Rain.Core;
 using Rain.UI;
+using TMPro;
 
-public partial class UIControlDemoView : BaseView
+public partial class DemoView : BaseView
 {
     [System.Serializable]
     struct SerializableUIComponents
@@ -15,11 +15,12 @@ public partial class UIControlDemoView : BaseView
         [SerializeField] public Button bg_Button;
         [SerializeField] public GameObject content;
         [SerializeField] public RectTransform content_Rect;
-        [SerializeField] public GameObject deMenu;
-        [SerializeField] public Dropdown deMenu_Dropdown;
+        [SerializeField] public GameObject imgBuild1;
+        [SerializeField] public Image imgBuild1_Image;
+        [SerializeField] public GameObject imgBuild2;
+        [SerializeField] public Image imgBuild2_Image;
         [SerializeField] public GameObject btClose;
         [SerializeField] public Button btClose_Button;
-        [SerializeField] public GameObject controlParent;
     }
 
     [Header("自动序列化组件")]
