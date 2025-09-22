@@ -64,7 +64,6 @@ public partial class DebugView : BaseView
                 else
                 {
                     UIMgr.Ins.OpenView(uiName);
-                    Close();
                 }
                 if (ui.keepOpenView_Toggle.isOn)
                     return;

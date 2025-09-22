@@ -18,6 +18,8 @@ public partial class TechView : Rain.UI.BaseView
         [SerializeField] public RectTransform content_Rect;
         [SerializeField] public GameObject tgTeckCategory;
         [SerializeField] public Toggle tgTeckCategory_Toggle;
+        [SerializeField] public GameObject btClose;
+        [SerializeField] public Button btClose_Button;
         [SerializeField] public GameObject techContent;
         [SerializeField] public TabController techContent_TabController;
         [SerializeField] public GameObject tabPage;

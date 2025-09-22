@@ -24,6 +24,7 @@ public partial class TechView : BaseView
 
     void InitUI()
     {
+        ui.btClose_Button.SetButton(Close);
         poolTeckCategory = PoolMgr.Ins.CreatePool(ui.tgTeckCategory);
     }
 
@@ -41,6 +42,7 @@ public partial class TechView : BaseView
             item.transform.Find("text").GetComponent<TextMeshProUGUI>().text = config.Name;
             item.transform.Find("icon").GetComponent<Image>().sprite = Resources.Load<Sprite>($"UI/2D/{config.Icon}");
             item.transform.Find("line").gameObject.SetActive(index != ConfigMgr.TechCategory.DataList.Count - 1);
+
             //data
             UIControlDemo_DynamicTabItem pageItemData = new UIControlDemo_DynamicTabItem();
             pageItemData.MakeRandomItem(5 + 5 * i, 5 + 5 * i);
@@ -48,7 +50,9 @@ public partial class TechView : BaseView
             ui.techContent_TabController.AddTab(tab, ui.tabPage_TabPage);
             toggle.SetToggle((_ison) =>
             {
-                tab.OnChangeValue(_ison);
+                if (!_ison)
+                    return;
+                ui.techContent_TabController.GetTab(index).Select();
             });
         }
         SetData(tabData);
@@ -59,22 +63,12 @@ public partial class TechView : BaseView
 
     public void SetData(UIControlDemo_DynamicTabData data)
     {
-        for (int i = data.category.Count; i < ui.techContent_TabController.GetTabCount(); i++)
-        {
-            Tab tab = ui.techContent_TabController.GetTab(i);
-            tab.SetActive(false);
-            tab.NotifyPage();
-        }
-
         for (int i = 0; i < data.category.Count; i++)
         {
-            Tab tab = null;
-            TabPage page = null;
-            page = ui.tabPage_TabPage;
-            tab = ui.techContent_TabController.GetTab(i);
+            TabPage page = ui.tabPage_TabPage;
+            Tab tab = ui.techContent_TabController.GetTab(i);
             tab.SetLinkPage(page);
             tab.SetData(data.category[i]);
-            tab.SetActive(true);
         }
     }
 }

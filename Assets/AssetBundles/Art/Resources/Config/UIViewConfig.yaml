@@ -38,6 +38,8 @@ view:
         DebugView:
             comment: 调试弹窗
             layer: NormalLayer
+            hasBg: true
+            bgColor: "#000000B0"
         BlockView:
             comment: 奖励弹窗
             layer: DialogLayer
