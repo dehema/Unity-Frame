@@ -13,11 +13,11 @@ namespace Rain.UI
         public Tab tabOriginalPrefab;
         public TabPage dynamicScrollPage;
 
-        UIControlDemo_DynamicTabData tabData = new UIControlDemo_DynamicTabData();
+        UIControlDemo_DynamicTableData tabData = new UIControlDemo_DynamicTableData();
 
         public void OnClickAddPage()
         {
-            UIControlDemo_DynamicTabItem pageItemData = new UIControlDemo_DynamicTabItem();
+            UIControlDemo_DynamicTabData pageItemData = new UIControlDemo_DynamicTabData();
             pageItemData.MakeRandomItem(30, 50);
             pageItemData.name = $"ѡ�{tabData.category.Count + 1}";
             tabData.category.Add(pageItemData);
@@ -38,7 +38,7 @@ namespace Rain.UI
             UpdatePage();
         }
 
-        public void SetData(UIControlDemo_DynamicTabData data)
+        public void SetData(UIControlDemo_DynamicTableData data)
         {
             for (int i = data.category.Count; i < tabController.GetTabCount(); i++)
             {
@@ -92,7 +92,7 @@ namespace Rain.UI
             int tabIndex = tabController.GetSelectedIndex();
             if (tabIndex < 0 || tabIndex >= tabData.category.Count)
                 return;
-            UIControlDemo_DynamicTabItem tabItem = tabData.category[tabIndex];
+            UIControlDemo_DynamicTabData tabItem = tabData.category[tabIndex];
             if (tabItem != null)
             {
                 tabItem.AddItem();
@@ -105,7 +105,7 @@ namespace Rain.UI
             int tabIndex = tabController.GetSelectedIndex();
             if (tabIndex < 0 || tabIndex >= tabData.category.Count)
                 return;
-            UIControlDemo_DynamicTabItem tabItem = tabData.category[tabIndex];
+            UIControlDemo_DynamicTabData tabItem = tabData.category[tabIndex];
             if (tabItem != null)
             {
                 tabItem.RemoveItem();

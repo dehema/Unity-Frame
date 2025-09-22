@@ -16,7 +16,8 @@ namespace Rain.UI
             {
                 //记录滚动条的位置
                 Vector2 scrollPos = scroll.GetScrollPosition();
-                UIControlDemo_DynamicTabItem data = (UIControlDemo_DynamicTabItem)tab.GetData();
+                ITabData _ITabData = tab.GetData();
+                UIControlDemo_DynamicTabData data = (UIControlDemo_DynamicTabData)_ITabData;
 
                 scroll.ClearData();
 
@@ -38,12 +39,13 @@ namespace Rain.UI
 
         public void AddData(UIControlDemo_DynamicContainerItemData itemData)
         {
-            UIControlDemo_DynamicContainerItemData scrollData = new UIControlDemo_DynamicContainerItemData();
-            scrollData.name = itemData.name;
-            scrollData.buttonEnabled = true;
-            scrollData.buttonEvent = itemData.buttonEvent;
+            //UIControlDemo_DynamicContainerItemData scrollData = new UIControlDemo_DynamicContainerItemData();
+            //scrollData.name = itemData.name;
+            //scrollData.buttonEnabled = true;
+            //scrollData.buttonEvent = itemData.buttonEvent;
+            //scroll.InsertData(scrollData);
 
-            scroll.InsertData(scrollData);
+            scroll.InsertData(itemData);
         }
 
         public void RemoveData(int index)

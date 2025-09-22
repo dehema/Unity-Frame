@@ -23,7 +23,7 @@ namespace Rain.UI
 
             itemData = scrollData as UIControlDemo_DynamicContainerItemData;
 
-            itemIndex.text = itemData.index;
+            itemIndex.text = itemData.index.ToString();
             itemName.text = itemData.name;
             itemImage.sprite = itemData.icon;
 
@@ -44,7 +44,7 @@ namespace Rain.UI
 
     public class UIControlDemo_DynamicContainerItemData : InfiniteScrollData
     {
-        public string index = string.Empty;
+        public int index;
         public string name = string.Empty;
         public Sprite icon;
 

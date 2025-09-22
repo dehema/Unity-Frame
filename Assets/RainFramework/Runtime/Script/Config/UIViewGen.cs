@@ -55,10 +55,6 @@ public class ViewName
     /// </summary>
 	public const string LoadingView = "LoadingView";
     /// <summary>
-    /// 示例UI
-    /// </summary>
-	public const string ExampleView = "ExampleView";
-    /// <summary>
     /// 提示弹窗UI
     /// </summary>
 	public const string TipsView = "TipsView";
@@ -106,6 +102,10 @@ public class ViewName
     /// 倒计时
     /// </summary>
 	public const string CountDownView = "CountDownView";
+    /// <summary>
+    /// 科技
+    /// </summary>
+	public const string TechView = "TechView";
     /// <summary>
     /// RTS单位
     /// </summary>

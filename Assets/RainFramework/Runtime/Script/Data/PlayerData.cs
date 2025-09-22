@@ -1,4 +1,5 @@
-﻿using Rain.Core;
+﻿using System.Collections.Generic;
+using Rain.Core;
 
 public class PlayerData : DBClass
 {
@@ -9,4 +10,6 @@ public class PlayerData : DBClass
 
     public DBFloat hp;
     public DBFloat hpMax;
+
+    public List<string> techs = new List<string>();
 }

@@ -16,7 +16,7 @@ namespace Rain.UI
         {
             base.OnUpdateData(data);
 
-            UIControlDemo_DynamicTabItem sampleData = (UIControlDemo_DynamicTabItem)data;
+            UIControlDemo_DynamicTabData sampleData = (UIControlDemo_DynamicTabData)data;
 
             titleText.text = sampleData.name;
         }

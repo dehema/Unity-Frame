@@ -31,7 +31,7 @@ public partial class TbTechCategory
             TechCategoryConfig _v;
             { if(!_ele.IsObject) { throw new SerializationException(); }  _v = global::Rain.Core.TechCategoryConfig.DeserializeTechCategoryConfig(_ele);  }
             _dataList.Add(_v);
-            _dataMap.Add(_v.ID, _v);
+            _dataMap.Add(_v.Category, _v);
         }
     }
 

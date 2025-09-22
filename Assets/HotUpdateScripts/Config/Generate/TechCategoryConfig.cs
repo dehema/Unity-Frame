@@ -17,9 +17,10 @@ public sealed partial class TechCategoryConfig : Luban.BeanBase
 {
     public TechCategoryConfig(JSONNode _buf) 
     {
-        { if(!_buf["ID"].IsNumber) { throw new SerializationException(); }  ID = (TechCategory)_buf["ID"].AsInt; }
+        { if(!_buf["Category"].IsNumber) { throw new SerializationException(); }  Category = (TechCategory)_buf["Category"].AsInt; }
         { if(!_buf["Name"].IsString) { throw new SerializationException(); }  Name = _buf["Name"]; }
         { if(!_buf["Icon"].IsString) { throw new SerializationException(); }  Icon = _buf["Icon"]; }
+        { if(!_buf["maxLevel"].IsNumber) { throw new SerializationException(); }  MaxLevel = _buf["maxLevel"]; }
     }
 
     public static TechCategoryConfig DeserializeTechCategoryConfig(JSONNode _buf)
@@ -27,9 +28,13 @@ public sealed partial class TechCategoryConfig : Luban.BeanBase
         return new TechCategoryConfig(_buf);
     }
 
-    public readonly TechCategory ID;
+    public readonly TechCategory Category;
     public readonly string Name;
     public readonly string Icon;
+    /// <summary>
+    /// 最大级别
+    /// </summary>
+    public readonly int MaxLevel;
    
     public const int __ID__ = 365855286;
     public override int GetTypeId() => __ID__;
@@ -41,9 +46,10 @@ public sealed partial class TechCategoryConfig : Luban.BeanBase
     public override string ToString()
     {
         return "{ "
-        + "ID:" + ID + ","
+        + "Category:" + Category + ","
         + "Name:" + Name + ","
         + "Icon:" + Icon + ","
+        + "maxLevel:" + MaxLevel + ","
         + "}";
     }
 }

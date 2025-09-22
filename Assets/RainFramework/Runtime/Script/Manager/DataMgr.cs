@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using Rain.Core;
 using UnityEngine;
 
-public class DataMgr : Singleton<DataMgr>
+public class DataMgr : ModuleSingleton<DataMgr>, IModule
 {
     /// <summary>
     /// 玩家存档
@@ -120,6 +120,26 @@ public class DataMgr : Singleton<DataMgr>
         DataMgr.Ins.SaveGameData();
         DataMgr.Ins.SavePlayerData();
         DataMgr.Ins.SaveSettingData();
+    }
+
+    public void OnInit(object createParam)
+    {
+    }
+
+    public void OnUpdate()
+    {
+    }
+
+    public void OnLateUpdate()
+    {
+    }
+
+    public void OnFixedUpdate()
+    {
+    }
+
+    public void OnTermination()
+    {
     }
 }
 

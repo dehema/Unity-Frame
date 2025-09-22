@@ -13,7 +13,7 @@ using UnityEngine.UI;
 public partial class TechView : BaseView
 {
     ObjPool poolTeckCategory;
-    UIControlDemo_DynamicTabData tabData = new UIControlDemo_DynamicTabData();
+    UIControlDemo_DynamicTableData tableData = new UIControlDemo_DynamicTableData();
 
     public override void Init(IViewParam _viewParams = null)
     {
@@ -39,14 +39,12 @@ public partial class TechView : BaseView
             GameObject item = poolTeckCategory.Get();
             Toggle toggle = item.GetComponent<Toggle>();
             Tab tab = item.GetComponent<Tab>();
+
             item.transform.Find("text").GetComponent<TextMeshProUGUI>().text = config.Name;
             item.transform.Find("icon").GetComponent<Image>().sprite = Resources.Load<Sprite>($"UI/2D/{config.Icon}");
             item.transform.Find("line").gameObject.SetActive(index != ConfigMgr.TechCategory.DataList.Count - 1);
 
             //data
-            UIControlDemo_DynamicTabItem pageItemData = new UIControlDemo_DynamicTabItem();
-            pageItemData.MakeRandomItem(5 + 5 * i, 5 + 5 * i);
-            tabData.category.Add(pageItemData);
             ui.techContent_TabController.AddTab(tab, ui.tabPage_TabPage);
             toggle.SetToggle((_ison) =>
             {
@@ -55,20 +53,49 @@ public partial class TechView : BaseView
                 ui.techContent_TabController.GetTab(index).Select();
             });
         }
-        SetData(tabData);
+        SetData();
         GameObject firstTag = poolTeckCategory.ShowPool.First();
         firstTag.GetComponent<Toggle>().isOn = true;
         firstTag.GetComponent<Tab>().Select();
     }
 
-    public void SetData(UIControlDemo_DynamicTabData data)
+    public void SetData()
     {
-        for (int i = 0; i < data.category.Count; i++)
+        int tabCount = ui.techContent_TabController.GetTabCount();
+        for (int i = 0; i < tabCount; i++)
         {
-            TabPage page = ui.tabPage_TabPage;
-            Tab tab = ui.techContent_TabController.GetTab(i);
-            tab.SetLinkPage(page);
-            tab.SetData(data.category[i]);
+            UIControlDemo_DynamicTabData tabData = new UIControlDemo_DynamicTabData();
+
+            TechCategoryConfig techCategoryConfig = ConfigMgr.TechCategory.DataList[i];
+            TechCategory techCategory = techCategoryConfig.Category;
+
+            int _level = 1;
+            TechRow.TechRowData techRowData = new TechRow.TechRowData();
+            techRowData.index = _level;
+            foreach (var techData in ConfigMgr.Tech.DataList)
+            {
+                if (techData.TechCategory != techCategory)
+                    continue;
+                if (techData.TechLevel != _level || techData.TechLevel == techCategoryConfig.MaxLevel)
+                {
+                    tabData.AddItem(techRowData);
+                    techRowData = new TechRow.TechRowData();
+                    _level = techData.TechLevel;
+                }
+                techRowData.techConfigs.Add(techData);
+                techRowData.techCategoryConfig = techCategoryConfig;
+            }
+            
+            // 添加最后一个techRowData（如果有数据的话）
+            if (techRowData.techConfigs.Count > 0)
+            {
+                tabData.AddItem(techRowData);
+            }
+            
+            tableData.category.Add(tabData);
+
+    Tab tab = ui.techContent_TabController.GetTab(i);
+            tab.SetData(tabData);
         }
     }
 }

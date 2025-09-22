@@ -21,8 +21,8 @@ public sealed partial class TechConfig : Luban.BeanBase
         { if(!_buf["techName"].IsString) { throw new SerializationException(); }  TechName = _buf["techName"]; }
         { if(!_buf["techCategory"].IsNumber) { throw new SerializationException(); }  TechCategory = (TechCategory)_buf["techCategory"].AsInt; }
         { if(!_buf["techLevel"].IsNumber) { throw new SerializationException(); }  TechLevel = _buf["techLevel"]; }
-        { if(!_buf["preTechs"].IsString) { throw new SerializationException(); }  PreTechs = _buf["preTechs"]; }
-        { if(!_buf["nextTechs"].IsString) { throw new SerializationException(); }  NextTechs = _buf["nextTechs"]; }
+        { var __json0 = _buf["preTechs"]; if(!__json0.IsArray) { throw new SerializationException(); } PreTechs = new System.Collections.Generic.List<string>(__json0.Count); foreach(JSONNode __e0 in __json0.Children) { string __v0;  { if(!__e0.IsString) { throw new SerializationException(); }  __v0 = __e0; }  PreTechs.Add(__v0); }   }
+        { var __json0 = _buf["nextTechs"]; if(!__json0.IsArray) { throw new SerializationException(); } NextTechs = new System.Collections.Generic.List<string>(__json0.Count); foreach(JSONNode __e0 in __json0.Children) { string __v0;  { if(!__e0.IsString) { throw new SerializationException(); }  __v0 = __e0; }  NextTechs.Add(__v0); }   }
         { if(!_buf["unlockCondition"].IsString) { throw new SerializationException(); }  UnlockCondition = _buf["unlockCondition"]; }
         { if(!_buf["coreEffect"].IsString) { throw new SerializationException(); }  CoreEffect = _buf["coreEffect"]; }
         { if(!_buf["extraEffect"].IsString) { throw new SerializationException(); }  ExtraEffect = _buf["extraEffect"]; }
@@ -54,11 +54,11 @@ public sealed partial class TechConfig : Luban.BeanBase
     /// <summary>
     /// 前置科技
     /// </summary>
-    public readonly string PreTechs;
+    public readonly System.Collections.Generic.List<string> PreTechs;
     /// <summary>
     /// 后置科技
     /// </summary>
-    public readonly string NextTechs;
+    public readonly System.Collections.Generic.List<string> NextTechs;
     /// <summary>
     /// 解锁条件
     /// </summary>
@@ -94,8 +94,8 @@ public sealed partial class TechConfig : Luban.BeanBase
         + "techName:" + TechName + ","
         + "techCategory:" + TechCategory + ","
         + "techLevel:" + TechLevel + ","
-        + "preTechs:" + PreTechs + ","
-        + "nextTechs:" + NextTechs + ","
+        + "preTechs:" + Luban.StringUtil.CollectionToString(PreTechs) + ","
+        + "nextTechs:" + Luban.StringUtil.CollectionToString(NextTechs) + ","
         + "unlockCondition:" + UnlockCondition + ","
         + "coreEffect:" + CoreEffect + ","
         + "extraEffect:" + ExtraEffect + ","

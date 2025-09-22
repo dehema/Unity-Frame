@@ -5,13 +5,13 @@ using UnityEngine;
 
 namespace Rain.UI
 {
-    public class UIControlDemo_DynamicTabData : ITabData
+    public class UIControlDemo_DynamicTableData : ITabData
     {
         public string name;
-        public List<UIControlDemo_DynamicTabItem> category = new List<UIControlDemo_DynamicTabItem>();
+        public List<UIControlDemo_DynamicTabData> category = new List<UIControlDemo_DynamicTabData>();
     }
 
-    public class UIControlDemo_DynamicTabItem : ITabData
+    public class UIControlDemo_DynamicTabData : ITabData
     {
         public string name;
         public List<UIControlDemo_DynamicContainerItemData> itemList = new List<UIControlDemo_DynamicContainerItemData>();
@@ -26,10 +26,15 @@ namespace Rain.UI
 
         public void AddItem()
         {
-            UIControlDemo_DynamicContainerItemData item = new UIControlDemo_DynamicContainerItemData();
-            item.name = $"Item {itemList.Count}";
-            item.buttonEvent = (i) => { Debug.Log($"onclick {i}"); };
-            itemList.Add(item);
+            UIControlDemo_DynamicContainerItemData data = new UIControlDemo_DynamicContainerItemData();
+            data.name = $"Item {itemList.Count}";
+            data.buttonEvent = (i) => { Debug.Log($"onclick {i}"); };
+            itemList.Add(data);
+        }
+
+        public void AddItem(UIControlDemo_DynamicContainerItemData _data)
+        {
+            itemList.Add(_data);
         }
 
         public void RemoveItem()

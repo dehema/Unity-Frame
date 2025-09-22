@@ -8,6 +8,8 @@ namespace Rain.Launcher
         //相当于重命名
         /* ------------------------核心模块------------------------ */
 
+        // 数据
+        private static DataMgr _dataMgr;
         // 全局消息
         private static MsgMgr _message;
         // 输入管理-->使用了消息模块
@@ -45,6 +47,20 @@ namespace Rain.Launcher
         // 热更新版本管理-->使用了下载模块-->使用了资产模块
         private static HotUpdateManager _hotUpdateManager;
 
+        public static DataMgr Data
+        {
+            get
+            {
+                if (_dataMgr == null)
+                    _dataMgr = ModuleCenter.CreateModule<DataMgr>();
+                return _dataMgr;
+            }
+            set
+            {
+                if (_dataMgr == null)
+                    _dataMgr = value;
+            }
+        }
         public static MsgMgr Msg
         {
             get

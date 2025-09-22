@@ -25,7 +25,7 @@ namespace Rain.UI
             {
                 Sprite sprite = obj as Sprite;
                 UIControlDemo_DynamicContainerItemData data = new UIControlDemo_DynamicContainerItemData();
-                data.index = index.ToString();
+                data.index = index;
                 data.name = sprite.name;
                 data.icon = sprite;
                 data.buttonEnabled = true;
