@@ -118,7 +118,7 @@ namespace Rain.UI.Editor
                 Debug.Log($"成功导出UI: {viewUIPath}");
 
                 // 保存预制体修改
-                string path = PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(stage);
+                string path = PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(uiPrefab);
                 if (!string.IsNullOrEmpty(path))
                     PrefabUtility.SaveAsPrefabAsset(uiPrefab, path);
             }

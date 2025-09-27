@@ -5,6 +5,7 @@ using System.Net.NetworkInformation;
 using Rain.Core;
 using Rain.UI;
 using UnityEngine;
+using static SettingField;
 using static TechRoot;
 
 public partial class TechRoot : BaseUI
@@ -24,6 +25,7 @@ public partial class TechRoot : BaseUI
         ui.txName_Text.text = TechConfig.TechName;
         ui.upLine.SetActive(TechConfig.TechLevel != 1);
         ui.downLine.SetActive(TechConfig.TechLevel != techRootData.techCategoryConfig.MaxLevel);
+        ui.btDetail_Button.SetButton(OnClickDetail);
         RefreshUI();
     }
 
@@ -54,6 +56,13 @@ public partial class TechRoot : BaseUI
         return TechState.CanStudy;
     }
 
+    /// <summary>
+    /// µã»÷ÏêÇé
+    /// </summary>
+    void OnClickDetail()
+    { 
+        
+    }
 
     enum TechState
     {

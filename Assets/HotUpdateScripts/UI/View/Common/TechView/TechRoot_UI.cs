@@ -2,14 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Rain.UI;
 using TMPro;
+using Rain.UI;
+using Rain.Core;
 
 public partial class TechRoot : Rain.UI.BaseUI
 {
     [System.Serializable]
     struct SerializableUIComponents
     {
+        [SerializeField] public GameObject btDetail;
+        [SerializeField] public Button btDetail_Button;
         [SerializeField] public GameObject bgLock;
         [SerializeField] public GameObject bgStudied;
         [SerializeField] public GameObject bgCanStudy;

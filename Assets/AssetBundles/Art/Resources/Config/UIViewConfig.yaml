@@ -104,6 +104,11 @@ view:
             layer: MenuLayer
             bgColor: "#FFFFFFFF"
             hasBg: true
+        TechDetailView:
+            comment: 科技详情
+            layer: MenuLayer
+            bgColor: "#000000B0"
+            hasBg: true
     RTS:
         RTSUnitTestView:
             comment: RTS单位
