@@ -4,6 +4,7 @@ using Rain.Core;
 using UnityEngine;
 using UnityEngine.UI;
 using Rain.UI;
+using TMPro;
 
 public partial class DebugView : BaseView
 {
@@ -69,7 +70,7 @@ public partial class DebugView : BaseView
                     return;
                 Close();
             });
-            GetComponentInChildren<Text>("Text", item.transform).text = GetUINameInChinese(uiConfig);
+            GetComponentInChildren<TextMeshProUGUI>("Text", item.transform).text = GetUINameInChinese(uiConfig);
         }
     }
 

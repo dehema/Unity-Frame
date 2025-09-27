@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Rain.UI;
 using TMPro;
+using Rain.UI;
+using Rain.Core;
 
-public partial class DebugView : BaseView
+public partial class DebugView : Rain.UI.BaseView
 {
     [System.Serializable]
     struct SerializableUIComponents

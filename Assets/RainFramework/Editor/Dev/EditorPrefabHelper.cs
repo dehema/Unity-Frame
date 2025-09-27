@@ -2,31 +2,37 @@
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-public class EditorHierarchy
+public class EditorPrefabHelper
 {
     const string folderPath = "Prefab/EditorHierarchy/";
-    const string RainUIMenuPrefix = "GameObject/Rain组件/";
+    const string RainUIMenuPrefix = "GameObject/ARain组件/";
 
-    [MenuItem(RainUIMenuPrefix + "文本", priority = 0)]
+    [MenuItem(RainUIMenuPrefix + "文本", priority = -1)]
     public static void CreateText()
     {
         CreatePrefab(folderPath + "Text");
     }
 
 
-    [MenuItem(RainUIMenuPrefix + "按钮", priority = 1)]
+    [MenuItem(RainUIMenuPrefix + "按钮")]
     public static void CreateButton()
     {
         CreatePrefab(folderPath + "CommonButton");
     }
 
-    [MenuItem(RainUIMenuPrefix + "文本按钮", priority = 2)]
+    [MenuItem(RainUIMenuPrefix + "文本按钮")]
     public static void CreateTextButton()
     {
         CreatePrefab(folderPath + "TextButton");
     }
 
-    [MenuItem(RainUIMenuPrefix + "close按钮", priority = 3)]
+    [MenuItem(RainUIMenuPrefix + "图标+副文本按钮")]
+    public static void IconSubTextButtonButton()
+    {
+        CreatePrefab(folderPath + "IconSubTextButton");
+    }
+
+    [MenuItem(RainUIMenuPrefix + "close按钮")]
     public static void CreateCloseButton()
     {
         CreatePrefab(folderPath + "$btClose#Button");

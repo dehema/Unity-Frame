@@ -97,7 +97,7 @@ view:
             bgColor: "#FFFFFFFF"
         CountDownView:
             comment: 倒计时
-            layer: TipsLayer
+            layer: TipsLayer    
             bgColor: "#00000000"
         TechView:
             comment: 科技
@@ -106,9 +106,16 @@ view:
             hasBg: true
         TechDetailView:
             comment: 科技详情
-            layer: MenuLayer
+            layer: DialogLayer
             bgColor: "#000000B0"
             hasBg: true
+            bgClose: true
+        ConfirmDiamondSpeedView:
+            comment: 钻石加速
+            layer: DialogLayer
+            bgColor: "#000000B0"
+            hasBg: true
+            bgClose: true
     RTS:
         RTSUnitTestView:
             comment: RTS单位

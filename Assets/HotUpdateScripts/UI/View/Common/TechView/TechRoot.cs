@@ -60,8 +60,8 @@ public partial class TechRoot : BaseUI
     /// µã»÷ÏêÇé
     /// </summary>
     void OnClickDetail()
-    { 
-        
+    {
+        UIMgr.Ins.OpenView<TechDetailView>();
     }
 
     enum TechState

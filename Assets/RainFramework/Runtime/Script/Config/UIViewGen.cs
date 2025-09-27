@@ -107,6 +107,14 @@ public class ViewName
     /// </summary>
 	public const string TechView = "TechView";
     /// <summary>
+    /// 科技详情
+    /// </summary>
+	public const string TechDetailView = "TechDetailView";
+    /// <summary>
+    /// 钻石加速
+    /// </summary>
+	public const string ConfirmDiamondSpeedView = "ConfirmDiamondSpeedView";
+    /// <summary>
     /// RTS单位
     /// </summary>
 	public const string RTSUnitTestView = "RTSUnitTestView";
