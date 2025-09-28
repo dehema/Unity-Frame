@@ -18,10 +18,12 @@ public sealed partial class CityBuildingLevelConfig : Luban.BeanBase
     public CityBuildingLevelConfig(JSONNode _buf) 
     {
         { if(!_buf["ID"].IsString) { throw new SerializationException(); }  ID = _buf["ID"]; }
-        { if(!_buf["BuildingID"].IsNumber) { throw new SerializationException(); }  BuildingID = (CityBuildingType)_buf["BuildingID"].AsInt; }
+        { if(!_buf["buildingID"].IsNumber) { throw new SerializationException(); }  BuildingID = (CityBuildingType)_buf["buildingID"].AsInt; }
         { if(!_buf["level"].IsNumber) { throw new SerializationException(); }  Level = _buf["level"]; }
-        { var __json0 = _buf["resCost"]; if(!__json0.IsArray) { throw new SerializationException(); } ResCost = new System.Collections.Generic.Dictionary<int, int>(__json0.Count); foreach(JSONNode __e0 in __json0.Children) { int _k0;  { if(!__e0[0].IsNumber) { throw new SerializationException(); }  _k0 = __e0[0]; } int _v0;  { if(!__e0[1].IsNumber) { throw new SerializationException(); }  _v0 = __e0[1]; }  ResCost.Add(_k0, _v0); }   }
+        { if(!_buf["costTime"].IsNumber) { throw new SerializationException(); }  CostTime = _buf["costTime"]; }
+        { var __json0 = _buf["costRes"]; if(!__json0.IsArray) { throw new SerializationException(); } CostRes = new System.Collections.Generic.Dictionary<int, int>(__json0.Count); foreach(JSONNode __e0 in __json0.Children) { int _k0;  { if(!__e0[0].IsNumber) { throw new SerializationException(); }  _k0 = __e0[0]; } int _v0;  { if(!__e0[1].IsNumber) { throw new SerializationException(); }  _v0 = __e0[1]; }  CostRes.Add(_k0, _v0); }   }
         { var __json0 = _buf["unlockCondition"]; if(!__json0.IsArray) { throw new SerializationException(); } UnlockCondition = new System.Collections.Generic.Dictionary<CityBuildingType, int>(__json0.Count); foreach(JSONNode __e0 in __json0.Children) { CityBuildingType _k0;  { if(!__e0[0].IsNumber) { throw new SerializationException(); }  _k0 = (CityBuildingType)__e0[0].AsInt; } int _v0;  { if(!__e0[1].IsNumber) { throw new SerializationException(); }  _v0 = __e0[1]; }  UnlockCondition.Add(_k0, _v0); }   }
+        { if(!_buf["modelPath"].IsString) { throw new SerializationException(); }  ModelPath = _buf["modelPath"]; }
     }
 
     public static CityBuildingLevelConfig DeserializeCityBuildingLevelConfig(JSONNode _buf)
@@ -36,13 +38,21 @@ public sealed partial class CityBuildingLevelConfig : Luban.BeanBase
     /// </summary>
     public readonly int Level;
     /// <summary>
+    /// 花费时间
+    /// </summary>
+    public readonly int CostTime;
+    /// <summary>
     /// 资源ID，数量
     /// </summary>
-    public readonly System.Collections.Generic.Dictionary<int, int> ResCost;
+    public readonly System.Collections.Generic.Dictionary<int, int> CostRes;
     /// <summary>
     /// 解锁条件(ID,lv)
     /// </summary>
     public readonly System.Collections.Generic.Dictionary<CityBuildingType, int> UnlockCondition;
+    /// <summary>
+    /// 模型路径
+    /// </summary>
+    public readonly string ModelPath;
    
     public const int __ID__ = -387255033;
     public override int GetTypeId() => __ID__;
@@ -55,10 +65,12 @@ public sealed partial class CityBuildingLevelConfig : Luban.BeanBase
     {
         return "{ "
         + "ID:" + ID + ","
-        + "BuildingID:" + BuildingID + ","
+        + "buildingID:" + BuildingID + ","
         + "level:" + Level + ","
-        + "resCost:" + Luban.StringUtil.CollectionToString(ResCost) + ","
+        + "costTime:" + CostTime + ","
+        + "costRes:" + Luban.StringUtil.CollectionToString(CostRes) + ","
         + "unlockCondition:" + Luban.StringUtil.CollectionToString(UnlockCondition) + ","
+        + "modelPath:" + ModelPath + ","
         + "}";
     }
 }

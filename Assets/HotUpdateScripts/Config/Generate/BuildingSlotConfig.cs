@@ -18,8 +18,9 @@ public sealed partial class BuildingSlotConfig : Luban.BeanBase
     public BuildingSlotConfig(JSONNode _buf) 
     {
         { if(!_buf["SlotID"].IsNumber) { throw new SerializationException(); }  SlotID = _buf["SlotID"]; }
-        { if(!_buf["PositionX"].IsNumber) { throw new SerializationException(); }  PositionX = _buf["PositionX"]; }
-        { if(!_buf["PositionZ"].IsNumber) { throw new SerializationException(); }  PositionZ = _buf["PositionZ"]; }
+        { if(!_buf["posX"].IsNumber) { throw new SerializationException(); }  PosX = _buf["posX"]; }
+        { if(!_buf["posY"].IsNumber) { throw new SerializationException(); }  PosY = _buf["posY"]; }
+        { if(!_buf["posZ"].IsNumber) { throw new SerializationException(); }  PosZ = _buf["posZ"]; }
         { if(!_buf["RotationY"].IsNumber) { throw new SerializationException(); }  RotationY = _buf["RotationY"]; }
         { if(!_buf["IsLocked"].IsBoolean) { throw new SerializationException(); }  IsLocked = _buf["IsLocked"]; }
         { var __json0 = _buf["UnlockCondition"]; if(!__json0.IsArray) { throw new SerializationException(); } UnlockCondition = new System.Collections.Generic.Dictionary<CityBuildingType, int>(__json0.Count); foreach(JSONNode __e0 in __json0.Children) { CityBuildingType _k0;  { if(!__e0[0].IsNumber) { throw new SerializationException(); }  _k0 = (CityBuildingType)__e0[0].AsInt; } int _v0;  { if(!__e0[1].IsNumber) { throw new SerializationException(); }  _v0 = __e0[1]; }  UnlockCondition.Add(_k0, _v0); }   }
@@ -31,9 +32,10 @@ public sealed partial class BuildingSlotConfig : Luban.BeanBase
     }
 
     public readonly int SlotID;
-    public readonly int PositionX;
-    public readonly int PositionZ;
-    public readonly int RotationY;
+    public readonly float PosX;
+    public readonly float PosY;
+    public readonly float PosZ;
+    public readonly float RotationY;
     public readonly bool IsLocked;
     public readonly System.Collections.Generic.Dictionary<CityBuildingType, int> UnlockCondition;
    
@@ -48,8 +50,9 @@ public sealed partial class BuildingSlotConfig : Luban.BeanBase
     {
         return "{ "
         + "SlotID:" + SlotID + ","
-        + "PositionX:" + PositionX + ","
-        + "PositionZ:" + PositionZ + ","
+        + "posX:" + PosX + ","
+        + "posY:" + PosY + ","
+        + "posZ:" + PosZ + ","
         + "RotationY:" + RotationY + ","
         + "IsLocked:" + IsLocked + ","
         + "UnlockCondition:" + Luban.StringUtil.CollectionToString(UnlockCondition) + ","
