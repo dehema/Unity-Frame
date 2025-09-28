@@ -1,7 +1,7 @@
 ﻿/// <summary>
 /// 建筑序列类型
 /// </summary>
-public enum BuildingType
+public enum BuildingCategory
 {
     /// <summary>
     /// 主要序列

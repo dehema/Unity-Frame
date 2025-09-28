@@ -35,6 +35,18 @@ public partial class Tables
     /// </summary>
     public TbTechCategory TbTechCategory {get; }
     /// <summary>
+    /// 城镇建筑
+    /// </summary>
+    public TbCityBuilding TbCityBuilding {get; }
+    /// <summary>
+    /// 建筑层级
+    /// </summary>
+    public TbCityBuildingLevel TbCityBuildingLevel {get; }
+    /// <summary>
+    /// 建筑槽位
+    /// </summary>
+    public TbCityBuildingSlot TbCityBuildingSlot {get; }
+    /// <summary>
     /// 单位
     /// </summary>
     public TbUnit TbUnit {get; }
@@ -50,6 +62,9 @@ public partial class Tables
         TbImageTextMix = new TbImageTextMix(loader("tbimagetextmix"));
         TbTech = new TbTech(loader("tbtech"));
         TbTechCategory = new TbTechCategory(loader("tbtechcategory"));
+        TbCityBuilding = new TbCityBuilding(loader("tbcitybuilding"));
+        TbCityBuildingLevel = new TbCityBuildingLevel(loader("tbcitybuildinglevel"));
+        TbCityBuildingSlot = new TbCityBuildingSlot(loader("tbcitybuildingslot"));
         TbUnit = new TbUnit(loader("tbunit"));
         TbDeployFormation = new TbDeployFormation(loader("tbdeployformation"));
         ResolveRef();
@@ -62,6 +77,9 @@ public partial class Tables
         TbImageTextMix.ResolveRef(this);
         TbTech.ResolveRef(this);
         TbTechCategory.ResolveRef(this);
+        TbCityBuilding.ResolveRef(this);
+        TbCityBuildingLevel.ResolveRef(this);
+        TbCityBuildingSlot.ResolveRef(this);
         TbUnit.ResolveRef(this);
         TbDeployFormation.ResolveRef(this);
     }

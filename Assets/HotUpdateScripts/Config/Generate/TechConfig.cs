@@ -28,6 +28,9 @@ public sealed partial class TechConfig : Luban.BeanBase
         { if(!_buf["extraEffect"].IsString) { throw new SerializationException(); }  ExtraEffect = _buf["extraEffect"]; }
         { if(!_buf["researchTime"].IsString) { throw new SerializationException(); }  ResearchTime = _buf["researchTime"]; }
         { if(!_buf["iconPlaceholder"].IsString) { throw new SerializationException(); }  IconPlaceholder = _buf["iconPlaceholder"]; }
+        { var __json0 = _buf["resCost"]; if(!__json0.IsArray) { throw new SerializationException(); } ResCost = new System.Collections.Generic.Dictionary<int, int>(__json0.Count); foreach(JSONNode __e0 in __json0.Children) { int _k0;  { if(!__e0[0].IsNumber) { throw new SerializationException(); }  _k0 = __e0[0]; } int _v0;  { if(!__e0[1].IsNumber) { throw new SerializationException(); }  _v0 = __e0[1]; }  ResCost.Add(_k0, _v0); }   }
+        { if(!_buf["desc"].IsString) { throw new SerializationException(); }  Desc = _buf["desc"]; }
+        { if(!_buf["fullDesc"].IsString) { throw new SerializationException(); }  FullDesc = _buf["fullDesc"]; }
     }
 
     public static TechConfig DeserializeTechConfig(JSONNode _buf)
@@ -79,6 +82,15 @@ public sealed partial class TechConfig : Luban.BeanBase
     /// 图标占位（备用）
     /// </summary>
     public readonly string IconPlaceholder;
+    public readonly System.Collections.Generic.Dictionary<int, int> ResCost;
+    /// <summary>
+    /// 描述
+    /// </summary>
+    public readonly string Desc;
+    /// <summary>
+    /// 详细描述
+    /// </summary>
+    public readonly string FullDesc;
    
     public const int __ID__ = -916863592;
     public override int GetTypeId() => __ID__;
@@ -101,6 +113,9 @@ public sealed partial class TechConfig : Luban.BeanBase
         + "extraEffect:" + ExtraEffect + ","
         + "researchTime:" + ResearchTime + ","
         + "iconPlaceholder:" + IconPlaceholder + ","
+        + "resCost:" + Luban.StringUtil.CollectionToString(ResCost) + ","
+        + "desc:" + Desc + ","
+        + "fullDesc:" + FullDesc + ","
         + "}";
     }
 }

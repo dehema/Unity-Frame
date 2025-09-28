@@ -1,0 +1,233 @@
+[
+  {
+    "SlotID": 1,
+    "PositionX": 0,
+    "PositionZ": 0,
+    "RotationY": 0,
+    "AllowedBuildings": "[1]",
+    "IsLocked": false,
+    "UnlockCondition": "{}",
+    "SlotType": "center",
+    "Size": 3
+  },
+  {
+    "SlotID": 2,
+    "PositionX": 5,
+    "PositionZ": 0,
+    "RotationY": 0,
+    "AllowedBuildings": "[2,3,4]",
+    "IsLocked": false,
+    "UnlockCondition": "{\"buildingId\":1,\"level\":1}",
+    "SlotType": "outer",
+    "Size": 2
+  },
+  {
+    "SlotID": 3,
+    "PositionX": -5,
+    "PositionZ": 0,
+    "RotationY": 0,
+    "AllowedBuildings": "[2,3,4]",
+    "IsLocked": false,
+    "UnlockCondition": "{\"buildingId\":1,\"level\":1}",
+    "SlotType": "outer",
+    "Size": 2
+  },
+  {
+    "SlotID": 4,
+    "PositionX": 0,
+    "PositionZ": 5,
+    "RotationY": 0,
+    "AllowedBuildings": "[5,6,7,8]",
+    "IsLocked": false,
+    "UnlockCondition": "{\"buildingId\":1,\"level\":1}",
+    "SlotType": "outer",
+    "Size": 2
+  },
+  {
+    "SlotID": 5,
+    "PositionX": 0,
+    "PositionZ": -5,
+    "RotationY": 0,
+    "AllowedBuildings": "[5,6,7,8]",
+    "IsLocked": false,
+    "UnlockCondition": "{\"buildingId\":1,\"level\":1}",
+    "SlotType": "outer",
+    "Size": 2
+  },
+  {
+    "SlotID": 6,
+    "PositionX": 8,
+    "PositionZ": 3,
+    "RotationY": 0,
+    "AllowedBuildings": "[5,6,7]",
+    "IsLocked": false,
+    "UnlockCondition": "{\"buildingId\":1,\"level\":2}",
+    "SlotType": "outer",
+    "Size": 1
+  },
+  {
+    "SlotID": 7,
+    "PositionX": 8,
+    "PositionZ": -3,
+    "RotationY": 0,
+    "AllowedBuildings": "[5,6,7]",
+    "IsLocked": false,
+    "UnlockCondition": "{\"buildingId\":1,\"level\":2}",
+    "SlotType": "outer",
+    "Size": 1
+  },
+  {
+    "SlotID": 8,
+    "PositionX": -8,
+    "PositionZ": 3,
+    "RotationY": 0,
+    "AllowedBuildings": "[5,6,7]",
+    "IsLocked": false,
+    "UnlockCondition": "{\"buildingId\":1,\"level\":2}",
+    "SlotType": "outer",
+    "Size": 1
+  },
+  {
+    "SlotID": 9,
+    "PositionX": -8,
+    "PositionZ": -3,
+    "RotationY": 0,
+    "AllowedBuildings": "[5,6,7]",
+    "IsLocked": false,
+    "UnlockCondition": "{\"buildingId\":1,\"level\":2}",
+    "SlotType": "outer",
+    "Size": 1
+  },
+  {
+    "SlotID": 10,
+    "PositionX": 3,
+    "PositionZ": 8,
+    "RotationY": 0,
+    "AllowedBuildings": "[5,6,7]",
+    "IsLocked": false,
+    "UnlockCondition": "{\"buildingId\":1,\"level\":2}",
+    "SlotType": "outer",
+    "Size": 1
+  },
+  {
+    "SlotID": 11,
+    "PositionX": -3,
+    "PositionZ": 8,
+    "RotationY": 0,
+    "AllowedBuildings": "[5,6,7]",
+    "IsLocked": false,
+    "UnlockCondition": "{\"buildingId\":1,\"level\":2}",
+    "SlotType": "outer",
+    "Size": 1
+  },
+  {
+    "SlotID": 12,
+    "PositionX": 3,
+    "PositionZ": -8,
+    "RotationY": 0,
+    "AllowedBuildings": "[5,6,7]",
+    "IsLocked": false,
+    "UnlockCondition": "{\"buildingId\":1,\"level\":2}",
+    "SlotType": "outer",
+    "Size": 1
+  },
+  {
+    "SlotID": 13,
+    "PositionX": -3,
+    "PositionZ": -8,
+    "RotationY": 0,
+    "AllowedBuildings": "[5,6,7]",
+    "IsLocked": false,
+    "UnlockCondition": "{\"buildingId\":1,\"level\":2}",
+    "SlotType": "outer",
+    "Size": 1
+  },
+  {
+    "SlotID": 14,
+    "PositionX": 10,
+    "PositionZ": 0,
+    "RotationY": 0,
+    "AllowedBuildings": "[9,10,11]",
+    "IsLocked": false,
+    "UnlockCondition": "{\"buildingId\":1,\"level\":3}",
+    "SlotType": "defense",
+    "Size": 2
+  },
+  {
+    "SlotID": 15,
+    "PositionX": -10,
+    "PositionZ": 0,
+    "RotationY": 0,
+    "AllowedBuildings": "[9,10,11]",
+    "IsLocked": false,
+    "UnlockCondition": "{\"buildingId\":1,\"level\":3}",
+    "SlotType": "defense",
+    "Size": 2
+  },
+  {
+    "SlotID": 16,
+    "PositionX": 0,
+    "PositionZ": 10,
+    "RotationY": 0,
+    "AllowedBuildings": "[9,10,11]",
+    "IsLocked": false,
+    "UnlockCondition": "{\"buildingId\":1,\"level\":3}",
+    "SlotType": "defense",
+    "Size": 2
+  },
+  {
+    "SlotID": 17,
+    "PositionX": 0,
+    "PositionZ": -10,
+    "RotationY": 0,
+    "AllowedBuildings": "[9,10,11]",
+    "IsLocked": false,
+    "UnlockCondition": "{\"buildingId\":1,\"level\":3}",
+    "SlotType": "defense",
+    "Size": 2
+  },
+  {
+    "SlotID": 18,
+    "PositionX": 7,
+    "PositionZ": 7,
+    "RotationY": 0,
+    "AllowedBuildings": "[12,13,14,15]",
+    "IsLocked": true,
+    "UnlockCondition": "{\"buildingId\":1,\"level\":4}",
+    "SlotType": "special",
+    "Size": 2
+  },
+  {
+    "SlotID": 19,
+    "PositionX": -7,
+    "PositionZ": 7,
+    "RotationY": 0,
+    "AllowedBuildings": "[12,13,14,15]",
+    "IsLocked": true,
+    "UnlockCondition": "{\"buildingId\":1,\"level\":4}",
+    "SlotType": "special",
+    "Size": 2
+  },
+  {
+    "SlotID": 20,
+    "PositionX": 7,
+    "PositionZ": -7,
+    "RotationY": 0,
+    "AllowedBuildings": "[12,13,14,15]",
+    "IsLocked": true,
+    "UnlockCondition": "{\"buildingId\":1,\"level\":4}",
+    "SlotType": "special",
+    "Size": 2
+  },
+  {
+    "SlotID": 21,
+    "PositionX": -7,
+    "PositionZ": -7,
+    "RotationY": 0,
+    "AllowedBuildings": "[12,13,14,15]",
+    "IsLocked": true,
+    "UnlockCondition": "{\"buildingId\":1,\"level\":4}",
+    "SlotType": "special",
+    "Size": 2
+  }
+]
