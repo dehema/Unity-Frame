@@ -4,7 +4,7 @@ using Rain.Core;
 using UnityEngine;
 
 
-namespace Rain.Tests
+namespace Rain.Core
 {
     public class DynamicTabPage : MonoBehaviour
     {

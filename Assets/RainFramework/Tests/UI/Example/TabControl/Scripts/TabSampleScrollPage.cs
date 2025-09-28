@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Rain.Core;
 using UnityEngine;
 
-namespace Rain.Tests
+namespace Rain.Core
 {
     public class TabSampleScrollPage : MonoBehaviour
     {

@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
-namespace Rain.Tests
+namespace Rain.Core
 {
     public class GroupShopSampleScrollItemData : InfiniteScrollData
     {

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace Rain.Tests
+namespace Rain.Core
 {
     public class SampleMessageBox : MonoBehaviour
     {

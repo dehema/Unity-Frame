@@ -1,8 +1,7 @@
-﻿using Rain.Core;
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections.Generic;
 
-namespace Rain.Tests
+namespace Rain.Core
 {
     public class CustumTabDataSample : ITabData
     {
