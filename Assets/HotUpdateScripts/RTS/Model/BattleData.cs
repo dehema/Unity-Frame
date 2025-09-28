@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Rain.Core;
+using static Rain.RTS.Core.BattleData;
 
 namespace Rain.RTS.Core
 {
@@ -299,36 +300,36 @@ namespace Rain.RTS.Core
             public List<int> units;                     // 区域内的单位ID列表
             public UnitType unitType;                   // 区域单位类型
         }
+    }
 
-        public class BattleArmyData
+    public class BattleArmyData
+    {
+        // 阵营ID
+        public Faction faction;
+
+        // 阵型ID
+        public int formationID;
+
+        //军队出生点
+        public Vector3 spawnPos;
+
+        // 军队朝向（Y轴旋转角度）
+        public float spawnRot = 0f;
+
+        // 初始单位数量 <UnitID,UnitNum>
+        public Dictionary<int, int> initUnitNum = new Dictionary<int, int>();
+
+        // 所有区域的单位数据
+        public List<AreaUnitData> areaUnitDatas = new List<AreaUnitData>();
+
+        // 单位位置 <位置,兵种ID>
+        public Dictionary<Vector2, int> unitsPos = new Dictionary<Vector2, int>();
+
+        public BattleArmyData(StartBattleArmyParam param)
         {
-            // 阵营ID
-            public Faction faction;
-
-            // 阵型ID
-            public int formationID;
-
-            //军队出生点
-            public Vector3 spawnPos;
-
-            // 军队朝向（Y轴旋转角度）
-            public float spawnRot = 0f;
-
-            // 初始单位数量 <UnitID,UnitNum>
-            public Dictionary<int, int> initUnitNum = new Dictionary<int, int>();
-
-            // 所有区域的单位数据
-            public List<AreaUnitData> areaUnitDatas = new List<AreaUnitData>();
-
-            // 单位位置 <位置,兵种ID>
-            public Dictionary<Vector2, int> unitsPos = new Dictionary<Vector2, int>();
-
-            public BattleArmyData(StartBattleArmyParam param)
-            {
-                this.faction = param.faction;
-                this.formationID = param.formationID;
-                this.initUnitNum = param.initUnitNum;
-            }
+            this.faction = param.faction;
+            this.formationID = param.formationID;
+            this.initUnitNum = param.initUnitNum;
         }
     }
 }

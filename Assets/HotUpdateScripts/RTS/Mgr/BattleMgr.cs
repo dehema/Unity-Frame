@@ -2,8 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Rain.Core;
 using Rain.UI;
-using static UnityEngine.UI.CanvasScaler;
-using static Rain.RTS.Core.BattleData;
 
 namespace Rain.RTS.Core
 {
