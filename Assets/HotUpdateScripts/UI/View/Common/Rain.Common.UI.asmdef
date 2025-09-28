@@ -3,7 +3,6 @@
     "rootNamespace": "",
     "references": [
         "Rain.Core",
-        "Rain.Common",
         "DOTween.Modules",
         "Unity.TextMeshPro",
         "Rain.UI"

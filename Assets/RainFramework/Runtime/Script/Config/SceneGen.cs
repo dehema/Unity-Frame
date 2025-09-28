@@ -25,6 +25,10 @@ public class SceneName
     /// RTS单位测试
     /// </summary>
 	public const string RTSUnitDummyTest = "RTSUnitDummyTest";
+    /// <summary>
+    /// 主城
+    /// </summary>
+	public const string MainCity = "MainCity";
 }
 
 public enum SceneID
@@ -53,4 +57,8 @@ public enum SceneID
     /// RTS单位测试
     /// </summary>
 	RTSUnitDummyTest,
+    /// <summary>
+    /// 主城
+    /// </summary>
+	MainCity,
 }

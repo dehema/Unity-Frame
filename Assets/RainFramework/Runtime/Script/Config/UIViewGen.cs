@@ -115,6 +115,10 @@ public class ViewName
     /// </summary>
 	public const string ConfirmDiamondSpeedView = "ConfirmDiamondSpeedView";
     /// <summary>
+    /// 主UI
+    /// </summary>
+	public const string MainView = "MainView";
+    /// <summary>
     /// RTS单位
     /// </summary>
 	public const string RTSUnitTestView = "RTSUnitTestView";

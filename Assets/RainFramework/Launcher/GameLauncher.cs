@@ -61,14 +61,15 @@ namespace Rain.Launcher
         // 开始游戏
         public void StartGame()
         {
-
             if (Application.isEditor)
             {
                 Application.runInBackground = true;
             }
             if (Application.isEditor)
             {
-                UIMgr.Ins.OpenView(ViewName.DebugView);
+                DebugView.DebugViewParam viewParam = new DebugView.DebugViewParam();
+                viewParam.actionEnterGame = EnterGame;
+                UIMgr.Ins.OpenView(ViewName.DebugView, viewParam);
 
                 //ab 系统还没做好
                 //UIMgr.Ins.OpenViewAsync(ViewName.DebugView);
@@ -76,9 +77,14 @@ namespace Rain.Launcher
             }
             else
             {
-                SceneMgr.Ins.ChangeScene(SceneID.MainScene);
+                EnterGame();
             }
+        }
 
+        private void EnterGame()
+        {
+            SceneMgr.Ins.ChangeScene(SceneID.MainCity);
+            UIMgr.Ins.OpenView(ViewName.MainView);
         }
 
         void Update()

@@ -5,17 +5,23 @@ using UnityEngine;
 using UnityEngine.UI;
 using Rain.UI;
 using TMPro;
+using static ConfirmDiamondSpeedView;
 
 public partial class DebugView : BaseView
 {
     ObjPool btUIPool;
-
-    public override void Init(IViewParam viewParams = null)
+    DebugViewParam viewParam;
+    public override void Init(IViewParam _viewParams = null)
     {
-        base.Init(viewParams);
+        base.Init(viewParam);
+        viewParam = _viewParams as DebugViewParam;
         InitUIPool();
         ui.viewList_Rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, canvas.pixelRect.height / 2 - 140);
-        ui.btStartGame_Button.SetButton(() => { ChangeScene(SceneID.MainScene); });
+        ui.btStartGame_Button.SetButton(() =>
+        {
+            Close();
+            viewParam.actionEnterGame?.Invoke();
+        });
         ui.tdScene_Button.SetButton(() => { ChangeScene(SceneID.TD); });
         ui.rtsUnitTest_Button.SetButton(() => { ChangeScene(SceneID.RTSUnitDummyTest); });
     }
@@ -82,5 +88,11 @@ public partial class DebugView : BaseView
             name = _config.Key;
         }
         return name;
+    }
+
+
+    public class DebugViewParam : IViewParam
+    {
+        public Action actionEnterGame;
     }
 }

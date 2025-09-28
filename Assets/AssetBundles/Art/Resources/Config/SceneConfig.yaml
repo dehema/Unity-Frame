@@ -16,4 +16,6 @@ scenes:
         comment: RTS战斗场景
     RTSUnitDummyTest:
         comment: RTS单位测试
+    MainCity:
+        comment: 主城 
 

@@ -116,6 +116,10 @@ view:
             bgColor: "#000000B0"
             hasBg: true
             bgClose: true
+        MainView:
+            comment: 主UI
+            layer: NormalLayer
+            hasBg: false
     RTS:
         RTSUnitTestView:
             comment: RTS单位
