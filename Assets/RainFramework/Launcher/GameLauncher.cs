@@ -109,7 +109,10 @@ namespace Rain.Launcher
         {
             if (!pause && !Application.isEditor)
             {
-                DataMgr.Ins.SaveGameData();
+                if (ModuleCenter.Contains<DataMgr>())
+                {
+                    DataMgr.Ins?.SaveGameData();
+                }
             }
         }
     }

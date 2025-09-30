@@ -82,14 +82,14 @@ namespace Rain.Core
 
             _audioMusicAudioEffect3D = new AudioEffect();
 
-            _volumeMusic = StorageManager.Ins.GetFloat(_volumeMusicKey, 1f);
-            _switchMusic = StorageManager.Ins.GetBool(_switchMusicKey, true);
+            //_volumeMusic = StorageManager.Ins.GetFloat(_volumeMusicKey, 1f);
+            //_switchMusic = StorageManager.Ins.GetBool(_switchMusicKey, true);
 
-            _volumeVoice = StorageManager.Ins.GetFloat(_volumeVoiceKey, 1f);
-            _switchVoice = StorageManager.Ins.GetBool(_switchVoiceKey, true);
+            //_volumeVoice = StorageManager.Ins.GetFloat(_volumeVoiceKey, 1f);
+            //_switchVoice = StorageManager.Ins.GetBool(_switchVoiceKey, true);
 
-            _volumeAudioEffect = StorageManager.Ins.GetFloat(_volumeAudioEffectKey, 1f);
-            _switchAudioEffect = StorageManager.Ins.GetBool(_switchAudioEffectKey, true);
+            //_volumeAudioEffect = StorageManager.Ins.GetFloat(_volumeAudioEffectKey, 1f);
+            //_switchAudioEffect = StorageManager.Ins.GetBool(_switchAudioEffectKey, true);
         }
 
         /// <summary>

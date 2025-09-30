@@ -8,7 +8,6 @@ using UnityEditor;
 
 /// <summary>
 /// SLG类型游戏的相机控制器
-/// 实现类似文明6的相机效果，包括滚轮缩放
 /// </summary>
 public class CameraController_RTS : MonoBehaviour
 {

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
@@ -6,6 +7,8 @@ using Rain.UI;
 using SimpleJSON;
 using Rain.Core;
 using System.IO;
+using System.Threading.Tasks;
+using UnityEngine.Networking;
 
 
 public class ConfigMgr : MonoSingleton<ConfigMgr>
@@ -42,36 +45,42 @@ public class ConfigMgr : MonoSingleton<ConfigMgr>
     {
         string filePath = "";
         string result = "";
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX
-        // 编辑器、Windows、Mac平台：直接使用文件路径
+
+#if  UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX
+        // 编辑器、Windows、Mac平台：同步读取
         filePath = Path.Combine(Application.streamingAssetsPath, "Config", "Generate", _tableName + ".json");
         if (File.Exists(filePath))
         {
-            // 同步读取（也可使用File.ReadAllTextAsync异步读取）
             result = File.ReadAllText(filePath);
         }
         else
         {
             Debug.LogError($"文件不存在: {filePath}");
+            return null;
         }
 
 #elif UNITY_ANDROID
-        // Android平台：需使用WWW或UnityWebRequest读取
-        filePath = Path.Combine("jar:file://" + Application.dataPath, "Config", "!/assets/", _tableName);
-        using (var www = new WWW(filePath))
-        {
-            // 等待WWW加载完成（异步）
-            await Task.Yield();
-            while (!www.isDone)
-                await Task.Yield();
+        // Android平台使用UnityWebRequest读取
+        string url = Path.Combine(Application.streamingAssetsPath, "Config", "Generate", _tableName + ".json");
 
-            if (!string.IsNullOrEmpty(www.error))
+        using (UnityWebRequest webRequest = UnityWebRequest.Get(url))
+        {
+            // 发送同步请求（如果需要异步可改为SendWebRequest().WaitForCompletion()或异步等待）
+            UnityWebRequestAsyncOperation asyncOp = webRequest.SendWebRequest();
+            // 等待请求完成
+            while (!asyncOp.isDone)
             {
-                Debug.LogError($"Android读取失败: {www.error}");
+                // 可以在这里添加进度更新逻辑
+            }
+
+            if (webRequest.result == UnityWebRequest.Result.Success)
+            {
+                result = webRequest.downloadHandler.text;
             }
             else
             {
-                result = www.text;
+                Debug.LogError($"Android加载失败: {webRequest.error}，路径: {url}");
+                return null;
             }
         }
 #endif

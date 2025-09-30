@@ -1,7 +1,5 @@
 using System;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using static UnityEngine.UI.CanvasScaler;
 
 namespace Rain.RTS.Core
 {

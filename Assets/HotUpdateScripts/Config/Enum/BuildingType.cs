@@ -83,3 +83,4 @@ public enum BuildingType
     /// </summary>
     Hospital = 15,
 }
+
