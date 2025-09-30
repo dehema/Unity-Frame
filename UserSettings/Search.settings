@@ -9,6 +9,9 @@ onBoardingDoNotAskAgain = true
 showPackageIndexes = false
 showStatusBar = false
 scopes = {
+	"last_search.66F56946" = "camera"
+	"OpenInspectorPreview.66F56946" = "0"
+	"currentGroup.66F56946" = "asset"
 }
 providers = {
 	asset = {
@@ -59,6 +62,26 @@ providers = {
 	log = {
 		active = false
 		priority = 210
+		defaultAction = null
+	}
+	menu = {
+		active = true
+		priority = 80
+		defaultAction = null
+	}
+	settings = {
+		active = true
+		priority = 100
+		defaultAction = null
+	}
+	calculator = {
+		active = true
+		priority = 10
+		defaultAction = null
+	}
+	static_methods = {
+		active = false
+		priority = 85
 		defaultAction = null
 	}
 }

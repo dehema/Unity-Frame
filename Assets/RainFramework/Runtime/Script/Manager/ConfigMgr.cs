@@ -7,8 +7,6 @@ using Rain.UI;
 using SimpleJSON;
 using Rain.Core;
 using System.IO;
-using System.Threading.Tasks;
-using UnityEngine.Networking;
 
 
 public class ConfigMgr : MonoSingleton<ConfigMgr>
@@ -46,7 +44,7 @@ public class ConfigMgr : MonoSingleton<ConfigMgr>
         string filePath = "";
         string result = "";
 
-#if  UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX
+#if  UNITY_EDITOR || UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX
         // 编辑器、Windows、Mac平台：同步读取
         filePath = Path.Combine(Application.streamingAssetsPath, "Config", "Generate", _tableName + ".json");
         if (File.Exists(filePath))

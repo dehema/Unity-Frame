@@ -1,12 +1,52 @@
 ﻿using System;
+using Rain.Core;
 using Rain.UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SceneMgr : MonoSingleton<SceneMgr>
 {
     //要切换的场景名称
     string targetSceneName;
     SceneID currSceneID;
+
+    private void Start()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        SceneManager.sceneUnloaded += OnSceneUnloaded;
+    }
+
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        SceneManager.sceneUnloaded -= OnSceneUnloaded;
+    }
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        MsgMgr.Ins.DispatchEvent(MsgEvent.SceneLoaded, scene.name);
+        // 直接触发当前场景内所有 ISceneConfigProvider 的 OnSceneLoad（避免业务层自己再绑一次）
+        var providers = GameObject.FindObjectsOfType<MonoBehaviour>(true);
+        for (int i = 0; i < providers.Length; i++)
+        {
+            if (providers[i] is ISceneConfigProvider p)
+            {
+                p.OnSceneLoad(scene.name);
+            }
+        }
+    }
+
+    private void OnSceneUnloaded(Scene scene)
+    {
+        MsgMgr.Ins.DispatchEvent(MsgEvent.SceneUnload, scene.name);
+        var providers = GameObject.FindObjectsOfType<MonoBehaviour>(true);
+        for (int i = 0; i < providers.Length; i++)
+        {
+            if (providers[i] is ISceneConfigProvider p)
+            {
+                p.OnSceneUnLoad(scene.name);
+            }
+        }
+    }
 
     /// <summary>
     /// 切换场景

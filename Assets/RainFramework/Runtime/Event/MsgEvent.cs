@@ -35,6 +35,9 @@ namespace Rain.Core
         CameraZoomingOut,       //视角缩小
         CameraZoomRatioChange,  //相机缩放倍率改变
 
+        //场景
+        SceneLoaded,            //场景加载
+        SceneUnload,            //场景卸载
     }
 }
 

@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Rain.Core;
 using UnityEngine;
-using System;
 
 #if UNITY_EDITOR
 using UnityEditor;
