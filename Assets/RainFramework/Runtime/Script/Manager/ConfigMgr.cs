@@ -7,7 +7,9 @@ using Rain.UI;
 using SimpleJSON;
 using Rain.Core;
 using System.IO;
-
+#if UNITY_ANDROID
+using UnityEngine.Networking;
+#endif
 
 public class ConfigMgr : MonoSingleton<ConfigMgr>
 {
