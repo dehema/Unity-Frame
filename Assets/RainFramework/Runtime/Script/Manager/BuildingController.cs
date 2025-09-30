@@ -6,38 +6,44 @@ using Rain.Core;
 /// </summary>
 public class BuildingController : MonoBehaviour
 {
-    [Header("建筑设置")]
+    [Header("建筑模型")]
     [SerializeField] private GameObject buildingModel;
+    [Header("建造中")]
     [SerializeField] private GameObject constructionEffect;
+    [Header("升级特效")]
     [SerializeField] private GameObject upgradeEffect;
+    [Header("选择指示器")]
     [SerializeField] private GameObject selectionIndicator;
-    
+
     // 建筑数据
     public BuildingData BuildingData { get; private set; }
-    
+
     // 组件引用
     private Renderer buildingRenderer;
-    private Collider buildingCollider;
+    private BoxCollider buildingCollider;
     private Animator buildingAnimator;
-    
+
     // 状态
     private bool isSelected = false;
     private bool isHovered = false;
-    
+
     void Awake()
     {
         // 获取组件引用
         buildingRenderer = GetComponent<Renderer>();
-        buildingCollider = GetComponent<Collider>();
+        buildingCollider = GetComponent<BoxCollider>();
         buildingAnimator = GetComponent<Animator>();
-        
+
         // 如果没有Collider，添加一个
         if (buildingCollider == null)
         {
             buildingCollider = gameObject.AddComponent<BoxCollider>();
+            buildingCollider.size = new Vector3(8, 8, 8);
+            buildingCollider.center = new Vector3(0, 1.5f, 0);
+
         }
     }
-    
+
     void Start()
     {
         // 初始化选择指示器
@@ -46,12 +52,12 @@ public class BuildingController : MonoBehaviour
             selectionIndicator.SetActive(false);
         }
     }
-    
+
     void Update()
     {
         UpdateBuildingVisuals();
     }
-    
+
     /// <summary>
     /// 初始化建筑
     /// </summary>
@@ -60,7 +66,7 @@ public class BuildingController : MonoBehaviour
         BuildingData = buildingData;
         UpdateBuildingVisuals();
     }
-    
+
     /// <summary>
     /// 更新建筑数据
     /// </summary>
@@ -69,14 +75,14 @@ public class BuildingController : MonoBehaviour
         BuildingData = buildingData;
         UpdateBuildingVisuals();
     }
-    
+
     /// <summary>
     /// 更新建筑视觉效果
     /// </summary>
     private void UpdateBuildingVisuals()
     {
         if (BuildingData == null) return;
-        
+
         // 根据建筑状态更新视觉效果
         switch (BuildingData.State)
         {
@@ -96,11 +102,11 @@ public class BuildingController : MonoBehaviour
                 ShowDestroyedState();
                 break;
         }
-        
+
         // 更新选择状态
         UpdateSelectionVisuals();
     }
-    
+
     /// <summary>
     /// 显示建造中状态
     /// </summary>
@@ -111,26 +117,26 @@ public class BuildingController : MonoBehaviour
         {
             constructionEffect.SetActive(true);
         }
-        
+
         // 隐藏升级特效
         if (upgradeEffect != null)
         {
             upgradeEffect.SetActive(false);
         }
-        
+
         // 设置半透明材质
         if (buildingRenderer != null)
         {
             SetBuildingTransparency(0.5f);
         }
-        
+
         // 播放建造动画
         if (buildingAnimator != null)
         {
             buildingAnimator.SetBool("IsBuilding", true);
         }
     }
-    
+
     /// <summary>
     /// 显示升级中状态
     /// </summary>
@@ -141,26 +147,26 @@ public class BuildingController : MonoBehaviour
         {
             constructionEffect.SetActive(false);
         }
-        
+
         // 显示升级特效
         if (upgradeEffect != null)
         {
             upgradeEffect.SetActive(true);
         }
-        
+
         // 设置半透明材质
         if (buildingRenderer != null)
         {
             SetBuildingTransparency(0.7f);
         }
-        
+
         // 播放升级动画
         if (buildingAnimator != null)
         {
             buildingAnimator.SetBool("IsUpgrading", true);
         }
     }
-    
+
     /// <summary>
     /// 显示完成状态
     /// </summary>
@@ -171,18 +177,18 @@ public class BuildingController : MonoBehaviour
         {
             constructionEffect.SetActive(false);
         }
-        
+
         if (upgradeEffect != null)
         {
             upgradeEffect.SetActive(false);
         }
-        
+
         // 设置不透明材质
         if (buildingRenderer != null)
         {
             SetBuildingTransparency(1f);
         }
-        
+
         // 停止动画
         if (buildingAnimator != null)
         {
@@ -190,7 +196,7 @@ public class BuildingController : MonoBehaviour
             buildingAnimator.SetBool("IsUpgrading", false);
         }
     }
-    
+
     /// <summary>
     /// 显示损坏状态
     /// </summary>
@@ -202,14 +208,14 @@ public class BuildingController : MonoBehaviour
             SetBuildingTransparency(0.8f);
             // 可以添加损坏贴图
         }
-        
+
         // 播放损坏动画
         if (buildingAnimator != null)
         {
             buildingAnimator.SetBool("IsDamaged", true);
         }
     }
-    
+
     /// <summary>
     /// 显示摧毁状态
     /// </summary>
@@ -220,11 +226,11 @@ public class BuildingController : MonoBehaviour
         {
             buildingModel.SetActive(false);
         }
-        
+
         // 显示废墟模型（如果有的话）
         // 可以添加废墟特效
     }
-    
+
     /// <summary>
     /// 设置建筑透明度
     /// </summary>
@@ -244,7 +250,7 @@ public class BuildingController : MonoBehaviour
             }
         }
     }
-    
+
     /// <summary>
     /// 更新选择视觉效果
     /// </summary>
@@ -255,7 +261,7 @@ public class BuildingController : MonoBehaviour
             selectionIndicator.SetActive(isSelected);
         }
     }
-    
+
     /// <summary>
     /// 设置选中状态
     /// </summary>
@@ -264,14 +270,14 @@ public class BuildingController : MonoBehaviour
         isSelected = selected;
         UpdateSelectionVisuals();
     }
-    
+
     /// <summary>
     /// 设置悬停状态
     /// </summary>
     public void SetHovered(bool hovered)
     {
         isHovered = hovered;
-        
+
         // 可以添加悬停效果
         if (buildingRenderer != null)
         {
@@ -287,30 +293,30 @@ public class BuildingController : MonoBehaviour
             }
         }
     }
-    
+
     /// <summary>
     /// 获取建筑信息文本
     /// </summary>
     public string GetBuildingInfo()
     {
         if (BuildingData == null) return "无建筑数据";
-        
+
         var config = BuildingData.GetConfig();
         if (config == null) return "无建筑配置";
-        
+
         string info = $"建筑: {config.BuildingName}\n";
         info += $"等级: {BuildingData.Level}/{config.MaxLevel}\n";
         info += $"状态: {GetStateText(BuildingData.State)}\n";
-        
+
         if (BuildingData.IsBuilding || BuildingData.IsUpgrading)
         {
             info += $"进度: {BuildingData.GetBuildProgress():P0}\n";
             info += $"剩余时间: {BuildingData.GetRemainingBuildTime()}秒\n";
         }
-        
+
         return info;
     }
-    
+
     /// <summary>
     /// 获取状态文本
     /// </summary>
@@ -327,7 +333,7 @@ public class BuildingController : MonoBehaviour
             default: return "未知状态";
         }
     }
-    
+
     /// <summary>
     /// 鼠标进入事件
     /// </summary>
@@ -335,7 +341,7 @@ public class BuildingController : MonoBehaviour
     {
         SetHovered(true);
     }
-    
+
     /// <summary>
     /// 鼠标离开事件
     /// </summary>
@@ -343,7 +349,7 @@ public class BuildingController : MonoBehaviour
     {
         SetHovered(false);
     }
-    
+
     /// <summary>
     /// 鼠标点击事件
     /// </summary>
