@@ -6,8 +6,10 @@
 scenes:
     Launcher:
         comment: 启动场景
-    MainScene:
-        comment: 主场景
+    MainCity:
+        comment: 主城 
+    WorldMap:
+        comment: 世界地图
     TD:
         comment: 塔防场景
     RTSUnitTest:
@@ -16,6 +18,4 @@ scenes:
         comment: RTS战斗场景
     RTSUnitDummyTest:
         comment: RTS单位测试
-    MainCity:
-        comment: 主城 
 

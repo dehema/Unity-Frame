@@ -72,9 +72,6 @@ public class SceneMgr : MonoSingleton<SceneMgr>
     /// </summary>
     public void OnSceneStartChange()
     {
-        if (currSceneID == SceneID.MainScene)
-        {
-        }
     }
 
     /// <summary>
@@ -83,13 +80,5 @@ public class SceneMgr : MonoSingleton<SceneMgr>
     void OnSceneChangeComplete()
     {
         Debug.Log("跳转到场景:" + targetSceneName);
-    }
-
-    public bool IsMain
-    {
-        get
-        {
-            return currSceneID == SceneID.MainScene;
-        }
     }
 }

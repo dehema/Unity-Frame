@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using Rain.UI;
 using TMPro;
-using static ConfirmDiamondSpeedView;
 
 public partial class DebugView : BaseView
 {

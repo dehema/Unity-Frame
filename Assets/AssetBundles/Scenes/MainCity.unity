@@ -23016,6 +23016,7 @@ GameObject:
   m_Component:
   - component: {fileID: 606565009}
   - component: {fileID: 606565010}
+  - component: {fileID: 606565011}
   m_Layer: 7
   m_Name: Env
   m_TagString: Untagged
@@ -23058,7 +23059,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fcb16dabd8426d4ab387b3bfdab950e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneID: 6
+--- !u!114 &606565011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 606565008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eef1b84ec944539458f111cae6e24b8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cityRoot: {fileID: 0}
+  buildingPrefab: {fileID: 0}
+  buildingPreviewMaterial: {fileID: 0}
 --- !u!1001 &611057024
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -43842,8 +43857,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 1136385242}
   mousePanSpeed: 1
-  panDampening: 3.5
   posLimit: {x: -60, y: 20, z: -20, w: 20}
+  panDampening: 3.5
   touchPanSpeed: 0.01
   touchMinDistance: 10
   zoomDefaultSize: 8

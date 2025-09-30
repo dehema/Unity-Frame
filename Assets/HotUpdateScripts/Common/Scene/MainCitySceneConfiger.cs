@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class MainCitySceneConfig : MonoBehaviour, ISceneConfigProvider
 {
-    [SerializeField]
     SceneID sceneID = SceneID.MainCity;
     public void OnSceneLoad(string _sceneName)
     {

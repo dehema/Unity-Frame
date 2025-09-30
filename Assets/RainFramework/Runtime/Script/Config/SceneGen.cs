@@ -6,9 +6,13 @@ public class SceneName
     /// </summary>
 	public const string Launcher = "Launcher";
     /// <summary>
-    /// 主场景
+    /// 主城
     /// </summary>
-	public const string MainScene = "MainScene";
+	public const string MainCity = "MainCity";
+    /// <summary>
+    /// 世界地图
+    /// </summary>
+	public const string WorldMap = "WorldMap";
     /// <summary>
     /// 塔防场景
     /// </summary>
@@ -25,10 +29,6 @@ public class SceneName
     /// RTS单位测试
     /// </summary>
 	public const string RTSUnitDummyTest = "RTSUnitDummyTest";
-    /// <summary>
-    /// 主城
-    /// </summary>
-	public const string MainCity = "MainCity";
 }
 
 public enum SceneID
@@ -38,9 +38,13 @@ public enum SceneID
     /// </summary>
 	Launcher,
     /// <summary>
-    /// 主场景
+    /// 主城
     /// </summary>
-	MainScene,
+	MainCity,
+    /// <summary>
+    /// 世界地图
+    /// </summary>
+	WorldMap,
     /// <summary>
     /// 塔防场景
     /// </summary>
@@ -57,8 +61,4 @@ public enum SceneID
     /// RTS单位测试
     /// </summary>
 	RTSUnitDummyTest,
-    /// <summary>
-    /// 主城
-    /// </summary>
-	MainCity,
 }
