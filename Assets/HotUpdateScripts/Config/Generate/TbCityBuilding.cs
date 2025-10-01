@@ -31,7 +31,7 @@ public partial class TbCityBuilding
             CityBuildingConfig _v;
             { if(!_ele.IsObject) { throw new SerializationException(); }  _v = global::Rain.Core.CityBuildingConfig.DeserializeCityBuildingConfig(_ele);  }
             _dataList.Add(_v);
-            _dataMap.Add(_v.BuildingID, _v);
+            _dataMap.Add(_v.BuildingType, _v);
         }
     }
 

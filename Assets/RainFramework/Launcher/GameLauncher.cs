@@ -52,6 +52,7 @@ namespace Rain.Launcher
             DataMgr.Ins.Load();
             LangMgr.Ins.Init();
             UIMgr.Ins.Init(ConfigMgr.Ins.UIViewConfig);
+            CityMgr.Ins.Init();
             // 游戏初始化逻辑...
 
             StartGame();

@@ -7,17 +7,17 @@ using UnityEngine;
 /// 建筑数据模型
 /// </summary>
 [Serializable]
-public class BuildingData
+public class CityBuildingData : DBClass
 {
     /// <summary>
     /// 建筑实例ID
     /// </summary>
-    public int InstanceID;
+    public string InstanceID;
 
     /// <summary>
     /// 建筑配置ID
     /// </summary>
-    public int BuildingID;
+    public CityBuildingType BuildingType;
 
     /// <summary>
     /// 槽位ID
@@ -27,7 +27,7 @@ public class BuildingData
     /// <summary>
     /// 当前等级
     /// </summary>
-    public int Level;
+    public DBInt Level;
 
     /// <summary>
     /// 建造开始时间
@@ -42,17 +42,22 @@ public class BuildingData
     /// <summary>
     /// 建筑状态
     /// </summary>
-    public BuildingState State;
+    public BuildingState State = BuildingState.Empty;
 
     /// <summary>
     /// 建筑位置
     /// </summary>
-    public Vector3 Position;
+    public Vector3 Pos;
 
     /// <summary>
     /// 建筑旋转
     /// </summary>
-    public Quaternion Rotation;
+    public float RotY;
+
+    /// <summary>
+    /// 缩放值
+    /// </summary>
+    public float Scale;
 
     /// <summary>
     /// 是否已解锁
@@ -71,24 +76,6 @@ public class BuildingData
     public GameObject BuildingObject;
 
     /// <summary>
-    /// 获取建筑配置
-    /// </summary>
-    public CityBuildingConfig GetConfig()
-    {
-        return new CityBuildingConfig(null);
-        //return Tables.Instance.TbBuilding.GetOrDefault(BuildingID);
-    }
-
-    /// <summary>
-    /// 获取槽位配置
-    /// </summary>
-    public BuildingSlotConfig GetSlotConfig()
-    {
-        return new BuildingSlotConfig(null);
-        //return Tables.Instance.TbBuildingSlot.GetOrDefault(SlotID);
-    }
-
-    /// <summary>
     /// 是否正在建造中
     /// </summary>
     public bool IsBuilding => State == BuildingState.Building;
@@ -102,6 +89,22 @@ public class BuildingData
     /// 是否正在升级中
     /// </summary>
     public bool IsUpgrading => State == BuildingState.Upgrading;
+
+    /// <summary>
+    /// 获取建筑配置
+    /// </summary>
+    public CityBuildingConfig GetConfig()
+    {
+        return ConfigMgr.CityBuilding.Get(BuildingType);
+    }
+
+    /// <summary>
+    /// 获取槽位配置
+    /// </summary>
+    public BuildingSlotConfig GetSlotConfig()
+    {
+        return ConfigMgr.CityBuildingSlot.Get(SlotID);
+    }
 
     /// <summary>
     /// 获取剩余建造时间（秒）

@@ -17,7 +17,7 @@ public sealed partial class CityBuildingConfig : Luban.BeanBase
 {
     public CityBuildingConfig(JSONNode _buf) 
     {
-        { if(!_buf["buildingID"].IsNumber) { throw new SerializationException(); }  BuildingID = (CityBuildingType)_buf["buildingID"].AsInt; }
+        { if(!_buf["buildingType"].IsNumber) { throw new SerializationException(); }  BuildingType = (CityBuildingType)_buf["buildingType"].AsInt; }
         { if(!_buf["buildingName"].IsString) { throw new SerializationException(); }  BuildingName = _buf["buildingName"]; }
         { if(!_buf["icon"].IsString) { throw new SerializationException(); }  Icon = _buf["icon"]; }
         { if(!_buf["desc"].IsString) { throw new SerializationException(); }  Desc = _buf["desc"]; }
@@ -34,7 +34,7 @@ public sealed partial class CityBuildingConfig : Luban.BeanBase
         return new CityBuildingConfig(_buf);
     }
 
-    public readonly CityBuildingType BuildingID;
+    public readonly CityBuildingType BuildingType;
     /// <summary>
     /// 建筑名称
     /// </summary>
@@ -79,7 +79,7 @@ public sealed partial class CityBuildingConfig : Luban.BeanBase
     public override string ToString()
     {
         return "{ "
-        + "buildingID:" + BuildingID + ","
+        + "buildingType:" + BuildingType + ","
         + "buildingName:" + BuildingName + ","
         + "icon:" + Icon + ","
         + "desc:" + Desc + ","

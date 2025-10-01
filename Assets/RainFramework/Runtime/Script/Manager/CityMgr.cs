@@ -15,41 +15,36 @@ public class CityMgr : MonoSingleton<CityMgr>
     [SerializeField] private Material buildingPreviewMaterial; // 建筑预览材质
 
     // 建筑数据
-    private Dictionary<int, BuildingData> buildings = new Dictionary<int, BuildingData>();
+    private Dictionary<int, CityBuildingData> buildings = new Dictionary<int, CityBuildingData>();
     private Dictionary<int, BuildingSlotConfig> buildingSlots = new Dictionary<int, BuildingSlotConfig>();
+    public Dictionary<int, BuildingSlotConfig> BuildingSlots { get => buildingSlots; set => buildingSlots = value; }
 
     // 事件系统
-    public static event Action<BuildingData> OnBuildingStarted;
-    public static event Action<BuildingData> OnBuildingCompleted;
-    public static event Action<BuildingData> OnBuildingUpgraded;
-    public static event Action<BuildingData> OnBuildingDestroyed;
+    public static event Action<CityBuildingData> OnBuildingStarted;
+    public static event Action<CityBuildingData> OnBuildingCompleted;
+    public static event Action<CityBuildingData> OnBuildingUpgraded;
+    public static event Action<CityBuildingData> OnBuildingDestroyed;
     public static event Action<int> OnSlotUnlocked;
 
     // 当前选中的建筑
-    private BuildingData selectedBuilding;
+    private CityBuildingData selectedBuilding;
     private int selectedSlotID = -1;
 
-    // 建筑实例ID计数器
-    private int nextBuildingInstanceID = 1;
-
-    void Start()
-    {
-        InitializeCity();
-    }
 
     void Update()
     {
+        if (SceneMgr.Ins.currSceneID != SceneID.MainCity)
+            return;
         UpdateBuildingStates();
-        HandleInput();
     }
 
     /// <summary>
     /// 初始化城镇
     /// </summary>
-    private void InitializeCity()
+    public void Init()
     {
         LoadBuildingSlots();
-        LoadExistingBuildings();
+        InitBuildingData();
     }
 
     /// <summary>
@@ -57,39 +52,37 @@ public class CityMgr : MonoSingleton<CityMgr>
     /// </summary>
     private void LoadBuildingSlots()
     {
-        buildingSlots.Clear();
+        BuildingSlots.Clear();
 
-        //if (Tables.Instance?.TbBuildingSlot?.DataMap != null)
-        //{
-        //    foreach (var slot in Tables.Instance.TbBuildingSlot.DataMap.Values)
-        //    {
-        //        buildingSlots[slot.SlotID] = slot;
-        //    }
-        //}
+        foreach (BuildingSlotConfig slot in ConfigMgr.CityBuildingSlot.DataList)
+        {
+            if (slot.IsLocked)
+            {
+                continue;
+            }
+            BuildingSlots[slot.SlotID] = slot;
+        }
 
-        Debug.Log($"加载了 {buildingSlots.Count} 个建筑槽位");
+        Debug.Log($"加载了 {BuildingSlots.Count} 个建筑槽位");
     }
 
     /// <summary>
     /// 加载现有建筑数据
     /// </summary>
-    private void LoadExistingBuildings()
+    private void InitBuildingData()
     {
-        // 这里应该从存档中加载建筑数据
-        // 暂时创建一些示例数据
-        CreateSampleBuildings();
-    }
-
-    /// <summary>
-    /// 创建示例建筑（用于测试）
-    /// </summary>
-    private void CreateSampleBuildings()
-    {
-        // 在第一个槽位创建市政厅
-        if (buildingSlots.Count > 0)
+        foreach (var item in buildingSlots)
         {
-            var firstSlot = buildingSlots[1]; // 假设槽位ID从1开始
-            BuildBuilding(1, 1, 1); // 建造ID为1的建筑（市政厅）
+            BuildingSlotConfig slotConfig = item.Value;
+            CityBuildingConfig buildingConifg = GetCityBuildingConfig(slotConfig.BuildingType);
+            CityBuildingData data = new CityBuildingData();
+            data.InstanceID = Guid.NewGuid().ToString();
+            data.BuildingType = slotConfig.BuildingType;
+            data.SlotID = slotConfig.SlotID;
+            data.Level = new DBInt(0);
+            data.Pos = new Vector3(slotConfig.PosX, slotConfig.PosY, slotConfig.PosZ);
+            data.RotY = slotConfig.RotY;
+            data.Scale = buildingConifg.Scale;
         }
     }
 
@@ -113,43 +106,6 @@ public class CityMgr : MonoSingleton<CityMgr>
     }
 
     /// <summary>
-    /// 处理输入
-    /// </summary>
-    private void HandleInput()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            HandleMouseClick();
-        }
-    }
-
-    /// <summary>
-    /// 处理鼠标点击
-    /// </summary>
-    private void HandleMouseClick()
-    {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out RaycastHit hit))
-        {
-            // 检查是否点击了建筑
-            var building = hit.collider.GetComponent<BuildingController>();
-            if (building != null)
-            {
-                SelectBuilding(building.BuildingData);
-            }
-            else
-            {
-                // 检查是否点击了建筑槽位
-                int slotID = GetSlotIDFromPosition(hit.point);
-                if (slotID > 0)
-                {
-                    SelectSlot(slotID);
-                }
-            }
-        }
-    }
-
-    /// <summary>
     /// 根据位置获取槽位ID
     /// </summary>
     private int GetSlotIDFromPosition(Vector3 position)
@@ -157,7 +113,7 @@ public class CityMgr : MonoSingleton<CityMgr>
         float minDistance = float.MaxValue;
         int closestSlotID = -1;
 
-        foreach (var slot in buildingSlots.Values)
+        foreach (var slot in BuildingSlots.Values)
         {
             Vector3 slotPosition = new Vector3(slot.PosX, slot.PosY, slot.PosZ);
             float distance = Vector3.Distance(position, slotPosition);
@@ -175,12 +131,11 @@ public class CityMgr : MonoSingleton<CityMgr>
     /// <summary>
     /// 选择建筑
     /// </summary>
-    public void SelectBuilding(BuildingData building)
+    public void SelectBuilding(CityBuildingData building)
     {
         selectedBuilding = building;
-        selectedSlotID = -1;
-
-        Debug.Log($"选中建筑: {building.GetConfig()?.BuildingName} (等级: {building.Level})");
+        CityBuildingConfig config = building.GetConfig();
+        Debug.Log($"选中建筑: {config.BuildingName}");
     }
 
     /// <summary>
@@ -191,7 +146,7 @@ public class CityMgr : MonoSingleton<CityMgr>
         selectedSlotID = slotID;
         selectedBuilding = null;
 
-        var slot = buildingSlots[slotID];
+        var slot = BuildingSlots[slotID];
         Debug.Log($"选中槽位: {slotID} (位置: {slot.PosX}, {slot.PosZ})");
     }
 
@@ -275,7 +230,7 @@ public class CityMgr : MonoSingleton<CityMgr>
         }
 
         var config = building.GetConfig();
-        if (building.Level >= config.MaxLevel)
+        if (building.Level.Value >= config.MaxLevel)
         {
             Debug.LogWarning("建筑已达到最大等级");
             return false;
@@ -303,7 +258,7 @@ public class CityMgr : MonoSingleton<CityMgr>
     /// <summary>
     /// 完成建筑建造/升级
     /// </summary>
-    private void CompleteBuilding(BuildingData building)
+    private void CompleteBuilding(CityBuildingData building)
     {
         if (building.IsBuilding)
         {
@@ -313,7 +268,7 @@ public class CityMgr : MonoSingleton<CityMgr>
         }
         else if (building.IsUpgrading)
         {
-            building.Level++;
+            building.Level.Value++;
             building.State = BuildingState.Completed;
             OnBuildingUpgraded?.Invoke(building);
             Debug.Log($"建筑升级完成: {building.GetConfig()?.BuildingName} 到等级 {building.Level}");
@@ -326,7 +281,7 @@ public class CityMgr : MonoSingleton<CityMgr>
     /// <summary>
     /// 创建建筑对象
     /// </summary>
-    private void CreateBuildingObject(BuildingData building)
+    private void CreateBuildingObject(CityBuildingData building)
     {
         var config = building.GetConfig();
         if (config == null) return;
@@ -355,7 +310,7 @@ public class CityMgr : MonoSingleton<CityMgr>
     /// <summary>
     /// 更新建筑对象
     /// </summary>
-    private void UpdateBuildingObject(BuildingData building)
+    private void UpdateBuildingObject(CityBuildingData building)
     {
         if (building.BuildingObject != null)
         {
@@ -422,17 +377,9 @@ public class CityMgr : MonoSingleton<CityMgr>
     /// <summary>
     /// 获取建筑数据
     /// </summary>
-    public BuildingData GetBuilding(int instanceID)
+    public CityBuildingData GetBuilding(int instanceID)
     {
         return buildings.GetValueOrDefault(instanceID);
-    }
-
-    /// <summary>
-    /// 获取所有建筑
-    /// </summary>
-    public Dictionary<int, BuildingData> GetAllBuildings()
-    {
-        return new Dictionary<int, BuildingData>(buildings);
     }
 
 
@@ -445,4 +392,41 @@ public class CityMgr : MonoSingleton<CityMgr>
     {
         return $"Prefab/CityBuilding/{_modelName}";
     }
+
+    #region 配置数据
+    /// <summary>
+    /// 建筑信息
+    /// </summary>
+    /// <param name="_type"></param>
+    /// <returns></returns>
+    public CityBuildingConfig GetCityBuildingConfig(CityBuildingType _type)
+    {
+        return ConfigMgr.CityBuilding.Get(_type);
+    }
+
+    /// <summary>
+    /// 建筑等级配置
+    /// </summary>
+    /// <returns></returns>
+    public CityBuildingLevelConfig GetCityBuildingLevelConfig(CityBuildingType _type, int _lv)
+    {
+        foreach (var item in ConfigMgr.CityBuildingLevel.DataList)
+        {
+            if (item.BuildingType == _type && item.Level == _lv)
+            {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// 建筑位置配置
+    /// </summary>
+    /// <returns></returns>
+    public BuildingSlotConfig GetCityBuildingSlotConfig(int _slotID)
+    {
+        return ConfigMgr.CityBuildingSlot.Get(_slotID);
+    }
+    #endregion
 }

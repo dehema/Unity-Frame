@@ -18,7 +18,7 @@ public sealed partial class CityBuildingLevelConfig : Luban.BeanBase
     public CityBuildingLevelConfig(JSONNode _buf) 
     {
         { if(!_buf["ID"].IsString) { throw new SerializationException(); }  ID = _buf["ID"]; }
-        { if(!_buf["buildingID"].IsNumber) { throw new SerializationException(); }  BuildingID = (CityBuildingType)_buf["buildingID"].AsInt; }
+        { if(!_buf["buildingType"].IsNumber) { throw new SerializationException(); }  BuildingType = (CityBuildingType)_buf["buildingType"].AsInt; }
         { if(!_buf["level"].IsNumber) { throw new SerializationException(); }  Level = _buf["level"]; }
         { if(!_buf["costTime"].IsNumber) { throw new SerializationException(); }  CostTime = _buf["costTime"]; }
         { var __json0 = _buf["costRes"]; if(!__json0.IsArray) { throw new SerializationException(); } CostRes = new System.Collections.Generic.Dictionary<int, int>(__json0.Count); foreach(JSONNode __e0 in __json0.Children) { int _k0;  { if(!__e0[0].IsNumber) { throw new SerializationException(); }  _k0 = __e0[0]; } int _v0;  { if(!__e0[1].IsNumber) { throw new SerializationException(); }  _v0 = __e0[1]; }  CostRes.Add(_k0, _v0); }   }
@@ -32,7 +32,7 @@ public sealed partial class CityBuildingLevelConfig : Luban.BeanBase
     }
 
     public readonly string ID;
-    public readonly CityBuildingType BuildingID;
+    public readonly CityBuildingType BuildingType;
     /// <summary>
     /// 建筑等级
     /// </summary>
@@ -65,7 +65,7 @@ public sealed partial class CityBuildingLevelConfig : Luban.BeanBase
     {
         return "{ "
         + "ID:" + ID + ","
-        + "buildingID:" + BuildingID + ","
+        + "buildingType:" + BuildingType + ","
         + "level:" + Level + ","
         + "costTime:" + CostTime + ","
         + "costRes:" + Luban.StringUtil.CollectionToString(CostRes) + ","

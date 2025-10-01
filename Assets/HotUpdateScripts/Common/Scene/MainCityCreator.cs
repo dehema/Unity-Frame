@@ -15,16 +15,15 @@ public class MainCityCreator : MonoBehaviour
     private void Awake()
     {
         InitAllBuilding();
-
     }
-
 
     void InitAllBuilding()
     {
         buildingSlot.Clear();
-        foreach (BuildingSlotConfig slotConfig in ConfigMgr.CityBuildingSlot.DataList)
+        foreach (var item in CityMgr.Ins.BuildingSlots)
         {
-            CityBuildingConfig buildingConfig = ConfigMgr.CityBuilding.DataMap[slotConfig.BuildingType];
+            BuildingSlotConfig slotConfig = item.Value;
+            CityBuildingConfig buildingConfig = CityMgr.Ins.GetCityBuildingConfig(slotConfig.BuildingType);
             GameObject preafab = Resources.Load<GameObject>(CityMgr.Ins.GetBuildingModelPath(buildingConfig.PlotModel));
             GameObject buildingGo = GameObject.Instantiate<GameObject>(preafab);
             buildingGo.transform.SetParent(buildingParent);
@@ -32,7 +31,9 @@ public class MainCityCreator : MonoBehaviour
             buildingGo.transform.eulerAngles = new Vector3(0, slotConfig.RotY, 0);
             buildingGo.transform.localScale = new Vector3(buildingConfig.Scale, buildingConfig.Scale, buildingConfig.Scale);
             buildingSlot[slotConfig.SlotID] = buildingGo;
-            buildingGo.AddComponent<BuildingController>();
+            BuildingController buildingController = buildingGo.AddComponent<BuildingController>();
+            buildingController.SlotConfig = slotConfig;
+            buildingController.BuildingConfig = buildingConfig;
         }
     }
 }

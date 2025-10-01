@@ -8,7 +8,7 @@ public class SceneMgr : MonoSingleton<SceneMgr>
 {
     //要切换的场景名称
     string targetSceneName;
-    SceneID currSceneID;
+    public SceneID currSceneID;
 
     private void Start()
     {
