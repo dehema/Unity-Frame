@@ -20,7 +20,7 @@ public class BuildingController : MonoBehaviour
 
     // 组件引用
     private Renderer buildingRenderer;
-    private BoxCollider buildingCollider;
+    private Collider buildingCollider;
     private Animator buildingAnimator;
 
     // 状态
@@ -31,16 +31,16 @@ public class BuildingController : MonoBehaviour
     {
         // 获取组件引用
         buildingRenderer = GetComponent<Renderer>();
-        buildingCollider = GetComponent<BoxCollider>();
+        buildingCollider = GetComponent<Collider>();
         buildingAnimator = GetComponent<Animator>();
 
         // 如果没有Collider，添加一个
         if (buildingCollider == null)
         {
-            buildingCollider = gameObject.AddComponent<BoxCollider>();
-            buildingCollider.size = new Vector3(8, 8, 8);
-            buildingCollider.center = new Vector3(0, 1.5f, 0);
-
+            BoxCollider boxCollider = gameObject.AddComponent<BoxCollider>();
+            boxCollider.size = new Vector3(8, 8, 8);
+            boxCollider.center = new Vector3(0, 1.5f, 0);
+            buildingCollider = boxCollider;
         }
     }
 

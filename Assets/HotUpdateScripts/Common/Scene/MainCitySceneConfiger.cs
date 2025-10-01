@@ -6,9 +6,17 @@ using UnityEngine;
 public class MainCitySceneConfig : MonoBehaviour, ISceneConfigProvider
 {
     SceneID sceneID = SceneID.MainCity;
-    public void OnSceneLoad(string _sceneName)
+
+    private void Awake()
     {
-        if (sceneID.ToString() != _sceneName)
+        MsgMgr.Ins.AddEventListener(MsgEvent.SceneLoaded, OnSceneLoad, this);
+        MsgMgr.Ins.AddEventListener(MsgEvent.SceneUnload, OnSceneUnLoad, this);
+    }
+
+    public void OnSceneLoad(params object[] obj)
+    {
+        SceneChangeParam sceneChangeParam = obj[0] as SceneChangeParam;
+        if (sceneID.ToString() != sceneChangeParam.sceneName)
             return;
         Dictionary<string, GameSettingConfig> config = ConfigMgr.GameSetting.DataMap;
         CameraController_City camera = FindFirstObjectByType<CameraController_City>();
@@ -24,11 +32,10 @@ public class MainCitySceneConfig : MonoBehaviour, ISceneConfigProvider
         camera.ZoomDampening = float.Parse(config["mainCity_Camera_zoomDampening"].Val);
     }
 
-    public void OnSceneUnLoad(string _sceneName)
+    public void OnSceneUnLoad(params object[] obj)
     {
-        if (sceneID.ToString() != _sceneName)
+        SceneChangeParam sceneChangeParam = obj[0] as SceneChangeParam;
+        if (sceneID.ToString() != sceneChangeParam.sceneName)
             return;
     }
-
-
 }

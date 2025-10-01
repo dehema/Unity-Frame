@@ -5,8 +5,6 @@ using System.Net.NetworkInformation;
 using Rain.Core;
 using Rain.UI;
 using UnityEngine;
-using static SettingField;
-using static TechRoot;
 
 public partial class TechRoot : BaseUI
 {

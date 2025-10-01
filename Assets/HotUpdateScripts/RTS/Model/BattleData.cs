@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Rain.Core;
-using static Rain.RTS.Core.BattleData;
 
 namespace Rain.RTS.Core
 {
@@ -290,16 +289,16 @@ namespace Rain.RTS.Core
 
             return new Vector2(newX, newY);
         }
+    }
 
-        /// <summary>
-        /// 区域内单位数据
-        /// </summary>
-        public struct AreaUnitData
-        {
-            public Vector4 area;                        // 区域矩形 左上角起始点 长宽
-            public List<int> units;                     // 区域内的单位ID列表
-            public UnitType unitType;                   // 区域单位类型
-        }
+    /// <summary>
+    /// 区域内单位数据
+    /// </summary>
+    public struct AreaUnitData
+    {
+        public Vector4 area;                        // 区域矩形 左上角起始点 长宽
+        public List<int> units;                     // 区域内的单位ID列表
+        public UnitType unitType;                   // 区域单位类型
     }
 
     public class BattleArmyData

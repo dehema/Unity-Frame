@@ -23,29 +23,34 @@ public class SceneMgr : MonoSingleton<SceneMgr>
     }
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        MsgMgr.Ins.DispatchEvent(MsgEvent.SceneLoaded, scene.name);
+        SceneChangeParam param = new SceneChangeParam();
+        param.sceneName = scene.name;
+        MsgMgr.Ins.DispatchEvent(MsgEvent.SceneLoaded, param);
         // 直接触发当前场景内所有 ISceneConfigProvider 的 OnSceneLoad（避免业务层自己再绑一次）
-        var providers = GameObject.FindObjectsOfType<MonoBehaviour>(true);
-        for (int i = 0; i < providers.Length; i++)
-        {
-            if (providers[i] is ISceneConfigProvider p)
-            {
-                p.OnSceneLoad(scene.name);
-            }
-        }
+        //var providers = GameObject.FindObjectsOfType<MonoBehaviour>(true);
+        //for (int i = 0; i < providers.Length; i++)
+        //{
+        //    if (providers[i] is ISceneConfigProvider p)
+        //    {
+        //        p.OnSceneLoad(scene.name);
+        //    }
+        //}
     }
 
     private void OnSceneUnloaded(Scene scene)
     {
-        MsgMgr.Ins.DispatchEvent(MsgEvent.SceneUnload, scene.name);
-        var providers = GameObject.FindObjectsOfType<MonoBehaviour>(true);
-        for (int i = 0; i < providers.Length; i++)
-        {
-            if (providers[i] is ISceneConfigProvider p)
-            {
-                p.OnSceneUnLoad(scene.name);
-            }
-        }
+        SceneChangeParam param = new SceneChangeParam();
+        param.sceneName = scene.name;
+        MsgMgr.Ins.DispatchEvent(MsgEvent.SceneUnload, param);
+        // 直接触发当前场景内所有 ISceneConfigProvider 的 OnSceneLoad（避免业务层自己再绑一次）
+        //var providers = GameObject.FindObjectsOfType<MonoBehaviour>(true);
+        //for (int i = 0; i < providers.Length; i++)
+        //{
+        //    if (providers[i] is ISceneConfigProvider p)
+        //    {
+        //        p.OnSceneUnLoad(scene.name);
+        //    }
+        //}
     }
 
     /// <summary>
@@ -81,4 +86,12 @@ public class SceneMgr : MonoSingleton<SceneMgr>
     {
         Debug.Log("跳转到场景:" + targetSceneName);
     }
+}
+
+/// <summary>
+/// 场景切换参数
+/// </summary>
+public class SceneChangeParam
+{
+    public string sceneName;
 }

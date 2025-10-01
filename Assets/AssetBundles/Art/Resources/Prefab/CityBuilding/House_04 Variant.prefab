@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7338710765163520537, guid: 77a9c93c7dce23d4fa10143f136eb201, type: 3}
       propertyPath: m_Name
-      value: House_04
+      value: House_04 Variant
       objectReference: {fileID: 0}
     - target: {fileID: 7338710765164019257, guid: 77a9c93c7dce23d4fa10143f136eb201, type: 3}
       propertyPath: m_LocalPosition.x

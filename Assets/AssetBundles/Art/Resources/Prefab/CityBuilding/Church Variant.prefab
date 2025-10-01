@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5543186839386682515, guid: 4048c3d53c6cd35458980c57fcf1be19, type: 3}
       propertyPath: m_Name
-      value: Church
+      value: Church Variant
       objectReference: {fileID: 0}
     - target: {fileID: 8750934179404529468, guid: 4048c3d53c6cd35458980c57fcf1be19, type: 3}
       propertyPath: m_LocalPosition.x

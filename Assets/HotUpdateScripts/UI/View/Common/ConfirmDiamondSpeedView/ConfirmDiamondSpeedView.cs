@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using Rain.Core;
 using Rain.UI;
 using UnityEngine;
-using static ConfirmDiamondSpeedView;
 
 /// <summary>
 /// 钻石加速
