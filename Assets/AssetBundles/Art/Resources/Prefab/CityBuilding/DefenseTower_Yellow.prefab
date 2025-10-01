@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DefenseTower_Yellow
       objectReference: {fileID: 0}
+    - target: {fileID: 53815290616529388, guid: 577a65498ae45ca4b80496510746915c, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 861559806750530390, guid: 577a65498ae45ca4b80496510746915c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

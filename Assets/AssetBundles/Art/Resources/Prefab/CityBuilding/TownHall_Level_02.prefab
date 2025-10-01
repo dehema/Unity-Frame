@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TownHall_Level_02
       objectReference: {fileID: 0}
+    - target: {fileID: 3127816045385268947, guid: 029c0114ff3bb1745a98f347684c64f5, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

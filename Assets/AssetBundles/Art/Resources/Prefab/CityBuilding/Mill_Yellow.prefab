@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mill_Yellow
       objectReference: {fileID: 0}
+    - target: {fileID: 6432210973770188144, guid: 9b20b90962452dd428e7b3883bf46962, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

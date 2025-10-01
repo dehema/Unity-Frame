@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HandwritingWorkshop_Level_02
       objectReference: {fileID: 0}
+    - target: {fileID: 1874055874879360257, guid: 891e5af7ca36ca14bb959333749fa81e, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

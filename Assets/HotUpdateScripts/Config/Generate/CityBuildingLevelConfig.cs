@@ -23,7 +23,7 @@ public sealed partial class CityBuildingLevelConfig : Luban.BeanBase
         { if(!_buf["costTime"].IsNumber) { throw new SerializationException(); }  CostTime = _buf["costTime"]; }
         { var __json0 = _buf["costRes"]; if(!__json0.IsArray) { throw new SerializationException(); } CostRes = new System.Collections.Generic.Dictionary<int, int>(__json0.Count); foreach(JSONNode __e0 in __json0.Children) { int _k0;  { if(!__e0[0].IsNumber) { throw new SerializationException(); }  _k0 = __e0[0]; } int _v0;  { if(!__e0[1].IsNumber) { throw new SerializationException(); }  _v0 = __e0[1]; }  CostRes.Add(_k0, _v0); }   }
         { var __json0 = _buf["unlockCondition"]; if(!__json0.IsArray) { throw new SerializationException(); } UnlockCondition = new System.Collections.Generic.Dictionary<CityBuildingType, int>(__json0.Count); foreach(JSONNode __e0 in __json0.Children) { CityBuildingType _k0;  { if(!__e0[0].IsNumber) { throw new SerializationException(); }  _k0 = (CityBuildingType)__e0[0].AsInt; } int _v0;  { if(!__e0[1].IsNumber) { throw new SerializationException(); }  _v0 = __e0[1]; }  UnlockCondition.Add(_k0, _v0); }   }
-        { if(!_buf["modelPath"].IsString) { throw new SerializationException(); }  ModelPath = _buf["modelPath"]; }
+        { if(!_buf["BuildingModel"].IsString) { throw new SerializationException(); }  BuildingModel = _buf["BuildingModel"]; }
     }
 
     public static CityBuildingLevelConfig DeserializeCityBuildingLevelConfig(JSONNode _buf)
@@ -50,9 +50,9 @@ public sealed partial class CityBuildingLevelConfig : Luban.BeanBase
     /// </summary>
     public readonly System.Collections.Generic.Dictionary<CityBuildingType, int> UnlockCondition;
     /// <summary>
-    /// 模型路径
+    /// 建筑模型路径
     /// </summary>
-    public readonly string ModelPath;
+    public readonly string BuildingModel;
    
     public const int __ID__ = -387255033;
     public override int GetTypeId() => __ID__;
@@ -70,7 +70,7 @@ public sealed partial class CityBuildingLevelConfig : Luban.BeanBase
         + "costTime:" + CostTime + ","
         + "costRes:" + Luban.StringUtil.CollectionToString(CostRes) + ","
         + "unlockCondition:" + Luban.StringUtil.CollectionToString(UnlockCondition) + ","
-        + "modelPath:" + ModelPath + ","
+        + "BuildingModel:" + BuildingModel + ","
         + "}";
     }
 }

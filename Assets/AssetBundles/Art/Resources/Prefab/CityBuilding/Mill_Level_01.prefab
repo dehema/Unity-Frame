@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mill_Level_01
       objectReference: {fileID: 0}
+    - target: {fileID: 8723047697023721100, guid: 927a149768497ee40b89045807e4980f, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

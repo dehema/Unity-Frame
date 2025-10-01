@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Farm_Level_01
       objectReference: {fileID: 0}
+    - target: {fileID: 4773862185836480548, guid: ee77050b38380b94c957f97df512e91f, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 5263576506462130846, guid: ee77050b38380b94c957f97df512e91f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

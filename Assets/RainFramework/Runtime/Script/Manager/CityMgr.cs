@@ -435,19 +435,14 @@ public class CityMgr : MonoSingleton<CityMgr>
         return new Dictionary<int, BuildingData>(buildings);
     }
 
-    ///// <summary>
-    ///// 获取槽位配置
-    ///// </summary>
-    //public BuildingSlotConfig GetSlotConfig(int slotID)
-    //{
-    //    return buildingSlots.GetValueOrDefault(slotID);
-    //}
 
-    ///// <summary>
-    ///// 获取所有槽位
-    ///// </summary>
-    //public Dictionary<int, BuildingSlotConfig> GetAllSlots()
-    //{
-    //    return new Dictionary<int, BuildingSlotConfig>(buildingSlots);
-    //}
+    /// <summary>
+    /// 获取建筑模型路径
+    /// </summary>
+    /// <param name="_modelName"></param>
+    /// <returns></returns>
+    public string GetBuildingModelPath(string _modelName)
+    {
+        return $"Prefab/CityBuilding/{_modelName}";
+    }
 }

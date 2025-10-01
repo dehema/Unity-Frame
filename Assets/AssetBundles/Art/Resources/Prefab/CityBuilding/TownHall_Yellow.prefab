@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TownHall_Yellow
       objectReference: {fileID: 0}
+    - target: {fileID: 1408665646076929439, guid: edc79552d61fe1445972f0e9cb236332, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 1785472045342424869, guid: edc79552d61fe1445972f0e9cb236332, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -51,6 +55,18 @@ PrefabInstance:
     - target: {fileID: 1785472045342424869, guid: edc79552d61fe1445972f0e9cb236332, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2146821467707711912, guid: edc79552d61fe1445972f0e9cb236332, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3680189349427653797, guid: edc79552d61fe1445972f0e9cb236332, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6942184963277096779, guid: edc79552d61fe1445972f0e9cb236332, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

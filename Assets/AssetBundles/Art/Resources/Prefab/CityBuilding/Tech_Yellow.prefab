@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tech_Yellow
       objectReference: {fileID: 0}
+    - target: {fileID: 4960540772071099959, guid: 0c797914f278b634c858457ae6610699, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 5736654777695310989, guid: 0c797914f278b634c858457ae6610699, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

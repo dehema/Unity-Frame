@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MagicTower_Level_01
       objectReference: {fileID: 0}
+    - target: {fileID: 3372518043008384578, guid: 44dc4c714931cbe4eb23eba2a73b9a1a, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

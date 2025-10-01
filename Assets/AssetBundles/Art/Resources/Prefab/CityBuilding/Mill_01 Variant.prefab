@@ -48,9 +48,33 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 651412262426192066, guid: f8737e85e5555904780785ccee02f511, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4513005799495139586, guid: f8737e85e5555904780785ccee02f511, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 5243108763459407369, guid: f8737e85e5555904780785ccee02f511, type: 3}
       propertyPath: m_Name
       value: Mill_01 Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 5243108763459407369, guid: f8737e85e5555904780785ccee02f511, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5284214300088887204, guid: f8737e85e5555904780785ccee02f511, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7739723531268702203, guid: f8737e85e5555904780785ccee02f511, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8327556371172030746, guid: f8737e85e5555904780785ccee02f511, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CavalryCamp_Level_01
       objectReference: {fileID: 0}
+    - target: {fileID: 4744996654627468681, guid: ce5aab22e5e21ec43b8b2164148ebb96, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 5373443057143050035, guid: ce5aab22e5e21ec43b8b2164148ebb96, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

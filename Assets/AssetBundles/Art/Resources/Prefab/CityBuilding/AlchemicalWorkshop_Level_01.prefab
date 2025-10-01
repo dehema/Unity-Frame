@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: AlchemicalWorkshop_Level_01
       objectReference: {fileID: 0}
+    - target: {fileID: 7667345093479001797, guid: 7e4238f77770cd8459c5f6c878e1e81d, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

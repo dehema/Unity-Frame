@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TownHall_Level_01
       objectReference: {fileID: 0}
+    - target: {fileID: 260842976351086580, guid: 0f5faf017c8a2bb48828a58b4725f055, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 636524746959207758, guid: 0f5faf017c8a2bb48828a58b4725f055, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

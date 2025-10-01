@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ArcherCamp_Level_02
       objectReference: {fileID: 0}
+    - target: {fileID: 7085209854749334164, guid: a308efda1ecd6654c962fe93a1336b3f, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 7572917665910358062, guid: a308efda1ecd6654c962fe93a1336b3f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

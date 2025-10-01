@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MagicTower_Level_02
       objectReference: {fileID: 0}
+    - target: {fileID: 2654216113180444478, guid: adbeecdaea631bf49a579f4b9c0eefef, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 3431316110619532676, guid: adbeecdaea631bf49a579f4b9c0eefef, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

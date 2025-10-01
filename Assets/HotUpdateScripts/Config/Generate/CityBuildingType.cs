@@ -52,6 +52,10 @@ namespace Rain.Core
         /// 魔法塔
         /// </summary>
         MagicTower = 9,
+        /// <summary>
+        /// 防御塔
+        /// </summary>
+        DefenseTower = 10,
     }
 
 } 

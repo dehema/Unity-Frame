@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CavalryCamp_Level_02
       objectReference: {fileID: 0}
+    - target: {fileID: 7830818120142931704, guid: 1608c4d45782f864eae4f760320d3c43, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

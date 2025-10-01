@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HandwritingWorkshop_Level_01
       objectReference: {fileID: 0}
+    - target: {fileID: 6174184246822190305, guid: 7142cb94d8fe4cb468f986edd871d8a4, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 6837813818888185435, guid: 7142cb94d8fe4cb468f986edd871d8a4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

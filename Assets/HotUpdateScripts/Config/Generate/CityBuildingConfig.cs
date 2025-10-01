@@ -23,6 +23,10 @@ public sealed partial class CityBuildingConfig : Luban.BeanBase
         { if(!_buf["desc"].IsString) { throw new SerializationException(); }  Desc = _buf["desc"]; }
         { if(!_buf["slot"].IsNumber) { throw new SerializationException(); }  Slot = _buf["slot"]; }
         { if(!_buf["maxLevel"].IsNumber) { throw new SerializationException(); }  MaxLevel = _buf["maxLevel"]; }
+        { if(!_buf["BuildingModel"].IsString) { throw new SerializationException(); }  BuildingModel = _buf["BuildingModel"]; }
+        { if(!_buf["PlotModel"].IsString) { throw new SerializationException(); }  PlotModel = _buf["PlotModel"]; }
+        { if(!_buf["constructionModel"].IsString) { throw new SerializationException(); }  ConstructionModel = _buf["constructionModel"]; }
+        { if(!_buf["scale"].IsNumber) { throw new SerializationException(); }  Scale = _buf["scale"]; }
     }
 
     public static CityBuildingConfig DeserializeCityBuildingConfig(JSONNode _buf)
@@ -48,6 +52,22 @@ public sealed partial class CityBuildingConfig : Luban.BeanBase
     /// </summary>
     public readonly int Slot;
     public readonly int MaxLevel;
+    /// <summary>
+    /// 建筑模型
+    /// </summary>
+    public readonly string BuildingModel;
+    /// <summary>
+    /// 空地模型
+    /// </summary>
+    public readonly string PlotModel;
+    /// <summary>
+    /// 建造中模型路径
+    /// </summary>
+    public readonly string ConstructionModel;
+    /// <summary>
+    /// 缩放
+    /// </summary>
+    public readonly float Scale;
    
     public const int __ID__ = 215577985;
     public override int GetTypeId() => __ID__;
@@ -65,6 +85,10 @@ public sealed partial class CityBuildingConfig : Luban.BeanBase
         + "desc:" + Desc + ","
         + "slot:" + Slot + ","
         + "maxLevel:" + MaxLevel + ","
+        + "BuildingModel:" + BuildingModel + ","
+        + "PlotModel:" + PlotModel + ","
+        + "constructionModel:" + ConstructionModel + ","
+        + "scale:" + Scale + ","
         + "}";
     }
 }

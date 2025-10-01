@@ -52,6 +52,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: MagicTower_Yellow
       objectReference: {fileID: 0}
+    - target: {fileID: 595098280085814043, guid: 06ab5aace2019ff408a842bbd8df6e07, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1249837406631470183, guid: 06ab5aace2019ff408a842bbd8df6e07, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7009032236777495320, guid: 06ab5aace2019ff408a842bbd8df6e07, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8246581169937829739, guid: 06ab5aace2019ff408a842bbd8df6e07, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

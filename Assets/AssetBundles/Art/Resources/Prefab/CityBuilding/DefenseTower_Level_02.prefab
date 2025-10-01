@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DefenseTower_Level_02
       objectReference: {fileID: 0}
+    - target: {fileID: 8692498158035611002, guid: 8363c3614f76af240a316e0b33341b83, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

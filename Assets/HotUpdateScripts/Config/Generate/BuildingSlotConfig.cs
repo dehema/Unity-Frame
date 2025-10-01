@@ -21,9 +21,10 @@ public sealed partial class BuildingSlotConfig : Luban.BeanBase
         { if(!_buf["posX"].IsNumber) { throw new SerializationException(); }  PosX = _buf["posX"]; }
         { if(!_buf["posY"].IsNumber) { throw new SerializationException(); }  PosY = _buf["posY"]; }
         { if(!_buf["posZ"].IsNumber) { throw new SerializationException(); }  PosZ = _buf["posZ"]; }
-        { if(!_buf["RotationY"].IsNumber) { throw new SerializationException(); }  RotationY = _buf["RotationY"]; }
+        { if(!_buf["rotY"].IsNumber) { throw new SerializationException(); }  RotY = _buf["rotY"]; }
         { if(!_buf["IsLocked"].IsBoolean) { throw new SerializationException(); }  IsLocked = _buf["IsLocked"]; }
         { var __json0 = _buf["UnlockCondition"]; if(!__json0.IsArray) { throw new SerializationException(); } UnlockCondition = new System.Collections.Generic.Dictionary<CityBuildingType, int>(__json0.Count); foreach(JSONNode __e0 in __json0.Children) { CityBuildingType _k0;  { if(!__e0[0].IsNumber) { throw new SerializationException(); }  _k0 = (CityBuildingType)__e0[0].AsInt; } int _v0;  { if(!__e0[1].IsNumber) { throw new SerializationException(); }  _v0 = __e0[1]; }  UnlockCondition.Add(_k0, _v0); }   }
+        { if(!_buf["buildingType"].IsNumber) { throw new SerializationException(); }  BuildingType = (CityBuildingType)_buf["buildingType"].AsInt; }
     }
 
     public static BuildingSlotConfig DeserializeBuildingSlotConfig(JSONNode _buf)
@@ -31,13 +32,38 @@ public sealed partial class BuildingSlotConfig : Luban.BeanBase
         return new BuildingSlotConfig(_buf);
     }
 
+    /// <summary>
+    /// 建筑槽
+    /// </summary>
     public readonly int SlotID;
+    /// <summary>
+    /// 坐标
+    /// </summary>
     public readonly float PosX;
+    /// <summary>
+    /// 坐标
+    /// </summary>
     public readonly float PosY;
+    /// <summary>
+    /// 坐标
+    /// </summary>
     public readonly float PosZ;
-    public readonly float RotationY;
+    /// <summary>
+    /// 角度
+    /// </summary>
+    public readonly float RotY;
+    /// <summary>
+    /// 锁定
+    /// </summary>
     public readonly bool IsLocked;
+    /// <summary>
+    /// 解锁
+    /// </summary>
     public readonly System.Collections.Generic.Dictionary<CityBuildingType, int> UnlockCondition;
+    /// <summary>
+    /// 建筑类型
+    /// </summary>
+    public readonly CityBuildingType BuildingType;
    
     public const int __ID__ = 2040872148;
     public override int GetTypeId() => __ID__;
@@ -53,9 +79,10 @@ public sealed partial class BuildingSlotConfig : Luban.BeanBase
         + "posX:" + PosX + ","
         + "posY:" + PosY + ","
         + "posZ:" + PosZ + ","
-        + "RotationY:" + RotationY + ","
+        + "rotY:" + RotY + ","
         + "IsLocked:" + IsLocked + ","
         + "UnlockCondition:" + Luban.StringUtil.CollectionToString(UnlockCondition) + ","
+        + "buildingType:" + BuildingType + ","
         + "}";
     }
 }

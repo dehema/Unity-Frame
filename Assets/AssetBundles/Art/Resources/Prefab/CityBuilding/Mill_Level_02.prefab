@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mill_Level_02
       objectReference: {fileID: 0}
+    - target: {fileID: 3730958497275713619, guid: c9062b5b24d17e8489c4ffed3c0f61e0, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 4074867405294682857, guid: c9062b5b24d17e8489c4ffed3c0f61e0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

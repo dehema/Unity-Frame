@@ -25,6 +25,9 @@ public class ConfigMgr : MonoSingleton<ConfigMgr>
     public static TbDeployFormation DeployFormation => cfg.TbDeployFormation;
     public static TbTech Tech => cfg.TbTech;
     public static TbTechCategory TechCategory => cfg.TbTechCategory;
+    public static TbCityBuilding CityBuilding => cfg.TbCityBuilding;
+    public static TbCityBuildingLevel CityBuildingLevel => cfg.TbCityBuildingLevel;
+    public static TbCityBuildingSlot CityBuildingSlot => cfg.TbCityBuildingSlot;
 
 
 
