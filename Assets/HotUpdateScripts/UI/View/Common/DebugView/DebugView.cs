@@ -23,6 +23,8 @@ public partial class DebugView : BaseView
         });
         ui.tdScene_Button.SetButton(() => { ChangeScene(SceneID.TD); });
         ui.rtsUnitTest_Button.SetButton(() => { ChangeScene(SceneID.RTSUnitDummyTest); });
+        ui.btLoadPlayerData_Button.SetButton(() => { DataMgr.Ins.LoadPlayerData(); });
+        ui.btSavePlayerData_Button.SetButton(() => { DataMgr.Ins.SavePlayerData(); });
     }
 
     private void ChangeScene(SceneID _sceneID, Action _cb = null)

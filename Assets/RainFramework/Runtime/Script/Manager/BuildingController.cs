@@ -191,8 +191,6 @@ public class BuildingController : MonoBehaviour
         return CityMgr.Ins.GetBuildingModelPath(buildingConfig.PlotModel);
     }
 
-    // 取消悬停事件
-
     /// <summary>
     /// 鼠标点击事件
     /// </summary>

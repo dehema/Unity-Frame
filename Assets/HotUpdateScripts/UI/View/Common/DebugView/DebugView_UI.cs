@@ -27,6 +27,10 @@ public partial class DebugView : Rain.UI.BaseView
         [SerializeField] public Button tdScene_Button;
         [SerializeField] public GameObject rtsUnitTest;
         [SerializeField] public Button rtsUnitTest_Button;
+        [SerializeField] public GameObject btLoadPlayerData;
+        [SerializeField] public Button btLoadPlayerData_Button;
+        [SerializeField] public GameObject btSavePlayerData;
+        [SerializeField] public Button btSavePlayerData_Button;
     }
 
     [Header("自动序列化组件")]

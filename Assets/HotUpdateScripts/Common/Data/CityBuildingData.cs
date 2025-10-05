@@ -15,14 +15,14 @@ public class CityBuildingData : DBClass
     public string InstanceID;
 
     /// <summary>
-    /// 建筑配置ID
-    /// </summary>
-    public CityBuildingType BuildingType;
-
-    /// <summary>
     /// 槽位ID
     /// </summary>
     public int SlotID;
+
+    /// <summary>
+    /// 建筑配置ID
+    /// </summary>
+    public CityBuildingType BuildingType;
 
     /// <summary>
     /// 当前等级
@@ -45,21 +45,6 @@ public class CityBuildingData : DBClass
     public BuildingState State = BuildingState.Empty;
 
     /// <summary>
-    /// 建筑位置
-    /// </summary>
-    public Vector3 Pos;
-
-    /// <summary>
-    /// 建筑旋转
-    /// </summary>
-    public float RotY;
-
-    /// <summary>
-    /// 缩放值
-    /// </summary>
-    public float Scale;
-
-    /// <summary>
     /// 是否已解锁
     /// </summary>
     public bool IsUnlocked;
@@ -74,6 +59,12 @@ public class CityBuildingData : DBClass
     /// </summary>
     [NonSerialized]
     public GameObject BuildingObject;
+
+    public CityBuildingData()
+    {
+        InstanceID = Guid.NewGuid().ToString();
+        Level = new DBInt(0);
+    }
 
     /// <summary>
     /// 是否正在建造中

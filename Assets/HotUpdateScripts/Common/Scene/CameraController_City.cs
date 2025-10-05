@@ -126,10 +126,16 @@ public class CameraController_City : MonoBehaviour
         HandleTouchZoom();
 
         // 平滑过渡到目标正交尺寸
-        if (mainCamera.orthographicSize != targetOrthographicSize)
+        float sizeDifference = Mathf.Abs(mainCamera.orthographicSize - targetOrthographicSize);
+        if (sizeDifference > 0.01f) // 当差值大于0.01时才继续插值
         {
             mainCamera.orthographicSize = Mathf.Lerp(mainCamera.orthographicSize, targetOrthographicSize, Time.deltaTime * ZoomDampening);
             MsgMgr.Ins.DispatchEvent(MsgEvent.CameraZoomRatioChange, ZoomDefaultSize - mainCamera.orthographicSize);
+        }
+        else
+        {
+            // 当差值很小时，直接设置为目标值，避免无限插值
+            mainCamera.orthographicSize = targetOrthographicSize;
         }
     }
 
@@ -219,11 +225,18 @@ public class CameraController_City : MonoBehaviour
         HandleTouchPanning();
 
 		// 平滑过渡到目标位置（应用边界限制）
-		if (mainCamera.transform.position != targetPosition)
+		Vector3 positionDifference = mainCamera.transform.position - targetPosition;
+		float distance = positionDifference.magnitude;
+		if (distance > 0.01f) // 当距离大于0.01时才继续插值
 		{
 			// 先对目标位置进行边界限制
 			targetPosition = ClampPosition(targetPosition);
 			mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, targetPosition, Time.deltaTime * PanDampening);
+		}
+		else
+		{
+			// 当距离很小时，直接设置为目标位置，避免无限插值
+			mainCamera.transform.position = targetPosition;
 		}
     }
 

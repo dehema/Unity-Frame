@@ -44,7 +44,6 @@ public class CityMgr : MonoSingleton<CityMgr>
     public void Init()
     {
         LoadBuildingSlots();
-        InitBuildingData();
     }
 
     /// <summary>
@@ -53,7 +52,6 @@ public class CityMgr : MonoSingleton<CityMgr>
     private void LoadBuildingSlots()
     {
         BuildingSlots.Clear();
-
         foreach (BuildingSlotConfig slot in ConfigMgr.CityBuildingSlot.DataList)
         {
             if (slot.IsLocked)
@@ -62,28 +60,7 @@ public class CityMgr : MonoSingleton<CityMgr>
             }
             BuildingSlots[slot.SlotID] = slot;
         }
-
         Debug.Log($"加载了 {BuildingSlots.Count} 个建筑槽位");
-    }
-
-    /// <summary>
-    /// 加载现有建筑数据
-    /// </summary>
-    private void InitBuildingData()
-    {
-        foreach (var item in buildingSlots)
-        {
-            BuildingSlotConfig slotConfig = item.Value;
-            CityBuildingConfig buildingConifg = GetCityBuildingConfig(slotConfig.BuildingType);
-            CityBuildingData data = new CityBuildingData();
-            data.InstanceID = Guid.NewGuid().ToString();
-            data.BuildingType = slotConfig.BuildingType;
-            data.SlotID = slotConfig.SlotID;
-            data.Level = new DBInt(0);
-            data.Pos = new Vector3(slotConfig.PosX, slotConfig.PosY, slotConfig.PosZ);
-            data.RotY = slotConfig.RotY;
-            data.Scale = buildingConifg.Scale;
-        }
     }
 
     /// <summary>

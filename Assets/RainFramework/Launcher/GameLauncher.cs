@@ -47,14 +47,16 @@ namespace Rain.Launcher
             RA.Log = ModuleCenter.CreateModule<LogMgr>();
             LogMgr.Ins.OnEnterGame();
 
+            // 游戏初始化
             ConfigMgr.Ins.Init();
             ConfigMgr.Ins.LoadAllConfig();
             DataMgr.Ins.Load();
+            DataMgr.Ins.playerData.cityBuildings[1].Level.Value = 1;
             LangMgr.Ins.Init();
             UIMgr.Ins.Init(ConfigMgr.Ins.UIViewConfig);
             CityMgr.Ins.Init();
-            // 游戏初始化逻辑...
 
+            //开启游戏
             StartGame();
             yield break;
         }

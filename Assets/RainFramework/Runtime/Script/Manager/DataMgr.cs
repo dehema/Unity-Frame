@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Rain.Core;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 public class DataMgr : ModuleSingleton<DataMgr>, IModule
 {
@@ -23,20 +24,7 @@ public class DataMgr : ModuleSingleton<DataMgr>, IModule
         {
             return;
         }
-        //玩家数据
-        playerData = new PlayerData();
-        string playerDataStr = PlayerPrefs.GetString(SaveField.playerData);
-        if (string.IsNullOrEmpty(playerDataStr))
-        {
-            playerData.playerName.Value = "dehema";
-            SavePlayerData();
-        }
-        else
-        {
-            Dictionary<string, object> dict = JsonConvert.DeserializeObject<Dictionary<string, object>>(playerDataStr);
-            Debug.Log("-------------------------------玩家数据--------------------------------");
-            playerData.SetVal(dict);
-        }
+        LoadPlayerData();
         InitGameData();
         //设置
         settingData = JsonConvert.DeserializeObject<SettingData>(PlayerPrefs.GetString(SaveField.settingData));
@@ -78,6 +66,52 @@ public class DataMgr : ModuleSingleton<DataMgr>, IModule
     }
 
     /// <summary>
+    /// 读取玩家数据
+    /// </summary>
+    public void LoadPlayerData()
+    {
+        //玩家数据
+        playerData = new PlayerData();
+        InitPlayerData();
+        SavePlayerData();
+    }
+
+    /// <summary>
+    /// 初始化玩家数据
+    /// </summary>
+    private void InitPlayerData()
+    {
+        string playerDataStr = PlayerPrefs.GetString(SaveField.playerData);
+        //读取玩家数据
+        if (!string.IsNullOrEmpty(playerDataStr))
+        {
+            Dictionary<string, object> dict = JsonConvert.DeserializeObject<Dictionary<string, object>>(playerDataStr);
+            playerData.SetVal(dict);
+        }
+
+        //科技
+        foreach (var item in ConfigMgr.Tech.DataMap)
+        {
+            if (!playerData.techs.ContainsKey(item.Key))
+            {
+                playerData.techs.Add(item.Key, new TechData(item.Key));
+            }
+        }
+        //建筑
+        foreach (var item in ConfigMgr.CityBuildingSlot.DataMap)
+        {
+            if (!playerData.cityBuildings.ContainsKey(item.Key))
+            {
+                CityBuildingData newData = new CityBuildingData();
+                newData.SlotID = item.Key;
+                newData.BuildingType = item.Value.BuildingType;
+                newData.State = BuildingState.Empty;
+                playerData.cityBuildings.Add(item.Key, new CityBuildingData());
+            }
+        }
+    }
+
+    /// <summary>
     /// 保存玩家数据（属性数值）
     /// </summary>
     public void SavePlayerData()
@@ -102,14 +136,6 @@ public class DataMgr : ModuleSingleton<DataMgr>, IModule
     public void Login()
     {
         SaveGameData();
-    }
-
-    /// <summary>
-    /// 新的登录日
-    /// </summary>
-    public void NewDay()
-    {
-
     }
 
     /// <summary>

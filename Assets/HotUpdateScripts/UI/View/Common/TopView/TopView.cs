@@ -9,7 +9,7 @@ public partial class TopView : BaseView
     //data
     bool isShow = true;
     const float showDuration = 0.5f;
-    int oldGold = 0;
+    long oldGold = 0;
     int oldExp = 0;
 
     public override void Init(IViewParam viewParams = null)

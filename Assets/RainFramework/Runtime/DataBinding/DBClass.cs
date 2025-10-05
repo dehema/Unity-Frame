@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace Rain.Core
@@ -27,12 +29,22 @@ namespace Rain.Core
                 if (_value == null)
                 {
                     this._value = new Dictionary<string, DBObject>();
-                    foreach (var field in this.GetType().GetFields())
+                    foreach (var item in _field)
                     {
+                        var field = item.Value;
                         var value = field.GetValue(this) as DBObject;
-                        if (value != null)
+                        if (field.GetValue(this) is DBObject)
                         {
                             this._value.Add(field.Name, value);
+                        }
+                        else if (field.FieldType.IsGenericType && field.FieldType.GetGenericTypeDefinition() == typeof(Dictionary<,>))// 获取字典值的类型
+                        {
+                            var valueType = field.FieldType.GetGenericArguments()[1];
+                            if (valueType.IsSubclassOf(typeof(DBClass)))
+                            {
+                                // 字典值继承自DBClass
+                                this._value.Add(field.Name, value);
+                            }
                         }
                     }
                 }
@@ -73,6 +85,10 @@ namespace Rain.Core
                 else if (field.FieldType == typeof(float))
                 {
                     this._fieldType[field.Name] = MemberType.Float;
+                }
+                else
+                {
+                    this._fieldType[field.Name] = MemberType.DBObject;
                 }
 
                 _field.Add(field.Name, field);

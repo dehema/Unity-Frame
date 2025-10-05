@@ -36,22 +36,7 @@ public partial class TechRoot : BaseUI
 
     TechState RefreshTechState()
     {
-        if (DataMgr.Ins.playerData.techs.Contains(TechConfig.TechID))
-        {
-            return TechState.Studied;
-        }
-        if (TechConfig.TechLevel == 1)
-        {
-            techState = TechState.CanStudy; ;
-        }
-        foreach (string _techID in TechConfig.PreTechs)
-        {
-            if (!DataMgr.Ins.playerData.techs.Contains(_techID))
-            {
-                return TechState.Lock;
-            }
-        }
-        return TechState.CanStudy;
+        return PlayerMgr.Ins.GetTechState(TechConfig.TechID);
     }
 
     /// <summary>
@@ -60,13 +45,6 @@ public partial class TechRoot : BaseUI
     void OnClickDetail()
     {
         UIMgr.Ins.OpenView<TechDetailView>();
-    }
-
-    enum TechState
-    {
-        Lock,       //未解锁
-        Studied,    //已经研究
-        CanStudy,   //可研究
     }
 
     public class TechRootData
