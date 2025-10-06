@@ -2,7 +2,7 @@
 
 namespace Rain.Core
 {
-    
+
     // 用户信息，登录回调中使用
     public class UserInfo
     {
@@ -10,7 +10,7 @@ namespace Rain.Core
         public string userName;
         public string token;
     }
-    
+
     // 支付信息，支付回调中使用
     public class PayResult
     {
@@ -18,7 +18,7 @@ namespace Rain.Core
         public string cpOrderId;
         public string extraParam;
     }
-    
+
     /// <summary>
     /// 管理SDK的模块
     /// </summary>
@@ -38,22 +38,22 @@ namespace Rain.Core
         /// <param name="createParam">创建参数</param>
         public void OnInit(object createParam)
         {
-            
+
         }
 
         public void OnUpdate()
         {
-            
+
         }
 
         public void OnLateUpdate()
         {
-            
+
         }
 
         public void OnFixedUpdate()
         {
-            
+
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace Rain.Core
         {
             Destroy(gameObject);
         }
-        
+
 
         /// <summary>
         /// 启动SDK
@@ -123,7 +123,7 @@ namespace Rain.Core
             if (sdk == null) return;
             sdk.SwitchAccount();
         }
-        
+
         /// <summary>
         /// 加载视频广告
         /// </summary>
@@ -132,7 +132,7 @@ namespace Rain.Core
             if (sdk == null) return;
             sdk.LoadVideoAd(id, userId);
         }
-        
+
         /// <summary>
         /// 播放视频广告
         /// </summary>
@@ -141,7 +141,7 @@ namespace Rain.Core
             if (sdk == null) return;
             sdk.ShowVideoAd(id, userId);
         }
-        
+
         /// <summary>
         /// 使用SDK进行付费
         /// </summary>
@@ -152,7 +152,7 @@ namespace Rain.Core
             sdk.Pay(serverNum, serverName, playerId, playerName, amount, extra, orderId,
                 productName, productContent, playerLevel, sign, guid);
         }
-        
+
         /// <summary>
         /// 更新角色信息
         /// </summary>
@@ -162,7 +162,7 @@ namespace Rain.Core
             if (sdk == null) return;
             sdk.UpdateRole(scenes, serverId, serverName, roleId, roleName, roleLeve, roleCTime, rolePower, guid);
         }
-        
+
         /// <summary>
         /// SDK退出游戏
         /// </summary>
@@ -171,7 +171,7 @@ namespace Rain.Core
             if (sdk == null) return;
             sdk.ExitGame();
         }
-        
+
         /// <summary>
         /// 原生提示
         /// </summary>
@@ -180,10 +180,10 @@ namespace Rain.Core
             if (sdk == null) return;
             sdk.Toast(msg);
         }
-        
-        
+
+
         /*----------------------------------------以下回调使用UnitySendMessage接收----------------------------------------*/
-        
+
         /// <summary>
         /// SDK初始化成功回调
         /// </summary>
@@ -191,7 +191,7 @@ namespace Rain.Core
         public void OnInitSuccess(string msg)
         {
             RLog.LogSDK("OnInitSuccess：" + msg);
-            
+
             MsgMgr.Ins.DispatchEvent(MsgEvent.SDKOnInitSuccess);
         }
 
@@ -202,7 +202,7 @@ namespace Rain.Core
         public void OnInitFail(string msg)
         {
             RLog.LogSDK("OnInitFail：" + msg);
-            
+
             MsgMgr.Ins.DispatchEvent(MsgEvent.SDKOnInitFail);
         }
 
@@ -217,12 +217,12 @@ namespace Rain.Core
             this.userId = userInfo.userId;
             this.userName = userInfo.userName;
             this.token = userInfo.token;
-            
+
             RLog.LogSDK("OnLoginSuccess：" + this.userId);
-            
+
             MsgMgr.Ins.DispatchEvent(MsgEvent.SDKOnLoginSuccess);
         }
-        
+
         /// <summary>
         /// 登录失败回调
         /// </summary>
@@ -230,10 +230,10 @@ namespace Rain.Core
         public void OnLoginFail(string msg)
         {
             RLog.LogSDK("OnLoginFail：" + msg);
-            
+
             MsgMgr.Ins.DispatchEvent(MsgEvent.SDKOnLoginFail);
         }
-        
+
         /// <summary>
         /// 切换账号成功回调
         /// </summary>
@@ -245,7 +245,7 @@ namespace Rain.Core
             this.userId = userInfo.userId;
             this.userName = userInfo.userName;
             this.token = userInfo.token;
-            
+
             MsgMgr.Ins.DispatchEvent(MsgEvent.SDKOnSwitchAccountSuccess);
         }
 
@@ -256,10 +256,10 @@ namespace Rain.Core
         public void OnLogoutSuccess(string msg)
         {
             RLog.LogSDK("OnLogoutSuccess：" + msg);
-            
+
             MsgMgr.Ins.DispatchEvent(MsgEvent.SDKOnLogoutSuccess);
         }
-        
+
         /// <summary>
         /// 支付成功回调
         /// </summary>
@@ -267,10 +267,10 @@ namespace Rain.Core
         public void OnPaySuccess(string jsonString)
         {
             PayResult payInfo = JsonUtility.FromJson<PayResult>(jsonString);
-            
+
             RLog.LogSDK("OnLoginSuccess：" + payInfo.orderId);
             RLog.LogSDK("OnLoginSuccess：" + payInfo.cpOrderId);
-            
+
             MsgMgr.Ins.DispatchEvent(MsgEvent.SDKOnPaySuccess);
         }
 

@@ -8,8 +8,25 @@ using UnityEngine;
 /// </summary>
 public partial class #ViewName# : BaseView
 {
-
-    public class #ViewName#Param : IViewParam
+    #ViewName#Param param;
+    public override void Init(IViewParam _viewParams = null)
     {
+        base.Init(_viewParams);
+        param = _viewParams as #ViewName#Param;
     }
+
+    public override void OnOpen(IViewParam _viewParams = null)
+    {
+        base.OnOpen(_viewParams);
+    }
+
+    public override void OnClose(Action _cb)
+    {
+        base.OnClose(_cb);
+    }
+}
+
+public class #ViewName#Param : IViewParam
+{
+
 }

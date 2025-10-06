@@ -119,6 +119,14 @@ public class ViewName
     /// </summary>
 	public const string MainView = "MainView";
     /// <summary>
+    /// 城市建筑详情
+    /// </summary>
+	public const string CityBuildingDetailView = "CityBuildingDetailView";
+    /// <summary>
+    /// 城市建筑升级
+    /// </summary>
+	public const string CityBuildingUpgradeView = "CityBuildingUpgradeView";
+    /// <summary>
     /// RTS单位
     /// </summary>
 	public const string RTSUnitTestView = "RTSUnitTestView";

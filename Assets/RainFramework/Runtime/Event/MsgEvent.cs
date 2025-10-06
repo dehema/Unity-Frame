@@ -2,12 +2,12 @@ namespace Rain.Core
 {
     public enum MsgEvent
     {
-        // ¿ò¼ÜÊÂ¼ş£¬10000Æğ²½
         Empty = 10000,
-        ApplicationFocus = 10001, // ÓÎÏ·¶Ô½¹
-        NotApplicationFocus = 10002, // ÓÎÏ·Ê§½¹
-        ApplicationQuit = 10003, // ÓÎÏ·ÍË³ö
-        // SDK»Øµ÷ĞÅÏ¢
+        ApplicationFocus = 10001,       // æ¸¸æˆè·ç„¦
+        NotApplicationFocus = 10002,    // æ¸¸æˆå¤±ç„¦
+        ApplicationQuit = 10003,        // æ¸¸æˆé€€å‡º
+
+        // SDK
         SDKOnInitSuccess = 10004,
         SDKOnInitFail = 10005,
         SDKOnLoginSuccess = 10006,
@@ -21,23 +21,24 @@ namespace Rain.Core
 
         //RTS
         RTSBattleStart,
-        RTSBattleUnitDie,       //µ¥Î»ËÀÍö
+        RTSBattleUnitDie,               //RTSå•ä½æ­»äº¡
         RTSBattleUnitAdd,
         RTSBattleUnitRemove,
         RTSBattleUnitMove,
         RTSBattleEnd,
+        RTSUnitHPChange,                //RTSå•ä½è¡€é‡å˜åŒ–
 
-        //RTS µ¥Î»
-        RTSUnitHPChange,
+        //é•œå¤´
+        CameraZoomIn,                   //é•œå¤´æ”¾å¤§
+        CameraZoomOut,                  //é•œå¤´ç¼©å°
+        CameraZoomRatioChange,          //é•œå¤´å€ç‡è°ƒæ•´
 
-        //Êó±ê
-        CameraZoomingIn,        //ÊÓ½Ç·Å´ó
-        CameraZoomingOut,       //ÊÓ½ÇËõĞ¡
-        CameraZoomRatioChange,  //Ïà»úËõ·Å±¶ÂÊ¸Ä±ä
+        //åœºæ™¯
+        SceneLoaded,                    //åœºæ™¯åŠ è½½
+        SceneUnload,                    //åœºæ™¯å¸è½½
 
-        //³¡¾°
-        SceneLoaded,            //³¡¾°¼ÓÔØ
-        SceneUnload,            //³¡¾°Ğ¶ÔØ
+        //UIäº‹ä»¶
+        SelectCityBuilding,     //æ‰“å¼€åŸå¸‚å»ºç­‘è¯¦æƒ…ç•Œé¢
     }
 }
 

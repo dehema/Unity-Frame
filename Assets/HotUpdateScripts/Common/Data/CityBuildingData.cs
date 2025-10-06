@@ -84,17 +84,23 @@ public class CityBuildingData : DBClass
     /// <summary>
     /// 获取建筑配置
     /// </summary>
-    public CityBuildingConfig GetConfig()
+    public CityBuildingConfig BuildingConfig
     {
-        return ConfigMgr.CityBuilding.Get(BuildingType);
+        get
+        {
+            return ConfigMgr.CityBuilding.Get(BuildingType);
+        }
     }
 
     /// <summary>
     /// 获取槽位配置
     /// </summary>
-    public BuildingSlotConfig GetSlotConfig()
+    public BuildingSlotConfig SlotConfig
     {
-        return ConfigMgr.CityBuildingSlot.Get(SlotID);
+        get
+        {
+            return ConfigMgr.CityBuildingSlot.Get(SlotID);
+        }
     }
 
     /// <summary>

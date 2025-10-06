@@ -2,6 +2,7 @@ using UnityEngine;
 using Rain.Core;
 using System.Collections.Generic;
 using UnityEngine.Events;
+using Rain.UI;
 
 /// <summary>
 /// 建筑控制器 - 控制单个建筑的行为和显示
@@ -12,14 +13,11 @@ public class BuildingController : MonoBehaviour
     private GameObject currentModelInstance;
     private string currentModelPath;
     private int slotID;
-    private BuildingSlotConfig slotConfig;
-    private CityBuildingConfig buildingConfig;
-
-    public BuildingSlotConfig SlotConfig { get => slotConfig; set => slotConfig = value; }
-    public CityBuildingConfig BuildingConfig { get => buildingConfig; set => buildingConfig = value; }
 
     // 建筑数据
     public CityBuildingData BuildingData { get; private set; }
+    public BuildingSlotConfig SlotConfig => BuildingData.SlotConfig;
+    public CityBuildingConfig BuildingConfig => BuildingData.BuildingConfig;
 
     // 组件引用
     private Collider buildingCollider;
@@ -52,7 +50,7 @@ public class BuildingController : MonoBehaviour
     /// <summary>
     /// 初始化建筑
     /// </summary>
-    public void Initialize(CityBuildingData buildingData)
+    public void Init(CityBuildingData buildingData)
     {
         BuildingData = buildingData;
         UpdateBuildingVisuals();
@@ -138,7 +136,7 @@ public class BuildingController : MonoBehaviour
     {
         if (BuildingData == null) return "无建筑数据";
 
-        var config = BuildingData.GetConfig();
+        var config = BuildingData.BuildingConfig;
         if (config == null) return "无建筑配置";
 
         string info = $"建筑: {config.BuildingName}\n";
@@ -176,19 +174,19 @@ public class BuildingController : MonoBehaviour
         {
             case BuildingState.Empty:
             case BuildingState.Destroyed:
-                modelName = buildingConfig.PlotModel;
+                modelName = BuildingConfig.PlotModel;
                 break;
             case BuildingState.Building:
             case BuildingState.Upgrading:
-                modelName = buildingConfig.ConstructionModel;
+                modelName = BuildingConfig.ConstructionModel;
                 break;
             case BuildingState.Completed:
             case BuildingState.Damaged:
             default:
-                modelName = buildingConfig.BuildingModel;
+                modelName = BuildingConfig.BuildingModel;
                 break;
         }
-        return CityMgr.Ins.GetBuildingModelPath(buildingConfig.PlotModel);
+        return CityMgr.Ins.GetBuildingModelPath(BuildingConfig.PlotModel);
     }
 
     /// <summary>

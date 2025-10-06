@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Rain.Core;
+using Rain.UI;
 
 /// <summary>
 /// 城镇管理器 - 管理SLG游戏的城镇建筑系统
@@ -111,8 +112,11 @@ public class CityMgr : MonoSingleton<CityMgr>
     public void SelectBuilding(CityBuildingData building)
     {
         selectedBuilding = building;
-        CityBuildingConfig config = building.GetConfig();
+        CityBuildingConfig config = building.BuildingConfig;
         Debug.Log($"选中建筑: {config.BuildingName}");
+
+        // 使用事件系统，避免程序集依赖
+        MsgMgr.Ins.DispatchEvent(MsgEvent.SelectCityBuilding, building);
     }
 
     /// <summary>
@@ -206,7 +210,7 @@ public class CityMgr : MonoSingleton<CityMgr>
             return false;
         }
 
-        var config = building.GetConfig();
+        var config = building.BuildingConfig;
         if (building.Level.Value >= config.MaxLevel)
         {
             Debug.LogWarning("建筑已达到最大等级");
@@ -241,14 +245,14 @@ public class CityMgr : MonoSingleton<CityMgr>
         {
             building.State = BuildingState.Completed;
             OnBuildingCompleted?.Invoke(building);
-            Debug.Log($"建筑建造完成: {building.GetConfig()?.BuildingName}");
+            Debug.Log($"建筑建造完成: {building.BuildingConfig.BuildingName}");
         }
         else if (building.IsUpgrading)
         {
             building.Level.Value++;
             building.State = BuildingState.Completed;
             OnBuildingUpgraded?.Invoke(building);
-            Debug.Log($"建筑升级完成: {building.GetConfig()?.BuildingName} 到等级 {building.Level}");
+            Debug.Log($"建筑升级完成: {building.BuildingConfig.BuildingName} 到等级 {building.Level}");
         }
 
         // 更新建筑对象
@@ -260,7 +264,7 @@ public class CityMgr : MonoSingleton<CityMgr>
     /// </summary>
     private void CreateBuildingObject(CityBuildingData building)
     {
-        var config = building.GetConfig();
+        var config = building.BuildingConfig;
         if (config == null) return;
 
         // 加载建筑模型

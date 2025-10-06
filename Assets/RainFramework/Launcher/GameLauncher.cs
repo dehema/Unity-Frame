@@ -51,8 +51,6 @@ namespace Rain.Launcher
             ConfigMgr.Ins.Init();
             ConfigMgr.Ins.LoadAllConfig();
             DataMgr.Ins.Load();
-            CityBuildingData cityBuildingData = DataMgr.Ins.playerData.cityBuildings[1];
-            cityBuildingData.Level.Value = 2;
             LangMgr.Ins.Init();
             UIMgr.Ins.Init(ConfigMgr.Ins.UIViewConfig);
             CityMgr.Ins.Init();

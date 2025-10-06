@@ -120,6 +120,16 @@ view:
             comment: 主UI
             layer: NormalLayer
             hasBg: false
+        CityBuildingDetailView:
+            comment: 城市建筑详情
+            layer: DialogLayer
+            hasBg: true
+            bgClose: true
+        CityBuildingUpgradeView:
+            comment: 城市建筑升级
+            layer: DialogLayer
+            hasBg: true
+            bgClose: true
     RTS:
         RTSUnitTestView:
             comment: RTS单位
