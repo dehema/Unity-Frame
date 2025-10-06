@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using Rain.Core;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
 public class DataMgr : ModuleSingleton<DataMgr>, IModule
 {
@@ -61,8 +60,8 @@ public class DataMgr : ModuleSingleton<DataMgr>, IModule
     /// </summary>
     public void SaveGameData()
     {
-        string data = JsonConvert.SerializeObject(gameData);
-        PlayerPrefs.SetString(SaveField.gameData, data);
+        //string data = gameData.ToString();
+        //PlayerPrefs.SetString(SaveField.gameData, data);
     }
 
     /// <summary>
@@ -89,14 +88,14 @@ public class DataMgr : ModuleSingleton<DataMgr>, IModule
             playerData.SetVal(dict);
         }
 
-        //科技
-        foreach (var item in ConfigMgr.Tech.DataMap)
-        {
-            if (!playerData.techs.ContainsKey(item.Key))
-            {
-                playerData.techs.Add(item.Key, new TechData(item.Key));
-            }
-        }
+        ////科技
+        //foreach (var item in ConfigMgr.Tech.DataMap)
+        //{
+        //    if (!playerData.techs.ContainsKey(item.Key))
+        //    {
+        //        playerData.techs.Add(item.Key, new TechData(item.Key));
+        //    }
+        //}
         //建筑
         foreach (var item in ConfigMgr.CityBuildingSlot.DataMap)
         {
@@ -106,7 +105,7 @@ public class DataMgr : ModuleSingleton<DataMgr>, IModule
                 newData.SlotID = item.Key;
                 newData.BuildingType = item.Value.BuildingType;
                 newData.State = BuildingState.Empty;
-                playerData.cityBuildings.Add(item.Key, new CityBuildingData());
+                playerData.cityBuildings.Add(item.Key, newData);
             }
         }
     }

@@ -18,7 +18,7 @@ namespace Rain.Core
             }
         }
 
-        public object Value
+        public virtual object Value
         {
             get
             {
@@ -116,7 +116,7 @@ namespace Rain.Core
         /// 清除绑定对象
         /// </summary>
         /// <returns></returns>
-        public bool Clear()
+        public virtual bool Clear()
         {
             if (this._active)
             {

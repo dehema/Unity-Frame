@@ -12,6 +12,7 @@ public class TechData : DBClass
     //升级结束时间
     public int levelUpFinishTime;
 
+    public TechData() { }
     public TechData(string _techID)
     {
         techID = _techID;

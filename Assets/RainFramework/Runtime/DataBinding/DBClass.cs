@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using Newtonsoft.Json;
+using YamlDotNet.Core.Tokens;
 
 namespace Rain.Core
 {
@@ -13,15 +15,17 @@ namespace Rain.Core
             Bool,
             Int,
             String,
-            Float
+            Float,
+            DictClass,
+            Enum,
         }
 
         private Dictionary<string, MemberType> _fieldType;
-        protected Dictionary<string, System.Reflection.FieldInfo> _field;
+        protected Dictionary<string, System.Reflection.FieldInfo> _field;//包含所有字段
 
         public Dictionary<string, System.Reflection.FieldInfo> Field { get { return _field; } }
 
-        protected new Dictionary<string, DBObject> _value;
+        protected new Dictionary<string, DBObject> _value;//包含所有DB字段
         public new Dictionary<string, DBObject> Value
         {
             get
@@ -32,20 +36,19 @@ namespace Rain.Core
                     foreach (var item in _field)
                     {
                         var field = item.Value;
-                        var value = field.GetValue(this) as DBObject;
-                        if (field.GetValue(this) is DBObject)
+                        if (field.GetValue(this) is DBObject dbObject)
                         {
-                            this._value.Add(field.Name, value);
+                            this._value.Add(field.Name, dbObject);
                         }
-                        else if (field.FieldType.IsGenericType && field.FieldType.GetGenericTypeDefinition() == typeof(Dictionary<,>))// 获取字典值的类型
-                        {
-                            var valueType = field.FieldType.GetGenericArguments()[1];
-                            if (valueType.IsSubclassOf(typeof(DBClass)))
-                            {
-                                // 字典值继承自DBClass
-                                this._value.Add(field.Name, value);
-                            }
-                        }
+                        //else if (field.FieldType.IsGenericType && field.FieldType.GetGenericTypeDefinition() == typeof(Dictionary<,>))// 获取字典值的类型
+                        //{
+                        //    Type valueType = field.FieldType.GetGenericArguments()[1];
+                        //    if (valueType.IsSubclassOf(typeof(DBClass)))
+                        //    {
+                        //Dictionary<int, DBClass> dbClass = field.GetValue(this) as Dictionary<int, DBClass>;
+                        //this._value.Add(field.Name, dbClass);
+                        //    }
+                        //}
                     }
                 }
                 return _value;
@@ -57,18 +60,17 @@ namespace Rain.Core
             _field = new Dictionary<string, System.Reflection.FieldInfo>();
             _fieldType = new Dictionary<string, MemberType>();
             // 初始化字段, 便于 bind
-            foreach (var field in this.GetType().GetFields())
+            foreach (FieldInfo field in this.GetType().GetFields())
             {
-                if (field.FieldType.IsSubclassOf(typeof(DBObject)))
+                if (field.GetCustomAttribute<NonSerializedAttribute>() != null) //不序列化
+                    continue;
+                if (field.FieldType.IsEnum)
                 {
-                    var value = field.GetValue(this);
-                    if (value == null)
-                    {
-                        var types = new System.Type[0];
-                        value = field.FieldType.GetConstructor(types).Invoke(null);
-                        field.SetValue(this, value);
-                    }
-                    this._fieldType[field.Name] = MemberType.DBObject;
+                    this._fieldType[field.Name] = MemberType.Enum;
+                }
+                else if (field.FieldType.IsGenericType && field.FieldType.GetGenericTypeDefinition() == typeof(DBDictClass<,>))
+                {
+                    this._fieldType[field.Name] = MemberType.DictClass;
                 }
                 else if (field.FieldType == typeof(bool))
                 {
@@ -86,6 +88,17 @@ namespace Rain.Core
                 {
                     this._fieldType[field.Name] = MemberType.Float;
                 }
+                else if (field.FieldType.IsSubclassOf(typeof(DBObject)))
+                {
+                    var value = field.GetValue(this);
+                    if (value == null)
+                    {
+                        var types = new System.Type[0];
+                        value = field.FieldType.GetConstructor(types).Invoke(null);
+                        field.SetValue(this, value);
+                    }
+                    this._fieldType[field.Name] = MemberType.DBObject;
+                }
                 else
                 {
                     this._fieldType[field.Name] = MemberType.DBObject;
@@ -99,9 +112,29 @@ namespace Rain.Core
         public string ToJson()
         {
             Dictionary<string, object> dict = new Dictionary<string, object>();
-            foreach (var item in this.Value)
+            foreach (var field in _field)
             {
-                dict[item.Key] = item.Value.Value;
+                string fieldName = field.Key;
+                var fieldInfo = field.Value;
+                var fieldValue = fieldInfo.GetValue(this);
+
+                // 根据字段类型进行序列化
+                if (fieldValue != null && fieldValue.GetType().IsGenericType && fieldValue.GetType().GetGenericTypeDefinition() == typeof(DBDictClass<,>))
+                {
+                    var toJsonMethod = fieldValue.GetType().GetMethod("ToJson");
+                    string jsonStr = toJsonMethod.Invoke(fieldValue, null) as string;
+                    dict[fieldName] = jsonStr;
+                }
+                else if (fieldValue is DBObject dbObj)
+                {
+                    // 对于普通DBObject，只序列化Value
+                    dict[fieldName] = dbObj.Value;
+                }
+                else
+                {
+                    // 对于普通字段，直接序列化
+                    dict[fieldName] = fieldValue;
+                }
             }
             string str = JsonConvert.SerializeObject(dict);
             return str;
@@ -123,6 +156,9 @@ namespace Rain.Core
                 case MemberType.Float:
                     this._field[_key].SetValue(this, float.Parse(_val.ToString()));
                     break;
+                case MemberType.Enum:
+                    this._field[_key].SetValue(this, Enum.ToObject(this._field[_key].FieldType, _val));
+                    break;
                 default:
                     return false;
             }
@@ -140,22 +176,32 @@ namespace Rain.Core
             {
                 string _key = rkey.Key;
                 object _val = rkey.Value;
+                if (!Value.ContainsKey(_key))
+                {
+                    SetVal(_key, _val);
+                    continue;
+                }
                 switch (this._fieldType[_key])
                 {
                     case MemberType.DBObject:
                         DBObject dbObj = _field[_key].GetValue(this) as DBObject;
                         dbObj.SetVal(_val);
                         break;
-                    default:
-                        SetVal(_key, _value);
-                        return false;
+                    case MemberType.DictClass:
+                        var dbDictClass = _field[_key].GetValue(this);
+                        if (dbDictClass != null)
+                        {
+                            // 使用反射调用DBDictClass的SetVal方法
+                            var setValMethod = dbDictClass.GetType().GetMethod("SetVal", new Type[] { typeof(object), typeof(DBAction), typeof(DBDispatcher) });
+                            if (setValMethod != null)
+                            {
+                                setValMethod.Invoke(dbDictClass, new object[] { _val, DBAction.Update, null });
+                            }
+                        }
+                        break;
                 }
             }
             return true;
         }
-    }
-
-    public class DBClassModel
-    {
     }
 }
