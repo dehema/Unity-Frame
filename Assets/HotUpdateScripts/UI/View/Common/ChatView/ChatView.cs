@@ -5,15 +5,15 @@ using Rain.UI;
 using UnityEngine;
 
 /// <summary>
-/// #Comments#
+/// 聊天
 /// </summary>
-public partial class #ViewName# : BaseView
+public partial class ChatView : BaseView
 {
-    #ViewName#Param param;
+    ChatViewParam param;
     public override void Init(IViewParam _viewParams = null)
     {
         base.Init(_viewParams);
-        param = _viewParams as #ViewName#Param;
+        param = _viewParams as ChatViewParam;
     }
 
     public override void OnOpen(IViewParam _viewParams = null)
@@ -27,7 +27,7 @@ public partial class #ViewName# : BaseView
     }
 }
 
-public class #ViewName#Param : IViewParam
+public class ChatViewParam : IViewParam
 {
 
 }

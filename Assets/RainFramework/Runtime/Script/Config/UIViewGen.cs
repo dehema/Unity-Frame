@@ -127,6 +127,10 @@ public class ViewName
     /// </summary>
 	public const string CityBuildingUpgradeView = "CityBuildingUpgradeView";
     /// <summary>
+    /// 聊天
+    /// </summary>
+	public const string ChatView = "ChatView";
+    /// <summary>
     /// RTS单位
     /// </summary>
 	public const string RTSUnitTestView = "RTSUnitTestView";

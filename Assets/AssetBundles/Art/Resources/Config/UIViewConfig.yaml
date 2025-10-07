@@ -130,6 +130,9 @@ view:
             layer: DialogLayer
             hasBg: true
             bgClose: true
+        ChatView:
+            comment: 聊天
+            layer: DialogLayer
     RTS:
         RTSUnitTestView:
             comment: RTS单位
