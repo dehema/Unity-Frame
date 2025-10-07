@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using Rain.UI;
+using Rain.Core;
 
-public partial class LoadSceneView : BaseView
+public partial class LoadSceneView : Rain.UI.BaseView
 {
     [System.Serializable]
     struct SerializableUIComponents
@@ -17,7 +19,7 @@ public partial class LoadSceneView : BaseView
         [SerializeField] public GameObject progress;
         [SerializeField] public Slider progress_Slider;
         [SerializeField] public GameObject txtProgress;
-        [SerializeField] public Text txtProgress_Text;
+        [SerializeField] public TextMeshProUGUI txtProgress_Text;
     }
 
     [Header("自动序列化组件")]

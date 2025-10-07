@@ -10,8 +10,8 @@
         "Telepathy",
         "SimpleWebTransport",
         "DOTween.Modules",
-        "Rain.Common",
-        "Luban.Runtime"
+        "Luban.Runtime",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

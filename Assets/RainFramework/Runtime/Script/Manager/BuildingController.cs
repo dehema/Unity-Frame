@@ -91,7 +91,6 @@ public class BuildingController : MonoBehaviour
         currModelGo.transform.localRotation = Quaternion.identity;
         currModelGo.transform.localScale = Vector3.one;
 
-        // 将新对象的碰撞体剪切给当前对象
         TransferColliders(currModelGo);
     }
 
