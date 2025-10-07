@@ -59,6 +59,7 @@ namespace Rain.Core
 
         private void OnApplicationQuit()
         {
+            DataMgr.Ins.SaveAllData();
             DispatchEvent(MsgEvent.ApplicationQuit);
         }
 

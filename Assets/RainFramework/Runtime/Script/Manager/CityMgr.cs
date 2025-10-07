@@ -115,7 +115,6 @@ public class CityMgr : MonoSingleton<CityMgr>
         CityBuildingConfig config = building.BuildingConfig;
         Debug.Log($"选中建筑: {config.BuildingName}");
 
-        // 使用事件系统，避免程序集依赖
         MsgMgr.Ins.DispatchEvent(MsgEvent.SelectCityBuilding, building);
     }
 
@@ -296,7 +295,7 @@ public class CityMgr : MonoSingleton<CityMgr>
         if (building.BuildingObject != null)
         {
             var controller = building.BuildingObject.GetComponent<BuildingController>();
-            controller?.UpdateBuilding(building);
+            controller?.UpdateBuilding();
         }
     }
 
@@ -363,15 +362,27 @@ public class CityMgr : MonoSingleton<CityMgr>
         return buildings.GetValueOrDefault(instanceID);
     }
 
-
-    /// <summary>
-    /// 获取建筑模型路径
-    /// </summary>
-    /// <param name="_modelName"></param>
-    /// <returns></returns>
-    public string GetBuildingModelPath(string _modelName)
+    public string GetBuildingModelPath(CityBuildingData _buildingData)
     {
-        return $"Prefab/CityBuilding/{_modelName}";
+        CityBuildingConfig BuildingConfig = _buildingData.BuildingConfig;
+        string modelName;
+        switch (_buildingData.State)
+        {
+            case BuildingState.Empty:
+            case BuildingState.Destroyed:
+                modelName = BuildingConfig.PlotModel;
+                break;
+            case BuildingState.Building:
+            case BuildingState.Upgrading:
+                modelName = BuildingConfig.ConstructionModel;
+                break;
+            case BuildingState.Completed:
+            case BuildingState.Damaged:
+            default:
+                modelName = BuildingConfig.BuildingModel;
+                break;
+        }
+        return $"Prefab/CityBuilding/{BuildingConfig.PlotModel}";
     }
 
     #region 配置数据

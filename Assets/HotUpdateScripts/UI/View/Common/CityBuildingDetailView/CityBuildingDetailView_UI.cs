@@ -18,16 +18,16 @@ public partial class CityBuildingDetailView : Rain.UI.BaseView
         [SerializeField] public RectTransform content_Rect;
         [SerializeField] public GameObject lbBuildingName;
         [SerializeField] public TextMeshProUGUI lbBuildingName_Text;
-        [SerializeField] public GameObject lbBuildingName_1;
-        [SerializeField] public TextMeshProUGUI lbBuildingName_1_Text;
         [SerializeField] public GameObject btBuildingLevelUp;
         [SerializeField] public Button btBuildingLevelUp_Button;
-        [SerializeField] public GameObject btBuildingLevelUp_1;
-        [SerializeField] public Button btBuildingLevelUp_1_Button;
-        [SerializeField] public GameObject btBuildingLevelUp_2;
-        [SerializeField] public Button btBuildingLevelUp_2_Button;
-        [SerializeField] public GameObject btBuildingLevelUp_3;
-        [SerializeField] public Button btBuildingLevelUp_3_Button;
+        [SerializeField] public GameObject imgBuildingIcon;
+        [SerializeField] public Image imgBuildingIcon_Image;
+        [SerializeField] public GameObject lbFurnitureName;
+        [SerializeField] public TextMeshProUGUI lbFurnitureName_Text;
+        [SerializeField] public GameObject lbFurnitureDesc;
+        [SerializeField] public TextMeshProUGUI lbFurnitureDesc_Text;
+        [SerializeField] public GameObject btFurnitureLevelUp;
+        [SerializeField] public Button btFurnitureLevelUp_Button;
     }
 
     [Header("自动序列化组件")]

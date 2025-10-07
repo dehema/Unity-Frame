@@ -41,7 +41,25 @@ public class EditorPrefabHelper
     [MenuItem(RainUIMenuPrefix + "ToggleGroup")]
     public static void CreateToggleGroup()
     {
-        CreatePrefab(folderPath + "toggleGroup");
+        CreatePrefab(folderPath + "ToggleGroup");
+    }
+
+    [MenuItem(RainUIMenuPrefix + "Slider")]
+    public static void CreateSlider()
+    {
+        CreatePrefab(folderPath + "Slider");
+    }
+
+    [MenuItem(RainUIMenuPrefix + "IconButton左右")]
+    public static void CreateIconButtonLeftRight()
+    {
+        CreatePrefab(folderPath + "IconButton左右");
+    }
+
+    [MenuItem(RainUIMenuPrefix + "IconButton上下")]
+    public static void CreateIconButtonUpDown()
+    {
+        CreatePrefab(folderPath + "IconButton上下");
     }
 
     private static void CreatePrefab(string _path)

@@ -25,8 +25,8 @@ public class MainCityCreator : MonoBehaviour
             CityBuildingData cityBuildingData = item.Value;
             BuildingSlotConfig slotConfig = cityBuildingData.SlotConfig;
             CityBuildingConfig buildingConfig = cityBuildingData.BuildingConfig;
-            GameObject preafab = Resources.Load<GameObject>(CityMgr.Ins.GetBuildingModelPath(buildingConfig.PlotModel));
-            GameObject buildingGo = GameObject.Instantiate<GameObject>(preafab);
+            GameObject buildingGo = new GameObject();
+            buildingGo.name = buildingConfig.BuildingType.ToString(); ;
             buildingGo.transform.SetParent(buildingParent);
             buildingGo.transform.localPosition = new Vector3(slotConfig.PosX, slotConfig.PosY, slotConfig.PosZ);
             buildingGo.transform.eulerAngles = new Vector3(0, slotConfig.RotY, 0);

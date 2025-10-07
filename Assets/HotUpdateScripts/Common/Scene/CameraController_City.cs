@@ -103,6 +103,10 @@ public class CameraController_City : MonoBehaviour
 
         // 处理相机平移
         HandlePanning();
+
+        // 处理射线检测
+        HandleRaycast();
+
     }
 
     /// <summary>
@@ -334,6 +338,34 @@ public class CameraController_City : MonoBehaviour
         {
             // 没有触摸时，重置触摸平移状态
             isTouchPanning = false;
+        }
+    }
+
+    /// <summary>
+    /// 处理射线检测
+    /// </summary>
+    private void HandleRaycast()
+    {
+        // 检测鼠标左键点击
+        if (Input.GetMouseButtonDown(0))
+        {
+            // 从相机位置发射射线到鼠标位置
+            Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            // 只检测Layer 7的对象
+            int layerMask = 1 << 7; // Layer 7
+
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
+            {
+                // 检查命中的对象是否有BuildingController脚本
+                BuildingController buildingController = hit.collider.GetComponent<BuildingController>();
+                if (buildingController != null)
+                {
+                    // 触发BuildingController的SelectBuilding函数
+                    buildingController.OnSelect();
+                }
+            }
         }
     }
 
