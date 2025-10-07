@@ -85,11 +85,19 @@ namespace Rain.Core
             }
         }
 
+        // 父子关系机制
+        private DBObject _parent;
+        public DBObject Parent
+        {
+            get { return _parent; }
+            set { _parent = value; }
+        }
+
         /// <summary>
         /// 分发事件
         /// </summary>
         /// <param name="action"></param>
-        protected void Emit(DBAction action)
+        public void Emit(DBAction action)
         {
             if (this._delegateDic is null)
             {
@@ -110,6 +118,29 @@ namespace Rain.Core
                     }
                 }
             }
+
+            // 如果有父容器，通知父容器也触发事件
+            if (_parent != null)
+            {
+                _parent.Emit(action);
+            }
+        }
+
+        /// <summary>
+        /// 设置父容器
+        /// </summary>
+        /// <param name="parent">父容器</param>
+        public void SetParent(DBObject parent)
+        {
+            _parent = parent;
+        }
+
+        /// <summary>
+        /// 清除父容器关系
+        /// </summary>
+        public void ClearParent()
+        {
+            _parent = null;
         }
 
         /// <summary>

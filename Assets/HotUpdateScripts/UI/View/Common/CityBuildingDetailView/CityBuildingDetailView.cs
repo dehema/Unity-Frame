@@ -24,6 +24,11 @@ public partial class CityBuildingDetailView : BaseView
         {
             ui.lbBuildingName_1_Text.text = $"{param.cityBuildingData.BuildingConfig.BuildingName}  {dm.value.ToString()}";
         });
+        DataMgr.Ins.playerData.cityBuildings[1].Bind((dm) =>
+        {
+            ui.lbBuildingName_Text.text = $"{param.cityBuildingData.BuildingConfig.BuildingName}  {DataMgr.Ins.playerData.cityBuildings[1].Level.Value.ToString()}";
+            ui.lbBuildingName_1_Text.text = $"{param.cityBuildingData.BuildingConfig.BuildingName}  {DataMgr.Ins.playerData.cityBuildings[2].Level.Value.ToString()}";
+        });
         DataMgr.Ins.playerData.cityBuildings.Bind((dm) =>
         {
             ui.lbBuildingName_Text.text = $"{param.cityBuildingData.BuildingConfig.BuildingName}  {DataMgr.Ins.playerData.cityBuildings[1].Level.Value.ToString()}";
@@ -40,6 +45,10 @@ public partial class CityBuildingDetailView : BaseView
         ui.btBuildingLevelUp_2_Button.SetButton(() =>
         {
             DataMgr.Ins.playerData.cityBuildings[3].Level.Value++;
+        });
+        ui.btBuildingLevelUp_3_Button.SetButton(() =>
+        {
+            DataMgr.Ins.playerData.cityBuildings.Add(DataMgr.Ins.playerData.cityBuildings.Count + 1, new CityBuildingData());
         });
     }
 

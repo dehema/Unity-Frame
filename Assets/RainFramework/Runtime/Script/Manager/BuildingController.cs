@@ -35,6 +35,11 @@ public class BuildingController : MonoBehaviour
             boxCollider.center = new Vector3(0, 1.5f, 0);
             buildingCollider = boxCollider;
         }
+        else
+        {
+            buildingCollider.enabled = false;
+            buildingCollider.enabled = true;
+        }
     }
 
     void Update()

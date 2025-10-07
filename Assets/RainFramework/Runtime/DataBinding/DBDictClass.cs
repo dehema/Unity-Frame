@@ -30,6 +30,11 @@ namespace Rain.Core
             }
             set
             {
+                // 设置父子关系
+                if (value is DBClass dbClass)
+                {
+                    dbClass.SetParent(this);
+                }
                 _dict[key] = value;
                 this.Emit(DBAction.Update);
             }
@@ -42,18 +47,36 @@ namespace Rain.Core
 
         public void Add(TKey key, TValue value)
         {
+            // 设置父子关系
+            if (value is DBClass dbClass)
+            {
+                dbClass.SetParent(this);
+            }
             _dict.Add(key, value);
             this.Emit(DBAction.Update);
         }
 
         public void Add(KeyValuePair<TKey, TValue> item)
         {
+            // 设置父子关系
+            if (item.Value is DBClass dbClass)
+            {
+                dbClass.SetParent(this);
+            }
             _dict.Add(item.Key, item.Value);
             this.Emit(DBAction.Update);
         }
 
         public new void Clear()
         {
+            // 清除所有父子关系
+            foreach (var kvp in _dict)
+            {
+                if (kvp.Value is DBClass dbClass)
+                {
+                    dbClass.ClearParent();
+                }
+            }
             _dict.Clear();
             this.Emit(DBAction.Update);
         }
@@ -80,6 +103,11 @@ namespace Rain.Core
 
         public bool Remove(TKey key)
         {
+            // 清除父子关系
+            if (_dict.ContainsKey(key) && _dict[key] is DBClass dbClass)
+            {
+                dbClass.ClearParent();
+            }
             bool result = _dict.Remove(key);
             if (result)
             {
@@ -90,6 +118,11 @@ namespace Rain.Core
 
         public bool Remove(KeyValuePair<TKey, TValue> item)
         {
+            // 清除父子关系
+            if (_dict.ContainsKey(item.Key) && _dict[item.Key] is DBClass dbClass)
+            {
+                dbClass.ClearParent();
+            }
             bool result = _dict.Remove(item.Key);
             if (result)
             {
@@ -227,18 +260,21 @@ namespace Rain.Core
             {
                 var newValue = Activator.CreateInstance<TValue>();
                 newValue.SetVal(dictValue);
+                newValue.SetParent(this);
                 return newValue;
             }
             else if (value is IDictionary<string, object> idictValue)
             {
                 var newValue = Activator.CreateInstance<TValue>();
                 newValue.SetVal(new Dictionary<string, object>(idictValue));
+                newValue.SetParent(this);
                 return newValue;
             }
             else if (value is object)
             {
                 var newValue = Activator.CreateInstance<TValue>();
                 Dictionary<string, object> dict = JsonConvert.DeserializeObject<Dictionary<string, object>>(value.ToString());
+                newValue.SetParent(this);
                 newValue.SetVal(dict);
                 return newValue;
             }

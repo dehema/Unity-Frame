@@ -26,6 +26,8 @@ public partial class CityBuildingDetailView : Rain.UI.BaseView
         [SerializeField] public Button btBuildingLevelUp_1_Button;
         [SerializeField] public GameObject btBuildingLevelUp_2;
         [SerializeField] public Button btBuildingLevelUp_2_Button;
+        [SerializeField] public GameObject btBuildingLevelUp_3;
+        [SerializeField] public Button btBuildingLevelUp_3_Button;
     }
 
     [Header("自动序列化组件")]

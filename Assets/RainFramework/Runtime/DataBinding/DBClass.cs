@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using Newtonsoft.Json;
-using YamlDotNet.Core.Tokens;
 
 namespace Rain.Core
 {
@@ -26,6 +25,18 @@ namespace Rain.Core
         public Dictionary<string, System.Reflection.FieldInfo> Field { get { return _field; } }
 
         protected new Dictionary<string, DBObject> _value;//包含所有DB字段
+
+
+        /// <summary>
+        /// 重写Emit方法，支持父子关系事件传播
+        /// </summary>
+        /// <param name="action">动作类型</param>
+        protected new void Emit(DBAction action)
+        {
+            // 先调用基类的Emit方法
+            base.Emit(action);
+        }
+
         public new Dictionary<string, DBObject> Value
         {
             get
@@ -185,13 +196,13 @@ namespace Rain.Core
                 {
                     case MemberType.DBObject:
                         DBObject dbObj = _field[_key].GetValue(this) as DBObject;
+                        dbObj.SetParent(this);
                         dbObj.SetVal(_val);
                         break;
                     case MemberType.DictClass:
                         var dbDictClass = _field[_key].GetValue(this);
                         if (dbDictClass != null)
                         {
-                            // 使用反射调用DBDictClass的SetVal方法
                             var setValMethod = dbDictClass.GetType().GetMethod("SetVal", new Type[] { typeof(object), typeof(DBAction), typeof(DBDispatcher) });
                             if (setValMethod != null)
                             {
