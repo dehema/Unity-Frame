@@ -6,22 +6,21 @@ using Rain.UI;
 using UnityEngine;
 
 /// <summary>
-/// 城市建筑详情
+/// 城市建筑升级
 /// </summary>
-public partial class CityBuildingDetailView : BaseView
+public partial class CityBuildingUpgradeView : BaseView
 {
-    CityBuildingDetailViewParam param;
+    CityBuildingUpgradeViewParam param;
     CityBuildingData cityBuildingData => param.cityBuildingData;
     DBHandler.Binding dbLevel;
-
     public override void Init(IViewParam _viewParams = null)
     {
         base.Init(_viewParams);
+        param = _viewParams as CityBuildingUpgradeViewParam;
+
         ui.btBuildingLevelUp_Button.SetButton(() =>
         {
-            CityBuildingUpgradeViewParam param = new CityBuildingUpgradeViewParam();
-            param.cityBuildingData = cityBuildingData;
-            UIMgr.Ins.OpenView<CityBuildingUpgradeView>(param);
+            cityBuildingData.Level.Value++;
             Close();
         });
     }
@@ -29,13 +28,12 @@ public partial class CityBuildingDetailView : BaseView
     public override void OnOpen(IViewParam _viewParams = null)
     {
         base.OnOpen(_viewParams);
-        param = _viewParams as CityBuildingDetailViewParam;
+        param = _viewParams as CityBuildingUpgradeViewParam;
         //UI
         dbLevel = cityBuildingData.Level.Bind((dm) =>
         {
             ui.lbBuildingName_Text.text = $"{cityBuildingData.BuildingConfig.BuildingName}  {dm.value.ToString()}级";
         });
-        ui.imgBuildingIcon_Image.sprite = Resources.Load<Sprite>($"UI/Common/{cityBuildingData.BuildingConfig.Icon}");
     }
 
     public override void OnClose(Action _cb)
@@ -45,8 +43,7 @@ public partial class CityBuildingDetailView : BaseView
     }
 }
 
-
-public class CityBuildingDetailViewParam : IViewParam
+public class CityBuildingUpgradeViewParam : IViewParam
 {
     public CityBuildingData cityBuildingData;
 }
