@@ -42,7 +42,7 @@ public class CityBuildingData : DBClass
     /// <summary>
     /// 建筑状态
     /// </summary>
-    public BuildingState State = BuildingState.Empty;
+    public DBInt State;
 
     /// <summary>
     /// 是否已解锁
@@ -64,22 +64,25 @@ public class CityBuildingData : DBClass
     {
         InstanceID = Guid.NewGuid().ToString();
         Level = new DBInt(0);
+        State = new DBInt(0);
     }
+
+    public BuildingState BuildingState => (BuildingState)State.Value;
 
     /// <summary>
     /// 是否正在建造中
     /// </summary>
-    public bool IsBuilding => State == BuildingState.Building;
+    public bool IsBuilding => BuildingState == BuildingState.Building;
 
     /// <summary>
     /// 是否建造完成
     /// </summary>
-    public bool IsCompleted => State == BuildingState.Completed;
+    public bool IsCompleted => BuildingState == BuildingState.Completed;
 
     /// <summary>
     /// 是否正在升级中
     /// </summary>
-    public bool IsUpgrading => State == BuildingState.Upgrading;
+    public bool IsUpgrading => BuildingState == BuildingState.Upgrading;
 
     /// <summary>
     /// 获取建筑配置

@@ -7,6 +7,7 @@ using UnityEngine;
 /// </summary>
 public enum BuildingState
 {
+    None = -1,
     /// <summary>
     /// ø’≤€Œª
     /// </summary>

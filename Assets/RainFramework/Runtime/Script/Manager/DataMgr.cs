@@ -104,7 +104,6 @@ public class DataMgr : ModuleSingleton<DataMgr>, IModule
                 CityBuildingData newData = new CityBuildingData();
                 newData.SlotID = item.Key;
                 newData.BuildingType = item.Value.BuildingType;
-                newData.State = BuildingState.Empty;
                 playerData.cityBuildings.Add(item.Key, newData);
             }
         }

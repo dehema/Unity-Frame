@@ -16,14 +16,17 @@ public class BuildingController : MonoBehaviour
     public CityBuildingData BuildingData { get; private set; }
     public BuildingSlotConfig SlotConfig => BuildingData.SlotConfig;
     public CityBuildingConfig BuildingConfig => BuildingData.BuildingConfig;
+    BuildingState _buildingState = BuildingState.None;
 
-    // 组件引用
-    private Collider buildingCollider;
-
+    DBHandler.Binding binding;
     void Awake()
     {
         gameObject.layer = 7;
-        buildingCollider = GetComponent<Collider>();
+    }
+
+    private void OnDestroy()
+    {
+        binding.UnBind();
     }
 
     /// <summary>
@@ -32,45 +35,57 @@ public class BuildingController : MonoBehaviour
     public void Init(CityBuildingData buildingData)
     {
         BuildingData = buildingData;
-        UpdateBuildingVisuals();
+        if (binding == null)
+            binding = BuildingData.Level.Bind(OnBuildingDataChange);
+        UpdateBuildingModel();
     }
 
-    /// <summary>
-    /// 更新建筑数据
-    /// </summary>
-    public void UpdateBuilding()
+    private void OnBuildingDataChange(DBModify _dm)
     {
-        UpdateBuildingVisuals();
+        if (BuildingData.Level.Value > 0 && BuildingData.BuildingState != BuildingState.Completed)
+        {
+            BuildingData.State.Value = (int)BuildingState.Completed;
+        }
+        UpdateBuildingModel();
     }
 
     /// <summary>
-    /// 更新建筑视觉效果
+    /// 更新建筑
     /// </summary>
-    private void UpdateBuildingVisuals()
+    public void UpdateBuildingModel()
     {
         if (BuildingData == null) return;
-
-        // 根据建筑状态更新视觉效果（通过模型替换）
-        switch (BuildingData.State)
+        if (BuildingData.Level.Value == 0)
         {
-            case BuildingState.Building:
-                ReplaceModelByState(BuildingState.Building);
-                break;
-            case BuildingState.Upgrading:
-                ReplaceModelByState(BuildingState.Upgrading);
-                break;
-            case BuildingState.Completed:
-                ReplaceModelByState(BuildingState.Completed);
-                break;
-            case BuildingState.Empty:
-                ReplaceModelByState(BuildingState.Empty);
-                break;
+            ReplaceModelByState(BuildingState.Empty);
         }
-
+        else
+        {
+            switch (BuildingData.BuildingState)
+            {
+                case BuildingState.Building:
+                    ReplaceModelByState(BuildingState.Building);
+                    break;
+                case BuildingState.Upgrading:
+                    ReplaceModelByState(BuildingState.Upgrading);
+                    break;
+                case BuildingState.Completed:
+                    ReplaceModelByState(BuildingState.Completed);
+                    break;
+                case BuildingState.Empty:
+                    ReplaceModelByState(BuildingState.Empty);
+                    break;
+            }
+        }
     }
 
     private void ReplaceModelByState(BuildingState state)
     {
+        if (_buildingState == state)
+        {
+            return;
+        }
+        _buildingState = state;
         string path = CityMgr.Ins.GetBuildingModelPath(BuildingData);
         if (string.IsNullOrEmpty(path)) return;
         if (currModelGo != null)
@@ -106,7 +121,7 @@ public class BuildingController : MonoBehaviour
 
         string info = $"建筑: {config.BuildingName}\n";
         info += $"等级: {BuildingData.Level}/{config.MaxLevel}\n";
-        info += $"状态: {GetStateText(BuildingData.State)}\n";
+        info += $"状态: {CityMgr.Ins.GetStateText(BuildingData.BuildingState)}\n";
 
         if (BuildingData.IsBuilding || BuildingData.IsUpgrading)
         {
@@ -115,21 +130,6 @@ public class BuildingController : MonoBehaviour
         }
 
         return info;
-    }
-
-    /// <summary>
-    /// 获取状态文本
-    /// </summary>
-    private string GetStateText(BuildingState state)
-    {
-        switch (state)
-        {
-            case BuildingState.Empty: return "空槽位";
-            case BuildingState.Building: return "建造中";
-            case BuildingState.Completed: return "已完成";
-            case BuildingState.Upgrading: return "升级中";
-            default: return "未知状态";
-        }
     }
 
     /// <summary>

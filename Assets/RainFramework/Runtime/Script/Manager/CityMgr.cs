@@ -31,6 +31,9 @@ public class CityMgr : MonoSingleton<CityMgr>
     private CityBuildingData selectedBuilding;
     private int selectedSlotID = -1;
 
+    private void Start()
+    {
+    }
 
     void Update()
     {
@@ -227,7 +230,7 @@ public class CityMgr : MonoSingleton<CityMgr>
         //ConsumeResources(config.UpgradeCost);
 
         // 更新建筑状态
-        building.State = BuildingState.Upgrading;
+        building.State.Value = (int)BuildingState.Upgrading;
         building.BuildStartTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
         //building.BuildEndTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds() + config.UpgradeTime;
 
@@ -242,14 +245,14 @@ public class CityMgr : MonoSingleton<CityMgr>
     {
         if (building.IsBuilding)
         {
-            building.State = BuildingState.Completed;
+            building.State.Value = (int)BuildingState.Completed;
             OnBuildingCompleted?.Invoke(building);
             Debug.Log($"建筑建造完成: {building.BuildingConfig.BuildingName}");
         }
         else if (building.IsUpgrading)
         {
             building.Level.Value++;
-            building.State = BuildingState.Completed;
+            building.State.Value = (int)BuildingState.Completed;
             OnBuildingUpgraded?.Invoke(building);
             Debug.Log($"建筑升级完成: {building.BuildingConfig.BuildingName} 到等级 {building.Level}");
         }
@@ -295,7 +298,7 @@ public class CityMgr : MonoSingleton<CityMgr>
         if (building.BuildingObject != null)
         {
             var controller = building.BuildingObject.GetComponent<BuildingController>();
-            controller?.UpdateBuilding();
+            controller?.UpdateBuildingModel();
         }
     }
 
@@ -306,7 +309,7 @@ public class CityMgr : MonoSingleton<CityMgr>
     {
         foreach (var building in buildings.Values)
         {
-            if (building.SlotID == slotID && building.State != BuildingState.Destroyed)
+            if (building.SlotID == slotID && building.BuildingState != BuildingState.Destroyed)
             {
                 return true;
             }
@@ -366,7 +369,7 @@ public class CityMgr : MonoSingleton<CityMgr>
     {
         CityBuildingConfig BuildingConfig = _buildingData.BuildingConfig;
         string modelName;
-        switch (_buildingData.State)
+        switch (_buildingData.BuildingState)
         {
             case BuildingState.Empty:
             case BuildingState.Destroyed:
@@ -382,7 +385,23 @@ public class CityMgr : MonoSingleton<CityMgr>
                 modelName = BuildingConfig.BuildingModel;
                 break;
         }
-        return $"Prefab/CityBuilding/{BuildingConfig.PlotModel}";
+        return $"Prefab/CityBuilding/{modelName}";
+    }
+
+
+    /// <summary>
+    /// 获取状态文本
+    /// </summary>
+    public string GetStateText(BuildingState state)
+    {
+        switch (state)
+        {
+            case BuildingState.Empty: return "空槽位";
+            case BuildingState.Building: return "建造中";
+            case BuildingState.Completed: return "已完成";
+            case BuildingState.Upgrading: return "升级中";
+            default: return "未知状态";
+        }
     }
 
     #region 配置数据
