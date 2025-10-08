@@ -435,7 +435,7 @@ GameObject:
   - component: {fileID: 5674163697932437363}
   - component: {fileID: 8712794456929642876}
   m_Layer: 5
-  m_Name: IconSubTextButton
+  m_Name: "\u6309\u94AE \u56FE\u6807 \u526F\u6587\u672C"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

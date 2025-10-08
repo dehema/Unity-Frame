@@ -139,12 +139,14 @@ namespace Rain.UI.Editor
             PrefabUtility.UnpackPrefabInstance(view, PrefabUnpackMode.OutermostRoot, InteractionMode.AutomatedAction);
             view.name = _viewName;
             view.transform.SetAsLastSibling();
-            Canvas canvas = view.GetComponent<Canvas>();
-            canvas.renderMode = RenderMode.ScreenSpaceCamera;
-            canvas.worldCamera = Camera.main;
-            CanvasScaler canvasScaler = view.GetComponent<CanvasScaler>();
-            canvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ConstantPixelSize;
-            canvasScaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
+
+            //初始化Canvas
+            //Canvas canvas = view.GetComponent<Canvas>();
+            //canvas.renderMode = RenderMode.ScreenSpaceCamera;
+            //canvas.worldCamera = Camera.main;
+            //CanvasScaler canvasScaler = view.GetComponent<CanvasScaler>();
+            //canvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ConstantPixelSize;
+            //canvasScaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
             AddTempFileLabels(fieldNeedExportViewUI, _viewName);
             return view;
         }

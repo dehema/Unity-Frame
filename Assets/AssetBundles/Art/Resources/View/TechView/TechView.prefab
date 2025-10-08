@@ -809,8 +809,8 @@ MonoBehaviour:
     bg_Button: {fileID: 4433542915915076412}
     content: {fileID: 6476099291196679973}
     content_Rect: {fileID: 5779243232327523984}
-    tgTeckCategory: {fileID: 6432237058516187389}
-    tgTeckCategory_Toggle: {fileID: 2173914169257065027}
+    tgTechCategory: {fileID: 6432237058516187389}
+    tgTechCategory_Toggle: {fileID: 2173914169257065027}
     btClose: {fileID: 3051011175920111229}
     btClose_Button: {fileID: 1689693027983472576}
     techContent: {fileID: 5836839446343969771}
@@ -1070,7 +1070,7 @@ GameObject:
   - component: {fileID: 2173914169257065027}
   - component: {fileID: 3607591163647897673}
   m_Layer: 5
-  m_Name: $tgTeckCategory#Toggle
+  m_Name: $tgTechCategory#Toggle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

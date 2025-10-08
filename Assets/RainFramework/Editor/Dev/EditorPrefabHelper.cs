@@ -14,28 +14,63 @@ public class EditorPrefabHelper
     }
 
 
+
+    #region Button
+
     [MenuItem(RainUIMenuPrefix + "按钮")]
     public static void CreateButton()
     {
-        CreatePrefab(folderPath + "CommonButton");
+        CreatePrefab(folderPath + "按钮");
     }
 
-    [MenuItem(RainUIMenuPrefix + "文本按钮")]
-    public static void CreateTextButton()
+    [MenuItem(RainUIMenuPrefix + "按钮 文本")]
+    public static void CreateButtonText()
     {
-        CreatePrefab(folderPath + "TextButton");
+        CreatePrefab(folderPath + "按钮 文本");
     }
 
-    [MenuItem(RainUIMenuPrefix + "图标+副文本按钮")]
+    [MenuItem(RainUIMenuPrefix + "按钮 图标")]
+    public static void CreateButtonIcon()
+    {
+        CreatePrefab(folderPath + "按钮 图标");
+    }
+
+    [MenuItem(RainUIMenuPrefix + "按钮 图标 左右")]
+    public static void CreateButtonIconLeftRight()
+    {
+        CreatePrefab(folderPath + "按钮 图标 左右");
+    }
+
+    [MenuItem(RainUIMenuPrefix + "按钮 图标 上下")]
+    public static void CreateButtonIconUpDown()
+    {
+        CreatePrefab(folderPath + "按钮 图标 上下");
+    }
+
+    [MenuItem(RainUIMenuPrefix + "按钮 图标 副文本")]
     public static void IconSubTextButtonButton()
     {
-        CreatePrefab(folderPath + "IconSubTextButton");
+        CreatePrefab(folderPath + "按钮 图标 副文本");
     }
 
-    [MenuItem(RainUIMenuPrefix + "close按钮")]
+    [MenuItem(RainUIMenuPrefix + "按钮 关闭")]
     public static void CreateCloseButton()
     {
         CreatePrefab(folderPath + "$btClose#Button");
+    }
+    #endregion
+
+    #region MyRegion
+    [MenuItem(RainUIMenuPrefix + "Toggle")]
+    public static void CreateToggle()
+    {
+        CreatePrefab(folderPath + "Toggle");
+    }
+
+    [MenuItem(RainUIMenuPrefix + "ToggleGroupIcon")]
+    public static void CreateToggleGroupIcon()
+    {
+        CreatePrefab(folderPath + "ToggleGroupIcon");
     }
 
     [MenuItem(RainUIMenuPrefix + "ToggleGroup")]
@@ -43,23 +78,12 @@ public class EditorPrefabHelper
     {
         CreatePrefab(folderPath + "ToggleGroup");
     }
+    #endregion
 
     [MenuItem(RainUIMenuPrefix + "Slider")]
     public static void CreateSlider()
     {
         CreatePrefab(folderPath + "Slider");
-    }
-
-    [MenuItem(RainUIMenuPrefix + "IconButton左右")]
-    public static void CreateIconButtonLeftRight()
-    {
-        CreatePrefab(folderPath + "IconButton左右");
-    }
-
-    [MenuItem(RainUIMenuPrefix + "IconButton上下")]
-    public static void CreateIconButtonUpDown()
-    {
-        CreatePrefab(folderPath + "IconButton上下");
     }
 
     private static void CreatePrefab(string _path)

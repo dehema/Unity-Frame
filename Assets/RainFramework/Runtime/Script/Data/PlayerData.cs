@@ -17,10 +17,9 @@ public class PlayerData : DBClass
     public DBLong diamond;
 
     //科技
-    //public Dictionary<string, TechData> techs = new Dictionary<string, TechData>();
+    public Dictionary<string, TechData> techs = new Dictionary<string, TechData>();
 
     //建筑
-    //public Dictionary<int, CityBuildingData> cityBuilding+s = new Dictionary<int, CityBuildingData>();
     public DBDictClass<int, CityBuildingData> cityBuildings = new DBDictClass<int, CityBuildingData>();
 
     public PlayerData()

@@ -88,14 +88,14 @@ public class DataMgr : ModuleSingleton<DataMgr>, IModule
             playerData.SetVal(dict);
         }
 
-        ////科技
-        //foreach (var item in ConfigMgr.Tech.DataMap)
-        //{
-        //    if (!playerData.techs.ContainsKey(item.Key))
-        //    {
-        //        playerData.techs.Add(item.Key, new TechData(item.Key));
-        //    }
-        //}
+        //科技
+        foreach (var item in ConfigMgr.Tech.DataMap)
+        {
+            if (!playerData.techs.ContainsKey(item.Key))
+            {
+                playerData.techs.Add(item.Key, new TechData(item.Key));
+            }
+        }
         //建筑
         foreach (var item in ConfigMgr.CityBuildingSlot.DataMap)
         {

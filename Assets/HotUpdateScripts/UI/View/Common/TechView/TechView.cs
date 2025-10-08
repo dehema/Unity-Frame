@@ -12,31 +12,31 @@ using UnityEngine.UI;
 /// </summary>
 public partial class TechView : BaseView
 {
-    ObjPool poolTeckCategory;
+    ObjPool poolTechCategory;
     UIControlDemo_DynamicTableData tableData = new UIControlDemo_DynamicTableData();
 
     public override void Init(IViewParam _viewParams = null)
     {
         base.Init(_viewParams);
         InitUI();
-        RefreshTgTeckCategory();
     }
 
     void InitUI()
     {
         ui.btClose_Button.SetButton(Close);
-        poolTeckCategory = PoolMgr.Ins.CreatePool(ui.tgTeckCategory);
+        poolTechCategory = PoolMgr.Ins.CreatePool(ui.tgTechCategory);
+        RefreshTgTechCategory();
     }
 
-    void RefreshTgTeckCategory()
+    void RefreshTgTechCategory()
     {
-        poolTeckCategory.CollectAll();
+        poolTechCategory.CollectAll();
         for (int i = 0; i < ConfigMgr.TechCategory.DataList.Count; i++)
         {
             int index = i;
             //UI
             TechCategoryConfig config = ConfigMgr.TechCategory.DataList[index];
-            GameObject item = poolTeckCategory.Get();
+            GameObject item = poolTechCategory.Get();
             Toggle toggle = item.GetComponent<Toggle>();
             Tab tab = item.GetComponent<Tab>();
 
@@ -54,7 +54,7 @@ public partial class TechView : BaseView
             });
         }
         SetData();
-        GameObject firstTag = poolTeckCategory.ShowPool.First();
+        GameObject firstTag = poolTechCategory.ShowPool.First();
         firstTag.GetComponent<Toggle>().isOn = true;
         firstTag.GetComponent<Tab>().Select();
     }
@@ -85,16 +85,15 @@ public partial class TechView : BaseView
                 techRowData.techConfigs.Add(techData);
                 techRowData.techCategoryConfig = techCategoryConfig;
             }
-            
+
             // 添加最后一个techRowData（如果有数据的话）
             if (techRowData.techConfigs.Count > 0)
             {
                 tabData.AddItem(techRowData);
             }
-            
-            tableData.category.Add(tabData);
 
-    Tab tab = ui.techContent_TabController.GetTab(i);
+            tableData.category.Add(tabData);
+            Tab tab = ui.techContent_TabController.GetTab(i);
             tab.SetData(tabData);
         }
     }

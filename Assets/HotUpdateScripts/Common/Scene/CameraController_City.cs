@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Rain.Core;
 using UnityEngine;
+using UnityEngine.EventSystems;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -349,6 +351,11 @@ public class CameraController_City : MonoBehaviour
         // 检测鼠标左键点击
         if (Input.GetMouseButtonDown(0))
         {
+            bool isOverUI = EventSystem.current.IsPointerOverGameObject();
+            if (isOverUI)
+            {
+                return; // 点到UI
+            }
             // 从相机位置发射射线到鼠标位置
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;

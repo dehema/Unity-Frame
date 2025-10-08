@@ -133,6 +133,8 @@ view:
         ChatView:
             comment: 聊天
             layer: DialogLayer
+            hasBg: true
+            bgColor: "#153d66FF"
     RTS:
         RTSUnitTestView:
             comment: RTS单位

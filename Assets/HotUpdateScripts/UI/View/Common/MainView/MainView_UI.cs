@@ -16,6 +16,16 @@ public partial class MainView : Rain.UI.BaseView
         [SerializeField] public Button bg_Button;
         [SerializeField] public GameObject content;
         [SerializeField] public RectTransform content_Rect;
+        [SerializeField] public GameObject playerIcon;
+        [SerializeField] public Image playerIcon_Image;
+        [SerializeField] public GameObject btExplore;
+        [SerializeField] public Button btExplore_Button;
+        [SerializeField] public GameObject btWorldMap;
+        [SerializeField] public Button btWorldMap_Button;
+        [SerializeField] public GameObject btChatPanel;
+        [SerializeField] public Button btChatPanel_Button;
+        [SerializeField] public GameObject iconChatMenu;
+        [SerializeField] public Image iconChatMenu_Image;
     }
 
     [Header("自动序列化组件")]

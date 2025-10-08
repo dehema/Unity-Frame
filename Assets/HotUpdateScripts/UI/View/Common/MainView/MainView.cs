@@ -12,12 +12,23 @@ public partial class MainView : BaseView
     public override void Init(IViewParam _viewParams = null)
     {
         base.Init(_viewParams);
-        MsgMgr.Ins.AddEventListener(MsgEvent.SelectCityBuilding, (object[] objs) =>
+        MsgMgr.Ins.AddEventListener(MsgEvent.SelectCityBuilding, OnSelectBuilding, this);
+        ui.btChatPanel_Button.SetButton(() => { UIMgr.Ins.OpenView<ChatView>(); });
+    }
+
+    private void OnSelectBuilding(object[] objs)
+    {
+        CityBuildingData cityBuildingData = objs[0] as CityBuildingData;
+        //科研
+        if (cityBuildingData.BuildingType == CityBuildingType.Tech)
+        {
+            UIMgr.Ins.OpenView<TechView>();
+        }
+        else
         {
             CityBuildingDetailViewParam param = new CityBuildingDetailViewParam();
-            param.cityBuildingData = objs[0] as CityBuildingData;
+            param.cityBuildingData = cityBuildingData;
             UIMgr.Ins.OpenView<CityBuildingDetailView>(param);
-        }, this);
-
+        }
     }
 }

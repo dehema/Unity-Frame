@@ -11,9 +11,8 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
     /// <returns></returns>
     public TechData GetTechData(string _techID)
     {
-        //DataMgr.Ins.playerData.techs.TryGetValue(_techID, out TechData techData);
-        //return techData;
-        return new TechData();
+        DataMgr.Ins.playerData.techs.TryGetValue(_techID, out TechData techData);
+        return techData;
     }
 
     /// <summary>

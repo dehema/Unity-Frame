@@ -495,6 +495,9 @@ namespace Rain.UI.Editor
                 case "Text":
                     name = "TextMeshProUGUI";
                     break;
+                case "Input":
+                    name = "TMP_InputField";
+                    break;
             }
             return name;
         }
