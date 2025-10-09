@@ -8,8 +8,8 @@ namespace Rain.UI
 {
     public class LayerUI : MonoBehaviour
     {
-        protected Dictionary<string, ViewParams> uiViews = new Dictionary<string, ViewParams>();
-        protected Dictionary<string, ViewParams> uiCache = new Dictionary<string, ViewParams>();
+        protected Dictionary<string, ViewParam> uiViews = new Dictionary<string, ViewParam>();
+        protected Dictionary<string, ViewParam> uiCache = new Dictionary<string, ViewParam>();
         
         private Canvas _canvas;
         private CanvasScaler _canvasScaler;
@@ -111,7 +111,7 @@ namespace Rain.UI
             return LoadAsync(viewParams);
         }
 
-        protected bool IsDuplicateLoad(string prefabPath, out ViewParams viewParams)
+        protected bool IsDuplicateLoad(string prefabPath, out ViewParam viewParams)
         {
             if (uiViews.TryGetValue(prefabPath, out viewParams) && viewParams.Valid)
             {
@@ -121,13 +121,13 @@ namespace Rain.UI
             return false;
         }
 
-        protected ViewParams GetOrCreateViewParams(string prefabPath, string guid)
+        protected ViewParam GetOrCreateViewParams(string prefabPath, string guid)
         {
             if (!uiViews.TryGetValue(prefabPath, out var viewParams))
             {
                 if (!uiCache.TryGetValue(prefabPath, out viewParams))
                 {
-                    viewParams = new ViewParams();
+                    viewParams = new ViewParam();
                 }
                 viewParams.Guid = guid;
                 viewParams.PrefabPath = prefabPath;
@@ -136,7 +136,7 @@ namespace Rain.UI
             return viewParams;
         }
 
-        protected void Load(ViewParams viewParams)
+        protected void Load(ViewParam viewParams)
         {
             var vp = uiCache.GetValueOrDefault(viewParams.PrefabPath);
             if (vp != null && vp.Go != null)
@@ -153,7 +153,7 @@ namespace Rain.UI
                 DelegateComponent comp = childNode.AddComponent<DelegateComponent>();
                 viewParams.DelegateComponent = comp;
                 viewParams.BaseView = childNode.GetComponent<F8BaseView>();
-                comp.ViewParams = viewParams;
+                comp.ViewParam = viewParams;
                 
                 viewParams.UILoader = new UILoader();
                 viewParams.UILoader.Guid = viewParams.Guid;
@@ -162,7 +162,7 @@ namespace Rain.UI
             }
         }
 
-        protected UILoader LoadAsync(ViewParams viewParams)
+        protected UILoader LoadAsync(ViewParam viewParams)
         {
             var vp = uiCache.GetValueOrDefault(viewParams.PrefabPath);
             if (vp != null && vp.Go != null)
@@ -182,7 +182,7 @@ namespace Rain.UI
                     DelegateComponent comp = childNode.AddComponent<DelegateComponent>();
                     viewParams.DelegateComponent = comp;
                     viewParams.BaseView = childNode.GetComponent<F8BaseView>();
-                    comp.ViewParams = viewParams;
+                    comp.ViewParam = viewParams;
                     CreateNode(viewParams);
                     viewParams.UILoader.UILoadSuccess();
                 });
@@ -191,7 +191,7 @@ namespace Rain.UI
             }
         }
         
-        public UILoader CreateNode(ViewParams viewParams)
+        public UILoader CreateNode(ViewParam viewParams)
         {
             UIManager.Ins.GetCurrentUIids().Add(viewParams.UIid);
             
@@ -219,7 +219,7 @@ namespace Rain.UI
             var children = GetChildrens();
             foreach (var comp in children)
             {
-                var viewParams = comp.ViewParams;
+                var viewParams = comp.ViewParam;
                 if (viewParams.PrefabPath == prefabPath)
                 {
                     uiViews.Remove(viewParams.PrefabPath);
@@ -249,7 +249,7 @@ namespace Rain.UI
             var children = GetChildrens();
             foreach (var comp in children)
             {
-                if (comp.ViewParams != null && comp.ViewParams.Guid == guid)
+                if (comp.ViewParam != null && comp.ViewParam.Guid == guid)
                 {
                     return comp.gameObject;
                 }
@@ -265,7 +265,7 @@ namespace Rain.UI
     
             foreach (var comp in children)
             {
-                if (comp.ViewParams != null && comp.ViewParams.UIid == uiid)
+                if (comp.ViewParam != null && comp.ViewParam.UIid == uiid)
                 {
                     if (nodeList == null)
                     {
@@ -283,7 +283,7 @@ namespace Rain.UI
             var children = GetChildrens();
             foreach (var comp in children)
             {
-                if (comp.ViewParams.Guid == prefabPathOrGuid || comp.ViewParams.PrefabPath == prefabPathOrGuid)
+                if (comp.ViewParam.Guid == prefabPathOrGuid || comp.ViewParam.PrefabPath == prefabPathOrGuid)
                 {
                     return true;
                 }
@@ -299,7 +299,7 @@ namespace Rain.UI
             for (var i = 0; i < children; i++)
             {
                 var comp = gameObject.transform.GetChild(i).GetComponent<DelegateComponent>();
-                if (comp != null && comp.ViewParams != null && comp.ViewParams.Valid && comp.isActiveAndEnabled)
+                if (comp != null && comp.ViewParam != null && comp.ViewParam.Valid && comp.isActiveAndEnabled)
                 {
                     result.Add(comp);
                 }

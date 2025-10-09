@@ -10,9 +10,9 @@ using UnityEngine;
 /// </summary>
 public partial class TechDetailView : BaseView
 {
-    public override void Init(IViewParam _viewParams = null)
+    public override void Init(IViewParam _viewParam = null)
     {
-        base.Init(_viewParams);
+        base.Init(_viewParam);
         ui.btFinish_Button.SetButton(OnClickFinish);
         ui.btStudy_Button.SetButton(OnClickStudy);
     }

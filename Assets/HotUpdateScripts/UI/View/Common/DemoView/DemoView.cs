@@ -8,18 +8,18 @@ using UnityEngine.UI;
 
 public partial class DemoView : BaseView
 {
-    DemoViewParam _viewParams;
+    DemoViewParam _viewParam;
 
-    public override void Init(IViewParam viewParams = null)
+    public override void Init(IViewParam viewParam = null)
     {
-        base.Init(viewParams);
+        base.Init(viewParam);
 
         //视图参数
-        _viewParams = viewParams as DemoViewParam;
-        Debug.Log(_viewParams.number);
-        Debug.Log(_viewParams.tips);
-        _viewParams?.action();
-        _viewParams?.actionParams("this is a param!");
+        _viewParam = viewParam as DemoViewParam;
+        Debug.Log(_viewParam.number);
+        Debug.Log(_viewParam.tips);
+        _viewParam?.action();
+        _viewParam?.actionParams("this is a param!");
 
         //注册按钮事件
         //ui.btClose_Button.
@@ -44,9 +44,9 @@ public partial class DemoView : BaseView
         });
     }
 
-    public override void OnOpen(IViewParam viewParams = null)
+    public override void OnOpen(IViewParam viewParam = null)
     {
-        base.OnOpen(viewParams);
+        base.OnOpen(viewParam);
         Debug.Log("UI打开");
     }
 

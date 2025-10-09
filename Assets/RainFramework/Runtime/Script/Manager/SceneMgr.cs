@@ -59,17 +59,17 @@ public class SceneMgr : MonoSingleton<SceneMgr>
     /// <param name="_sceneID"></param>
     public void ChangeScene(SceneID _sceneID, Action _changeSuccess = null)
     {
-        LoadSceneViewParam viewParams = new LoadSceneViewParam();
-        viewParams.targetSceneName = _sceneID.ToString();
-        targetSceneName = viewParams.targetSceneName;
-        viewParams.CloseCB = () =>
+        LoadSceneViewParam viewParam = new LoadSceneViewParam();
+        viewParam.targetSceneName = _sceneID.ToString();
+        targetSceneName = viewParam.targetSceneName;
+        viewParam.CloseCB = () =>
         {
             currSceneID = _sceneID;
             OnSceneChangeComplete();
             _changeSuccess?.Invoke();
         };
         OnSceneStartChange();
-        UIMgr.Ins.OpenView<LoadSceneView>(viewParams);
+        UIMgr.Ins.OpenView<LoadSceneView>(viewParam);
     }
 
     /// <summary>

@@ -15,9 +15,9 @@ public partial class TechView : BaseView
     ObjPool poolTechCategory;
     UIControlDemo_DynamicTableData tableData = new UIControlDemo_DynamicTableData();
 
-    public override void Init(IViewParam _viewParams = null)
+    public override void Init(IViewParam _viewParam = null)
     {
-        base.Init(_viewParams);
+        base.Init(_viewParam);
         InitUI();
     }
 

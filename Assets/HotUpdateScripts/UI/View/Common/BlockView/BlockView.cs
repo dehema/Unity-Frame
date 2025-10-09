@@ -2,8 +2,8 @@
 
 public partial class BlockView : BaseView
 {
-    public override void Init(IViewParam viewParams = null)
+    public override void Init(IViewParam viewParam = null)
     {
-        base.Init(viewParams);
+        base.Init(viewParam);
     }
 }

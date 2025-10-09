@@ -26,7 +26,7 @@ namespace Rain.UI
     /// <summary>
     /// 本类型仅供内部使用，请勿在功能逻辑中使用。
     /// </summary>
-    public class ViewParams
+    public class ViewParam
     {
         public int UIid;
         public string Guid;

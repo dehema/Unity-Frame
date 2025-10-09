@@ -131,6 +131,10 @@ public class ViewName
     /// </summary>
 	public const string ChatView = "ChatView";
     /// <summary>
+    /// 登录
+    /// </summary>
+	public const string LoginView = "LoginView";
+    /// <summary>
     /// RTS单位
     /// </summary>
 	public const string RTSUnitTestView = "RTSUnitTestView";

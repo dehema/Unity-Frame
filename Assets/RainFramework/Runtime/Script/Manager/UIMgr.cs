@@ -70,21 +70,21 @@ namespace Rain.UI
         /// 通过泛型打开UI视图
         /// </summary>
         /// <typeparam name="T">视图类型</typeparam>
-        /// <param name="_params">传递给视图的参数</param>
+        /// <param name="viewParam">传递给视图的参数</param>
         /// <returns>打开的UI视图实例</returns>
-        public T OpenView<T>(IViewParam viewParams = null) where T : BaseView
+        public T OpenView<T>(IViewParam viewParam = null) where T : BaseView
         {
             string viewName = typeof(T).ToString();
-            return OpenView(viewName, viewParams) as T;
+            return OpenView(viewName, viewParam) as T;
         }
 
         /// <summary>
         /// 打开指定名称的UI视图
         /// </summary>
         /// <param name="_viewName">视图名称</param>
-        /// <param name="viewParams">传递给视图的参数</param>
+        /// <param name="viewParam">传递给视图的参数</param>
         /// <returns>打开的UI视图</returns>
-        public BaseView OpenView(string _viewName, IViewParam viewParams = null)
+        public BaseView OpenView(string _viewName, IViewParam viewParam = null)
         {
             if (string.IsNullOrEmpty(_viewName))
             {
@@ -100,7 +100,7 @@ namespace Rain.UI
             if (view != null && view.IsShow)
             {
                 // 如果视图已经打开，可以考虑刷新参数
-                view.OnOpen(viewParams);
+                view.OnOpen(viewParam);
                 return view;
             }
 
@@ -127,7 +127,7 @@ namespace Rain.UI
 
                 // 实例化并设置视图
                 GameObject viewGo = Instantiate(prefab);
-                view = AddView(viewGo, viewConfig, viewParams);
+                view = AddView(viewGo, viewConfig, viewParam);
 
                 if (view == null)
                 {
@@ -148,7 +148,7 @@ namespace Rain.UI
             RefreshViewLayer(viewConfig.layer);
 
             // 调用视图的打开方法
-            view.OnOpen(viewParams);
+            view.OnOpen(viewParam);
 
             return view;
         }
@@ -184,9 +184,9 @@ namespace Rain.UI
         /// </summary>
         /// <param name="viewGo">视图游戏对象</param>
         /// <param name="viewConfig">视图配置</param>
-        /// <param name="viewParams">初始化参数</param>
+        /// <param name="viewParam">初始化参数</param>
         /// <returns>添加的视图实例</returns>
-        private BaseView AddView(GameObject viewGo, ViewConfig viewConfig, IViewParam viewParams = null)
+        private BaseView AddView(GameObject viewGo, ViewConfig viewConfig, IViewParam viewParam = null)
         {
             if (viewGo == null || viewConfig == null)
             {
@@ -219,7 +219,7 @@ namespace Rain.UI
             _allView[viewConfig.viewName] = view;
 
             // 初始化视图
-            view.Init(viewParams);
+            view.Init(viewParam);
             return view;
         }
 
@@ -441,21 +441,21 @@ namespace Rain.UI
         }
 
         // 异步加载，使用枚举作为参数
-        public UILoader OpenViewAsync<T>(IViewParam viewParams = null, Action onComplete = null) where T : BaseView
+        public UILoader OpenViewAsync<T>(IViewParam viewParam = null, Action onComplete = null) where T : BaseView
         {
             string viewName = typeof(T).ToString();
-            return OpenViewAsync(viewName, viewParams, onComplete);
+            return OpenViewAsync(viewName, viewParam, onComplete);
         }
 
         // 异步加载，使用id作为参数
-        public UILoader OpenViewAsync(string viewName, IViewParam viewParams = null, Action onComplete = null)
+        public UILoader OpenViewAsync(string viewName, IViewParam viewParam = null, Action onComplete = null)
         {
             ViewConfig viewConfig = GetViewConfig(viewName);
-            return LoadAsync(viewConfig, viewParams);
+            return LoadAsync(viewConfig, viewParam);
         }
 
 
-        private UILoader LoadAsync(ViewConfig viewConfig, IViewParam viewParams = null, Action onComplete = null)
+        private UILoader LoadAsync(ViewConfig viewConfig, IViewParam viewParam = null, Action onComplete = null)
         {
             viewConfig.uiLoader = new UILoader();
             viewConfig.uiLoader.SetOnCompleted(onComplete);
@@ -463,7 +463,7 @@ namespace Rain.UI
             AssetMgr.Ins.LoadAsync<GameObject>(prefabPath, (res) =>
             {
                 GameObject viewGo = Instantiate(res);
-                AddView(viewGo, viewConfig, viewParams);
+                AddView(viewGo, viewConfig, viewParam);
                 viewConfig.uiLoader.UILoadSuccess();
             });
             return viewConfig.uiLoader;

@@ -9,9 +9,9 @@ using UnityEngine;
 /// </summary>
 public partial class MainView : BaseView
 {
-    public override void Init(IViewParam _viewParams = null)
+    public override void Init(IViewParam _viewParam = null)
     {
-        base.Init(_viewParams);
+        base.Init(_viewParam);
         MsgMgr.Ins.AddEventListener(MsgEvent.SelectCityBuilding, OnSelectBuilding, this);
         ui.btChatPanel_Button.SetButton(() => { UIMgr.Ins.OpenView<ChatView>(); });
     }

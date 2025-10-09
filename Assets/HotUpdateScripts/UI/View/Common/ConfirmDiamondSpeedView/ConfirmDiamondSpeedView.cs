@@ -11,10 +11,10 @@ using UnityEngine;
 public partial class ConfirmDiamondSpeedView : BaseView
 {
     ViewParam viewParam;
-    override public void Init(IViewParam _viewParams = null)
+    override public void Init(IViewParam _viewParam = null)
     {
-        base.Init(_viewParams);
-        viewParam = _viewParams as ViewParam;
+        base.Init(_viewParam);
+        viewParam = _viewParam as ViewParam;
         ui.btClose_Button.SetButton(() =>
         {
             viewParam.onCancel?.Invoke();

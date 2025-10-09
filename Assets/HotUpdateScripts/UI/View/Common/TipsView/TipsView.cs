@@ -19,16 +19,16 @@ public partial class TipsView : BaseView
     const float showDuration = 2f;
     Color initTxtColor = Color.clear;
     Color initBgColor = Color.clear;
-    public override void Init(IViewParam viewParams = null)
+    public override void Init(IViewParam viewParam = null)
     {
-        base.Init(viewParams);
+        base.Init(viewParam);
         tipsPool = PoolMgr.Ins.CreatePool(templeteTips);
         itemHeight = templeteTips.GetComponent<RectTransform>().rect.height;
     }
 
-    public override void OnOpen(IViewParam viewParams = null)
+    public override void OnOpen(IViewParam viewParam = null)
     {
-        base.OnOpen(viewParams);
+        base.OnOpen(viewParam);
         commonFloat.SetActive(false);
     }
 

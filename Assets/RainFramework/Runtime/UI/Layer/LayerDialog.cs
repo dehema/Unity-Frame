@@ -74,7 +74,7 @@ namespace Rain.UI
         private string Show(int uiId, DialogParam firstElement)
         {
             string prefabPath = firstElement.config.AssetName;
-            ViewParams viewParams = GetOrCreateViewParams(prefabPath, firstElement.guid);
+            ViewParam viewParams = GetOrCreateViewParams(prefabPath, firstElement.guid);
 
             viewParams.UIid = uiId;
             viewParams.Valid = true;
@@ -97,7 +97,7 @@ namespace Rain.UI
         private UILoader ShowAsync(int uiId, DialogParam firstElement)
         {
             string prefabPath = firstElement.config.AssetName;
-            ViewParams viewParams = GetOrCreateViewParams(prefabPath, firstElement.guid);
+            ViewParam viewParams = GetOrCreateViewParams(prefabPath, firstElement.guid);
 
             viewParams.UIid = uiId;
             viewParams.Valid = true;

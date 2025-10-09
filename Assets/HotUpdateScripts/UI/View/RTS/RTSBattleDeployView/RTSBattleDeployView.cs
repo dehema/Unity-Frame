@@ -16,9 +16,9 @@ public partial class RTSBattleDeployView : BaseView
     // 当前显示的阵型
     GameObject currShowFormation;
     int formationID;
-    public override void Init(IViewParam _viewParams = null)
+    public override void Init(IViewParam _viewParam = null)
     {
-        base.Init(_viewParams);
+        base.Init(_viewParam);
         poolFormation = PoolMgr.Ins.CreatePool(ui.tgFormation);
         ui.btBattle_Button.SetButton(OnClickStartBattle);
         RefreshFormation();

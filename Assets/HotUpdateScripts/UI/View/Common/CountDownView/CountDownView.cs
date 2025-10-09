@@ -12,31 +12,31 @@ public partial class CountDownView : BaseView
 {
     private float currentTime;
     [SerializeField] private Sprite[] numberSprites;  // 0-9的Sprite数组
-    CountDownViewParam viewParams;
+    CountDownViewParam viewParam;
     bool startCountDown = false;
     DBInt db;
 
-    public override void Init(IViewParam viewParams = null)
+    public override void Init(IViewParam viewParam = null)
     {
-        base.Init(viewParams);
+        base.Init(viewParam);
         db = new DBInt();
     }
 
     private float lastClickTime = -1f;
     private float doubleClickTimeThreshold = 0.3f; // 双击时间阈值，300毫秒
 
-    public override void OnOpen(IViewParam _viewParams)
+    public override void OnOpen(IViewParam _viewParam)
     {
-        base.OnOpen(_viewParams);
-        if (_viewParams == null)
+        base.OnOpen(_viewParam);
+        if (_viewParam == null)
         {
-            _viewParams = new CountDownViewParam();
+            _viewParam = new CountDownViewParam();
         }
-        viewParams = _viewParams as CountDownViewParam;
-        currentTime = viewParams.countDown;
-        db.Value = Mathf.CeilToInt(viewParams.countDown);
+        viewParam = _viewParam as CountDownViewParam;
+        currentTime = viewParam.countDown;
+        db.Value = Mathf.CeilToInt(viewParam.countDown);
         db.Bind(UpdateNumberDisplay);
-        AddTimer(delay: viewParams.delay, onComplete: () =>
+        AddTimer(delay: viewParam.delay, onComplete: () =>
         {
             startCountDown = true;
         });
@@ -90,7 +90,7 @@ public partial class CountDownView : BaseView
     public override void OnClose(Action _cb)
     {
         base.OnClose(_cb);
-        viewParams?.cb();
+        viewParam?.cb();
         db.Clear();
     }
 }

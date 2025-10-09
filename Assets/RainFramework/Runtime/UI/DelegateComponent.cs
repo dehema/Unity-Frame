@@ -4,51 +4,51 @@ namespace Rain.UI
 {
     public class DelegateComponent : MonoBehaviour
     {
-        public ViewParams ViewParams;
+        public ViewParam ViewParam;
         // 窗口添加
         public void Add()
         {
             // 触发窗口组件上添加到父节点后的事件
-            ViewParams.BaseView?.Added(ViewParams.UIid, ViewParams.Guid, ViewParams.Params);
+            ViewParam.BaseView?.Added(ViewParam.UIid, ViewParam.Guid, ViewParam.Params);
             
-            if (ViewParams.Callbacks != null && ViewParams.Callbacks.OnAdded != null)
+            if (ViewParam.Callbacks != null && ViewParam.Callbacks.OnAdded != null)
             {
-                ViewParams.Callbacks.OnAdded(ViewParams.Params, ViewParams.UIid);
+                ViewParam.Callbacks.OnAdded(ViewParam.Params, ViewParam.UIid);
             }
         }
 
         // 删除节点，该方法只能调用一次，将会触发OnBeforeRemoved回调
         public void Remove(bool isDestroy)
         {
-            if (ViewParams.Valid)
+            if (ViewParam.Valid)
             {
                 // 触发窗口组件上移除之前的事件
-                ViewParams.BaseView?.BeforeRemove();
+                ViewParam.BaseView?.BeforeRemove();
 
                 // 通知外部对象窗口组件上移除之前的事件（关闭窗口前的关闭动画处理）
-                if (ViewParams.Callbacks != null && ViewParams.Callbacks.OnBeforeRemove != null)
+                if (ViewParam.Callbacks != null && ViewParam.Callbacks.OnBeforeRemove != null)
                 {
-                    ViewParams.Callbacks.OnBeforeRemove();
-                    Removed(ViewParams, isDestroy);
+                    ViewParam.Callbacks.OnBeforeRemove();
+                    Removed(ViewParam, isDestroy);
                 }
                 else
                 {
-                    Removed(ViewParams, isDestroy);
+                    Removed(ViewParam, isDestroy);
                 }
             }
         }
 
         // 窗口组件中触发移除事件与释放窗口对象
-        private void Removed(ViewParams viewParams, bool isDestroy)
+        private void Removed(ViewParam viewParam, bool isDestroy)
         {
-            viewParams.Valid = false;
+            viewParam.Valid = false;
             
-            if (viewParams.Callbacks != null && viewParams.Callbacks.OnRemoved != null)
+            if (viewParam.Callbacks != null && viewParam.Callbacks.OnRemoved != null)
             {
-                viewParams.Callbacks.OnRemoved(viewParams.Params, viewParams.UIid);
+                viewParam.Callbacks.OnRemoved(viewParam.Params, viewParam.UIid);
             }
             
-            ViewParams?.BaseView?.Removed();
+            ViewParam?.BaseView?.Removed();
             
             if (isDestroy)
             {
@@ -66,7 +66,7 @@ namespace Rain.UI
 
         private void OnDestroy()
         {
-            ViewParams = null;
+            ViewParam = null;
         }
     }
 }

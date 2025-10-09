@@ -10,10 +10,10 @@ public partial class DebugView : BaseView
 {
     ObjPool btUIPool;
     DebugViewParam viewParam;
-    public override void Init(IViewParam _viewParams = null)
+    public override void Init(IViewParam _viewParam = null)
     {
         base.Init(viewParam);
-        viewParam = _viewParams as DebugViewParam;
+        viewParam = _viewParam as DebugViewParam;
         InitUIPool();
         ui.viewList_Rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, canvas.pixelRect.height / 2 - 140);
         ui.btStartGame_Button.SetButton(() =>
@@ -48,26 +48,26 @@ public partial class DebugView : BaseView
                 }
                 else if (uiName == ViewName.DemoView)
                 {
-                    DemoView.DemoViewParam viewParams = new DemoView.DemoViewParam();
-                    viewParams.number = 123;
-                    viewParams.tips = "hello world";
-                    viewParams.action = () =>
+                    DemoView.DemoViewParam viewParam = new DemoView.DemoViewParam();
+                    viewParam.number = 123;
+                    viewParam.tips = "hello world";
+                    viewParam.action = () =>
                     {
                         Console.WriteLine("trigger action");
                     };
-                    viewParams.actionParams = (string text) =>
+                    viewParam.actionParams = (string text) =>
                     {
                         Console.WriteLine($"trigger action whih params:{text}");
                     };
-                    UIMgr.Ins.OpenView(uiName, viewParams);
+                    UIMgr.Ins.OpenView(uiName, viewParam);
                 }
                 else if (uiName == ViewName.CountDownView)
                 {
-                    CountDownViewParam viewParams = new CountDownViewParam();
-                    viewParams.countDown = 5;
-                    viewParams.delay = 1;
-                    viewParams.cb = () => { Debug.Log("倒计时结束"); };
-                    UIMgr.Ins.OpenView(uiName, viewParams);
+                    CountDownViewParam viewParam = new CountDownViewParam();
+                    viewParam.countDown = 5;
+                    viewParam.delay = 1;
+                    viewParam.cb = () => { Debug.Log("倒计时结束"); };
+                    UIMgr.Ins.OpenView(uiName, viewParam);
                 }
                 else
                 {

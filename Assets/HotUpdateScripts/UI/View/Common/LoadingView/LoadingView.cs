@@ -6,14 +6,14 @@ using UnityEngine;
 public partial class LoadingView : BaseView
 {
     //data
-    LoadingViewParams _viewParams;
+    LoadingViewParam _viewParams;
 
-    public override void OnOpen(IViewParam viewParams = null)
+    public override void OnOpen(IViewParam viewParam = null)
     {
         base.OnOpen();
-        if (viewParams != null)
+        if (viewParam != null)
         {
-            _viewParams = viewParams as LoadingViewParams;
+            _viewParams = viewParam as LoadingViewParam;
             imgSlider_Image.fillAmount = 0;
             float tweenTime1 = 1.2f;
             float tweenTime2 = 0.5f;
@@ -49,7 +49,7 @@ public partial class LoadingView : BaseView
     }
 }
 
-public class LoadingViewParams
+public class LoadingViewParam
 {
     public Action CloseCB;
 }

@@ -135,6 +135,11 @@ view:
             layer: DialogLayer
             hasBg: true
             bgColor: "#153d66FF"
+        LoginView:
+            comment: 登录
+            layer: NormalLayer
+            hasBg: true
+            bgColor: "#FFFFFFFF"
     RTS:
         RTSUnitTestView:
             comment: RTS单位

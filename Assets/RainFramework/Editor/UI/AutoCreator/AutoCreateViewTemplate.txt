@@ -10,15 +10,15 @@ using UnityEngine;
 public partial class #ViewName# : BaseView
 {
     #ViewName#Param param;
-    public override void Init(IViewParam _viewParams = null)
+    public override void Init(IViewParam _viewParam = null)
     {
-        base.Init(_viewParams);
-        param = _viewParams as #ViewName#Param;
+        base.Init(_viewParam);
+        param = _viewParam as #ViewName#Param;
     }
 
-    public override void OnOpen(IViewParam _viewParams = null)
+    public override void OnOpen(IViewParam _viewParam = null)
     {
-        base.OnOpen(_viewParams);
+        base.OnOpen(_viewParam);
     }
 
     public override void OnClose(Action _cb)

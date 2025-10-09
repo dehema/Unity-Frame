@@ -16,17 +16,17 @@ public partial class ChatView : BaseView
     ObjPool poolChatMenu;
     UIControlDemo_DynamicTableData tableData = new UIControlDemo_DynamicTableData();
 
-    public override void Init(IViewParam _viewParams = null)
+    public override void Init(IViewParam _viewParam = null)
     {
-        base.Init(_viewParams);
-        param = _viewParams as ChatViewParam;
+        base.Init(_viewParam);
+        param = _viewParam as ChatViewParam;
         InitUI();
 
     }
 
-    public override void OnOpen(IViewParam _viewParams = null)
+    public override void OnOpen(IViewParam _viewParam = null)
     {
-        base.OnOpen(_viewParams);
+        base.OnOpen(_viewParam);
     }
 
     public override void OnClose(Action _cb)

@@ -63,24 +63,22 @@ namespace Rain.Launcher
         // 开始游戏
         public void StartGame()
         {
-            if (Application.isEditor)
-            {
-                Application.runInBackground = true;
-            }
-            if (Application.isEditor)
-            {
-                DebugView.DebugViewParam viewParam = new DebugView.DebugViewParam();
-                viewParam.actionEnterGame = EnterGame;
-                UIMgr.Ins.OpenView(ViewName.DebugView, viewParam);
+#if UNITY_EDITOR
+            Application.runInBackground = true;
+            DebugView.DebugViewParam viewParam = new DebugView.DebugViewParam();
+            viewParam.actionEnterGame = EnterGame;
+            UIMgr.Ins.OpenView(ViewName.DebugView, viewParam);
 
-                //ab 系统还没做好
-                //UIMgr.Ins.OpenViewAsync(ViewName.DebugView);
-                Utility.Log("hello world");
-            }
-            else
+            //UIMgr.Ins.OpenViewAsync(ViewName.DebugView);
+            Utility.Log("hello world");
+#else
+            LoginViewParam param = new LoginViewParam();
+            param.action = () =>
             {
                 EnterGame();
-            }
+            };
+            UIMgr.Ins.OpenView<LoginView>(param);
+#endif
         }
 
         private void EnterGame()

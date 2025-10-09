@@ -7,13 +7,13 @@ using UnityEngine.SceneManagement;
 
 public partial class LoadSceneView : BaseView
 {
-    LoadSceneViewParam _viewParams;
+    LoadSceneViewParam _viewParam;
     float progressMax = 0;
     float currProgress = 0;
-    public override void OnOpen(IViewParam viewParams = null)
+    public override void OnOpen(IViewParam viewParam = null)
     {
-        base.OnOpen(viewParams);
-        _viewParams = viewParams as LoadSceneViewParam;
+        base.OnOpen(viewParam);
+        _viewParam = viewParam as LoadSceneViewParam;
         currProgress = 0;
         Utility.DONumVal(0, 1, num => { progressMax = num; }, 0.5f);
         StartCoroutine(LoadLevel());
@@ -22,12 +22,12 @@ public partial class LoadSceneView : BaseView
     public override void OnClose(Action _cb)
     {
         base.OnClose(_cb);
-        _viewParams.CloseCB?.Invoke();
+        _viewParam.CloseCB?.Invoke();
     }
 
     IEnumerator LoadLevel()
     {
-        AsyncOperation operation = SceneManager.LoadSceneAsync(_viewParams.targetSceneName, LoadSceneMode.Single);
+        AsyncOperation operation = SceneManager.LoadSceneAsync(_viewParam.targetSceneName, LoadSceneMode.Single);
         operation.allowSceneActivation = false;
         while (!operation.isDone)
         {

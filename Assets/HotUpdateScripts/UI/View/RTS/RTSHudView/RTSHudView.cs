@@ -13,9 +13,9 @@ public partial class RTSHudView : BaseView
     ObjPool stateBarPool;
     Dictionary<string, HudUnitStateBar> barPools = new Dictionary<string, HudUnitStateBar>();
 
-    public override void Init(IViewParam _viewParams = null)
+    public override void Init(IViewParam _viewParam = null)
     {
-        base.Init(_viewParams);
+        base.Init(_viewParam);
         canvasScaler = GetComponent<CanvasScaler>();
         stateBarPool = PoolMgr.Ins.CreatePool(ui.hudUnitStateBar);
 
@@ -26,9 +26,9 @@ public partial class RTSHudView : BaseView
         MsgMgr.Ins.AddEventListener(MsgEvent.RTSUnitHPChange, OnRTSUnitHPChange, this);
     }
 
-    public override void OnOpen(IViewParam _viewParams = null)
+    public override void OnOpen(IViewParam _viewParam = null)
     {
-        base.OnOpen(_viewParams);
+        base.OnOpen(_viewParam);
     }
 
     public void OnBattleUnitAdd(params object[] obj)

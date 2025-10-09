@@ -12,9 +12,9 @@ public partial class TopView : BaseView
     long oldGold = 0;
     int oldExp = 0;
 
-    public override void Init(IViewParam viewParams = null)
+    public override void Init(IViewParam viewParam = null)
     {
-        base.Init(viewParams);
+        base.Init(viewParam);
         oldGold = DataMgr.Ins.playerData.gold.Value;
         oldExp = DataMgr.Ins.playerData.exp.Value;
         //bind

@@ -13,10 +13,10 @@ public partial class CityBuildingUpgradeView : BaseView
     CityBuildingUpgradeViewParam param;
     CityBuildingData cityBuildingData => param.cityBuildingData;
     DBHandler.Binding dbLevel;
-    public override void Init(IViewParam _viewParams = null)
+    public override void Init(IViewParam _viewParam = null)
     {
-        base.Init(_viewParams);
-        param = _viewParams as CityBuildingUpgradeViewParam;
+        base.Init(_viewParam);
+        param = _viewParam as CityBuildingUpgradeViewParam;
 
         ui.btBuildingLevelUp_Button.SetButton(() =>
         {
@@ -25,10 +25,10 @@ public partial class CityBuildingUpgradeView : BaseView
         });
     }
 
-    public override void OnOpen(IViewParam _viewParams = null)
+    public override void OnOpen(IViewParam _viewParam = null)
     {
-        base.OnOpen(_viewParams);
-        param = _viewParams as CityBuildingUpgradeViewParam;
+        base.OnOpen(_viewParam);
+        param = _viewParam as CityBuildingUpgradeViewParam;
         //UI
         dbLevel = cityBuildingData.Level.Bind((dm) =>
         {

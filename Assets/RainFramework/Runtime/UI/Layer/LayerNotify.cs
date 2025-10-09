@@ -8,7 +8,7 @@ namespace Rain.UI
         {
             var prefabPath = config.AssetName;
             string guid = Guid.NewGuid().ToString(); // 生成一个唯一的ID
-            ViewParams viewParams = GetOrCreateViewParams(prefabPath, guid);
+            ViewParam viewParams = GetOrCreateViewParams(prefabPath, guid);
             
             viewParams.UIid = uiId;
             viewParams.Params = parameters;
@@ -23,7 +23,7 @@ namespace Rain.UI
         {
             var prefabPath = config.AssetName;
             string guid = Guid.NewGuid().ToString(); // 生成一个唯一的ID
-            ViewParams viewParams = GetOrCreateViewParams(prefabPath, guid);
+            ViewParam viewParams = GetOrCreateViewParams(prefabPath, guid);
 
             viewParams.UIid = uiId;
             viewParams.Params = parameters;
@@ -33,13 +33,13 @@ namespace Rain.UI
             return LoadAsync(viewParams);
         }
         
-        protected new ViewParams GetOrCreateViewParams(string prefabPath, string guid)
+        protected new ViewParam GetOrCreateViewParams(string prefabPath, string guid)
         {
             if (!uiViews.TryGetValue(prefabPath, out var viewParams))
             {
                 if (!uiCache.TryGetValue(prefabPath, out viewParams))
                 {
-                    viewParams = new ViewParams();
+                    viewParams = new ViewParam();
                 }
                 viewParams.Guid = guid;
                 viewParams.PrefabPath = prefabPath;

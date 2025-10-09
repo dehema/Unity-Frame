@@ -21,7 +21,7 @@ namespace Rain.UI
         private Image __imgBg;
         private RectTransform __content;
 
-        public virtual void Init(IViewParam _viewParams = null)
+        public virtual void Init(IViewParam _viewParam = null)
         {
             _viewName = GetType().ToString();
             Utility.Log(_viewName + ".Init()");
@@ -66,7 +66,7 @@ namespace Rain.UI
             }
         }
 
-        public virtual void OnOpen(IViewParam _viewParams = null)
+        public virtual void OnOpen(IViewParam _viewParam = null)
         {
             //Utility.Log(_viewName + ".OnOpen()", gameObject);
             if (viewConfig.showMethod == ViewShowMethod.pop)
