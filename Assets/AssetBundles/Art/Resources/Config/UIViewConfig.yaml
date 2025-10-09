@@ -1,9 +1,12 @@
 #层级配置 每个层级单位之间额间隔默认为400，也就是说order为1的层级从400开始，与order为2的层级中间间隔400个sortingOrder可以使用，[comment]为注释
 #考虑到canvas的sortingOrder最大只能到32767，order的上限不能超过32767/400也就是80稍多一点，为保证增加默认间隔不需要修改order，建议最大order不超过40
 layer:
+    BaseLayer:
+        comment: 基础UI
+        order: 0
     NormalLayer:
         comment: 普通UI
-        order: 0
+        order: 2
     MenuLayer:
         comment: 游戏菜单UI
         order: 5
@@ -130,6 +133,9 @@ view:
             layer: DialogLayer
             hasBg: true
             bgClose: true
+        CityHUDView:
+            layer: BaseLayer
+            hasBg: false
         ChatView:
             comment: 聊天
             layer: DialogLayer

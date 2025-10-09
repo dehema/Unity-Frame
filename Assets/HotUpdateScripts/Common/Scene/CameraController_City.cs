@@ -64,15 +64,19 @@ public class CameraController_City : MonoBehaviour
         return new Vector3(clampedX, position.y, clampedZ);
     }
 
-    // 初始化
-    void Start()
+    private void Awake()
     {
-        mousePanSpeed = 1;
-        // 如果没有指定相机，则使用当前物体上的相机组件
         if (mainCamera == null)
         {
             mainCamera = GetComponent<Camera>();
         }
+
+        SceneMgr.Ins.Camera = mainCamera;
+    }
+
+    void Start()
+    {
+        mousePanSpeed = 1;
 
         // 确保相机为正交投影
         if (mainCamera != null && !mainCamera.orthographic)
@@ -93,6 +97,7 @@ public class CameraController_City : MonoBehaviour
         // 初始化目标位置为当前位置并进行边界限制
         targetPosition = ClampPosition(mainCamera.transform.position);
         mainCamera.transform.position = targetPosition;
+        MsgMgr.Ins.DispatchEvent(MsgEvent.CameraMove, mainCamera.transform.position);
     }
 
     // 每帧更新
@@ -141,12 +146,13 @@ public class CameraController_City : MonoBehaviour
         if (sizeDifference > 0.01f)
         {
             mainCamera.orthographicSize = Mathf.Lerp(mainCamera.orthographicSize, targetOrthographicSize, Time.deltaTime * ZoomDampening);
-            MsgMgr.Ins.DispatchEvent(MsgEvent.CameraZoomRatioChange, ZoomDefaultSize - mainCamera.orthographicSize);
         }
         else
         {
             mainCamera.orthographicSize = targetOrthographicSize;
         }
+        float zoomRatio = Mathf.InverseLerp(ZoomMaxSize, ZoomMinSize, mainCamera.orthographicSize);
+        MsgMgr.Ins.DispatchEvent(MsgEvent.CameraZoomRatioChange, mainCamera.orthographicSize, zoomRatio);
     }
 
     /// <summary>
@@ -234,6 +240,11 @@ public class CameraController_City : MonoBehaviour
         // 处理触摸平移（移动端）
         HandleTouchPanning();
 
+        if (mainCamera.transform.position == targetPosition)
+        {
+            return;
+        }
+
         // 平滑过渡到目标位置（应用边界限制）
         Vector3 positionDifference = mainCamera.transform.position - targetPosition;
         float distance = positionDifference.magnitude;
@@ -248,6 +259,7 @@ public class CameraController_City : MonoBehaviour
             // 当距离很小时，直接设置为目标位置，避免无限插值
             mainCamera.transform.position = targetPosition;
         }
+        MsgMgr.Ins.DispatchEvent(MsgEvent.CameraMove, mainCamera.transform.position);
     }
 
     /// <summary>

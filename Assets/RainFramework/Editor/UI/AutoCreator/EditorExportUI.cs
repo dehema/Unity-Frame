@@ -486,6 +486,9 @@ namespace Rain.UI.Editor
             string name = _name;
             switch (name)
             {
+                case "Trans":
+                    name = "Transform";
+                    break;
                 case "Rect":
                     name = "RectTransform";
                     break;

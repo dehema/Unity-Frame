@@ -55,7 +55,7 @@ namespace Rain.Core
             return false;
         }
 
-        public DBHandler.Binding Bind(Action<DBModify> callfunc)
+        public DBBinding Bind(Action<DBModify> callfunc)
         {
             if (this._delegateDic is null)
             {
@@ -64,7 +64,7 @@ namespace Rain.Core
             callfunc(new DBModify { value = this._value, action = DBAction.Init });
             int token = DBHandler.GetBindToken();
             this._delegateDic.Add(token, callfunc);
-            return new DBHandler.Binding()
+            return new DBBinding()
             {
                 callfunc = this.UnBind,
                 token = token
@@ -77,7 +77,7 @@ namespace Rain.Core
             handler.Bind(this, this.Bind(callfunc), method);
         }
 
-        public void UnBind(DBHandler.Binding handler)
+        public void UnBind(DBBinding handler)
         {
             if (_delegateDic.ContainsKey(handler.token))
             {

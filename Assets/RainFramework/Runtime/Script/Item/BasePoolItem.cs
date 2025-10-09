@@ -2,11 +2,11 @@
 
 public class BasePoolItem : BaseUI
 {
-    public virtual void OnCreate(params object[] _params)
+    public virtual void OnCreate(params object[] _param)
     {
     }
 
-    public virtual void OnOpen(params object[] _params)
+    public virtual void OnOpen(params object[] _param)
     {
     }
 

@@ -1,9 +1,13 @@
 public enum ViewLayer
 { 
     /// <summary>
+    /// 基础UI
+    /// </summary>
+	BaseLayer = 0,
+    /// <summary>
     /// 普通UI
     /// </summary>
-	NormalLayer = 0,
+	NormalLayer = 2,
     /// <summary>
     /// 游戏菜单UI
     /// </summary>
@@ -126,6 +130,10 @@ public class ViewName
     /// 城市建筑升级
     /// </summary>
 	public const string CityBuildingUpgradeView = "CityBuildingUpgradeView";
+    /// <summary>
+    /// 
+    /// </summary>
+	public const string CityHUDView = "CityHUDView";
     /// <summary>
     /// 聊天
     /// </summary>

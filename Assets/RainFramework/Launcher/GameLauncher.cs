@@ -83,7 +83,7 @@ namespace Rain.Launcher
 
         private void EnterGame()
         {
-            SceneMgr.Ins.ChangeScene(SceneID.MainCity, () => { UIMgr.Ins.OpenView(ViewName.MainView); });
+            SceneMgr.Ins.ChangeScene(SceneID.MainCity, () => { });
 
         }
 

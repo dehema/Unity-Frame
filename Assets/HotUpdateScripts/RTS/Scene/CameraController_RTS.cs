@@ -129,12 +129,13 @@ public class CameraController_RTS : MonoBehaviour
         if (sizeDifference > 0.1f)
         {
             mainCamera.orthographicSize = Mathf.Lerp(mainCamera.orthographicSize, targetOrthographicSize, Time.deltaTime * zoomDampening);
-            MsgMgr.Ins.DispatchEvent(MsgEvent.CameraZoomRatioChange, defaultOrthographicSize - mainCamera.orthographicSize);
         }
         else
         {
             mainCamera.orthographicSize = targetOrthographicSize;
         }
+        float zoomRatio = Mathf.InverseLerp(maxOrthographicSize, minOrthographicSize, mainCamera.orthographicSize);
+        MsgMgr.Ins.DispatchEvent(MsgEvent.CameraZoomRatioChange, mainCamera.orthographicSize, zoomRatio);
     }
 
     /// <summary>

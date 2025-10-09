@@ -141,14 +141,14 @@ namespace Rain.UI
             return "";
         }
 
-        List<DBHandler.Binding> dbHandlers = new List<DBHandler.Binding>();
+        List<DBBinding> dbHandlers = new List<DBBinding>();
         /// <summary>
         /// 数据绑定 使用这个方法绑定的事件在关闭页面时自动解绑
         /// </summary>
         /// <param name="binding"></param>
         protected void DataBind(DBObject dBObject, Action<DBModify> callfunc)
         {
-            DBHandler.Binding handler = dBObject.Bind(callfunc);
+            DBBinding handler = dBObject.Bind(callfunc);
             dbHandlers.Add(handler);
         }
 

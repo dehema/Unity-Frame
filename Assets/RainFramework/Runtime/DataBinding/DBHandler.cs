@@ -22,24 +22,14 @@ namespace Rain.Core
             Replace,
         }
 
-        public class Binding
-        {
-            public Action<Binding> callfunc;
-            public int token;
-            public void UnBind()
-            {
-                this.callfunc(this);
-            }
-        }
-
-        private Dictionary<DBObject, List<Binding>> _bindingListDict = new Dictionary<DBObject, List<Binding>>();
+        private Dictionary<DBObject, List<DBBinding>> _bindingListDict = new Dictionary<DBObject, List<DBBinding>>();
         /// <summary>
         /// 绑定
         /// </summary>
         /// <param name="obj"></param>
         /// <param name="bind"></param>
         /// <param name="method"></param>
-        public void Bind(DBObject obj, Binding bind, UpdateMethod method)
+        public void Bind(DBObject obj, DBBinding bind, UpdateMethod method)
         {
             if (this._bindingListDict.ContainsKey(obj))
             {
@@ -50,7 +40,7 @@ namespace Rain.Core
             }
             else
             {
-                this._bindingListDict.Add(obj, new List<Binding>());
+                this._bindingListDict.Add(obj, new List<DBBinding>());
             }
             this._bindingListDict[obj].Add(bind);
         }
@@ -85,6 +75,16 @@ namespace Rain.Core
                 }
             }
             this._bindingListDict.Clear();
+        }
+    }
+
+    public class DBBinding
+    {
+        public Action<DBBinding> callfunc;
+        public int token;
+        public void UnBind()
+        {
+            this.callfunc(this);
         }
     }
 }

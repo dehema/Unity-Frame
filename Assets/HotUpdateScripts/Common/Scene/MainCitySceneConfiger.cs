@@ -34,8 +34,6 @@ public class MainCitySceneConfig : MonoBehaviour, ISceneConfigProvider
         camera.ZoomMaxSize = float.Parse(config["mainCity_Camera_zoomMaxSize"].Val);
         camera.TouchZoomSpeed = float.Parse(config["mainCity_Camera_touchZoomSpeed"].Val);
         camera.ZoomDampening = float.Parse(config["mainCity_Camera_zoomDampening"].Val);
-
-        //
     }
 
     public void OnSceneUnLoad(params object[] obj)

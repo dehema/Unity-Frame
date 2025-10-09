@@ -12,7 +12,7 @@ public partial class CityBuildingDetailView : BaseView
 {
     CityBuildingDetailViewParam param;
     CityBuildingData cityBuildingData => param.cityBuildingData;
-    DBHandler.Binding dbLevel;
+    DBBinding dbLevel;
 
     public override void Init(IViewParam _viewParam = null)
     {

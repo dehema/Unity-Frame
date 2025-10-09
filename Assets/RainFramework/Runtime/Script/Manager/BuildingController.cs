@@ -18,7 +18,8 @@ public class BuildingController : MonoBehaviour
     public CityBuildingConfig BuildingConfig => BuildingData.BuildingConfig;
     BuildingState _buildingState = BuildingState.None;
 
-    DBHandler.Binding binding;
+    DBBinding binding;
+
     void Awake()
     {
         gameObject.layer = 7;

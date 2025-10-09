@@ -1,4 +1,5 @@
 using DG.Tweening;
+using Rain.UI;
 using UnityEngine;
 
 
@@ -67,7 +68,7 @@ public partial class HudUnitStateBar : BasePoolItem
         screenPos += new Vector3(0, 20, 0);
         //
         // UI坐标需转换为RectTransform的局部坐标
-        if (RectTransformUtility.ScreenPointToLocalPointInRectangle(param.canvasRect, screenPos, Camera.main, out Vector2 localPos))
+        if (RectTransformUtility.ScreenPointToLocalPointInRectangle(param.canvasRect, screenPos, UIMgr.Ins.Camera, out Vector2 localPos))
         {
             rect.localPosition = localPos;
         }

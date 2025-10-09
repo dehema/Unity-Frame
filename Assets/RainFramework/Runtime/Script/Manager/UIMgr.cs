@@ -29,6 +29,8 @@ namespace Rain.UI
         /// <summary>最大排序值</summary>
         private const int LAYER_MAX = 32767;
 
+        public Camera Camera => Camera.main;
+
         private Camera _camera_fx;
         /// <summary>
         /// 特效相机

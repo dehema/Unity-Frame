@@ -9,6 +9,7 @@ public class SceneMgr : MonoSingleton<SceneMgr>
     //要切换的场景名称
     string targetSceneName;
     public SceneID currSceneID;
+    public  Camera Camera { get; set; }
 
     private void Start()
     {
@@ -35,6 +36,11 @@ public class SceneMgr : MonoSingleton<SceneMgr>
         //        p.OnSceneLoad(scene.name);
         //    }
         //}
+        if (scene.name == SceneName.MainCity)
+        {
+            UIMgr.Ins.OpenView(ViewName.MainView);
+            UIMgr.Ins.OpenView(ViewName.CityHUDView);
+        }
     }
 
     private void OnSceneUnloaded(Scene scene)
@@ -51,6 +57,10 @@ public class SceneMgr : MonoSingleton<SceneMgr>
         //        p.OnSceneUnLoad(scene.name);
         //    }
         //}
+        if (scene.name == SceneName.MainCity)
+        {
+            UIMgr.Ins.CloseView(ViewName.CityHUDView);
+        }
     }
 
     /// <summary>
