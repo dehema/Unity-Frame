@@ -6,6 +6,7 @@ using Rain.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static SettingField;
 
 /// <summary>
 /// 科技
