@@ -28,7 +28,12 @@ namespace Rain.Core
         RTSBattleEnd,
         RTSUnitHPChange,                //RTS单位血量变化
 
-        //镜头
+        //RTS镜头
+        RTS_CameraZoomIn,                   //镜头放大
+        RTS_CameraZoomOut,                  //镜头缩小
+        RTS_CameraZoomRatioChange,          //镜头倍率调整
+
+        //城镇镜头
         CameraZoomIn,                   //镜头放大
         CameraZoomOut,                  //镜头缩小
         CameraZoomRatioChange,          //镜头倍率调整

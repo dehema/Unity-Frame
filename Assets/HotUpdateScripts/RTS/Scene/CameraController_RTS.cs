@@ -119,11 +119,21 @@ public class CameraController_RTS : MonoBehaviour
             targetOrthographicSize = Mathf.Clamp(targetOrthographicSize, minOrthographicSize, maxOrthographicSize);
         }
 
+        if (mainCamera.orthographicSize == targetOrthographicSize)
+        {
+            return;
+        }
+
         // 平滑过渡到目标正交尺寸
-        if (mainCamera.orthographicSize != targetOrthographicSize)
+        float sizeDifference = Mathf.Abs(mainCamera.orthographicSize - targetOrthographicSize);
+        if (sizeDifference > 0.1f)
         {
             mainCamera.orthographicSize = Mathf.Lerp(mainCamera.orthographicSize, targetOrthographicSize, Time.deltaTime * zoomDampening);
             MsgMgr.Ins.DispatchEvent(MsgEvent.CameraZoomRatioChange, defaultOrthographicSize - mainCamera.orthographicSize);
+        }
+        else
+        {
+            mainCamera.orthographicSize = targetOrthographicSize;
         }
     }
 
@@ -194,23 +204,23 @@ public class CameraController_RTS : MonoBehaviour
         if (mainCamera != null)
         {
             Vector3 currentPosition = mainCamera.transform.position;
-            
+
             // 计算从相机位置到世界原点的射线
             Vector3 worldCenter = Vector3.zero;
-            
+
             // 对于正交相机，我们需要计算相机应该移动到哪里才能让视野中心对准世界原点
             // 使用相机的前向向量投影到XZ平面上
             Vector3 cameraForward = mainCamera.transform.forward;
-            
+
             // 如果相机是俯视角度，计算相机在XZ平面上应该的位置
             if (Mathf.Abs(cameraForward.y) > 0.01f) // 确保不是完全水平的相机
             {
                 // 计算从当前Y高度到地面(Y=0)的距离比例
                 float distanceToGround = currentPosition.y / Mathf.Abs(cameraForward.y);
-                
+
                 // 计算相机在XZ平面上的偏移量，使得视线中心指向世界原点
                 Vector3 offsetOnGround = new Vector3(cameraForward.x, 0, cameraForward.z).normalized * distanceToGround;
-                
+
                 // 计算新的相机位置（只修改X和Z）
                 Vector3 newPosition = new Vector3(
                     worldCenter.x - offsetOnGround.x,
@@ -252,7 +262,7 @@ public class CameraController_RTSEditor : Editor
         if (GUILayout.Button("调整相机视野中心到世界原点 (0,0,0)"))
         {
             cameraController.ResetCameraToWorldCenter();
-            
+
             // 标记场景为已修改（如果在编辑模式下）
             if (!Application.isPlaying)
             {

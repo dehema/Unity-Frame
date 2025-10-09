@@ -58,11 +58,11 @@ public class CameraController_City : MonoBehaviour
 
     // 将位置限制在 posLimit 指定的范围内（X: xMin~xMax, Z: zMin~zMax）
     private Vector3 ClampPosition(Vector3 position)
-	{
-		float clampedX = Mathf.Clamp(position.x, PosLimit.x, PosLimit.y);
-		float clampedZ = Mathf.Clamp(position.z, PosLimit.z, PosLimit.w);
-		return new Vector3(clampedX, position.y, clampedZ);
-	}
+    {
+        float clampedX = Mathf.Clamp(position.x, PosLimit.x, PosLimit.y);
+        float clampedZ = Mathf.Clamp(position.z, PosLimit.z, PosLimit.w);
+        return new Vector3(clampedX, position.y, clampedZ);
+    }
 
     // 初始化
     void Start()
@@ -90,9 +90,9 @@ public class CameraController_City : MonoBehaviour
 
         SetTargetOrthographicSize(ZoomDefaultSize);
 
-		// 初始化目标位置为当前位置并进行边界限制
-		targetPosition = ClampPosition(mainCamera.transform.position);
-		mainCamera.transform.position = targetPosition;
+        // 初始化目标位置为当前位置并进行边界限制
+        targetPosition = ClampPosition(mainCamera.transform.position);
+        mainCamera.transform.position = targetPosition;
     }
 
     // 每帧更新
@@ -131,16 +131,20 @@ public class CameraController_City : MonoBehaviour
         // 处理触摸缩放（移动端）
         HandleTouchZoom();
 
+        if (mainCamera.orthographicSize == targetOrthographicSize)
+        {
+            return;
+        }
+
         // 平滑过渡到目标正交尺寸
         float sizeDifference = Mathf.Abs(mainCamera.orthographicSize - targetOrthographicSize);
-        if (sizeDifference > 0.01f) // 当差值大于0.01时才继续插值
+        if (sizeDifference > 0.01f)
         {
             mainCamera.orthographicSize = Mathf.Lerp(mainCamera.orthographicSize, targetOrthographicSize, Time.deltaTime * ZoomDampening);
             MsgMgr.Ins.DispatchEvent(MsgEvent.CameraZoomRatioChange, ZoomDefaultSize - mainCamera.orthographicSize);
         }
         else
         {
-            // 当差值很小时，直接设置为目标值，避免无限插值
             mainCamera.orthographicSize = targetOrthographicSize;
         }
     }
@@ -230,20 +234,20 @@ public class CameraController_City : MonoBehaviour
         // 处理触摸平移（移动端）
         HandleTouchPanning();
 
-		// 平滑过渡到目标位置（应用边界限制）
-		Vector3 positionDifference = mainCamera.transform.position - targetPosition;
-		float distance = positionDifference.magnitude;
-		if (distance > 0.01f) // 当距离大于0.01时才继续插值
-		{
-			// 先对目标位置进行边界限制
-			targetPosition = ClampPosition(targetPosition);
-			mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, targetPosition, Time.deltaTime * PanDampening);
-		}
-		else
-		{
-			// 当距离很小时，直接设置为目标位置，避免无限插值
-			mainCamera.transform.position = targetPosition;
-		}
+        // 平滑过渡到目标位置（应用边界限制）
+        Vector3 positionDifference = mainCamera.transform.position - targetPosition;
+        float distance = positionDifference.magnitude;
+        if (distance > 0.01f) // 当距离大于0.01时才继续插值
+        {
+            // 先对目标位置进行边界限制
+            targetPosition = ClampPosition(targetPosition);
+            mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, targetPosition, Time.deltaTime * PanDampening);
+        }
+        else
+        {
+            // 当距离很小时，直接设置为目标位置，避免无限插值
+            mainCamera.transform.position = targetPosition;
+        }
     }
 
     /// <summary>
@@ -282,8 +286,8 @@ public class CameraController_City : MonoBehaviour
             moveDirection = Quaternion.Euler(0, mainCamera.transform.eulerAngles.y, 0) * moveDirection;
             moveDirection.y = 0; // 确保Y轴不变
 
-			// 更新目标位置并进行边界限制
-			targetPosition = ClampPosition(targetPosition + moveDirection);
+            // 更新目标位置并进行边界限制
+            targetPosition = ClampPosition(targetPosition + moveDirection);
 
             // 更新鼠标位置记录
             lastMousePosition = Input.mousePosition;
@@ -324,8 +328,8 @@ public class CameraController_City : MonoBehaviour
                 moveDirection = Quaternion.Euler(0, mainCamera.transform.eulerAngles.y, 0) * moveDirection;
                 moveDirection.y = 0; // 确保Y轴不变
 
-				// 更新目标位置并进行边界限制
-				targetPosition = ClampPosition(targetPosition + moveDirection);
+                // 更新目标位置并进行边界限制
+                targetPosition = ClampPosition(targetPosition + moveDirection);
 
                 // 更新触摸位置记录
                 lastTouchPosition = touch.position;
@@ -408,19 +412,19 @@ public class CameraController_City : MonoBehaviour
                     worldCenter.z - offsetOnGround.z
                 );
 
-				// 应用边界限制
-				newPosition = ClampPosition(newPosition);
-				mainCamera.transform.position = newPosition;
-				targetPosition = newPosition;
+                // 应用边界限制
+                newPosition = ClampPosition(newPosition);
+                mainCamera.transform.position = newPosition;
+                targetPosition = newPosition;
             }
             else
             {
                 // 如果是水平相机，直接将XZ坐标设为0
-				Vector3 newPosition = new Vector3(0f, currentPosition.y, 0f);
-				// 应用边界限制
-				newPosition = ClampPosition(newPosition);
-				mainCamera.transform.position = newPosition;
-				targetPosition = newPosition;
+                Vector3 newPosition = new Vector3(0f, currentPosition.y, 0f);
+                // 应用边界限制
+                newPosition = ClampPosition(newPosition);
+                mainCamera.transform.position = newPosition;
+                targetPosition = newPosition;
             }
         }
     }
