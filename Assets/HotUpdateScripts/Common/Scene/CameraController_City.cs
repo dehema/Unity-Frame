@@ -365,7 +365,7 @@ public class CameraController_City : MonoBehaviour
     private void HandleRaycast()
     {
         // 检测鼠标左键点击
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButton(0))
         {
             bool isOverUI = EventSystem.current.IsPointerOverGameObject();
             if (isOverUI)

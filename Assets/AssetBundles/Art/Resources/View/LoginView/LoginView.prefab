@@ -342,10 +342,10 @@ MonoBehaviour:
     bg_Button: {fileID: 3542702939690194093}
     content: {fileID: 2236091987105096546}
     content_Rect: {fileID: 4618983190450244143}
-    progressVal: {fileID: 3125159540872739294}
-    progressVal_Text: {fileID: 4515054020759820829}
     progress: {fileID: 5915034886694016634}
     progress_Slider: {fileID: 2948707996593257069}
+    progressVal: {fileID: 3125159540872739294}
+    progressVal_Text: {fileID: 4515054020759820829}
     tips: {fileID: 125173693810142096}
     tips_Text: {fileID: 3190607547904340756}
 --- !u!1 &2236091987105096546
@@ -854,4 +854,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AspectMode: 4
-  m_AspectRatio: 0.4494382
+  m_AspectRatio: 1

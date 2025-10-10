@@ -1,14 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Rain.Core;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 namespace Rain.UI
 {
     /// <summary>
     /// UI管理器，负责UI视图的创建、显示、隐藏和层级管理
     /// </summary>
+    [UpdateRefresh]
     public class UIMgr : ModuleSingletonMono<UIMgr>, IModule
     {
         /// <summary>UI视图配置</summary>
@@ -291,20 +294,6 @@ namespace Rain.UI
             return null;
         }
 
-        public List<BaseView> GetAllViewInLayer(string _layer)
-        {
-            List<BaseView> viewList = new List<BaseView>();
-            foreach (var item in _allView)
-            {
-                ViewConfig config = GetViewConfig(item.Key);
-                if (config.layer == _layer)
-                {
-                    viewList.Add(item.Value);
-                }
-            }
-            return viewList;
-        }
-
         /// <summary>
         /// 对所有UI的orderInLayer重新排序
         /// </summary>
@@ -428,6 +417,10 @@ namespace Rain.UI
 
         public void OnUpdate()
         {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                CloseTopFloatView();
+            }
         }
 
         public void OnLateUpdate()
@@ -469,6 +462,30 @@ namespace Rain.UI
                 viewConfig.uiLoader.UILoadSuccess();
             });
             return viewConfig.uiLoader;
+        }
+
+        /// <summary>
+        /// 关闭最上层的悬浮界面
+        /// </summary>
+        private bool CloseTopFloatView()
+        {
+            List<BaseView> layerViews = GetShowViewsByLayer(ViewLayer.DialogLayer.ToString());
+            int maxLayer = -1;
+            BaseView topView = null;
+            foreach (var item in layerViews)
+            {
+                if (item.canvas.sortingOrder > maxLayer)
+                {
+                    maxLayer = item.canvas.sortingOrder;
+                    topView = item;
+                }
+            }
+            if (topView)
+            {
+                topView.Close();
+                return true;
+            }
+            return false;
         }
     }
 }

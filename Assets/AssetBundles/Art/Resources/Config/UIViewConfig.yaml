@@ -104,7 +104,7 @@ view:
             bgColor: "#00000000"
         TechView:
             comment: 科技
-            layer: MenuLayer
+            layer: DialogLayer
             bgColor: "#FFFFFFFF"
             hasBg: true
         TechDetailView:
