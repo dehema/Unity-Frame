@@ -112,13 +112,13 @@ public class CityMgr : MonoSingleton<CityMgr>
     /// <summary>
     /// 选择建筑
     /// </summary>
-    public void SelectBuilding(CityBuildingData building)
+    public void SelectBuilding(CityBuildingData buildingData)
     {
-        selectedBuilding = building;
-        CityBuildingConfig config = building.BuildingConfig;
+        selectedBuilding = buildingData;
+        CityBuildingConfig config = buildingData.BuildingConfig;
         Debug.Log($"选中建筑: {config.BuildingName}");
 
-        MsgMgr.Ins.DispatchEvent(MsgEvent.SelectCityBuilding, building);
+        MsgMgr.Ins.DispatchEvent(MsgEvent.SelectCityBuilding, buildingData);
     }
 
     /// <summary>

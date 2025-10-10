@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Rain.Core;
+using Rain.UI;
 
 public partial class BuildingHudItem : BasePoolItem
 {
@@ -11,26 +12,40 @@ public partial class BuildingHudItem : BasePoolItem
     {
         base.OnCreate(_param);
         buildingController = _param[0] as BuildingController;
+        ui.btTips_Button.SetButton(OnClickTips);
+        gameObject.name = buildingData.BuildingConfig.BuildingName;
         buildingData.Level.Bind((dm) =>
         {
-            ui.BuildingLevel_Text.text = dm.value.ToString();
+            Refresh();
         });
-        Refresh();
     }
 
 
     public void Refresh()
     {
         //名字
+        ui.BuildingLevel_Text.text = buildingData.Level.Value.ToString();
         ui.BuildingName_Text.text = buildingData.BuildingConfig.BuildingName;
         //进度
         ui.BuildingProgress.SetActive(buildingData.IsBuilding);
         //气泡
-        if (buildingData.BuildingType != CityBuildingType.Tech)
+        if (buildingData.BuildingType == CityBuildingType.Tech && buildingData.Level.Value > 0)
+        {
+            ui.btTips.SetActive(true);
+        }
+        else
         {
             ui.btTips.SetActive(false);
         }
         //菜单
+    }
+
+    void OnClickTips()
+    {
+        if (buildingData.BuildingType == CityBuildingType.Tech)
+        {
+            UIMgr.Ins.OpenView(ViewName.TechView);
+        }
     }
 
     public override void OnCollect()
