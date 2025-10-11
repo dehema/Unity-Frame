@@ -39,7 +39,7 @@ public partial class CityHUDView : BaseView
     }
 
     /// <summary>
-    /// ¸üÐÂ²Ëµ¥Î»ÖÃ
+    /// ï¿½ï¿½ï¿½Â²Ëµï¿½Î»ï¿½ï¿½
     /// </summary>
     private void UpdateBuildingMenusPos()
     {
