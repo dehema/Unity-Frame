@@ -12,8 +12,11 @@ public class PlayerData : DBClass
     public DBFloat hpMax;
 
     //资源
-    public DBLong gold;
+    public DBLong food;
     public DBLong wood;
+    public DBLong gold;
+    public DBLong book;
+    public DBLong ore;
     public DBLong diamond;
 
     //科技

@@ -134,70 +134,34 @@ public class CityMgr : MonoSingleton<CityMgr>
     }
 
     /// <summary>
-    /// 建造建筑
+    /// 升级建筑
     /// </summary>
-    public bool BuildBuilding(int buildingID, int slotID, int level = 1)
+    public void UpgradeBuilding(CityBuildingData _buildingData)
     {
-        //var buildingConfig = Tables.Instance?.TbBuilding?.GetOrDefault(buildingID);
-        //var slotConfig = buildingSlots.GetValueOrDefault(slotID);
-
-        //if (buildingConfig == null || slotConfig == null)
-        //{
-        //    Debug.LogError($"建筑配置或槽位配置不存在: BuildingID={buildingID}, SlotID={slotID}");
-        //    return false;
-        //}
-
-        //// 检查槽位是否已被占用
-        //if (IsSlotOccupied(slotID))
-        //{
-        //    Debug.LogWarning($"槽位 {slotID} 已被占用");
-        //    return false;
-        //}
-
-        //// 检查是否允许在此槽位建造此建筑
-        //if (!CanBuildInSlot(buildingID, slotID))
-        //{
-        //    Debug.LogWarning($"不允许在槽位 {slotID} 建造建筑 {buildingID}");
-        //    return false;
-        //}
-
-        //// 检查资源是否足够
-        //if (!HasEnoughResources(buildingConfig.BaseCost))
-        //{
-        //    Debug.LogWarning("资源不足，无法建造建筑");
-        //    return false;
-        //}
-
-        //// 创建建筑数据
-        //var buildingData = new BuildingData
-        //{
-        //    InstanceID = nextBuildingInstanceID++,
-        //    BuildingID = buildingID,
-        //    SlotID = slotID,
-        //    Level = level,
-        //    State = BuildingState.Building,
-        //    BuildStartTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
-        //    BuildEndTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds() + buildingConfig.BuildTime,
-        //    Position = new Vector3(slotConfig.PositionX, 0, slotConfig.PositionZ),
-        //    Rotation = Quaternion.Euler(0, slotConfig.RotationY, 0),
-        //    IsUnlocked = true,
-        //    UnlockTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
-        //};
-
-        //// 消耗资源
-        //ConsumeResources(buildingConfig.BaseCost);
-
-        //// 添加到建筑列表
-        //buildings[buildingData.InstanceID] = buildingData;
-
-        //// 创建建筑对象
-        //CreateBuildingObject(buildingData);
-
-        //// 触发事件
-        //OnBuildingStarted?.Invoke(buildingData);
-
-        //Debug.Log($"开始建造建筑: {buildingConfig.Name} 在槽位 {slotID}");
-        return true;
+        int targetLevel = _buildingData.Level.Value + 1;
+        CityBuildingLevelConfig levelConfig = GetCityBuildingLevelConfig(_buildingData.BuildingType, targetLevel);
+        if (levelConfig == null)
+        {
+            Debug.LogWarning("已达最高等级，无法升级");
+            return;
+        }
+        //花费
+        Dictionary<ResType, long> costRes = levelConfig.CostRes;
+        bool isResEnough = PlayerMgr.Ins.IsResEnough(costRes);
+        if (!isResEnough)
+        {
+            Debug.LogWarning("资源不足，无法升级");
+            return;
+        }
+        //扣除资源
+        foreach (var item in costRes)
+        {
+            PlayerMgr.Ins.AddResNum(item.Key, -item.Value);
+        }
+        //升级
+        _buildingData.State.Value = (int)BuildingState.Building;
+        _buildingData.BuildStartTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        _buildingData.BuildEndTime = _buildingData.BuildStartTime + levelConfig.CostTime;
     }
 
     /// <summary>
@@ -421,14 +385,8 @@ public class CityMgr : MonoSingleton<CityMgr>
     /// <returns></returns>
     public CityBuildingLevelConfig GetCityBuildingLevelConfig(CityBuildingType _type, int _lv)
     {
-        foreach (var item in ConfigMgr.CityBuildingLevel.DataList)
-        {
-            if (item.BuildingType == _type && item.Level == _lv)
-            {
-                return item;
-            }
-        }
-        return null;
+        CityBuildingLevelConfig config = ConfigMgr.CityBuildingLevel.Get(_type, _lv);
+        return config;
     }
 
     /// <summary>

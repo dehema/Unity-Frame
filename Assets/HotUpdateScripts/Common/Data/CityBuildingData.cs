@@ -94,6 +94,16 @@ public class CityBuildingData : DBClass
             return ConfigMgr.CityBuilding.Get(BuildingType);
         }
     }
+    /// <summary>
+    /// 获取建筑配置
+    /// </summary>
+    public CityBuildingLevelConfig LevelConfig
+    {
+        get
+        {
+            return ConfigMgr.CityBuildingLevel.Get(BuildingType, Level.Value);
+        }
+    }
 
     /// <summary>
     /// 获取槽位配置

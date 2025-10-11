@@ -20,7 +20,8 @@ public partial class CityBuildingUpgradeView : BaseView
 
         ui.btBuildingLevelUp_Button.SetButton(() =>
         {
-            cityBuildingData.Level.Value++;
+            //cityBuildingData.Level.Value++;
+            CityMgr.Ins.UpgradeBuilding(cityBuildingData);
             Close();
         });
     }

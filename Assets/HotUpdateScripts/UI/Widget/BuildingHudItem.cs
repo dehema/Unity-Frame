@@ -18,6 +18,10 @@ public partial class BuildingHudItem : BasePoolItem
         {
             Refresh();
         });
+        buildingData.State.Bind((dm) =>
+        {
+            Refresh();
+        });
     }
 
 

@@ -391,5 +391,28 @@ namespace Rain.Core
             // 在射线上取距离相机指定距离的点
             return ray.GetPoint(distanceFromCamera);
         }
+
+        /// <summary>
+        /// 格式化资源数字显示
+        /// </summary>
+        /// <param name="resourceNum">资源数量</param>
+        /// <returns>格式化后的字符串</returns>
+        public static string FormatResourceNumber(long resourceNum)
+        {
+            if (resourceNum < 10000)
+            {
+                return resourceNum.ToString();
+            }
+            else if (resourceNum < 100000000) // 小于1亿
+            {
+                double wan = resourceNum / 10000.0;
+                return $"{wan:F1}万";
+            }
+            else // 大于等于1亿
+            {
+                double yi = resourceNum / 100000000.0;
+                return $"{yi:F1}亿";
+            }
+        }
     }
 }

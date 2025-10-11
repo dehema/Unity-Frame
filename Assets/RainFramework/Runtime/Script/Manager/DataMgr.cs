@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using DotLiquid;
 using Newtonsoft.Json;
 using Rain.Core;
 using UnityEngine;
@@ -81,13 +82,13 @@ public class DataMgr : ModuleSingleton<DataMgr>, IModule
     private void InitPlayerData()
     {
         string playerDataStr = PlayerPrefs.GetString(SaveField.playerData);
+        bool isNewPlayer = string.IsNullOrEmpty(playerDataStr);
         //读取玩家数据
-        if (!string.IsNullOrEmpty(playerDataStr))
+        if (!isNewPlayer)
         {
             Dictionary<string, object> dict = JsonConvert.DeserializeObject<Dictionary<string, object>>(playerDataStr);
             playerData.SetVal(dict);
         }
-
         //科技
         foreach (var item in ConfigMgr.Tech.DataMap)
         {
@@ -107,6 +108,20 @@ public class DataMgr : ModuleSingleton<DataMgr>, IModule
                 playerData.cityBuildings.Add(item.Key, newData);
             }
         }
+        //如果是新玩家补初始资源
+        if (isNewPlayer)
+            SupplyNewPlayerRes();
+    }
+
+    //如果是新玩家补初始资源
+    public void SupplyNewPlayerRes()
+    {
+        playerData.food.Value = 100000;
+        playerData.wood.Value = 100000;
+        playerData.gold.Value = 100000;
+        playerData.book.Value = 100000;
+        playerData.ore.Value = 100000;
+        playerData.diamond.Value = 10000;
     }
 
     /// <summary>

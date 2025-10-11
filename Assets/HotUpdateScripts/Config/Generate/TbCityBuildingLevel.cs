@@ -18,12 +18,12 @@ namespace Rain.Core
 /// </summary>
 public partial class TbCityBuildingLevel
 {
-    private readonly System.Collections.Generic.Dictionary<string, CityBuildingLevelConfig> _dataMap;
     private readonly System.Collections.Generic.List<CityBuildingLevelConfig> _dataList;
-    
+
+    private System.Collections.Generic.Dictionary<(CityBuildingType, int), CityBuildingLevelConfig> _dataMapUnion;
+
     public TbCityBuildingLevel(JSONNode _buf)
     {
-        _dataMap = new System.Collections.Generic.Dictionary<string, CityBuildingLevelConfig>();
         _dataList = new System.Collections.Generic.List<CityBuildingLevelConfig>();
         
         foreach(JSONNode _ele in _buf.Children)
@@ -31,17 +31,18 @@ public partial class TbCityBuildingLevel
             CityBuildingLevelConfig _v;
             { if(!_ele.IsObject) { throw new SerializationException(); }  _v = global::Rain.Core.CityBuildingLevelConfig.DeserializeCityBuildingLevelConfig(_ele);  }
             _dataList.Add(_v);
-            _dataMap.Add(_v.ID, _v);
+        }
+        _dataMapUnion = new System.Collections.Generic.Dictionary<(CityBuildingType, int), CityBuildingLevelConfig>();
+        foreach(var _v in _dataList)
+        {
+            _dataMapUnion.Add((_v.BuildingType, _v.Level), _v);
         }
     }
 
-    public System.Collections.Generic.Dictionary<string, CityBuildingLevelConfig> DataMap => _dataMap;
     public System.Collections.Generic.List<CityBuildingLevelConfig> DataList => _dataList;
 
-    public CityBuildingLevelConfig GetOrDefault(string key) => _dataMap.TryGetValue(key, out var v) ? v : null;
-    public CityBuildingLevelConfig Get(string key) => _dataMap[key];
-    public CityBuildingLevelConfig this[string key] => _dataMap[key];
-
+    public CityBuildingLevelConfig Get(CityBuildingType buildingType, int level) => _dataMapUnion.TryGetValue((buildingType, level), out CityBuildingLevelConfig __v) ? __v : null;
+    
     public void ResolveRef(Tables tables)
     {
         foreach(var _v in _dataList)
@@ -49,7 +50,6 @@ public partial class TbCityBuildingLevel
             _v.ResolveRef(tables);
         }
     }
-
 }
 
 }

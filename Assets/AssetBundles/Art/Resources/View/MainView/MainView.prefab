@@ -692,7 +692,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 7835c3432c654184b87b6e1c4fb59927, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f4333ffda217571489a8be2274830abe, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -864,7 +864,7 @@ GameObject:
   - component: {fileID: 5948040206658291730}
   - component: {fileID: 2211925347820482295}
   m_Layer: 5
-  m_Name: Text
+  m_Name: $lbVip#Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1132,7 +1132,7 @@ GameObject:
   - component: {fileID: 2484090555754861552}
   - component: {fileID: 639647765973486615}
   m_Layer: 5
-  m_Name: num
+  m_Name: $lbFoodNum#Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1381,7 +1381,7 @@ GameObject:
   - component: {fileID: 360582468168485241}
   - component: {fileID: 1762843796683574575}
   m_Layer: 5
-  m_Name: iconButton_4
+  m_Name: $btAlliance#Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1853,7 +1853,7 @@ GameObject:
   - component: {fileID: 6270890097792944134}
   - component: {fileID: 247090640151609577}
   m_Layer: 5
-  m_Name: iconButton
+  m_Name: $btShop#Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2064,7 +2064,7 @@ GameObject:
   - component: {fileID: 1637900589974971104}
   - component: {fileID: 9042661084267558171}
   m_Layer: 5
-  m_Name: num
+  m_Name: $lbGoldNum#Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2234,7 +2234,7 @@ GameObject:
   - component: {fileID: 4995694426992420532}
   - component: {fileID: 3043419725444350144}
   m_Layer: 5
-  m_Name: num
+  m_Name: $lbPower#Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2368,7 +2368,7 @@ GameObject:
   - component: {fileID: 7427939673171076774}
   - component: {fileID: 8995796304788258219}
   m_Layer: 5
-  m_Name: num
+  m_Name: $lbWoodNum#Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3247,7 +3247,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3593100127499403905}
   m_Layer: 5
-  m_Name: meat
+  m_Name: food
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3398,7 +3398,7 @@ GameObject:
   - component: {fileID: 4516890904891880046}
   - component: {fileID: 3348857629187150316}
   m_Layer: 5
-  m_Name: iconButton_1
+  m_Name: $btBag#Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3640,7 +3640,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4751089301066957080}
   m_Layer: 5
-  m_Name: wood_1
+  m_Name: gold
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3678,7 +3678,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1200356827380166410}
   m_Layer: 5
-  m_Name: wood_2
+  m_Name: diamond
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4784,7 +4784,7 @@ GameObject:
   - component: {fileID: 4854359151351278728}
   - component: {fileID: 6169481922567130468}
   m_Layer: 5
-  m_Name: num
+  m_Name: $lbDiamondNum#Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4991,10 +4991,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4868564817895288334}
   - component: {fileID: 60449629503243897}
+  - component: {fileID: 1762209779259938872}
   - component: {fileID: 7124941894279466539}
   - component: {fileID: 803744365379558830}
   - component: {fileID: 696297644135992012}
-  - component: {fileID: 1762209779259938872}
   m_Layer: 5
   m_Name: MainView
   m_TagString: Untagged
@@ -5033,6 +5033,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8698712963094261570}
   m_CullTransparentMesh: 1
+--- !u!114 &1762209779259938872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8698712963094261570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f049cc5ff610d2f48bbc4619a17c6fcc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _viewName: 
+  canvasGroup: {fileID: 0}
+  ui:
+    bg: {fileID: 7824955645791406151}
+    bg_Image: {fileID: 3112279368604975230}
+    bg_Button: {fileID: 4278820069739079690}
+    content: {fileID: 5278923584699629998}
+    content_Rect: {fileID: 3910282615522050024}
+    playerIcon: {fileID: 5274840708841698743}
+    playerIcon_Image: {fileID: 16995907207160135}
+    lbFoodNum: {fileID: 2305033078621415812}
+    lbFoodNum_Text: {fileID: 639647765973486615}
+    lbWoodNum: {fileID: 3894884697765612360}
+    lbWoodNum_Text: {fileID: 8995796304788258219}
+    lbGoldNum: {fileID: 3468226679855855528}
+    lbGoldNum_Text: {fileID: 9042661084267558171}
+    lbDiamondNum: {fileID: 8028483286009285979}
+    lbDiamondNum_Text: {fileID: 6169481922567130468}
+    lbPower: {fileID: 3825358672479401423}
+    lbPower_Text: {fileID: 3043419725444350144}
+    lbVip: {fileID: 2078677959931634746}
+    lbVip_Text: {fileID: 2211925347820482295}
+    btShop: {fileID: 3186886608537814991}
+    btShop_Button: {fileID: 247090640151609577}
+    btBag: {fileID: 5288194876241804176}
+    btBag_Button: {fileID: 3348857629187150316}
+    btAlliance: {fileID: 2733031802471988087}
+    btAlliance_Button: {fileID: 1762843796683574575}
+    btExplore: {fileID: 7448944097326105798}
+    btExplore_Button: {fileID: 2906707341717639097}
+    btWorldMap: {fileID: 6884731425335272795}
+    btWorldMap_Button: {fileID: 4315103199496956493}
+    btChatPanel: {fileID: 5629483560109827131}
+    btChatPanel_Button: {fileID: 5222010648472826582}
+    iconChatMenu: {fileID: 16969281300850673}
+    iconChatMenu_Image: {fileID: 474257823376490182}
 --- !u!223 &7124941894279466539
 Canvas:
   m_ObjectHideFlags: 0
@@ -5096,36 +5144,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &1762209779259938872
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8698712963094261570}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f049cc5ff610d2f48bbc4619a17c6fcc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _viewName: 
-  canvasGroup: {fileID: 0}
-  ui:
-    bg: {fileID: 7824955645791406151}
-    bg_Image: {fileID: 3112279368604975230}
-    bg_Button: {fileID: 4278820069739079690}
-    content: {fileID: 5278923584699629998}
-    content_Rect: {fileID: 3910282615522050024}
-    playerIcon: {fileID: 5274840708841698743}
-    playerIcon_Image: {fileID: 16995907207160135}
-    btExplore: {fileID: 7448944097326105798}
-    btExplore_Button: {fileID: 2906707341717639097}
-    btWorldMap: {fileID: 6884731425335272795}
-    btWorldMap_Button: {fileID: 4315103199496956493}
-    btChatPanel: {fileID: 5629483560109827131}
-    btChatPanel_Button: {fileID: 5222010648472826582}
-    iconChatMenu: {fileID: 16969281300850673}
-    iconChatMenu_Image: {fileID: 474257823376490182}
 --- !u!1 &8938943907923213767
 GameObject:
   m_ObjectHideFlags: 0

@@ -14,6 +14,22 @@ public partial class MainView : BaseView
         base.Init(_viewParam);
         ui.btChatPanel_Button.SetButton(() => { UIMgr.Ins.OpenView<ChatView>(); });
         MsgMgr.Ins.AddEventListener(MsgEvent.SelectCityBuilding, OnSelectBuilding, this);
+        PlayerMgr.Ins.GetResDBField(ResType.Food).Bind((dm) =>
+        {
+            ui.lbFoodNum_Text.text = Utility.FormatResourceNumber((long)dm.value);
+        });
+        PlayerMgr.Ins.GetResDBField(ResType.Wood).Bind((dm) =>
+        {
+            ui.lbWoodNum_Text.text = Utility.FormatResourceNumber((long)dm.value);
+        });
+        PlayerMgr.Ins.GetResDBField(ResType.Gold).Bind((dm) =>
+        {
+            ui.lbGoldNum_Text.text = Utility.FormatResourceNumber((long)dm.value);
+        });
+        PlayerMgr.Ins.playerData.diamond.Bind((dm) =>
+        {
+            ui.lbDiamondNum_Text.text = Utility.FormatResourceNumber((long)dm.value);
+        });
     }
 
     private void OnSelectBuilding(object[] objs)
