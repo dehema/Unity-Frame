@@ -8,7 +8,7 @@ namespace Rain.Core
     public class Timer
     {
         /// <summary>
-        /// 已经过的时间
+        /// 计时器及计算后的盈余时间（仅限内部计算用）
         /// </summary>
         private float elapsedTime = 0f;
         /// <summary>
@@ -55,14 +55,14 @@ namespace Rain.Core
         /// 计时器是否已暂停
         /// </summary>
         public bool IsPaused = false;
-        
+
         /// <summary>
         /// 存储初始值以便重置
         /// </summary>
         private readonly float _initialStep;
         private readonly float _initialDelay;
         private readonly int _initialField;
-        
+
         /// <summary>
         /// 创建一个新的计时器实例
         /// </summary>
@@ -89,7 +89,7 @@ namespace Rain.Core
             _initialDelay = delay;
             _initialField = field;
         }
-         
+
         /// <summary>
         /// 更新计时器状态
         /// </summary>
@@ -97,44 +97,104 @@ namespace Rain.Core
         /// <returns>本次更新触发的次数</returns>
         public int Update(float dt)
         {
+            // 如果计时器已暂停，直接返回0
             if (IsPaused)
                 return 0;
-            
+
             // 记录本次更新中的触发次数
             int triggerCount = 0;
 
+            // 阶段1：处理初始延迟
             if (!isDelayCompleted)
             {
+                // 减少延迟时间
                 Delay -= dt;
+                
+                // 检查延迟是否完成
                 if (Delay <= 0f)
                 {
+                    // 延迟完成，标记状态
                     isDelayCompleted = true;
-                    elapsedTime = -Delay; // 保留超出部分时间
+                    // 保留超出延迟的时间到elapsedTime中，避免时间丢失
+                    elapsedTime = -Delay; 
+                    // 延迟完成时立即触发一次
                     triggerCount++;
                     Delay = 0f;
                 }
                 else
                 {
+                    // 延迟未完成，直接返回，不进行后续计算
                     return triggerCount;
                 }
             }
             else
             {
+                // 阶段2：延迟已完成，累计经过的时间
                 elapsedTime += dt;
             }
 
-            // 计算需要触发的次数
+            // 阶段3：计算基于步长的触发次数
             if (elapsedTime >= Step)
             {
+                // 计算可以触发多少次（向下取整）
                 float stepsFloat = elapsedTime / Step;
                 int steps = UnityEngine.Mathf.FloorToInt(stepsFloat);
+                
+                // 累加触发次数
                 triggerCount += steps;
+                
+                // 扣除已触发的时间，保留余数
                 elapsedTime -= steps * Step;
             }
 
             return triggerCount;
         }
-        
+
+        /// <summary>
+        /// 获取计时器剩余时间
+        /// </summary>
+        /// <returns>剩余时间（秒或帧），如果计时器已完成返回0</returns>
+        public float GetRemainingTime()
+        {
+            // 如果计时器已完成，返回0
+            if (IsFinish)
+                return 0f;
+
+            // 如果还在延迟阶段，返回剩余延迟时间
+            if (!isDelayCompleted)
+            {
+                return Delay;
+            }
+
+            // 如果延迟已完成，计算到下次触发还需要多少时间
+            // 剩余时间 = 步长 - 当前已累计的时间
+            float remainingTime = Step - elapsedTime;
+            
+            // 确保返回值不为负数
+            return Math.Max(0f, remainingTime);
+        }
+
+        /// <summary>
+        /// 获取计时器总剩余时间（包括延迟和步长）
+        /// </summary>
+        /// <returns>总剩余时间（秒或帧）</returns>
+        public float GetTotalRemainingTime()
+        {
+            // 如果计时器已完成，返回0
+            if (IsFinish)
+                return 0f;
+
+            // 如果还在延迟阶段，返回剩余延迟时间
+            if (!isDelayCompleted)
+            {
+                return Delay;
+            }
+
+            // 如果延迟已完成，计算总剩余时间
+            // 总剩余时间 = 剩余步长时间
+            return GetRemainingTime();
+        }
+
         /// <summary>
         /// 重置计时器到初始状态
         /// </summary>
@@ -144,11 +204,53 @@ namespace Rain.Core
             elapsedTime = 0f;
             IsFinish = false;
             isDelayCompleted = false;
-            
+
             // 恢复初始值
             Step = _initialStep;
             Delay = _initialDelay;
             Field = _initialField;
+        }
+
+        /// <summary>
+        /// 销毁计时器，清理所有资源和引用
+        /// </summary>
+        public void Destroy()
+        {
+            // 停止计时
+            IsFinish = true;
+            
+            // 清理回调函数引用，避免内存泄漏
+            OnSecond = null;
+            OnComplete = null;
+            
+            // 清理持有者引用
+            Handle = null;
+            
+            // 重置所有状态
+            IsPaused = false;
+            elapsedTime = 0f;
+            isDelayCompleted = false;
+            
+            // 重置参数到初始状态
+            Step = _initialStep;
+            Delay = _initialDelay;
+            Field = _initialField;
+        }
+
+        /// <summary>
+        /// 检查计时器是否已被销毁
+        /// </summary>
+        public bool IsDestroyed => IsFinish && OnSecond == null && OnComplete == null;
+
+        /// <summary>
+        /// 安全地调用回调函数（检查是否已销毁）
+        /// </summary>
+        private void SafeInvoke(Action callback)
+        {
+            if (callback != null && !IsDestroyed)
+            {
+                callback.Invoke();
+            }
         }
     }
 }

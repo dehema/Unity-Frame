@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using DotLiquid;
+﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using Rain.Core;
 using UnityEngine;
@@ -74,6 +74,19 @@ public class DataMgr : ModuleSingleton<DataMgr>, IModule
         playerData = new PlayerData();
         InitPlayerData();
         SavePlayerData();
+        Debug.Log(PlayerMgr.Ins.playerData.createTime);
+        DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(PlayerMgr.Ins.playerData.createTime);
+        Debug.Log(dateTimeOffset);
+    }
+
+    /// <summary>
+    /// 保存玩家数据（属性数值）
+    /// </summary>
+    public void SavePlayerData()
+    {
+        string str = playerData.ToJson();
+        PlayerPrefs.SetString(SaveField.playerData, str);
+        PlayerMgr.Ins.playerData.createTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
     }
 
     /// <summary>
@@ -122,15 +135,6 @@ public class DataMgr : ModuleSingleton<DataMgr>, IModule
         playerData.book.Value = 100000;
         playerData.ore.Value = 100000;
         playerData.diamond.Value = 10000;
-    }
-
-    /// <summary>
-    /// 保存玩家数据（属性数值）
-    /// </summary>
-    public void SavePlayerData()
-    {
-        string str = playerData.ToJson();
-        PlayerPrefs.SetString(SaveField.playerData, str);
     }
 
     /// <summary>

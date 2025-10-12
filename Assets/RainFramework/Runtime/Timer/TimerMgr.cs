@@ -149,7 +149,7 @@ namespace Rain.Core
         }
 
         /// <summary>
-        /// 注册一个基于时间的计时器并返回其ID
+        /// 注册一个基于时间的计时器并返回Timer对象
         /// </summary>
         /// <param name="handle">计时器持有者对象</param>
         /// <param name="step">计时间隔（秒）</param>
@@ -157,17 +157,17 @@ namespace Rain.Core
         /// <param name="field">触发次数，0表示1次</param>
         /// <param name="onSecond">每次触发的回调</param>
         /// <param name="onComplete">完成时的回调</param>
-        /// <returns>计时器唯一ID</returns>
-        public int AddTimer(object handle, float step = 1f, float delay = 0f, int field = 0, Action onSecond = null, Action onComplete = null)
+        /// <returns>Timer对象</returns>
+        public Timer AddTimer(object handle, float step = 1f, float delay = 0f, int field = 0, Action onSecond = null, Action onComplete = null)
         {
             int id = Guid.NewGuid().GetHashCode(); // 生成一个唯一的ID
             Timer timer = new Timer(handle, id, step, delay, field, onSecond, onComplete, false); // 创建一个计时器对象
             times.Add(timer);
-            return id;
+            return timer;
         }
 
         /// <summary>
-        /// 注册一个以帧为单位的计时器并返回其ID
+        /// 注册一个以帧为单位的计时器并返回Timer对象
         /// </summary>
         /// <param name="handle">计时器持有者对象</param>
         /// <param name="stepFrame">计时间隔（帧）</param>
@@ -175,13 +175,13 @@ namespace Rain.Core
         /// <param name="field">触发次数，0表示1次</param>
         /// <param name="onFrame">每帧触发的回调</param>
         /// <param name="onComplete">完成时的回调</param>
-        /// <returns>计时器唯一ID</returns>
-        public int AddTimerFrame(object handle, float stepFrame = 1f, float delayFrame = 0f, int field = 0, Action onFrame = null, Action onComplete = null)
+        /// <returns>Timer对象</returns>
+        public Timer AddTimerFrame(object handle, float stepFrame = 1f, float delayFrame = 0f, int field = 0, Action onFrame = null, Action onComplete = null)
         {
             int id = Guid.NewGuid().GetHashCode(); // 生成一个唯一的ID
             Timer timer = new Timer(handle, id, stepFrame, delayFrame, field, onFrame, onComplete, true); // 创建一个以帧为单位的计时器对象
             times.Add(timer);
-            return id;
+            return timer;
         }
 
         /// <summary>
@@ -194,10 +194,41 @@ namespace Rain.Core
             {
                 if (times[i].ID == id)
                 {
-                    times[i].IsFinish = true;
+                    times[i].Destroy(); // 调用Timer的Destroy方法
+                    times.RemoveAt(i);  // 从列表中移除
                     break;
                 }
             }
+        }
+
+        /// <summary>
+        /// 直接移除Timer对象
+        /// </summary>
+        /// <param name="timer">要移除的Timer对象</param>
+        public void RemoveTimer(Timer timer)
+        {
+            if (timer != null)
+            {
+                timer.Destroy(); // 调用Timer的Destroy方法
+                times.Remove(timer); // 从列表中移除
+            }
+        }
+
+        /// <summary>
+        /// 获取计时器
+        /// </summary>
+        /// <param name="_id"></param>
+        /// <returns></returns>
+        public Timer GetTimer(int _id)
+        {
+            foreach (var item in times)
+            {
+                if (item.ID == _id)
+                {
+                    return item;
+                }
+            }
+            return null;
         }
 
         /// <summary>
@@ -275,6 +306,18 @@ namespace Rain.Core
         }
 
         /// <summary>
+        /// 暂停指定的Timer对象
+        /// </summary>
+        /// <param name="timer">要暂停的Timer对象</param>
+        public void Pause(Timer timer)
+        {
+            if (timer != null)
+            {
+                timer.IsPaused = true;
+            }
+        }
+
+        /// <summary>
         /// 恢复所有计时器，或指定计时器
         /// </summary>
         /// <param name="id">计时器ID，0表示所有计时器</param>
@@ -297,6 +340,18 @@ namespace Rain.Core
                         break;
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// 恢复指定的Timer对象
+        /// </summary>
+        /// <param name="timer">要恢复的Timer对象</param>
+        public void Resume(Timer timer)
+        {
+            if (timer != null)
+            {
+                timer.IsPaused = false;
             }
         }
         
@@ -349,6 +404,89 @@ namespace Rain.Core
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// 重新启动指定的Timer对象
+        /// </summary>
+        /// <param name="timer">要重启的Timer对象</param>
+        public void Restart(Timer timer)
+        {
+            if (timer != null)
+            {
+                timer.Reset();
+            }
+        }
+
+        /// <summary>
+        /// 销毁指定持有者的所有计时器
+        /// </summary>
+        /// <param name="handle">持有者对象</param>
+        public void DestroyTimersByHandle(object handle)
+        {
+            for (int i = times.Count - 1; i >= 0; i--)
+            {
+                if (times[i].Handle == handle)
+                {
+                    times[i].Destroy();
+                    times.RemoveAt(i);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 销毁所有计时器
+        /// </summary>
+        public void DestroyAllTimers()
+        {
+            for (int i = 0; i < times.Count; i++)
+            {
+                times[i].Destroy();
+            }
+            times.Clear();
+        }
+
+        /// <summary>
+        /// 销毁指定类型的计时器（时间计时器或帧计时器）
+        /// </summary>
+        /// <param name="isFrameTimer">true为帧计时器，false为时间计时器</param>
+        public void DestroyTimersByType(bool isFrameTimer)
+        {
+            for (int i = times.Count - 1; i >= 0; i--)
+            {
+                if (times[i].IsFrameTimer == isFrameTimer)
+                {
+                    times[i].Destroy();
+                    times.RemoveAt(i);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 获取指定持有者的计时器数量
+        /// </summary>
+        /// <param name="handle">持有者对象</param>
+        /// <returns>计时器数量</returns>
+        public int GetTimerCountByHandle(object handle)
+        {
+            int count = 0;
+            for (int i = 0; i < times.Count; i++)
+            {
+                if (times[i].Handle == handle)
+                {
+                    count++;
+                }
+            }
+            return count;
+        }
+
+        /// <summary>
+        /// 获取所有计时器数量
+        /// </summary>
+        /// <returns>计时器总数</returns>
+        public int GetTotalTimerCount()
+        {
+            return times.Count;
         }
     }
 }

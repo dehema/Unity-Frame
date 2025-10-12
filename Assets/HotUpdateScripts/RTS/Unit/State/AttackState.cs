@@ -73,7 +73,7 @@ namespace Rain.RTS.Core
         }
 
         // 触发攻击函数计时器ID
-        int attackTimerID;
+        Timer timerAttack;
         void Attack()
         {
             animator.SetBool(_isAttackingHash, true);
@@ -94,7 +94,7 @@ namespace Rain.RTS.Core
             {
                 unit.PerformAttackOrder();
             };
-            attackTimerID = TimerMgr.Ins.AddTimer(this, delay: GetAttackDelay(), onComplete: action);
+            timerAttack = TimerMgr.Ins.AddTimer(this, delay: GetAttackDelay(), onComplete: action);
         }
 
         float GetAttackDelay()
@@ -115,7 +115,7 @@ namespace Rain.RTS.Core
         {
             base.Exit();
             animator.SetBool(_isAttackingHash, false);
-            TimerMgr.Ins.RemoveTimer(attackTimerID);
+            TimerMgr.Ins.RemoveTimer(timerAttack);
         }
 
         public override void UpdateState()

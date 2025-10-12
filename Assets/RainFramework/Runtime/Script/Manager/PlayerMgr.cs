@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerMgr : MonoSingleton<PlayerMgr>
 {
-    public  PlayerData playerData => DataMgr.Ins.playerData;
+    public PlayerData playerData => DataMgr.Ins.playerData;
 
     /// <summary>
     /// 获取资源数据字段

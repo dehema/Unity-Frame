@@ -25,6 +25,8 @@ public class PlayerData : DBClass
     //建筑
     public DBDictClass<int, CityBuildingData> cityBuildings = new DBDictClass<int, CityBuildingData>();
 
+    public long createTime;
+
     public PlayerData()
     {
         playerName = new DBString();

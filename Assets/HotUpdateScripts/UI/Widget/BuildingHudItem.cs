@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Rain.Core;
 using Rain.UI;
+using UnityEngine;
 
 public partial class BuildingHudItem : BasePoolItem
 {
@@ -20,10 +22,25 @@ public partial class BuildingHudItem : BasePoolItem
         });
         buildingData.State.Bind((dm) =>
         {
-            Refresh();
+            OnStateChange();
         });
     }
 
+    Timer timerOnSecond;
+    void OnStateChange()
+    {
+        if (buildingData.BuildingState == BuildingState.Building)
+        {
+            timerOnSecond = TimerMgr.Ins.AddTimer(this, 1, field: (int)(buildingData.BuildEndTime - buildingData.BuildStartTime), onSecond: OnBuildingSecond);
+        }
+        Refresh();
+    }
+
+    private void OnBuildingSecond()
+    {
+        int time = (int)timerOnSecond.GetTotalRemainingTime();
+        ui.lbBuildingProgress_Text.text = time.ToString();
+    }
 
     public void Refresh()
     {
@@ -56,5 +73,6 @@ public partial class BuildingHudItem : BasePoolItem
     {
         base.OnCollect();
         bind?.UnBind();
+        timerOnSecond?.Destroy();
     }
 }

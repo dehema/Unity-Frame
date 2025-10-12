@@ -9,7 +9,7 @@ namespace Rain.Tests
         void Start()
         {
             // 普通Timer,传入自身this，每1秒执行一次，延迟0秒后开始，执行3次(-1表示循环)
-            int timeid = RA.Timer.AddTimer(this, 1f, 0f, 3, () => { RLog.Log("tick"); }, () => { RLog.Log("完成"); });
+            Timer timeid = RA.Timer.AddTimer(this, 1f, 0f, 3, () => { RLog.Log("tick"); }, () => { RLog.Log("完成"); });
 
             // FrameTimer,传入自身this，每1帧执行一次，延迟0帧后开始，循环执行(-1表示循环)
             timeid = RA.Timer.AddTimerFrame(this, 1f, 0f, -1, () => { RLog.Log("tick"); },

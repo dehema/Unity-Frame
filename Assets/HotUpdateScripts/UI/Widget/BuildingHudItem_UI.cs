@@ -13,6 +13,8 @@ public partial class BuildingHudItem : BasePoolItem
     {
         [SerializeField] public GameObject BuildingProgress;
         [SerializeField] public Slider BuildingProgress_Slider;
+        [SerializeField] public GameObject lbBuildingProgress;
+        [SerializeField] public TextMeshProUGUI lbBuildingProgress_Text;
         [SerializeField] public GameObject btTips;
         [SerializeField] public Button btTips_Button;
         [SerializeField] public GameObject imgTips;

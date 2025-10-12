@@ -159,9 +159,9 @@ public class CityMgr : MonoSingleton<CityMgr>
             PlayerMgr.Ins.AddResNum(item.Key, -item.Value);
         }
         //升级
-        _buildingData.State.Value = (int)BuildingState.Building;
-        _buildingData.BuildStartTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        _buildingData.BuildStartTime = DateTimeOffset.Now.ToUnixTimeSeconds();
         _buildingData.BuildEndTime = _buildingData.BuildStartTime + levelConfig.CostTime;
+        _buildingData.State.Value = (int)BuildingState.Building;
     }
 
     /// <summary>
@@ -194,9 +194,9 @@ public class CityMgr : MonoSingleton<CityMgr>
         //ConsumeResources(config.UpgradeCost);
 
         // 更新建筑状态
-        building.State.Value = (int)BuildingState.Upgrading;
-        building.BuildStartTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        //building.BuildStartTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
         //building.BuildEndTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds() + config.UpgradeTime;
+        building.State.Value = (int)BuildingState.Upgrading;
 
         //Debug.Log($"开始升级建筑: {config.Name} 到等级 {building.Level + 1}");
         return true;

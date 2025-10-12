@@ -36,7 +36,7 @@ public partial class CountDownView : BaseView
         currentTime = viewParam.countDown;
         db.Value = Mathf.CeilToInt(viewParam.countDown);
         db.Bind(UpdateNumberDisplay);
-        AddTimer(delay: viewParam.delay, onComplete: () =>
+        TimerMgr.Ins.AddTimer(this, delay: viewParam.delay, onComplete: () =>
         {
             startCountDown = true;
         });
