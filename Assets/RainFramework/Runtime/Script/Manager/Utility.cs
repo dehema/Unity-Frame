@@ -414,5 +414,66 @@ namespace Rain.Core
                 return $"{yi:F1}亿";
             }
         }
+
+        /// <summary>
+        /// 格式化倒计时显示
+        /// </summary>
+        /// <param name="seconds">倒计时秒数</param>
+        /// <returns>格式化后的倒计时文本（x天 hh:mm:ss）</returns>
+        public static string FormatCountdown(int seconds)
+        {
+            // 如果倒计时已结束或为负数，返回0天 00:00:00
+            if (seconds <= 0)
+            {
+                return "0天 00:00:00";
+            }
+
+            // 计算天数
+            int days = seconds / 86400; // 86400秒 = 1天
+            int remainingSeconds = seconds % 86400;
+
+            // 计算小时
+            int hours = remainingSeconds / 3600; // 3600秒 = 1小时
+            remainingSeconds %= 3600;
+
+            // 计算分钟
+            int minutes = remainingSeconds / 60; // 60秒 = 1分钟
+            int finalSeconds = remainingSeconds % 60;
+
+            // 格式化输出
+            if (days > 0)
+            {
+                return $"{days}天 {hours:D2}:{minutes:D2}:{finalSeconds:D2}";
+            }
+            else
+            {
+                return $"{hours:D2}:{minutes:D2}:{finalSeconds:D2}";
+            }
+        }
+
+        /// <summary>
+        /// 格式化倒计时显示（简化版本，不显示天数）
+        /// </summary>
+        /// <param name="seconds">倒计时秒数</param>
+        /// <returns>格式化后的倒计时文本（hh:mm:ss）</returns>
+        public static string FormatCountdownSimple(int seconds)
+        {
+            // 如果倒计时已结束或为负数，返回00:00:00
+            if (seconds <= 0)
+            {
+                return "00:00:00";
+            }
+
+            // 计算小时
+            int hours = seconds / 3600;
+            int remainingSeconds = seconds % 3600;
+
+            // 计算分钟
+            int minutes = remainingSeconds / 60;
+            int finalSeconds = remainingSeconds % 60;
+
+            // 格式化输出
+            return $"{hours:D2}:{minutes:D2}:{finalSeconds:D2}";
+        }
     }
 }

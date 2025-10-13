@@ -32,12 +32,12 @@ public class CityBuildingData : DBClass
     /// <summary>
     /// 建造开始时间
     /// </summary>
-    public long BuildStartTime;
+    public int BuildStartTime;
 
     /// <summary>
     /// 建造结束时间
     /// </summary>
-    public long BuildEndTime;
+    public int BuildEndTime;
 
     /// <summary>
     /// 建筑状态

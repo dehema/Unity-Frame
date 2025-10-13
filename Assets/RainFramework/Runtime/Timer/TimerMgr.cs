@@ -14,27 +14,27 @@ namespace Rain.Core
         /// 存储计时器的列表
         /// </summary>
         private List<Timer> times = new List<Timer>();
-        
+
         /// <summary>
         /// 初始化时间（毫秒）
         /// </summary>
         private long initTime;
-        
+
         /// <summary>
         /// 服务器时间（毫秒）
         /// </summary>
         private long serverTime;
-        
+
         /// <summary>
         /// 临时时间，用于计算服务器时间差值
         /// </summary>
         private long tempTime;
-        
+
         /// <summary>
         /// 是否处于焦点状态
         /// </summary>
         private bool isFocus = true;
-        
+
         /// <summary>
         /// 帧时间，默认为1
         /// </summary>
@@ -127,7 +127,7 @@ namespace Rain.Core
                         }
                         else
                         {
-                            timer.Field = field; // 更新计时器剩余字段值
+                            timer.Field = field; // 更新计时器剩余次数
                             timer.OnSecond?.Invoke();
                         }
                     }
@@ -354,7 +354,7 @@ namespace Rain.Core
                 timer.IsPaused = false;
             }
         }
-        
+
         /// <summary>
         /// 添加应用程序焦点变化的监听
         /// </summary>

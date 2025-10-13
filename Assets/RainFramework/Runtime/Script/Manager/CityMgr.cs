@@ -159,7 +159,7 @@ public class CityMgr : MonoSingleton<CityMgr>
             PlayerMgr.Ins.AddResNum(item.Key, -item.Value);
         }
         //升级
-        _buildingData.BuildStartTime = DateTimeOffset.Now.ToUnixTimeSeconds();
+        _buildingData.BuildStartTime = (int)DateTimeOffset.Now.ToUnixTimeSeconds();
         _buildingData.BuildEndTime = _buildingData.BuildStartTime + levelConfig.CostTime;
         _buildingData.State.Value = (int)BuildingState.Building;
     }

@@ -19,6 +19,8 @@ public partial class BuildingHudItem : BasePoolItem
         [SerializeField] public Button btTips_Button;
         [SerializeField] public GameObject imgTips;
         [SerializeField] public Image imgTips_Image;
+        [SerializeField] public GameObject Name;
+        [SerializeField] public CanvasGroup Name_CanvasGroup;
         [SerializeField] public GameObject BuildingName;
         [SerializeField] public TextMeshProUGUI BuildingName_Text;
         [SerializeField] public GameObject BuildingLevel;

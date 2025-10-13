@@ -80,7 +80,7 @@ namespace Rain.Core
             ID = id;
             Step = step;
             Delay = delay;
-            Field = field;
+            Field = field + 1;//增加1次，用作延时后的第一次事件
             OnSecond = onSecond;
             OnComplete = onComplete;
             IsFrameTimer = isFrameTimer;
@@ -109,15 +109,14 @@ namespace Rain.Core
             {
                 // 减少延迟时间
                 Delay -= dt;
-                
+
                 // 检查延迟是否完成
                 if (Delay <= 0f)
                 {
                     // 延迟完成，标记状态
                     isDelayCompleted = true;
                     // 保留超出延迟的时间到elapsedTime中，避免时间丢失
-                    elapsedTime = -Delay; 
-                    // 延迟完成时立即触发一次
+                    elapsedTime = -Delay;
                     triggerCount++;
                     Delay = 0f;
                 }
@@ -139,10 +138,10 @@ namespace Rain.Core
                 // 计算可以触发多少次（向下取整）
                 float stepsFloat = elapsedTime / Step;
                 int steps = UnityEngine.Mathf.FloorToInt(stepsFloat);
-                
+
                 // 累加触发次数
                 triggerCount += steps;
-                
+
                 // 扣除已触发的时间，保留余数
                 elapsedTime -= steps * Step;
             }
@@ -154,45 +153,16 @@ namespace Rain.Core
         /// 获取计时器剩余时间
         /// </summary>
         /// <returns>剩余时间（秒或帧），如果计时器已完成返回0</returns>
-        public float GetRemainingTime()
+        public float RemainingTime
         {
-            // 如果计时器已完成，返回0
-            if (IsFinish)
-                return 0f;
-
-            // 如果还在延迟阶段，返回剩余延迟时间
-            if (!isDelayCompleted)
+            get
             {
-                return Delay;
+                // 如果计时器已完成，返回0
+                if (IsFinish || Field == 0)
+                    return 0f;
+
+                return Delay + (Field - 1) * Step + (Step - elapsedTime);
             }
-
-            // 如果延迟已完成，计算到下次触发还需要多少时间
-            // 剩余时间 = 步长 - 当前已累计的时间
-            float remainingTime = Step - elapsedTime;
-            
-            // 确保返回值不为负数
-            return Math.Max(0f, remainingTime);
-        }
-
-        /// <summary>
-        /// 获取计时器总剩余时间（包括延迟和步长）
-        /// </summary>
-        /// <returns>总剩余时间（秒或帧）</returns>
-        public float GetTotalRemainingTime()
-        {
-            // 如果计时器已完成，返回0
-            if (IsFinish)
-                return 0f;
-
-            // 如果还在延迟阶段，返回剩余延迟时间
-            if (!isDelayCompleted)
-            {
-                return Delay;
-            }
-
-            // 如果延迟已完成，计算总剩余时间
-            // 总剩余时间 = 剩余步长时间
-            return GetRemainingTime();
         }
 
         /// <summary>
@@ -218,19 +188,19 @@ namespace Rain.Core
         {
             // 停止计时
             IsFinish = true;
-            
+
             // 清理回调函数引用，避免内存泄漏
             OnSecond = null;
             OnComplete = null;
-            
+
             // 清理持有者引用
             Handle = null;
-            
+
             // 重置所有状态
             IsPaused = false;
             elapsedTime = 0f;
             isDelayCompleted = false;
-            
+
             // 重置参数到初始状态
             Step = _initialStep;
             Delay = _initialDelay;

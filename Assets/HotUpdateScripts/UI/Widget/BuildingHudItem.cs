@@ -31,15 +31,25 @@ public partial class BuildingHudItem : BasePoolItem
     {
         if (buildingData.BuildingState == BuildingState.Building)
         {
-            timerOnSecond = TimerMgr.Ins.AddTimer(this, 1, field: (int)(buildingData.BuildEndTime - buildingData.BuildStartTime), onSecond: OnBuildingSecond);
+            int remainTime = buildingData.BuildEndTime - (int)DateTimeOffset.Now.ToUnixTimeSeconds();
+            Action actionCompleted = () =>
+            {
+                buildingData.State.Value = (int)BuildingState.Completed;
+            };
+            if (remainTime < 0)
+            {
+                actionCompleted?.Invoke();
+                return;
+            }
+            timerOnSecond = TimerMgr.Ins.AddTimer(this, 1, field: (buildingData.BuildEndTime - (int)DateTimeOffset.Now.ToUnixTimeSeconds()), onSecond: OnBuildingSecond, onComplete: actionCompleted);
         }
         Refresh();
     }
 
     private void OnBuildingSecond()
     {
-        int time = (int)timerOnSecond.GetTotalRemainingTime();
-        ui.lbBuildingProgress_Text.text = time.ToString();
+        int time = (int)timerOnSecond.RemainingTime;
+        ui.lbBuildingProgress_Text.text = Utility.FormatCountdown(time);
     }
 
     public void Refresh()

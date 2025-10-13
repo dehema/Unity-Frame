@@ -378,7 +378,7 @@ GameObject:
   - component: {fileID: 8249146722932223191}
   - component: {fileID: 5135264993345270056}
   m_Layer: 5
-  m_Name: Name
+  m_Name: $Name#CanvasGroup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -853,6 +853,8 @@ MonoBehaviour:
     btTips_Button: {fileID: 4949932095021831249}
     imgTips: {fileID: 1879413257206691365}
     imgTips_Image: {fileID: 1837305598751331859}
+    Name: {fileID: 2008200518631053119}
+    Name_CanvasGroup: {fileID: 5135264993345270056}
     BuildingName: {fileID: 7943721358634727806}
     BuildingName_Text: {fileID: 6586815895403097438}
     BuildingLevel: {fileID: 4717401152291904143}

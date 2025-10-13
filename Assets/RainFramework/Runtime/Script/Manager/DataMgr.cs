@@ -74,9 +74,6 @@ public class DataMgr : ModuleSingleton<DataMgr>, IModule
         playerData = new PlayerData();
         InitPlayerData();
         SavePlayerData();
-        Debug.Log(PlayerMgr.Ins.playerData.createTime);
-        DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(PlayerMgr.Ins.playerData.createTime);
-        Debug.Log(dateTimeOffset);
     }
 
     /// <summary>
