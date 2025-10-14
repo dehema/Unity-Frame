@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
+using DG.Tweening.Core;
 using Rain.Core;
 using Rain.UI;
 using UnityEngine;
@@ -14,6 +16,7 @@ public partial class CityHUDView : BaseView
     MainCityCreator cityCreator => MainCityCreator.Ins;
     ObjPool poolBuildingMenu;
     Dictionary<BuildingController, BuildingHudItem> hudItems = new Dictionary<BuildingController, BuildingHudItem>();
+    float nameFadeVal = 1;
 
     public override void Init(IViewParam _viewParam = null)
     {
@@ -23,6 +26,12 @@ public partial class CityHUDView : BaseView
         MsgMgr.Ins.AddEventListener(MsgEvent.CameraZoomRatioChange, OnCameraScale, cityCreator);
         MsgMgr.Ins.AddEventListener(MsgEvent.SelectCityBuilding, OnSelectBuilding, cityCreator);
         InitBuildingMenus();
+    }
+
+    public override void OnOpen(IViewParam _viewParam = null)
+    {
+        base.OnOpen(_viewParam);
+        ResetNameFadeVal();
     }
 
     private void InitBuildingMenus()
@@ -39,7 +48,7 @@ public partial class CityHUDView : BaseView
     }
 
     /// <summary>
-    /// ���²˵�λ��
+    /// 更新菜单位置
     /// </summary>
     private void UpdateBuildingMenusPos()
     {
@@ -55,9 +64,32 @@ public partial class CityHUDView : BaseView
         }
     }
 
+    private void UpdateBuildingNameFadeVal()
+    {
+        foreach (var item in hudItems)
+        {
+            BuildingHudItem buildingHudItem = item.Value;
+            buildingHudItem.SetBuildingNameFadeVal(nameFadeVal);
+        }
+    }
+
+    Tweener tweenerFade;
+    /// <summary>
+    /// 隐藏名字
+    /// </summary>
+    void ResetNameFadeVal()
+    {
+        tweenerFade?.Kill();
+        nameFadeVal = 1;
+        UpdateBuildingNameFadeVal();
+        tweenerFade = DOTween.To(() => nameFadeVal, x => nameFadeVal = x, 0f, 1f).SetDelay(1).SetEase(Ease.OutQuad)
+            .OnUpdate(UpdateBuildingNameFadeVal);
+    }
+
     public void OnCameraMove(object[] param)
     {
         UpdateBuildingMenusPos();
+        ResetNameFadeVal();
     }
 
     public void OnCameraScale(object[] param)

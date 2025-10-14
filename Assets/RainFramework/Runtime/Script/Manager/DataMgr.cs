@@ -126,11 +126,11 @@ public class DataMgr : ModuleSingleton<DataMgr>, IModule
     //如果是新玩家补初始资源
     public void SupplyNewPlayerRes()
     {
-        playerData.food.Value = 100000;
-        playerData.wood.Value = 100000;
-        playerData.gold.Value = 100000;
-        playerData.book.Value = 100000;
-        playerData.ore.Value = 100000;
+        playerData.food.Value = 1000000;
+        playerData.wood.Value = 1000000;
+        playerData.gold.Value = 1000000;
+        playerData.book.Value = 1000000;
+        playerData.ore.Value = 1000000;
         playerData.diamond.Value = 10000;
     }
 
@@ -157,9 +157,9 @@ public class DataMgr : ModuleSingleton<DataMgr>, IModule
     /// </summary>
     public void SaveAllData()
     {
-        DataMgr.Ins.SaveGameData();
-        DataMgr.Ins.SavePlayerData();
-        DataMgr.Ins.SaveSettingData();
+        SaveGameData();
+        SavePlayerData();
+        SaveSettingData();
     }
 
     public void OnInit(object createParam)

@@ -85,4 +85,9 @@ public partial class BuildingHudItem : BasePoolItem
         bind?.UnBind();
         timerOnSecond?.Destroy();
     }
+
+    public void SetBuildingNameFadeVal(float _val)
+    {
+        ui.Name_CanvasGroup.alpha = _val;
+    }
 }
