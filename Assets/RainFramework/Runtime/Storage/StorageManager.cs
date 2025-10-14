@@ -1,5 +1,6 @@
 using System;
 using System.Security.Cryptography;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace Rain.Core
@@ -202,7 +203,7 @@ namespace Rain.Core
                  string jsonString = GetString(key, "", user);
                  try
                  {
-                     return Util.LitJson.ToObject<T>(jsonString);
+                     return JsonConvert.DeserializeObject<T>(jsonString);
                  }
                  catch (System.Exception ex)
                  {
@@ -230,7 +231,7 @@ namespace Rain.Core
             }
             try
             {
-                string json = Util.LitJson.ToJson(obj);
+                string json = JsonConvert.SerializeObject(obj);
                 SetString(key, json, user);
             }
             catch (System.Exception ex)

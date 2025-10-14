@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -18,15 +19,15 @@ namespace Rain.Core
         public static string PackageDirName = "/Package";
 
         private Downloader hotUpdateDownloader;
-        
+
         private Downloader packageDownloader;
-        
+
         public void OnInit(object createParam)
         {
-            GameVersion gameVersion = Util.LitJson.ToObject<GameVersion>(Resources.Load<TextAsset>(nameof(GameVersion)).ToString());
+            GameVersion gameVersion = JsonConvert.DeserializeObject<GameVersion>(Resources.Load<TextAsset>(nameof(GameVersion)).ToString());
             GameConfig.LocalGameVersion = gameVersion;
         }
-        
+
         // 初始化本地版本
         public void InitLocalVersion()
         {
@@ -34,15 +35,15 @@ namespace Rain.Core
             {
                 string json =
                     FileTools.SafeReadAllText(Application.persistentDataPath + "/" + nameof(GameVersion) + ".json");
-                GameConfig.LocalGameVersion = Util.LitJson.ToObject<GameVersion>(json);
+                GameConfig.LocalGameVersion = JsonConvert.DeserializeObject<GameVersion>(json);
             }
             else
             {
                 FileTools.SafeWriteAllText(Application.persistentDataPath + "/" + nameof(GameVersion) + ".json",
-                    Util.LitJson.ToJson(GameConfig.LocalGameVersion));
+                    JsonConvert.SerializeObject(GameConfig.LocalGameVersion));
             }
         }
-        
+
         // 初始化远程版本
         public IEnumerator InitRemoteVersion()
         {
@@ -50,10 +51,10 @@ namespace Rain.Core
             {
                 yield break;
             }
-            
+
             string path = GameConfig.LocalGameVersion.AssetRemoteAddress + "/" + nameof(GameVersion) + ".json";
             RLog.Log($"初始化远程版本：{path}");
-            
+
             UnityWebRequest webRequest = UnityWebRequest.Get(path);
             yield return webRequest.SendWebRequest();
             if (webRequest.result != UnityWebRequest.Result.Success)
@@ -63,7 +64,7 @@ namespace Rain.Core
             else
             {
                 string text = webRequest.downloadHandler.text;
-                GameVersion gameVersion = Util.LitJson.ToObject<GameVersion>(text);
+                GameVersion gameVersion = JsonConvert.DeserializeObject<GameVersion>(text);
                 GameConfig.RemoteGameVersion = gameVersion;
             }
             webRequest.Dispose();
@@ -80,7 +81,7 @@ namespace Rain.Core
 
             string path = GameConfig.LocalGameVersion.AssetRemoteAddress + HotUpdateDirName + Separator + nameof(AssetBundleMap) + ".json";
             RLog.Log($"始化资源版本：{path}");
-            
+
             UnityWebRequest webRequest = UnityWebRequest.Get(path);
             yield return webRequest.SendWebRequest();
             if (webRequest.result != UnityWebRequest.Result.Success)
@@ -90,19 +91,19 @@ namespace Rain.Core
             else
             {
                 string text = webRequest.downloadHandler.text;
-                Dictionary<string, AssetBundleMap.AssetMapping> assetBundleMap = Util.LitJson.ToObject<Dictionary<string, AssetBundleMap.AssetMapping>>(text);
+                Dictionary<string, AssetBundleMap.AssetMapping> assetBundleMap = JsonConvert.DeserializeObject<Dictionary<string, AssetBundleMap.AssetMapping>>(text);
                 GameConfig.RemoteAssetBundleMap = assetBundleMap;
             }
             webRequest.Dispose();
             webRequest = null;
-            
+
             if (File.Exists(Application.persistentDataPath + "/" + nameof(AssetBundleMap) + ".json"))
             {
                 string json = FileTools.SafeReadAllText(Application.persistentDataPath + "/" + nameof(AssetBundleMap) + ".json");
-                AssetBundleMap.Mappings = Util.LitJson.ToObject<Dictionary<string, AssetBundleMap.AssetMapping>>(json);
+                AssetBundleMap.Mappings = JsonConvert.DeserializeObject<Dictionary<string, AssetBundleMap.AssetMapping>>(json);
             }
         }
-        
+
         // 游戏修复，资源清理
         public void GameRepairAssetClean()
         {
@@ -111,7 +112,7 @@ namespace Rain.Core
             FileTools.SafeDeleteFile(Application.persistentDataPath + "/" + nameof(GameVersion) + ".json");
             FileTools.SafeDeleteFile(Application.persistentDataPath + "/" + nameof(AssetBundleMap) + ".json");
         }
-        
+
         /// <summary>
         /// 检查需要热更的资源
         /// </summary>
@@ -129,43 +130,43 @@ namespace Rain.Core
             {
                 return Tuple.Create(hotUpdateAssetUrl, allSize);
             }
-            
+
             int result = GameConfig.CompareVersions(GameConfig.LocalGameVersion.Version,
                 GameConfig.RemoteGameVersion.Version);
             if (result >= 0) // 此版本无需热更新
             {
                 return Tuple.Create(hotUpdateAssetUrl, allSize);
             }
-            
+
             var resAssetBundleMappings = GameConfig.RemoteAssetBundleMap;
-            
+
             var assetBundleMappings = AssetBundleMap.Mappings;
-            
+
             foreach (var resAssetMapping in resAssetBundleMappings)
             {
                 assetBundleMappings.TryGetValue(resAssetMapping.Key, out AssetBundleMap.AssetMapping assetMapping);
-                
+
                 if ((assetMapping == null || resAssetMapping.Value.MD5 != assetMapping.MD5) // 新增资源，MD5不同则需更新
                     && !resAssetMapping.Value.AbName.IsNullOrEmpty() && !resAssetMapping.Value.MD5.IsNullOrEmpty())
                 {
                     string abPath = resAssetMapping.Value.Version + "/" + URLSetting.AssetBundlesName + "/" +
                                               URLSetting.GetPlatformName() + "/" + resAssetMapping.Value.AbName;
-                    
+
                     string persistentAbPath = Application.persistentDataPath + HotUpdateDirName + Separator + abPath;
-                    
+
                     // 校验本地热更资源文件md5
                     if (File.Exists(persistentAbPath) && FileTools.CreateMd5ForFile(persistentAbPath) == resAssetMapping.Value.MD5)
                     {
                         continue;
                     }
-                    allSize += string.IsNullOrEmpty(resAssetMapping.Value.Size) ? 0 : long.Parse(resAssetMapping.Value.Size) ;
+                    allSize += string.IsNullOrEmpty(resAssetMapping.Value.Size) ? 0 : long.Parse(resAssetMapping.Value.Size);
                     hotUpdateAssetUrl.TryAdd(resAssetMapping.Key, abPath);
                 }
             }
-            
+
             return Tuple.Create(hotUpdateAssetUrl, allSize);
         }
-        
+
         /// <summary>
         /// 开始热更新包下载
         /// </summary>
@@ -181,17 +182,17 @@ namespace Rain.Core
                 completed?.Invoke();
                 return;
             }
-            
+
             if (hotUpdateAssetUrl.Count <= 0)
             {
                 WriteVersion();
                 completed?.Invoke();
                 return;
             }
-            
+
             // 创建热更下载器
             hotUpdateDownloader = DownloadManager.Ins.CreateDownloader("hotUpdateDownloader", new Downloader());
-            
+
             // 设置热更下载器回调
             hotUpdateDownloader.OnDownloadSuccess += (eventArgs) =>
             {
@@ -243,22 +244,22 @@ namespace Rain.Core
                     GameConfig.LocalGameVersion.Version = GameConfig.RemoteGameVersion.Version;
                     GameConfig.LocalGameVersion.HotUpdateVersion = new List<string>();
                     FileTools.SafeWriteAllText(Application.persistentDataPath + "/" + nameof(GameVersion) + ".json",
-                        Util.LitJson.ToJson(GameConfig.LocalGameVersion));
+                        JsonConvert.SerializeObject(GameConfig.LocalGameVersion));
                 }
-                
+
                 if (GameConfig.RemoteAssetBundleMap.Count > 0)
                 {
                     AssetBundleMap.Mappings = GameConfig.RemoteAssetBundleMap;
                     FileTools.SafeWriteAllText(Application.persistentDataPath + "/" + nameof(AssetBundleMap) + ".json",
-                        Util.LitJson.ToJson(AssetBundleMap.Mappings));
+                        JsonConvert.SerializeObject(AssetBundleMap.Mappings));
                 }
-                
+
                 AssetBundleManager.Ins.LoadAssetBundleManifestSync();
             }
             // 下载器开始下载
             hotUpdateDownloader.LaunchDownload();
         }
-        
+
         // 检查需要下载的分包
         public List<string> CheckPackageUpdate(List<string> subPackage)
         {
@@ -272,7 +273,7 @@ namespace Rain.Core
             }
             return temp;
         }
-        
+
         /// <summary>
         /// 开始分包下载
         /// </summary>
@@ -293,12 +294,12 @@ namespace Rain.Core
                 completed?.Invoke();
                 return;
             }
-            
+
             List<string> downloadPaths = new List<string>(subPackages.Count);
-            
+
             // 创建分包下载器
             packageDownloader = DownloadManager.Ins.CreateDownloader("packageDownloader", new Downloader());
-            
+
             // 设置分包下载器回调
             packageDownloader.OnDownloadSuccess += (eventArgs) =>
             {
@@ -332,10 +333,10 @@ namespace Rain.Core
 				Util.Unity.StartCoroutine(UnZipPackagePathsCo(downloadPaths, completed));
 #else
                 // 使用多线程
-                _ = UnZipPackagePaths(downloadPaths, completed);
+                //_ = UnZipPackagePaths(downloadPaths, completed);
 #endif
             };
-            
+
             // 添加下载清单
             foreach (var package in subPackages)
             {
@@ -350,54 +351,54 @@ namespace Rain.Core
                 packageDownloader.AddDownload(GameConfig.LocalGameVersion.AssetRemoteAddress + "/" + PackageSplit + package + ".zip",
                     persistentPackagePath, fileSizeInBytes, true);
             }
-            
+
             packageDownloader.LaunchDownload();
         }
-        
-        public IEnumerator UnZipPackagePathsCo(List<string> downloadPaths, Action completed = null)
-        {
-            foreach (var downloadPath in downloadPaths)
-            {
-                // 使用协程
-                yield return Util.ZipHelper.UnZipFileCoroutine(downloadPath,
-                    Application.persistentDataPath, null, true);
-                string package = Path.GetFileNameWithoutExtension(downloadPath).Replace(PackageSplit, "");
-                int subPackageCount = GameConfig.LocalGameVersion.SubPackage.Count;
-                for (int i = subPackageCount - 1; i >= 0; i--)
-                {
-                    if (GameConfig.LocalGameVersion.SubPackage[i] == package)
-                    {
-                        GameConfig.LocalGameVersion.SubPackage.RemoveAt(i);
-                    }
-                }
-                FileTools.SafeWriteAllText(Application.persistentDataPath + "/" + nameof(GameVersion) + ".json",
-                    Util.LitJson.ToJson(GameConfig.LocalGameVersion));
-            }
-            
-            completed?.Invoke();
-        }
-        
-        public async Task UnZipPackagePaths(List<string> downloadPaths, Action completed = null)
-        {
-            foreach (var downloadPath in downloadPaths)
-            {
-                // 使用多线程
-                await Util.ZipHelper.UnZipFileAsync(downloadPath, Application.persistentDataPath, null, true);
-                string package = Path.GetFileNameWithoutExtension(downloadPath).Replace(PackageSplit, "");
-                int subPackageCount = GameConfig.LocalGameVersion.SubPackage.Count;
-                for (int i = subPackageCount - 1; i >= 0; i--)
-                {
-                    if (GameConfig.LocalGameVersion.SubPackage[i] == package)
-                    {
-                        GameConfig.LocalGameVersion.SubPackage.RemoveAt(i);
-                    }
-                }
-                FileTools.SafeWriteAllText(Application.persistentDataPath + "/" + nameof(GameVersion) + ".json",
-                    Util.LitJson.ToJson(GameConfig.LocalGameVersion));
-            }
-            completed?.Invoke();
-        }
-        
+
+        //public IEnumerator UnZipPackagePathsCo(List<string> downloadPaths, Action completed = null)
+        //{
+        //    foreach (var downloadPath in downloadPaths)
+        //    {
+        //        // 使用协程
+        //        yield return Util.ZipHelper.UnZipFileCoroutine(downloadPath,
+        //            Application.persistentDataPath, null, true);
+        //        string package = Path.GetFileNameWithoutExtension(downloadPath).Replace(PackageSplit, "");
+        //        int subPackageCount = GameConfig.LocalGameVersion.SubPackage.Count;
+        //        for (int i = subPackageCount - 1; i >= 0; i--)
+        //        {
+        //            if (GameConfig.LocalGameVersion.SubPackage[i] == package)
+        //            {
+        //                GameConfig.LocalGameVersion.SubPackage.RemoveAt(i);
+        //            }
+        //        }
+        //        FileTools.SafeWriteAllText(Application.persistentDataPath + "/" + nameof(GameVersion) + ".json",
+        //            JsonConvert.SerializeObject(GameConfig.LocalGameVersion));
+        //    }
+
+        //    completed?.Invoke();
+        //}
+
+        //public async Task UnZipPackagePaths(List<string> downloadPaths, Action completed = null)
+        //{
+        //    foreach (var downloadPath in downloadPaths)
+        //    {
+        //        // 使用多线程
+        //        await Util.ZipHelper.UnZipFileAsync(downloadPath, Application.persistentDataPath, null, true);
+        //        string package = Path.GetFileNameWithoutExtension(downloadPath).Replace(PackageSplit, "");
+        //        int subPackageCount = GameConfig.LocalGameVersion.SubPackage.Count;
+        //        for (int i = subPackageCount - 1; i >= 0; i--)
+        //        {
+        //            if (GameConfig.LocalGameVersion.SubPackage[i] == package)
+        //            {
+        //                GameConfig.LocalGameVersion.SubPackage.RemoveAt(i);
+        //            }
+        //        }
+        //        FileTools.SafeWriteAllText(Application.persistentDataPath + "/" + nameof(GameVersion) + ".json",
+        //            JsonConvert.SerializeObject(GameConfig.LocalGameVersion));
+        //    }
+        //    completed?.Invoke();
+        //}
+
         public static string GetAssetBundlesPath(string fullPath)
         {
             Regex rgx = new Regex(@"AssetBundles[\\/].+$");
@@ -410,20 +411,20 @@ namespace Rain.Core
             assetPath = FileTools.FormatToUnityPath(assetPath);
             return assetPath;
         }
-        
+
         public void OnUpdate()
         {
-            
+
         }
 
         public void OnLateUpdate()
         {
-            
+
         }
 
         public void OnFixedUpdate()
         {
-            
+
         }
 
         public void OnTermination()

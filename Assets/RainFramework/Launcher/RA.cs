@@ -29,10 +29,7 @@ namespace Rain.Launcher
         // 音频管理-->使用了资产模块-->使用了游戏对象池模块-->使用了补间动画模块-->使用了时间模块
         private static AudioMgr _audio;
         // UI界面管理-->使用了资产模块
-        private static UIManager _ui;
         private static UIMgr _uiMgr;
-        // 本地化-->使用了配置模块-->使用了资产模块
-        private static Localization _localization;
         // SDK管理-->使用了消息模块
         private static SDKManager _sdkManager;
         // 下载管理器
@@ -201,21 +198,6 @@ namespace Rain.Launcher
             }
         }
 
-        public static UIManager UI
-        {
-            get
-            {
-                if (_ui == null)
-                    _ui = ModuleCenter.CreateModule<UIManager>();
-                return _ui;
-            }
-            set
-            {
-                if (_ui == null)
-                    _ui = value;
-            }
-        }
-
         public static UIMgr UIMgr
         {
             get
@@ -228,21 +210,6 @@ namespace Rain.Launcher
             {
                 if (_uiMgr == null)
                     _uiMgr = value;
-            }
-        }
-
-        public static Localization Local
-        {
-            get
-            {
-                if (_localization == null)
-                    _localization = ModuleCenter.CreateModule<Localization>();
-                return _localization;
-            }
-            set
-            {
-                if (_localization == null)
-                    _localization = value;
             }
         }
 
