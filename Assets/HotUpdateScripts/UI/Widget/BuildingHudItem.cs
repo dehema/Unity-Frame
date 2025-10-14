@@ -50,6 +50,7 @@ public partial class BuildingHudItem : BasePoolItem
     {
         int time = (int)timerOnSecond.RemainingTime;
         ui.lbBuildingProgress_Text.text = Utility.FormatCountdown(time);
+        ui.BuildingProgress_Slider.value = 1 - (float)time / (buildingData.BuildEndTime - buildingData.BuildStartTime);
     }
 
     public void Refresh()
