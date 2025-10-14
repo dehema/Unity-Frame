@@ -20,8 +20,6 @@ namespace Rain.Launcher
         private static TimerMgr _timer;
         // 流程管理
         private static ProcedureManager _procedure;
-        // 网络管理
-        private static NetworkManager _networkManager;
         // 有限状态机
         private static FSMManager _fsm;
         // 游戏对象池
@@ -133,21 +131,6 @@ namespace Rain.Launcher
             {
                 if (_procedure == null)
                     _procedure = value;
-            }
-        }
-
-        public static NetworkManager Network
-        {
-            get
-            {
-                if (_networkManager == null)
-                    _networkManager = ModuleCenter.CreateModule<NetworkManager>();
-                return _networkManager;
-            }
-            set
-            {
-                if (_networkManager == null)
-                    _networkManager = value;
             }
         }
 
