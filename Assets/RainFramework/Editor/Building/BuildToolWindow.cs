@@ -59,12 +59,13 @@ public class BuildToolWindow : EditorWindow
 
     private void OnGUI()
     {
-        scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
-
         // 标题
         EditorGUILayout.Space(10);
         EditorGUILayout.LabelField("RainFramework 打包工具", titleStyle);
         EditorGUILayout.Space(20);
+
+        // 滚动区域 - 只包含配置相关的UI
+        scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
 
         // 导出目录设置
         DrawExportPathSection();
@@ -75,6 +76,23 @@ public class BuildToolWindow : EditorWindow
         BuildToolAtlas.DrawResourcePreparationSection();
 
         EditorGUILayout.Space(20);
+        
+        // AB包设置
+        BuildToolAB.DrawABSettingsSection();
+
+        EditorGUILayout.EndScrollView();
+
+        // 分隔线
+        EditorGUILayout.Space(10);
+        EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
+        EditorGUILayout.Space(10);
+
+        // 固定区域 - 打包和工具相关的UI
+        EditorGUILayout.LabelField("【打包操作】", EditorStyles.boldLabel);
+        EditorGUILayout.BeginVertical("box");
+        
+        // 添加一些背景色区分
+        GUI.backgroundColor = new Color(0.9f, 0.9f, 1f, 1f);
 
         // 打包选项
         DrawBuildOptionsSection();
@@ -89,7 +107,10 @@ public class BuildToolWindow : EditorWindow
         // 其他工具按钮
         DrawUtilityButtons();
 
-        EditorGUILayout.EndScrollView();
+        EditorGUILayout.EndVertical();
+        
+        // 重置背景色
+        GUI.backgroundColor = Color.white;
     }
 
     private void DrawExportPathSection()
@@ -117,7 +138,6 @@ public class BuildToolWindow : EditorWindow
 
     private void DrawBuildOptionsSection()
     {
-        EditorGUILayout.LabelField("【打包选项】", EditorStyles.boldLabel);
         EditorGUILayout.BeginVertical("box");
 
         // 目标平台

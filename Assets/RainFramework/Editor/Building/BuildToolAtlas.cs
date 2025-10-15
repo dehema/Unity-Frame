@@ -86,16 +86,25 @@ public static class BuildToolAtlas
         }
     }
 
+    private static bool isAtlasSectionExpanded = true;
+
     /// <summary>
     /// 绘制资源准备部分
     /// </summary>
     public static void DrawResourcePreparationSection()
     {
-        EditorGUILayout.LabelField("【资源准备】", EditorStyles.boldLabel);
-        EditorGUILayout.BeginVertical("box");
+        EditorGUILayout.BeginHorizontal();
+        isAtlasSectionExpanded = EditorGUILayout.Foldout(isAtlasSectionExpanded, "【资源准备】", true, EditorStyles.foldoutHeader);
+        EditorGUILayout.EndHorizontal();
+        
+        EditorGUILayout.Space(5);
+        
+        if (isAtlasSectionExpanded)
+        {
+            EditorGUILayout.BeginVertical("box");
 
         EditorGUILayout.BeginHorizontal();
-
+        
         if (GUILayout.Button("打包图集", GUILayout.Height(30)))
         {
             BuildAtlas();
@@ -108,12 +117,13 @@ public static class BuildToolAtlas
 
         EditorGUILayout.EndHorizontal();
 
-        EditorGUILayout.HelpBox("打包图集：根据AssetBundles/Art/Resources/UI下的文件夹结构，在AssetBundles/Art/Atlas中创建对应的图集文件，并自动进行Pack Preview", MessageType.Info);
+        EditorGUILayout.HelpBox("打包图集：根据AssetBundles/Art/Resources/UI下的文件夹结构，在AssetBundles/Art/Atlas中创建对应的图集文件", MessageType.Info);
 
-        // 显示Atlas文件夹内的图集列表
-        DrawAtlasList();
+            // 显示Atlas文件夹内的图集列表
+            DrawAtlasList();
 
-        EditorGUILayout.EndVertical();
+            EditorGUILayout.EndVertical();
+        }
     }
 
     /// <summary>
