@@ -215,6 +215,13 @@ public class BuildToolWindow : EditorWindow
                 BuildAssetBundles();
             }
 
+            // 自动打包AB包（如果启用）
+            if (BuildToolAB.IsAutoBuildABEnabled())
+            {
+                EditorUtility.DisplayProgressBar("打包中", "自动打包AB包...", 0.25f);
+                BuildToolAB.BuildAllAssetBundles();
+            }
+
             // 复制到StreamingAssets
             if (copyToStreamingAssets)
             {

@@ -3,6 +3,18 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.U2D;
+using System.Collections.Generic;
+
+/// <summary>
+/// AB包配置数据
+/// </summary>
+[System.Serializable]
+public class ABConfigData
+{
+    public string abOutputPath = "";
+    public string onlineABUrl = "";
+    public bool autoBuildAB = true;
+}
 
 /// <summary>
 /// AB包设置工具
@@ -10,8 +22,63 @@ using UnityEngine.U2D;
 public static class BuildToolAB
 {
     const string atlasPath = "Assets/AssetBundles/Art/Atlas";
+    const string configPath = "Assets/Editor/BuildToolABConfig.json";
 
     private static bool isABSectionExpanded = true;
+    private static ABConfigData configData = new ABConfigData();
+
+    /// <summary>
+    /// 初始化配置
+    /// </summary>
+    static BuildToolAB()
+    {
+        LoadConfig();
+    }
+
+    /// <summary>
+    /// 加载配置
+    /// </summary>
+    private static void LoadConfig()
+    {
+        try
+        {
+            if (File.Exists(configPath))
+            {
+                string json = File.ReadAllText(configPath);
+                configData = JsonUtility.FromJson<ABConfigData>(json);
+            }
+            else
+            {
+                // 设置默认值
+                configData.abOutputPath = Path.Combine(Application.persistentDataPath, "AssetBundles");
+                configData.onlineABUrl = "";
+                configData.autoBuildAB = true;
+                SaveConfig();
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"加载AB配置失败: {e.Message}");
+            configData = new ABConfigData();
+        }
+    }
+
+    /// <summary>
+    /// 保存配置
+    /// </summary>
+    private static void SaveConfig()
+    {
+        try
+        {
+            string json = JsonUtility.ToJson(configData, true);
+            File.WriteAllText(configPath, json);
+            AssetDatabase.Refresh();
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"保存AB配置失败: {e.Message}");
+        }
+    }
 
     /// <summary>
     /// 绘制AB包设置界面
@@ -28,22 +95,80 @@ public static class BuildToolAB
         {
             EditorGUILayout.BeginVertical("box");
 
-        EditorGUILayout.BeginHorizontal();
-        
-        if (GUILayout.Button("一键设置AB", GUILayout.Height(30)))
-        {
-            SetAllAtlasAssetBundles();
-        }
+            // AB包设置按钮
+            EditorGUILayout.BeginHorizontal();
+            
+            if (GUILayout.Button("一键设置AB", GUILayout.Height(30)))
+            {
+                SetAllAtlasAssetBundles();
+            }
 
-        if (GUILayout.Button("清除AB设置", GUILayout.Height(30)))
-        {
-            ClearAllAtlasAssetBundles();
-        }
+            if (GUILayout.Button("清除AB设置", GUILayout.Height(30)))
+            {
+                ClearAllAtlasAssetBundles();
+            }
 
-        EditorGUILayout.EndHorizontal();
-        
-        EditorGUILayout.HelpBox("一键设置AB：自动为所有图集设置AssetBundle标签，标签名从图集路径自动生成", MessageType.Info);
-        
+            EditorGUILayout.EndHorizontal();
+            
+            EditorGUILayout.Space(10);
+            
+            // AB包输出路径设置
+            EditorGUILayout.LabelField("AB包输出路径:", EditorStyles.boldLabel);
+            EditorGUILayout.BeginHorizontal();
+            configData.abOutputPath = EditorGUILayout.TextField(configData.abOutputPath);
+            if (GUILayout.Button("选择", GUILayout.Width(60)))
+            {
+                string path = EditorUtility.OpenFolderPanel("选择AB包输出路径", configData.abOutputPath, "");
+                if (!string.IsNullOrEmpty(path))
+                {
+                    configData.abOutputPath = path;
+                    SaveConfig();
+                }
+            }
+            EditorGUILayout.EndHorizontal();
+            
+            EditorGUILayout.Space(10);
+            
+            // 线上AB包地址设置
+            EditorGUILayout.LabelField("线上AB包地址:", EditorStyles.boldLabel);
+            configData.onlineABUrl = EditorGUILayout.TextField(configData.onlineABUrl);
+            
+            EditorGUILayout.Space(10);
+            
+            // AB包操作按钮
+            EditorGUILayout.BeginHorizontal();
+            
+            if (GUILayout.Button("一键打包AB", GUILayout.Height(30)))
+            {
+                BuildAllAssetBundles();
+            }
+
+            if (GUILayout.Button("上传AB包", GUILayout.Height(30)))
+            {
+                UploadAssetBundles();
+            }
+
+            if (GUILayout.Button("打开AB目录", GUILayout.Height(30)))
+            {
+                OpenAssetBundleDirectory();
+            }
+
+            EditorGUILayout.EndHorizontal();
+            
+            EditorGUILayout.Space(10);
+            
+            // 自动打包选项
+            configData.autoBuildAB = EditorGUILayout.Toggle("自动打包AB包", configData.autoBuildAB);
+            
+            if (GUI.changed)
+            {
+                SaveConfig();
+            }
+            
+            EditorGUILayout.HelpBox("一键设置AB：自动为所有图集设置AssetBundle标签\n" +
+                                   "一键打包AB：构建所有AssetBundle到指定目录\n" +
+                                   "上传AB包：将AB包上传到线上服务器", MessageType.Info);
+            
             // 显示当前AB包状态
             DrawABStatusInfo();
             
@@ -285,6 +410,96 @@ public static class BuildToolAB
             EditorGUILayout.Space(5);
             EditorGUILayout.LabelField("暂无图集文件", EditorStyles.centeredGreyMiniLabel);
         }
+    }
+
+    /// <summary>
+    /// 一键打包所有AssetBundle
+    /// </summary>
+    public static void BuildAllAssetBundles()
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(configData.abOutputPath))
+            {
+                EditorUtility.DisplayDialog("错误", "请先设置AB包输出路径", "确定");
+                return;
+            }
+
+            // 确保输出目录存在
+            if (!Directory.Exists(configData.abOutputPath))
+            {
+                Directory.CreateDirectory(configData.abOutputPath);
+            }
+
+            EditorUtility.DisplayProgressBar("打包AB包", "正在构建AssetBundle...", 0f);
+
+            // 构建AssetBundle
+            BuildPipeline.BuildAssetBundles(configData.abOutputPath, 
+                BuildAssetBundleOptions.None, 
+                EditorUserBuildSettings.activeBuildTarget);
+
+            EditorUtility.ClearProgressBar();
+            AssetDatabase.Refresh();
+
+            Debug.Log($"AB包打包完成，输出目录: {configData.abOutputPath}");
+            EditorUtility.DisplayDialog("打包完成", $"AB包已打包到:\n{configData.abOutputPath}", "确定");
+        }
+        catch (Exception e)
+        {
+            EditorUtility.ClearProgressBar();
+            EditorUtility.DisplayDialog("打包失败", $"错误: {e.Message}", "确定");
+        }
+    }
+
+    /// <summary>
+    /// 上传AssetBundle到服务器
+    /// </summary>
+    public static void UploadAssetBundles()
+    {
+        if (string.IsNullOrEmpty(configData.onlineABUrl))
+        {
+            EditorUtility.DisplayDialog("提示", "请先设置线上AB包地址", "确定");
+            return;
+        }
+
+        if (string.IsNullOrEmpty(configData.abOutputPath) || !Directory.Exists(configData.abOutputPath))
+        {
+            EditorUtility.DisplayDialog("错误", "AB包输出目录不存在，请先打包AB包", "确定");
+            return;
+        }
+
+        // TODO: 实现上传功能
+        EditorUtility.DisplayDialog("上传功能", "上传功能待实现\n" +
+            $"本地路径: {configData.abOutputPath}\n" +
+            $"服务器地址: {configData.onlineABUrl}", "确定");
+    }
+
+    /// <summary>
+    /// 打开AB包目录
+    /// </summary>
+    public static void OpenAssetBundleDirectory()
+    {
+        if (string.IsNullOrEmpty(configData.abOutputPath))
+        {
+            EditorUtility.DisplayDialog("错误", "请先设置AB包输出路径", "确定");
+            return;
+        }
+
+        if (!Directory.Exists(configData.abOutputPath))
+        {
+            EditorUtility.DisplayDialog("提示", "AB包输出目录不存在", "确定");
+            return;
+        }
+
+        EditorUtility.RevealInFinder(configData.abOutputPath);
+    }
+
+    /// <summary>
+    /// 检查是否启用自动打包AB包
+    /// </summary>
+    public static bool IsAutoBuildABEnabled()
+    {
+        return configData.autoBuildAB;
     }
 
     /// <summary>
