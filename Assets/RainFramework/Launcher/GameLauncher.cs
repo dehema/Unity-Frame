@@ -72,12 +72,13 @@ namespace Rain.Launcher
             //UIMgr.Ins.OpenViewAsync(ViewName.DebugView);
             Utility.Log("hello world");
 #else
-            LoginViewParam param = new LoginViewParam();
-            param.action = () =>
-            {
-                EnterGame();
-            };
-            UIMgr.Ins.OpenView<LoginView>(param);
+            //LoginViewParam param = new LoginViewParam();
+            //param.action = () =>
+            //{
+            //    EnterGame();
+            //};
+            //UIMgr.Ins.OpenView<LoginView>(param);
+            UIMgr.Ins.OpenView<LoginView>();
 #endif
         }
 

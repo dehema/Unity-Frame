@@ -50,6 +50,7 @@ public partial class LoginView : BaseView
     private IEnumerator SimulateLoginProgress(float totalDuration)
     {
         // 第一阶段：初始化 (0-20%) - 0.3-0.6秒
+        ui.tips_Text.text = "正在初始化...";
         float initDuration = UnityEngine.Random.Range(0.3f, 0.6f);
         yield return ui.progress_Slider.DOValue(0.2f, initDuration).WaitForCompletion();
 
@@ -57,6 +58,7 @@ public partial class LoginView : BaseView
         yield return new WaitForSeconds(0.1f);
 
         // 第二阶段：连接服务器 (20-60%) - 0.8-1.5秒
+        ui.tips_Text.text = "正在连接服务器...";
         float connectDuration = UnityEngine.Random.Range(0.8f, 1.5f);
         yield return ui.progress_Slider.DOValue(0.6f, connectDuration).WaitForCompletion();
 
@@ -64,6 +66,7 @@ public partial class LoginView : BaseView
         yield return new WaitForSeconds(0.1f);
 
         // 第三阶段：验证数据 (60-85%) - 0.5-1.0秒
+        ui.tips_Text.text = "正在验证数据...";
         float verifyDuration = UnityEngine.Random.Range(0.5f, 1.0f);
         yield return ui.progress_Slider.DOValue(0.85f, verifyDuration).WaitForCompletion();
 
@@ -71,6 +74,7 @@ public partial class LoginView : BaseView
         yield return new WaitForSeconds(0.1f);
 
         // 第四阶段：完成登录 (85-100%) - 剩余时间
+        ui.tips_Text.text = "登录完成，正在进入游戏...";
         float remainingTime = totalDuration - initDuration - connectDuration - verifyDuration - 0.3f;
         if (remainingTime > 0)
         {
@@ -91,6 +95,7 @@ public partial class LoginView : BaseView
     /// </summary>
     private void OnLoginComplete()
     {
+        SceneMgr.Ins.ChangeScene(SceneID.MainCity);
         param?.action?.Invoke();
         Close();
     }
@@ -98,6 +103,11 @@ public partial class LoginView : BaseView
     public override void OnClose(Action _cb)
     {
         base.OnClose(_cb);
+    }
+
+    public enum LoginState
+    {
+        ab,
     }
 }
 

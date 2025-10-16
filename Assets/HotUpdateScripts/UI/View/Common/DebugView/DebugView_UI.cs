@@ -23,6 +23,8 @@ public partial class DebugView : Rain.UI.BaseView
         [SerializeField] public Toggle keepOpenView_Toggle;
         [SerializeField] public GameObject btStartGame;
         [SerializeField] public Button btStartGame_Button;
+        [SerializeField] public GameObject btLogin;
+        [SerializeField] public Button btLogin_Button;
         [SerializeField] public GameObject tdScene;
         [SerializeField] public Button tdScene_Button;
         [SerializeField] public GameObject rtsUnitTest;
