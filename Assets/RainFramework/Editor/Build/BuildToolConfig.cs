@@ -17,7 +17,7 @@ public class BuildToolConfig
 
     // 基础打包配置
     public string exportPath = "";
-    public BuildTarget buildTarget = BuildTarget.StandaloneWindows64;
+    public BuildTarget buildTarget = BuildTarget.Android;
     public bool developmentBuild = false;
     public bool copyToStreamingAssets = false;
     public bool buildAssetBundles = false;

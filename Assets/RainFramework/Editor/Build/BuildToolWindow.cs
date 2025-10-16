@@ -46,10 +46,10 @@ public class BuildToolWindow : EditorWindow
     {
         // 初始化样式
         InitializeStyles();
-        EditorGUILayout.BeginVertical();
-        // 标题
-        EditorGUILayout.Space(10);
+        
+        // 标题区域 - 固定在顶部，不在ScrollView内
         EditorGUILayout.LabelField("RainFramework 打包工具", titleStyle);
+        EditorGUILayout.Space(10);
 
         // 滚动区域 - 只包含配置相关的UI
         scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
@@ -66,10 +66,8 @@ public class BuildToolWindow : EditorWindow
         EditorGUILayout.EndScrollView();
 
 
-        // 一键打包按钮
+        // 一键打包按钮 - 固定在底部，不在ScrollView内
         DrawBuildButton();
-
-        EditorGUILayout.EndVertical();
     }
 
     private void InitializeStyles()
@@ -85,11 +83,13 @@ public class BuildToolWindow : EditorWindow
     {
         EditorGUILayout.Space(10);
         EditorGUILayout.BeginHorizontal();
+        GUILayout.FlexibleSpace();
         GUI.backgroundColor = Color.green;
         if (GUILayout.Button("打包", buttonStyle, GUILayout.Height(50), GUILayout.Width(200)))
         {
             StartBuild();
         }
+        GUILayout.FlexibleSpace();
         EditorGUILayout.EndHorizontal();
         EditorGUILayout.Space(10);
     }
