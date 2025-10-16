@@ -13,105 +13,86 @@ public class BuildToolAB : BuildToolBase
 {
     public BuildToolAB(BuildToolConfig _config) : base(_config)
     {
+        pageName = "AB包设置";
     }
 
     /// <summary>
     /// 绘制AB包设置界面
     /// </summary>
-    public void DrawABSettingsSection()
+    protected override void DrawContent()
     {
+        // AB包设置按钮
         EditorGUILayout.BeginHorizontal();
-        isWindowExpanded = EditorGUILayout.Foldout(isWindowExpanded, "【AB包设置】", true, EditorStyles.foldoutHeader);
+
+        if (GUILayout.Button("一键设置AB", GUILayout.Height(30)))
+        {
+            SetAllAssetBundles();
+        }
+
+        if (GUILayout.Button("清除AB设置", GUILayout.Height(30)))
+        {
+            ClearAllAssetBundles();
+        }
+
         EditorGUILayout.EndHorizontal();
 
-        EditorGUILayout.Space(5);
+        EditorGUILayout.Space(10);
 
-        if (isWindowExpanded)
+        // AB包输出路径设置
+        EditorGUILayout.LabelField("AB包输出路径:", EditorStyles.boldLabel);
+        EditorGUILayout.BeginHorizontal();
+        config.abOutputPath = EditorGUILayout.TextField(config.abOutputPath);
+        if (GUILayout.Button("选择", GUILayout.Width(60)))
         {
-            EditorGUILayout.BeginVertical("box");
-
-            // AB包设置按钮
-            EditorGUILayout.BeginHorizontal();
-
-            if (GUILayout.Button("一键设置AB", GUILayout.Height(30)))
+            string path = EditorUtility.OpenFolderPanel("选择AB包输出路径", config.abOutputPath, "");
+            if (!string.IsNullOrEmpty(path))
             {
-                SetAllAssetBundles();
+                config.abOutputPath = path;
             }
-
-            if (GUILayout.Button("清除AB设置", GUILayout.Height(30)))
-            {
-                ClearAllAssetBundles();
-            }
-
-            EditorGUILayout.EndHorizontal();
-
-            EditorGUILayout.Space(10);
-
-            // AB包输出路径设置
-            EditorGUILayout.LabelField("AB包输出路径:", EditorStyles.boldLabel);
-            EditorGUILayout.BeginHorizontal();
-            config.abOutputPath = EditorGUILayout.TextField(config.abOutputPath);
-            if (GUILayout.Button("选择", GUILayout.Width(60)))
-            {
-                string path = EditorUtility.OpenFolderPanel("选择AB包输出路径", config.abOutputPath, "");
-                if (!string.IsNullOrEmpty(path))
-                {
-                    config.abOutputPath = path;
-                }
-            }
-            EditorGUILayout.EndHorizontal();
-
-            EditorGUILayout.Space(10);
-
-            // 线上AB包地址设置
-            EditorGUILayout.LabelField("线上AB包地址:", EditorStyles.boldLabel);
-            config.onlineABUrl = EditorGUILayout.TextField(config.onlineABUrl);
-
-            EditorGUILayout.Space(10);
-
-            // AB包操作按钮
-            EditorGUILayout.BeginHorizontal();
-
-            if (GUILayout.Button("一键打包AB", GUILayout.Height(30)))
-            {
-                BuildAllAssetBundles();
-            }
-
-            if (GUILayout.Button("上传AB包", GUILayout.Height(30)))
-            {
-                UploadAssetBundles();
-            }
-
-            if (GUILayout.Button("打开输出AB目录", GUILayout.Height(30)))
-            {
-                OpenAssetBundleDirectory();
-            }
-
-            if (GUILayout.Button("打开线上AB目录", GUILayout.Height(30)))
-            {
-                OpenOnlineAssetBundleDirectory();
-            }
-
-            EditorGUILayout.EndHorizontal();
-
-            EditorGUILayout.Space(10);
-
-            // 自动打包选项
-            config.autoBuildAB = EditorGUILayout.Toggle("自动打包AB包", config.autoBuildAB);
-
-            if (GUI.changed)
-            {
-            }
-
-            EditorGUILayout.HelpBox("一键设置AB：自动为所有图集设置AssetBundle标签\n" +
-                                   "一键打包AB：构建所有AssetBundle到指定目录\n" +
-                                   "上传AB包：将AB包上传到线上服务器", MessageType.Info);
-
-            // 显示当前AB包状态
-            DrawABStatusInfo();
-
-            EditorGUILayout.EndVertical();
         }
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.Space(10);
+
+        // 线上AB包地址设置
+        EditorGUILayout.LabelField("线上AB包地址:", EditorStyles.boldLabel);
+        config.onlineABUrl = EditorGUILayout.TextField(config.onlineABUrl);
+
+        EditorGUILayout.Space(10);
+
+        // AB包操作按钮
+        EditorGUILayout.BeginHorizontal();
+
+        if (GUILayout.Button("一键打包AB", GUILayout.Height(30)))
+        {
+            BuildAllAssetBundles();
+        }
+
+        if (GUILayout.Button("上传AB包", GUILayout.Height(30)))
+        {
+            UploadAssetBundles();
+        }
+
+        if (GUILayout.Button("打开输出AB目录", GUILayout.Height(30)))
+        {
+            OpenAssetBundleDirectory();
+        }
+
+        if (GUILayout.Button("打开线上AB目录", GUILayout.Height(30)))
+        {
+            OpenOnlineAssetBundleDirectory();
+        }
+
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.Space(10);
+
+        // 自动打包选项
+        config.autoBuildAB = EditorGUILayout.Toggle("自动打包AB包", config.autoBuildAB);
+
+        // 显示当前AB包状态
+        DrawABStatusInfo();
+
     }
 
     /// <summary>

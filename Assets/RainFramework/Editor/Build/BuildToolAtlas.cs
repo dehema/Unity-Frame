@@ -16,12 +16,13 @@ public class BuildToolAtlas : BuildToolBase
 
     public BuildToolAtlas(BuildToolConfig _config) : base(_config)
     {
+        pageName = "图集工具";
     }
 
     /// <summary>
     /// 绘制图集列表
     /// </summary>
-    public static void DrawAtlasList()
+    public void DrawAtlasList()
     {
         if (Directory.Exists(atlasPath))
         {
@@ -93,45 +94,31 @@ public class BuildToolAtlas : BuildToolBase
     /// <summary>
     /// 绘制资源准备部分
     /// </summary>
-    public void DrawResourcePreparationSection()
+    protected override void DrawContent()
     {
         EditorGUILayout.BeginHorizontal();
-        isWindowExpanded = EditorGUILayout.Foldout(isWindowExpanded, "【资源准备】", true, EditorStyles.foldoutHeader);
+        if (GUILayout.Button("打包图集", GUILayout.Height(30)))
+        {
+            BuildAtlas();
+        }
+
+        if (GUILayout.Button("清理图集", GUILayout.Height(30)))
+        {
+            ClearAtlas();
+        }
+
         EditorGUILayout.EndHorizontal();
 
-        EditorGUILayout.Space(5);
+        EditorGUILayout.HelpBox("打包图集：根据AssetBundles/Art/Resources/UI下的文件夹结构，在AssetBundles/Art/Atlas中创建对应的图集文件", MessageType.Info);
 
-        if (isWindowExpanded)
-        {
-            EditorGUILayout.BeginVertical("box");
-
-            EditorGUILayout.BeginHorizontal();
-
-            if (GUILayout.Button("打包图集", GUILayout.Height(30)))
-            {
-                BuildAtlas();
-            }
-
-            if (GUILayout.Button("清理图集", GUILayout.Height(30)))
-            {
-                ClearAtlas();
-            }
-
-            EditorGUILayout.EndHorizontal();
-
-            EditorGUILayout.HelpBox("打包图集：根据AssetBundles/Art/Resources/UI下的文件夹结构，在AssetBundles/Art/Atlas中创建对应的图集文件", MessageType.Info);
-
-            // 显示Atlas文件夹内的图集列表
-            DrawAtlasList();
-
-            EditorGUILayout.EndVertical();
-        }
+        // 显示Atlas文件夹内的图集列表
+        DrawAtlasList();
     }
 
     /// <summary>
     /// 打包图集
     /// </summary>
-    public static void BuildAtlas()
+    public void BuildAtlas()
     {
         try
         {
@@ -177,7 +164,7 @@ public class BuildToolAtlas : BuildToolBase
     /// <summary>
     /// 为文件夹创建图集
     /// </summary>
-    private static void CreateAtlasForFolder(string folderPath, string folderName, string atlasPath)
+    private void CreateAtlasForFolder(string folderPath, string folderName, string atlasPath)
     {
         Debug.Log($"开始处理文件夹: {folderName}, 路径: {folderPath}");
 
@@ -265,7 +252,7 @@ public class BuildToolAtlas : BuildToolBase
     /// <summary>
     /// 清理图集
     /// </summary>
-    public static void ClearAtlas()
+    public void ClearAtlas()
     {
         if (Directory.Exists(atlasPath))
         {
@@ -300,7 +287,7 @@ public class BuildToolAtlas : BuildToolBase
     /// <summary>
     /// 自动进行Pack Preview
     /// </summary>
-    private static void AutoPackPreview()
+    private void AutoPackPreview()
     {
         try
         {
@@ -376,7 +363,7 @@ public class BuildToolAtlas : BuildToolBase
     /// <summary>
     /// 格式化文件大小
     /// </summary>
-    private static string FormatFileSize(long bytes)
+    private string FormatFileSize(long bytes)
     {
         if (bytes < 1024)
             return $"{bytes} B";
