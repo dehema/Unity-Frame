@@ -17,7 +17,6 @@ public class BuildToolWindow : EditorWindow
     private GUIStyle titleStyle;
     private GUIStyle buttonStyle;
 
-    public const string configPath = "Assets/RainFramework/Editor/Build/BuildToolConfig.json";
 
     [MenuItem("开发工具/打包工具 _F5")] // F5快捷键
     public static void ShowWindow()
@@ -31,7 +30,7 @@ public class BuildToolWindow : EditorWindow
     private void OnEnable()
     {
         // 加载配置
-        LoadConfig();
+        config = BuildToolConfig.Load();
 
         buildToolAtlas = new BuildToolAtlas(config);
         buildToolAB = new BuildToolAB(config);
@@ -40,49 +39,9 @@ public class BuildToolWindow : EditorWindow
         InitializeStyles();
     }
 
-    /// <summary>
-    /// 加载配置
-    /// </summary>
-    private void LoadConfig()
+    private void OnDestroy()
     {
-        try
-        {
-            if (File.Exists(configPath))
-            {
-                string json = File.ReadAllText(configPath);
-                config = JsonUtility.FromJson<BuildToolConfig>(json);
-            }
-            else
-            {
-                // 设置默认值
-                config.exportPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "RainBuilds");
-                config.buildTarget = EditorUserBuildSettings.activeBuildTarget;
-                config.abOutputPath = Path.Combine(Application.persistentDataPath, "AssetBundles");
-                SaveConfig();
-            }
-        }
-        catch (Exception e)
-        {
-            Debug.LogError($"加载配置失败: {e.Message}");
-            config = new BuildToolConfig();
-        }
-    }
-
-    /// <summary>
-    /// 保存配置
-    /// </summary>
-    private void SaveConfig()
-    {
-        try
-        {
-            string json = JsonUtility.ToJson(config, true);
-            File.WriteAllText(configPath, json);
-            AssetDatabase.Refresh();
-        }
-        catch (Exception e)
-        {
-            Debug.LogError($"保存配置失败: {e.Message}");
-        }
+        config.Save();
     }
 
     private void InitializeStyles()
@@ -170,7 +129,6 @@ public class BuildToolWindow : EditorWindow
             if (!string.IsNullOrEmpty(selectedPath))
             {
                 config.exportPath = selectedPath;
-                SaveConfig();
             }
         }
         EditorGUILayout.EndHorizontal();
@@ -179,12 +137,6 @@ public class BuildToolWindow : EditorWindow
         EditorGUILayout.LabelField("目标平台:", GUILayout.Width(80));
         config.buildTarget = (BuildTarget)EditorGUILayout.EnumPopup(config.buildTarget);
         EditorGUILayout.EndHorizontal();
-
-        if (GUI.changed)
-        {
-            SaveConfig();
-        }
-
         EditorGUILayout.EndVertical();
     }
 

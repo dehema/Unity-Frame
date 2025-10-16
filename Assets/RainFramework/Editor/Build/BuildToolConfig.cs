@@ -1,32 +1,86 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEditor;
+using UnityEngine;
 
 
 /// <summary>
-/// ´ò°ü¹¤¾ßÅäÖÃÊı¾İ
+/// æ‰“åŒ…å·¥å…·é…ç½®æ•°æ®
 /// </summary>
 [System.Serializable]
 public class BuildToolConfig
 {
-    // »ù´¡´ò°üÅäÖÃ
+    [NonSerialized]
+    public const string configPath = "Assets/RainFramework/Editor/Build/BuildToolConfig.json";
+
+    // åŸºç¡€æ‰“åŒ…é…ç½®
     public string exportPath = "";
     public BuildTarget buildTarget = BuildTarget.StandaloneWindows64;
     public bool developmentBuild = false;
     public bool copyToStreamingAssets = false;
     public bool buildAssetBundles = false;
 
-    // AB°üÏà¹ØÅäÖÃ
+    // ABåŒ…ç›¸å…³é…ç½®
     public string abOutputPath = "";
     public string onlineABUrl = "";
     public bool autoBuildAB = true;
 
-    // Í¼¼¯Ïà¹ØÅäÖÃ
+    // å›¾é›†ç›¸å…³é…ç½®
     public bool autoPackAtlas = true;
     public string atlasSourcePath = "Assets/AssetBundles/Art/Resources/UI";
     public string atlasOutputPath = "Assets/AssetBundles/Art/Atlas";
 
-    // ÆäËûÅäÖÃ
+    // å…¶ä»–é…ç½®
     public bool showAdvancedOptions = false;
     public bool clearBuildCache = false;
+
+
+    /// <summary>
+    /// åŠ è½½é…ç½®
+    /// </summary>
+    public static BuildToolConfig Load()
+    {
+        BuildToolConfig config = new BuildToolConfig();
+        try
+        {
+            if (File.Exists(configPath))
+            {
+                string json = File.ReadAllText(configPath);
+                config = JsonUtility.FromJson<BuildToolConfig>(json);
+            }
+            else
+            {
+                // è®¾ç½®é»˜è®¤å€¼
+                config.exportPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "RainBuilds");
+                config.buildTarget = EditorUserBuildSettings.activeBuildTarget;
+                config.abOutputPath = Path.Combine(Application.persistentDataPath, "AssetBundles");
+                config.Save();
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"åŠ è½½é…ç½®å¤±è´¥: {e.Message}");
+            config = new BuildToolConfig();
+        }
+        return config;
+    }
+
+    /// <summary>
+    /// ä¿å­˜é…ç½®
+    /// </summary>
+    public void Save()
+    {
+        try
+        {
+            string json = JsonUtility.ToJson(this, true);
+            File.WriteAllText(configPath, json);
+            AssetDatabase.Refresh();
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"ä¿å­˜é…ç½®å¤±è´¥: {e.Message}");
+        }
+    }
 }

@@ -4,7 +4,7 @@
     "developmentBuild": false,
     "copyToStreamingAssets": false,
     "buildAssetBundles": false,
-    "abOutputPath": "C:/Users/Administrator/AppData/LocalLow/Demo/Rain\\AssetBundles",
+    "abOutputPath": "C:/Users/Administrator/AppData/LocalLow/Demo/Rain/AssetBundles",
     "onlineABUrl": "",
     "autoBuildAB": true,
     "autoPackAtlas": true,
