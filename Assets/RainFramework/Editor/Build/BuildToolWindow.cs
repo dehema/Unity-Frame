@@ -64,8 +64,6 @@ public class BuildToolWindow : EditorWindow
 
         EditorGUILayout.EndScrollView();
 
-        // 分隔线
-        EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
 
         // 一键打包按钮
         DrawBuildButton();

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public abstract class BuildToolBase
 {
-    private bool isWindowExpanded = true;     //´°¿ÚÊÇ·ñÕ¹¿ª
+    private bool isWindowExpanded = true;     //çª—å£æ˜¯å¦å±•å¼€
     public BuildToolConfig config;
 
     protected string pageName = "name";
@@ -20,13 +20,15 @@ public abstract class BuildToolBase
 
     public void DrawGUI()
     {
-        // »æÖÆÕÛµşÃæ°å
+        // ç»˜åˆ¶æŠ˜å é¢æ¿
         EditorGUILayout.Space(10);
         EditorGUILayout.BeginHorizontal();
-        isWindowExpanded = EditorGUILayout.Foldout(isWindowExpanded, $"¡¾{pageName}¡¿", true, EditorStyles.foldoutHeader);
+        isWindowExpanded = EditorGUILayout.Foldout(isWindowExpanded, $"ã€{pageName}ã€‘", true, EditorStyles.foldoutHeader);
         EditorGUILayout.EndHorizontal();
         EditorGUILayout.Space(5);
         if (isWindowExpanded)
             DrawContent();
+        // åˆ†éš”çº¿
+        EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
     }
 }
