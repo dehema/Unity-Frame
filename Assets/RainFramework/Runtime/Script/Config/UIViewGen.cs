@@ -32,6 +32,10 @@ public enum ViewLayer
     /// 光标特效
     /// </summary>
 	CursorLayer = 28,
+    /// <summary>
+    /// 顶层UI
+    /// </summary>
+	TopLayer = 30,
 }
 
 public class ViewGroup

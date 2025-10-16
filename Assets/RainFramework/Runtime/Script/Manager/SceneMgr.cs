@@ -3,13 +3,14 @@ using Rain.Core;
 using Rain.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class SceneMgr : MonoSingleton<SceneMgr>
 {
     //要切换的场景名称
     string targetSceneName;
     public SceneID currSceneID;
-    public  Camera Camera { get; set; }
+    public Camera Camera { get; set; }
 
     private void Start()
     {
@@ -67,19 +68,47 @@ public class SceneMgr : MonoSingleton<SceneMgr>
     /// 切换场景
     /// </summary>
     /// <param name="_sceneID"></param>
-    public void ChangeScene(SceneID _sceneID, Action _changeSuccess = null)
+    public void ChangeScene(SceneID _sceneID, Action _changeSuccess = null, bool showView = true)
     {
+        OnSceneStartChange();
         LoadSceneViewParam viewParam = new LoadSceneViewParam();
         viewParam.targetSceneName = _sceneID.ToString();
         targetSceneName = viewParam.targetSceneName;
-        viewParam.CloseCB = () =>
+        LoadSceneView view = null;
+        if (showView)
+            view = UIMgr.Ins.OpenView<LoadSceneView>(viewParam);
+        StartCoroutine(LoadScene(viewParam.targetSceneName, (progress) =>
         {
-            currSceneID = _sceneID;
+            view?.SetViewProgress(progress);
+        }, () =>
+        {
+            view?.Close();
             OnSceneChangeComplete();
-            _changeSuccess?.Invoke();
-        };
-        OnSceneStartChange();
-        UIMgr.Ins.OpenView<LoadSceneView>(viewParam);
+        }));
+
+    }
+
+    float currProgress = 0;
+    IEnumerator LoadScene(string _targetSceneName, Action<float> _onLoadUpdate, Action _onLoadComplete)
+    {
+        currProgress = 0;
+        _onLoadUpdate?.Invoke(currProgress);
+        AsyncOperation operation = SceneManager.LoadSceneAsync(_targetSceneName, LoadSceneMode.Single);
+        operation.allowSceneActivation = false;
+
+        while (!operation.isDone)
+        {
+            currProgress = operation.progress;
+            _onLoadUpdate?.Invoke(currProgress);
+            if (currProgress >= 0.9F)
+            {
+                operation.allowSceneActivation = true;
+                _onLoadUpdate?.Invoke(1);
+                _onLoadComplete?.Invoke();
+            }
+            yield return null;
+        }
+
     }
 
     /// <summary>

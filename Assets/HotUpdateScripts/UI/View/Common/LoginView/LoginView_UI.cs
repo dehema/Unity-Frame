@@ -22,6 +22,8 @@ public partial class LoginView : Rain.UI.BaseView
         [SerializeField] public TextMeshProUGUI progressVal_Text;
         [SerializeField] public GameObject tips;
         [SerializeField] public TextMeshProUGUI tips_Text;
+        [SerializeField] public GameObject btLogin;
+        [SerializeField] public Button btLogin_Button;
     }
 
     [Header("自动序列化组件")]

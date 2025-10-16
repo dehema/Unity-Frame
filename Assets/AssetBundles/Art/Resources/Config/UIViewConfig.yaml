@@ -25,6 +25,9 @@ layer:
     CursorLayer:
         comment: 光标特效
         order: 28
+    TopLayer:
+        comment: 顶层UI
+        order: 30
 
 #View配置
 #必填#
@@ -143,7 +146,7 @@ view:
             bgColor: "#153d66FF"
         LoginView:
             comment: 登录
-            layer: NormalLayer
+            layer: TopLayer
             hasBg: true
             bgColor: "#FFFFFFFF"
     RTS:
