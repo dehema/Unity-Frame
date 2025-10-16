@@ -183,7 +183,7 @@ namespace Rain.Core
             set
             {
                 _volumeMusic = value;
-                StorageManager.Ins.SetFloat(_volumeMusicKey, value);
+                //StorageManager.Ins.SetFloat(_volumeMusicKey, value);
                 _audioMusic.MusicSource.volume = value;
             }
         }
@@ -201,7 +201,7 @@ namespace Rain.Core
             set
             {
                 _switchMusic = value;
-                StorageManager.Ins.SetBool(_switchMusicKey, value);
+                //StorageManager.Ins.SetBool(_switchMusicKey, value);
                 if (!value)
                 {
                     _audioMusic.MusicSource.Stop();
@@ -247,7 +247,7 @@ namespace Rain.Core
             set
             {
                 _volumeVoice = value;
-                StorageManager.Ins.SetFloat(_volumeVoiceKey, value);
+                //StorageManager.Ins.SetFloat(_volumeVoiceKey, value);
                 _audioMusicVoice.MusicSource.volume = value;
             }
         }
@@ -265,7 +265,7 @@ namespace Rain.Core
             set
             {
                 _switchVoice = value;
-                StorageManager.Ins.SetBool(_switchVoiceKey, value);
+                //StorageManager.Ins.SetBool(_switchVoiceKey, value);
                 if (!value)
                 {
                     _audioMusicVoice.MusicSource.Stop();
@@ -282,7 +282,7 @@ namespace Rain.Core
             set
             {
                 _volumeAudioEffect = value;
-                StorageManager.Ins.SetFloat(_volumeAudioEffectKey, value);
+                //StorageManager.Ins.SetFloat(_volumeAudioEffectKey, value);
                 _audioMusicBtnClick.MusicSource.volume = value;
                 _audioMusicUISound.MusicSource.volume = value;
                 _audioMusicAudioEffect.MusicSource.volume = value;
@@ -302,7 +302,7 @@ namespace Rain.Core
             set
             {
                 _switchAudioEffect = value;
-                StorageManager.Ins.SetBool(_switchAudioEffectKey, value);
+                //StorageManager.Ins.SetBool(_switchAudioEffectKey, value);
                 if (!value)
                 {
                     _audioMusicBtnClick.MusicSource.Stop();

@@ -14,8 +14,6 @@ namespace Rain.Launcher
         private static MsgMgr _message;
         // 输入管理-->使用了消息模块
         private static InputManager _inputManager;
-        // 本地存储
-        private static StorageManager _storage;
         // 游戏时间管理-->使用了消息模块
         private static TimerMgr _timer;
         // 流程管理
@@ -83,21 +81,6 @@ namespace Rain.Launcher
             {
                 if (_inputManager == null)
                     _inputManager = value;
-            }
-        }
-
-        public static StorageManager Storage
-        {
-            get
-            {
-                if (_storage == null)
-                    _storage = ModuleCenter.CreateModule<StorageManager>();
-                return _storage;
-            }
-            set
-            {
-                if (_storage == null)
-                    _storage = value;
             }
         }
 
