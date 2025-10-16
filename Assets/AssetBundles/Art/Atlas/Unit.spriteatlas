@@ -59,10 +59,82 @@ SpriteAtlas:
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
-    packedSpriteRenderDataKeys: []
+    packedSpriteRenderDataKeys:
+    - a80f6b8051c5672499ebd8009f5b332b: 21300000
+    - d6dce9b097222b642a44102ec0d67222: 21300000
+    - 2bbace2140eb57445b898a6df8beb26d: 21300000
+    - b6b5846136f080d498c072d379d8d394: 21300000
+    - bef6bc124fda3034ea2e14b7842eb80b: 21300000
+    - 50292682c604e9c448d55b16505453c6: 21300000
+    - 15294cc27f4391d4ba2b25b577da5461: 21300000
+    - 73792e23ed010334d97c977d33ffd2e3: 21300000
+    - 98427c73fe1e42e4ab2fd4657407b4e7: 21300000
+    - cc2ca46477fa27d46bff06e3cd844b60: 21300000
+    - 299175158e401d44eb71ea1d9c1e55c5: 21300000
+    - 647047766d1aa3f4d94a2a48aaba2fd1: 21300000
+    - c62ff07714e61cc449dd97eb05e9fd59: 21300000
+    - 3c9a6897946faf24b91a1cc4eef34ab1: 21300000
+    - c1b546c72aee0f648a741b11b93ce88b: 21300000
+    - 01f6ee78b19efb441a45a1b830cb0dc2: 21300000
+    - 51357d190cec3e746aa9d7b9256d8dcd: 21300000
+    - 8de4b5894d83cdc4d9f53f2977217e79: 21300000
+    - eda11ddb72e7f8c49897d1718dcf4b8b: 21300000
+    - 2516e80c0c0437d419a914bf12e369c0: 21300000
+    - 717b7a0c6b84c614d8dba99f06ef4eb3: 21300000
+    - cdc2ec4c05648be4c8ef9f6b3bea3c77: 21300000
+    - 5442339d47d202e4ab733d08e339408a: 21300000
+    - f72537bef4bf0cb42bbe1ba93ad42cba: 21300000
   m_MasterAtlas: {fileID: 0}
-  m_PackedSprites: []
-  m_PackedSpriteNamesToIndex: []
+  m_PackedSprites:
+  - {fileID: 21300000, guid: a80f6b8051c5672499ebd8009f5b332b, type: 3}
+  - {fileID: 21300000, guid: d6dce9b097222b642a44102ec0d67222, type: 3}
+  - {fileID: 21300000, guid: 2bbace2140eb57445b898a6df8beb26d, type: 3}
+  - {fileID: 21300000, guid: b6b5846136f080d498c072d379d8d394, type: 3}
+  - {fileID: 21300000, guid: bef6bc124fda3034ea2e14b7842eb80b, type: 3}
+  - {fileID: 21300000, guid: 50292682c604e9c448d55b16505453c6, type: 3}
+  - {fileID: 21300000, guid: 15294cc27f4391d4ba2b25b577da5461, type: 3}
+  - {fileID: 21300000, guid: 73792e23ed010334d97c977d33ffd2e3, type: 3}
+  - {fileID: 21300000, guid: 98427c73fe1e42e4ab2fd4657407b4e7, type: 3}
+  - {fileID: 21300000, guid: cc2ca46477fa27d46bff06e3cd844b60, type: 3}
+  - {fileID: 21300000, guid: 299175158e401d44eb71ea1d9c1e55c5, type: 3}
+  - {fileID: 21300000, guid: 647047766d1aa3f4d94a2a48aaba2fd1, type: 3}
+  - {fileID: 21300000, guid: c62ff07714e61cc449dd97eb05e9fd59, type: 3}
+  - {fileID: 21300000, guid: 3c9a6897946faf24b91a1cc4eef34ab1, type: 3}
+  - {fileID: 21300000, guid: c1b546c72aee0f648a741b11b93ce88b, type: 3}
+  - {fileID: 21300000, guid: 01f6ee78b19efb441a45a1b830cb0dc2, type: 3}
+  - {fileID: 21300000, guid: 51357d190cec3e746aa9d7b9256d8dcd, type: 3}
+  - {fileID: 21300000, guid: 8de4b5894d83cdc4d9f53f2977217e79, type: 3}
+  - {fileID: 21300000, guid: eda11ddb72e7f8c49897d1718dcf4b8b, type: 3}
+  - {fileID: 21300000, guid: 2516e80c0c0437d419a914bf12e369c0, type: 3}
+  - {fileID: 21300000, guid: 717b7a0c6b84c614d8dba99f06ef4eb3, type: 3}
+  - {fileID: 21300000, guid: cdc2ec4c05648be4c8ef9f6b3bea3c77, type: 3}
+  - {fileID: 21300000, guid: 5442339d47d202e4ab733d08e339408a, type: 3}
+  - {fileID: 21300000, guid: f72537bef4bf0cb42bbe1ba93ad42cba, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - TT_Scout
+  - TT_Heavy_Infantry
+  - TT_Light_Cavalry
+  - TT_Mounted_Priest
+  - TT_HeavySwordman
+  - TT_Mounted_King
+  - TT_Crossbowman
+  - TT_Swordman
+  - TT_Mounted_Paladin
+  - TT_Commander
+  - TT_King
+  - TT_Mounted_Mage
+  - TT_Spearman
+  - TT_Peasant
+  - TT_Archer
+  - TT_Paladin
+  - TT_HighPriest
+  - TT_Priest
+  - TT_Halberdier
+  - TT_Mounted_Knight
+  - TT_Light_Infantry
+  - TT_Heavy_Cavalry
+  - TT_Mounted_Scout
+  - TT_Mage
   m_RenderDataMap: {}
   m_Tag: Unit
   m_IsVariant: 0

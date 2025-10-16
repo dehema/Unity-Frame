@@ -4,42 +4,85 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
+
 /// <summary>
 /// 打包工具窗口
 /// </summary>
 public class BuildToolWindow : EditorWindow
 {
-    private string exportPath = "";
-    private BuildTarget buildTarget = BuildTarget.StandaloneWindows64;
-    private bool developmentBuild = false;
-    private bool copyToStreamingAssets = false;
-    private bool buildAssetBundles = false;
-
+    BuildToolConfig config = new BuildToolConfig();
+    BuildToolAtlas buildToolAtlas;
+    BuildToolAB buildToolAB;
     private Vector2 scrollPosition;
     private GUIStyle titleStyle;
     private GUIStyle buttonStyle;
 
+    public const string configPath = "Assets/RainFramework/Editor/Build/BuildToolConfig.json";
+
     [MenuItem("开发工具/打包工具 _F5")] // F5快捷键
     public static void ShowWindow()
     {
-        BuildToolWindow window = GetWindow<BuildToolWindow>("打包工具");
+        BuildToolWindow window = GetWindow<BuildToolWindow>("打包工具", typeof(EditorWindow).Assembly.GetType("UnityEditor.GameView"));
         window.minSize = new Vector2(400, 600);
         window.Show();
+
     }
 
     private void OnEnable()
     {
-        // 初始化导出路径 - 默认桌面
-        if (string.IsNullOrEmpty(exportPath))
-        {
-            exportPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "RainBuilds");
-        }
+        // 加载配置
+        LoadConfig();
 
-        // 初始化目标平台 - 默认当前平台
-        buildTarget = EditorUserBuildSettings.activeBuildTarget;
+        buildToolAtlas = new BuildToolAtlas(config);
+        buildToolAB = new BuildToolAB(config);
 
         // 初始化样式
         InitializeStyles();
+    }
+
+    /// <summary>
+    /// 加载配置
+    /// </summary>
+    private void LoadConfig()
+    {
+        try
+        {
+            if (File.Exists(configPath))
+            {
+                string json = File.ReadAllText(configPath);
+                config = JsonUtility.FromJson<BuildToolConfig>(json);
+            }
+            else
+            {
+                // 设置默认值
+                config.exportPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "RainBuilds");
+                config.buildTarget = EditorUserBuildSettings.activeBuildTarget;
+                config.abOutputPath = Path.Combine(Application.persistentDataPath, "AssetBundles");
+                SaveConfig();
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"加载配置失败: {e.Message}");
+            config = new BuildToolConfig();
+        }
+    }
+
+    /// <summary>
+    /// 保存配置
+    /// </summary>
+    private void SaveConfig()
+    {
+        try
+        {
+            string json = JsonUtility.ToJson(config, true);
+            File.WriteAllText(configPath, json);
+            AssetDatabase.Refresh();
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"保存配置失败: {e.Message}");
+        }
     }
 
     private void InitializeStyles()
@@ -73,12 +116,12 @@ public class BuildToolWindow : EditorWindow
         EditorGUILayout.Space(20);
 
         // 资源准备
-        BuildToolAtlas.DrawResourcePreparationSection();
+        buildToolAtlas?.DrawResourcePreparationSection();
 
         EditorGUILayout.Space(20);
-        
+
         // AB包设置
-        BuildToolAB.DrawABSettingsSection();
+        buildToolAB?.DrawABSettingsSection();
 
         EditorGUILayout.EndScrollView();
 
@@ -90,7 +133,7 @@ public class BuildToolWindow : EditorWindow
         // 固定区域 - 打包和工具相关的UI
         EditorGUILayout.LabelField("【打包操作】", EditorStyles.boldLabel);
         EditorGUILayout.BeginVertical("box");
-        
+
         // 添加一些背景色区分
         GUI.backgroundColor = new Color(0.9f, 0.9f, 1f, 1f);
 
@@ -108,7 +151,7 @@ public class BuildToolWindow : EditorWindow
         DrawUtilityButtons();
 
         EditorGUILayout.EndVertical();
-        
+
         // 重置背景色
         GUI.backgroundColor = Color.white;
     }
@@ -120,20 +163,178 @@ public class BuildToolWindow : EditorWindow
 
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("安装包导出目录:", GUILayout.Width(120));
-        exportPath = EditorGUILayout.TextField(exportPath);
+        config.exportPath = EditorGUILayout.TextField(config.exportPath);
         if (GUILayout.Button("浏览", GUILayout.Width(60)))
         {
-            string selectedPath = EditorUtility.OpenFolderPanel("选择导出目录", exportPath, "");
+            string selectedPath = EditorUtility.OpenFolderPanel("选择导出目录", config.exportPath, "");
             if (!string.IsNullOrEmpty(selectedPath))
             {
-                exportPath = selectedPath;
+                config.exportPath = selectedPath;
+                SaveConfig();
             }
         }
         EditorGUILayout.EndHorizontal();
 
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("目标平台:", GUILayout.Width(80));
+        config.buildTarget = (BuildTarget)EditorGUILayout.EnumPopup(config.buildTarget);
+        EditorGUILayout.EndHorizontal();
+
+        if (GUI.changed)
+        {
+            SaveConfig();
+        }
+
         EditorGUILayout.EndVertical();
     }
 
+    private void StartBuild()
+    {
+        try
+        {
+            EditorUtility.DisplayProgressBar("打包中", "正在准备打包...", 0f);
+
+            // 创建导出目录
+            if (!Directory.Exists(config.exportPath))
+            {
+                Directory.CreateDirectory(config.exportPath);
+            }
+
+            // 构建AssetBundle
+            if (config.buildAssetBundles)
+            {
+                EditorUtility.DisplayProgressBar("打包中", "构建AssetBundle...", 0.2f);
+                BuildAssetBundles();
+            }
+
+            // 自动打包AB包（如果启用）
+            if (config.autoBuildAB)
+            {
+                EditorUtility.DisplayProgressBar("打包中", "自动打包AB包...", 0.25f);
+                // TODO: 调用AB包打包功能
+            }
+
+            // 复制到StreamingAssets
+            if (config.copyToStreamingAssets)
+            {
+                EditorUtility.DisplayProgressBar("打包中", "复制到StreamingAssets...", 0.3f);
+                CopyToStreamingAssets();
+            }
+
+            // 开始打包
+            EditorUtility.DisplayProgressBar("打包中", "正在打包...", 0.4f);
+            BuildPlayer();
+
+            EditorUtility.ClearProgressBar();
+            EditorUtility.DisplayDialog("打包完成", $"打包完成！\n导出目录: {config.exportPath}", "确定");
+        }
+        catch (Exception e)
+        {
+            EditorUtility.ClearProgressBar();
+            EditorUtility.DisplayDialog("打包失败", $"打包失败: {e.Message}", "确定");
+        }
+    }
+
+    private void BuildPlayer()
+    {
+        string[] scenes = GetBuildScenes();
+        string buildPath = GetBuildPath();
+
+        BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions
+        {
+            scenes = scenes,
+            locationPathName = buildPath,
+            target = config.buildTarget,
+            options = config.developmentBuild ? BuildOptions.Development : BuildOptions.None
+        };
+
+        BuildPipeline.BuildPlayer(buildPlayerOptions);
+    }
+
+    private string[] GetBuildScenes()
+    {
+        string[] scenes = new string[EditorBuildSettings.scenes.Length];
+        for (int i = 0; i < EditorBuildSettings.scenes.Length; i++)
+        {
+            scenes[i] = EditorBuildSettings.scenes[i].path;
+        }
+        return scenes;
+    }
+
+    private string GetBuildPath()
+    {
+        string fileName = GetBuildFileName();
+        return Path.Combine(config.exportPath, fileName);
+    }
+
+    private string GetBuildFileName()
+    {
+        string platform = config.buildTarget.ToString();
+        string extension = GetBuildExtension();
+        return $"{Application.productName}_{platform}_{DateTime.Now:yyyyMMdd_HHmmss}{extension}";
+    }
+
+    private string GetBuildExtension()
+    {
+        switch (config.buildTarget)
+        {
+            case BuildTarget.StandaloneWindows:
+            case BuildTarget.StandaloneWindows64:
+                return ".exe";
+            case BuildTarget.StandaloneOSX:
+                return ".app";
+            case BuildTarget.StandaloneLinux64:
+                return "";
+            case BuildTarget.Android:
+                return ".apk";
+            case BuildTarget.iOS:
+                return "";
+            default:
+                return "";
+        }
+    }
+
+    private void BuildAssetBundles()
+    {
+        string assetBundleDirectory = "Assets/StreamingAssets";
+        if (!Directory.Exists(assetBundleDirectory))
+        {
+            Directory.CreateDirectory(assetBundleDirectory);
+        }
+
+        BuildPipeline.BuildAssetBundles(assetBundleDirectory, BuildAssetBundleOptions.None, config.buildTarget);
+    }
+
+    private void CopyToStreamingAssets()
+    {
+        // 这里可以添加复制逻辑
+        Debug.Log("复制到StreamingAssets功能待实现");
+    }
+
+    private void OpenExportDirectory()
+    {
+        if (Directory.Exists(config.exportPath))
+        {
+            EditorUtility.RevealInFinder(config.exportPath);
+        }
+        else
+        {
+            EditorUtility.DisplayDialog("错误", "导出目录不存在", "确定");
+        }
+    }
+
+    private void ClearExportDirectory()
+    {
+        if (Directory.Exists(config.exportPath))
+        {
+            if (EditorUtility.DisplayDialog("确认", "确定要清理导出目录吗？", "确定", "取消"))
+            {
+                Directory.Delete(config.exportPath, true);
+                Directory.CreateDirectory(config.exportPath);
+                Debug.Log("导出目录已清理");
+            }
+        }
+    }
 
 
     private void DrawBuildOptionsSection()
@@ -141,14 +342,13 @@ public class BuildToolWindow : EditorWindow
         EditorGUILayout.BeginVertical("box");
 
         // 目标平台
-        buildTarget = (BuildTarget)EditorGUILayout.EnumPopup("目标平台:", buildTarget);
+        config.buildTarget = (BuildTarget)EditorGUILayout.EnumPopup("目标平台:", config.buildTarget);
 
         // 开发版本
-        developmentBuild = EditorGUILayout.Toggle("开发版本:", developmentBuild);
+        config.developmentBuild = EditorGUILayout.Toggle("开发版本:", config.developmentBuild);
 
         EditorGUILayout.EndVertical();
     }
-
     private void DrawBuildButton()
     {
         EditorGUILayout.BeginHorizontal();
@@ -194,154 +394,6 @@ public class BuildToolWindow : EditorWindow
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.EndVertical();
-    }
-
-    private void StartBuild()
-    {
-        try
-        {
-            EditorUtility.DisplayProgressBar("打包中", "正在准备打包...", 0f);
-
-            // 创建导出目录
-            if (!Directory.Exists(exportPath))
-            {
-                Directory.CreateDirectory(exportPath);
-            }
-
-            // 构建AssetBundle
-            if (buildAssetBundles)
-            {
-                EditorUtility.DisplayProgressBar("打包中", "构建AssetBundle...", 0.2f);
-                BuildAssetBundles();
-            }
-
-            // 自动打包AB包（如果启用）
-            if (BuildToolAB.IsAutoBuildABEnabled())
-            {
-                EditorUtility.DisplayProgressBar("打包中", "自动打包AB包...", 0.25f);
-                BuildToolAB.BuildAllAssetBundles();
-            }
-
-            // 复制到StreamingAssets
-            if (copyToStreamingAssets)
-            {
-                EditorUtility.DisplayProgressBar("打包中", "复制到StreamingAssets...", 0.3f);
-                CopyToStreamingAssets();
-            }
-
-            // 开始打包
-            EditorUtility.DisplayProgressBar("打包中", "正在打包...", 0.4f);
-            BuildPlayer();
-
-            EditorUtility.ClearProgressBar();
-            EditorUtility.DisplayDialog("打包完成", $"打包完成！\n导出目录: {exportPath}", "确定");
-        }
-        catch (Exception e)
-        {
-            EditorUtility.ClearProgressBar();
-            EditorUtility.DisplayDialog("打包失败", $"打包失败: {e.Message}", "确定");
-        }
-    }
-
-    private void BuildPlayer()
-    {
-        string[] scenes = GetBuildScenes();
-        string buildPath = GetBuildPath();
-
-        BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions
-        {
-            scenes = scenes,
-            locationPathName = buildPath,
-            target = buildTarget,
-            options = developmentBuild ? BuildOptions.Development : BuildOptions.None
-        };
-
-        BuildPipeline.BuildPlayer(buildPlayerOptions);
-    }
-
-    private string[] GetBuildScenes()
-    {
-        string[] scenes = new string[EditorBuildSettings.scenes.Length];
-        for (int i = 0; i < EditorBuildSettings.scenes.Length; i++)
-        {
-            scenes[i] = EditorBuildSettings.scenes[i].path;
-        }
-        return scenes;
-    }
-
-    private string GetBuildPath()
-    {
-        string fileName = GetBuildFileName();
-        return Path.Combine(exportPath, fileName);
-    }
-
-    private string GetBuildFileName()
-    {
-        string platform = buildTarget.ToString();
-        string extension = GetBuildExtension();
-        return $"{Application.productName}_{platform}_{DateTime.Now:yyyyMMdd_HHmmss}{extension}";
-    }
-
-    private string GetBuildExtension()
-    {
-        switch (buildTarget)
-        {
-            case BuildTarget.StandaloneWindows:
-            case BuildTarget.StandaloneWindows64:
-                return ".exe";
-            case BuildTarget.StandaloneOSX:
-                return ".app";
-            case BuildTarget.StandaloneLinux64:
-                return "";
-            case BuildTarget.Android:
-                return ".apk";
-            case BuildTarget.iOS:
-                return "";
-            default:
-                return "";
-        }
-    }
-
-    private void BuildAssetBundles()
-    {
-        string assetBundleDirectory = "Assets/StreamingAssets";
-        if (!Directory.Exists(assetBundleDirectory))
-        {
-            Directory.CreateDirectory(assetBundleDirectory);
-        }
-
-        BuildPipeline.BuildAssetBundles(assetBundleDirectory, BuildAssetBundleOptions.None, buildTarget);
-    }
-
-    private void CopyToStreamingAssets()
-    {
-        // 这里可以添加复制逻辑
-        Debug.Log("复制到StreamingAssets功能待实现");
-    }
-
-    private void OpenExportDirectory()
-    {
-        if (Directory.Exists(exportPath))
-        {
-            EditorUtility.RevealInFinder(exportPath);
-        }
-        else
-        {
-            EditorUtility.DisplayDialog("错误", "导出目录不存在", "确定");
-        }
-    }
-
-    private void ClearExportDirectory()
-    {
-        if (Directory.Exists(exportPath))
-        {
-            if (EditorUtility.DisplayDialog("确认", "确定要清理导出目录吗？", "确定", "取消"))
-            {
-                Directory.Delete(exportPath, true);
-                Directory.CreateDirectory(exportPath);
-                Debug.Log("导出目录已清理");
-            }
-        }
     }
 
 }

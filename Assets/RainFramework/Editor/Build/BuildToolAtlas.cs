@@ -9,10 +9,14 @@ using UnityEditor.U2D;
 /// <summary>
 /// 图集工具类
 /// </summary>
-public static class BuildToolAtlas
+public class BuildToolAtlas : BuildToolBase
 {
     private const string sourcePath = "Assets/AssetBundles/Art/Resources/UI";
     private const string atlasPath = "Assets/AssetBundles/Art/Atlas";
+
+    public BuildToolAtlas(BuildToolConfig _config) : base(_config)
+    {
+    }
 
     /// <summary>
     /// 绘制图集列表
@@ -86,38 +90,36 @@ public static class BuildToolAtlas
         }
     }
 
-    private static bool isAtlasSectionExpanded = true;
-
     /// <summary>
     /// 绘制资源准备部分
     /// </summary>
-    public static void DrawResourcePreparationSection()
+    public void DrawResourcePreparationSection()
     {
         EditorGUILayout.BeginHorizontal();
-        isAtlasSectionExpanded = EditorGUILayout.Foldout(isAtlasSectionExpanded, "【资源准备】", true, EditorStyles.foldoutHeader);
+        isWindowExpanded = EditorGUILayout.Foldout(isWindowExpanded, "【资源准备】", true, EditorStyles.foldoutHeader);
         EditorGUILayout.EndHorizontal();
-        
+
         EditorGUILayout.Space(5);
-        
-        if (isAtlasSectionExpanded)
+
+        if (isWindowExpanded)
         {
             EditorGUILayout.BeginVertical("box");
 
-        EditorGUILayout.BeginHorizontal();
-        
-        if (GUILayout.Button("打包图集", GUILayout.Height(30)))
-        {
-            BuildAtlas();
-        }
+            EditorGUILayout.BeginHorizontal();
 
-        if (GUILayout.Button("清理图集", GUILayout.Height(30)))
-        {
-            ClearAtlas();
-        }
+            if (GUILayout.Button("打包图集", GUILayout.Height(30)))
+            {
+                BuildAtlas();
+            }
 
-        EditorGUILayout.EndHorizontal();
+            if (GUILayout.Button("清理图集", GUILayout.Height(30)))
+            {
+                ClearAtlas();
+            }
 
-        EditorGUILayout.HelpBox("打包图集：根据AssetBundles/Art/Resources/UI下的文件夹结构，在AssetBundles/Art/Atlas中创建对应的图集文件", MessageType.Info);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.HelpBox("打包图集：根据AssetBundles/Art/Resources/UI下的文件夹结构，在AssetBundles/Art/Atlas中创建对应的图集文件", MessageType.Info);
 
             // 显示Atlas文件夹内的图集列表
             DrawAtlasList();

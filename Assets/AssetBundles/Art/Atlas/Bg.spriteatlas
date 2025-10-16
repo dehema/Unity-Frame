@@ -39,10 +39,22 @@ SpriteAtlas:
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
-    packedSpriteRenderDataKeys: []
+    packedSpriteRenderDataKeys:
+    - 82e02b652803e46438d3ec1efc0605de: 21300000
+    - ab7b4ce891ee40548b4e19566131daa9: 21300000
+    - a440662cf5b8fb94ab3bf5b5912dbb73: 21300000
+    - 3f3eab5d8be27e84eb946fc8b0b2b4d0: 21300000
   m_MasterAtlas: {fileID: 0}
-  m_PackedSprites: []
-  m_PackedSpriteNamesToIndex: []
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 82e02b652803e46438d3ec1efc0605de, type: 3}
+  - {fileID: 21300000, guid: ab7b4ce891ee40548b4e19566131daa9, type: 3}
+  - {fileID: 21300000, guid: a440662cf5b8fb94ab3bf5b5912dbb73, type: 3}
+  - {fileID: 21300000, guid: 3f3eab5d8be27e84eb946fc8b0b2b4d0, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - bg_loading
+  - Game Win
+  - bg_loading_logo
+  - Game Fail
   m_RenderDataMap: {}
   m_Tag: Bg
   m_IsVariant: 0

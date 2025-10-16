@@ -1,0 +1,15 @@
+{
+    "exportPath": "C:\\Users\\Administrator\\Desktop\\RainBuilds",
+    "buildTarget": 13,
+    "developmentBuild": false,
+    "copyToStreamingAssets": false,
+    "buildAssetBundles": false,
+    "abOutputPath": "C:/Users/Administrator/AppData/LocalLow/Demo/Rain\\AssetBundles",
+    "onlineABUrl": "",
+    "autoBuildAB": true,
+    "autoPackAtlas": true,
+    "atlasSourcePath": "Assets/AssetBundles/Art/Resources/UI",
+    "atlasOutputPath": "Assets/AssetBundles/Art/Atlas",
+    "showAdvancedOptions": false,
+    "clearBuildCache": false
+}

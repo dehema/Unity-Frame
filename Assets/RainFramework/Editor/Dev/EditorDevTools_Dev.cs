@@ -44,7 +44,6 @@ public class EditorDevTools_Dev : EditorDevTools_Base
         if (GUILayout.Button("打开编辑器脚本", style.bt))
         {
             OpenEditorScript();
-
         }
         if (GUILayout.Button("清除PlayerPrefs", style.bt))
         {
