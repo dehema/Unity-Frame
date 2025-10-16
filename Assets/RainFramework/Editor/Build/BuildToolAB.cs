@@ -11,8 +11,6 @@ using Path = System.IO.Path;
 /// </summary>
 public class BuildToolAB : BuildToolBase
 {
-    const string atlasPath = "Assets/AssetBundles/Art/Atlas";
-
     public BuildToolAB(BuildToolConfig _config) : base(_config)
     {
     }
@@ -84,9 +82,14 @@ public class BuildToolAB : BuildToolBase
                 UploadAssetBundles();
             }
 
-            if (GUILayout.Button("打开AB目录", GUILayout.Height(30)))
+            if (GUILayout.Button("打开输出AB目录", GUILayout.Height(30)))
             {
                 OpenAssetBundleDirectory();
+            }
+
+            if (GUILayout.Button("打开线上AB目录", GUILayout.Height(30)))
+            {
+                OpenOnlineAssetBundleDirectory();
             }
 
             EditorGUILayout.EndHorizontal();
@@ -126,13 +129,13 @@ public class BuildToolAB : BuildToolBase
     {
         try
         {
-            if (!Directory.Exists(atlasPath))
+            if (!Directory.Exists(BuildToolAtlas.atlasPath))
             {
                 EditorUtility.DisplayDialog("错误", "Atlas目录不存在，请先创建图集", "确定");
                 return;
             }
 
-            string[] atlasFiles = Directory.GetFiles(atlasPath, "*.spriteatlas", SearchOption.AllDirectories);
+            string[] atlasFiles = Directory.GetFiles(BuildToolAtlas.atlasPath, "*.spriteatlas", SearchOption.AllDirectories);
 
             if (atlasFiles.Length == 0)
             {
@@ -296,14 +299,14 @@ public class BuildToolAB : BuildToolBase
     /// </summary>
     private void DrawABStatusInfo()
     {
-        if (!Directory.Exists(atlasPath))
+        if (!Directory.Exists(BuildToolAtlas.atlasPath))
         {
             EditorGUILayout.Space(5);
             EditorGUILayout.LabelField("Atlas目录不存在", EditorStyles.centeredGreyMiniLabel);
             return;
         }
 
-        string[] atlasFiles = Directory.GetFiles(atlasPath, "*.spriteatlas", SearchOption.AllDirectories);
+        string[] atlasFiles = Directory.GetFiles(BuildToolAtlas.atlasPath, "*.spriteatlas", SearchOption.AllDirectories);
 
         if (atlasFiles.Length > 0)
         {
@@ -394,7 +397,7 @@ public class BuildToolAB : BuildToolBase
             AssetDatabase.Refresh();
 
             Debug.Log($"AB包打包完成，输出目录: {config.abOutputPath}");
-            System.Diagnostics.Process.Start("Explorer.exe", config.abOutputPath);
+            EditorUtility.RevealInFinder(config.abOutputPath);
             EditorUtility.DisplayDialog("打包完成", $"AB包已打包到:\n{config.abOutputPath}", "确定");
         }
         catch (Exception e)
@@ -472,10 +475,82 @@ public class BuildToolAB : BuildToolBase
             return;
         }
 
-        // TODO: 实现上传功能
-        EditorUtility.DisplayDialog("上传功能", "上传功能待实现\n" +
-            $"本地路径: {config.abOutputPath}\n" +
-            $"服务器地址: {config.onlineABUrl}", "确定");
+        try
+        {
+            // 生成当前时间的文件夹名（精确到秒）
+            string timeFolderName = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+            string targetFolderPath = Path.Combine(config.onlineABUrl, timeFolderName);
+
+            EditorUtility.DisplayProgressBar("上传AB包", "正在创建目标文件夹...", 0f);
+
+            // 创建目标文件夹
+            if (!Directory.Exists(targetFolderPath))
+            {
+                Directory.CreateDirectory(targetFolderPath);
+                Debug.Log($"已创建目标文件夹: {targetFolderPath}");
+            }
+
+            EditorUtility.DisplayProgressBar("上传AB包", "正在复制文件...", 0.2f);
+
+            // 复制所有文件和文件夹
+            int copiedFiles = 0;
+            int totalFiles = Directory.GetFiles(config.abOutputPath, "*", SearchOption.AllDirectories).Length;
+            int currentFile = 0;
+
+            // 复制所有文件
+            string[] allFiles = Directory.GetFiles(config.abOutputPath, "*", SearchOption.AllDirectories);
+            foreach (string sourceFile in allFiles)
+            {
+                try
+                {
+                    currentFile++;
+                    EditorUtility.DisplayProgressBar("上传AB包",
+                        $"正在复制: {Path.GetFileName(sourceFile)}",
+                        0.2f + (0.8f * currentFile / totalFiles));
+
+                    // 计算相对路径
+                    string relativePath = Path.GetRelativePath(config.abOutputPath, sourceFile);
+                    string targetFile = Path.Combine(targetFolderPath, relativePath);
+
+                    // 确保目标目录存在
+                    string targetDir = Path.GetDirectoryName(targetFile);
+                    if (!Directory.Exists(targetDir))
+                    {
+                        Directory.CreateDirectory(targetDir);
+                    }
+
+                    // 复制文件
+                    File.Copy(sourceFile, targetFile, true);
+                    copiedFiles++;
+
+                    Debug.Log($"已复制文件: {relativePath}");
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError($"复制文件失败: {sourceFile}, 错误: {e.Message}");
+                }
+            }
+
+            EditorUtility.ClearProgressBar();
+
+            Debug.Log($"AB包上传完成 - 共复制 {copiedFiles} 个文件到: {targetFolderPath}");
+            //EditorUtility.DisplayDialog("上传完成", $"AB包已上传到:\n{targetFolderPath}\n\n共复制 {copiedFiles} 个文件", "确定");
+
+            // 打开目标文件夹
+            try
+            {
+                EditorUtility.RevealInFinder(targetFolderPath + "/");
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning($"无法打开目标文件夹: {e.Message}");
+            }
+        }
+        catch (Exception e)
+        {
+            EditorUtility.ClearProgressBar();
+            EditorUtility.DisplayDialog("上传失败", $"错误: {e.Message}", "确定");
+        }
     }
 
     /// <summary>
@@ -511,13 +586,13 @@ public class BuildToolAB : BuildToolBase
     /// </summary>
     public void GetAtlasABInfo()
     {
-        if (!Directory.Exists(atlasPath))
+        if (!Directory.Exists(BuildToolAtlas.atlasPath))
         {
             Debug.LogWarning("Atlas目录不存在");
             return;
         }
 
-        string[] atlasFiles = Directory.GetFiles(atlasPath, "*.spriteatlas", SearchOption.AllDirectories);
+        string[] atlasFiles = Directory.GetFiles(BuildToolAtlas.atlasPath, "*.spriteatlas", SearchOption.AllDirectories);
 
         Debug.Log($"=== 图集AB包信息 ===");
         Debug.Log($"找到 {atlasFiles.Length} 个图集文件");
@@ -535,6 +610,34 @@ public class BuildToolAB : BuildToolBase
 
                 Debug.Log($"图集: {fileName} | AB包: {abName} | 变体: {abVariant}");
             }
+        }
+    }
+
+    /// <summary>
+    /// 打开线上AB包目录
+    /// </summary>
+    public void OpenOnlineAssetBundleDirectory()
+    {
+        if (string.IsNullOrEmpty(config.onlineABUrl))
+        {
+            EditorUtility.DisplayDialog("错误", "请先设置线上AB包地址", "确定");
+            return;
+        }
+
+        if (!Directory.Exists(config.onlineABUrl))
+        {
+            EditorUtility.DisplayDialog("提示", "线上AB包目录不存在", "确定");
+            return;
+        }
+
+        try
+        {
+            EditorUtility.RevealInFinder(config.onlineABUrl);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"打开线上AB包目录失败: {e.Message}");
+            EditorUtility.DisplayDialog("错误", $"无法打开线上AB包目录: {e.Message}", "确定");
         }
     }
 }

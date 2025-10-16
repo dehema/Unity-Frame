@@ -11,8 +11,8 @@ using UnityEditor.U2D;
 /// </summary>
 public class BuildToolAtlas : BuildToolBase
 {
-    private const string sourcePath = "Assets/AssetBundles/Art/Resources/UI";
-    private const string atlasPath = "Assets/AssetBundles/Art/Atlas";
+    public const string sourcePath = "Assets/AssetBundles/Art/Resources/UI";
+    public const string atlasPath = "Assets/AssetBundles/Art/Atlas";
 
     public BuildToolAtlas(BuildToolConfig _config) : base(_config)
     {

@@ -106,7 +106,7 @@ public class EditorDevTools_Dev : EditorDevTools_Base
         if (GUILayout.Button("打开Excel配置目录", style.bt))
         {
             string path = Directory.GetParent(Application.dataPath).FullName + @"\Config\Excel";
-            System.Diagnostics.Process.Start("Explorer.exe", path);
+            EditorUtility.RevealInFinder(path);
         }
         if (GUILayout.Button("导出Excel", style.bt))
         {

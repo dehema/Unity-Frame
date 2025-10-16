@@ -5,7 +5,7 @@
     "copyToStreamingAssets": false,
     "buildAssetBundles": false,
     "abOutputPath": "C:/Users/Administrator/AppData/LocalLow/Demo/Rain/AssetBundles",
-    "onlineABUrl": "",
+    "onlineABUrl": "E:\\Program Files\\nginx-1.28.0\\server\\rain\\AssetBundles",
     "autoBuildAB": true,
     "autoPackAtlas": true,
     "atlasSourcePath": "Assets/AssetBundles/Art/Resources/UI",
