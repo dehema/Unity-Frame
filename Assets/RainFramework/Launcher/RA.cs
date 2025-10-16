@@ -16,16 +16,12 @@ namespace Rain.Launcher
         private static InputManager _inputManager;
         // 游戏时间管理-->使用了消息模块
         private static TimerMgr _timer;
-        // 流程管理
-        private static ProcedureManager _procedure;
         // 资产管理
         private static AssetMgr _asset;
         // 音频管理-->使用了资产模块-->使用了游戏对象池模块-->使用了补间动画模块-->使用了时间模块
         private static AudioMgr _audio;
         // UI界面管理-->使用了资产模块
         private static UIMgr _uiMgr;
-        // SDK管理-->使用了消息模块
-        private static SDKManager _sdkManager;
         // 下载管理器
         private static DownloadManager _downloadManager;
         // 日志助手
@@ -95,21 +91,6 @@ namespace Rain.Launcher
             }
         }
 
-        public static ProcedureManager Procedure
-        {
-            get
-            {
-                if (_procedure == null)
-                    _procedure = ModuleCenter.CreateModule<ProcedureManager>();
-                return _procedure;
-            }
-            set
-            {
-                if (_procedure == null)
-                    _procedure = value;
-            }
-        }
-
         public static AssetMgr Asset
         {
             get
@@ -152,21 +133,6 @@ namespace Rain.Launcher
             {
                 if (_uiMgr == null)
                     _uiMgr = value;
-            }
-        }
-
-        public static SDKManager SDK
-        {
-            get
-            {
-                if (_sdkManager == null)
-                    _sdkManager = ModuleCenter.CreateModule<SDKManager>();
-                return _sdkManager;
-            }
-            set
-            {
-                if (_sdkManager == null)
-                    _sdkManager = value;
             }
         }
 
