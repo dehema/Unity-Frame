@@ -67,7 +67,8 @@ namespace Rain.Core
         public void PlayClipAtPoint(string url, AudioClip clip, Vector3 position, [DefaultValue("1.0F")] float volume, [DefaultValue("1.0F")] float spatialBlend,
             Action callback = null, AudioMixerGroup audioEffectMixerGroup = null, bool isRandom = false)
         {
-            GameObject gameObject = GameObjectPool.Ins.Spawn(OneShotAudio);
+            GameObject gameObject = new GameObject();
+            //GameObject gameObject = GameObjectPool.Ins.Spawn(OneShotAudio);
             gameObject.transform.position = position;
             AudioSource audioSource = gameObject.GetComponent<AudioSource>();
             audioSource.clip = clip;
@@ -82,7 +83,7 @@ namespace Rain.Core
             float time = clip.length * ((double)Time.timeScale < 0.009999999776482582 ? 0.01f : Time.timeScale);
             TimerMgr.Ins.AddTimer(this, 1f, time, 1, null, () =>
             {
-                GameObjectPool.Ins.Despawn(gameObject);
+                //GameObjectPool.Ins.Despawn(gameObject);
                 if (_effectsNum.TryGetValue(url, out int num))
                 {
                     _effectsNum[url] = num - 1;

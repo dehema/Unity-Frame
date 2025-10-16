@@ -18,10 +18,6 @@ namespace Rain.Launcher
         private static TimerMgr _timer;
         // 流程管理
         private static ProcedureManager _procedure;
-        // 有限状态机
-        private static FSMManager _fsm;
-        // 游戏对象池
-        private static GameObjectPool _gameObjectPool;
         // 资产管理
         private static AssetMgr _asset;
         // 音频管理-->使用了资产模块-->使用了游戏对象池模块-->使用了补间动画模块-->使用了时间模块
@@ -111,43 +107,6 @@ namespace Rain.Launcher
             {
                 if (_procedure == null)
                     _procedure = value;
-            }
-        }
-
-        public static FSMManager FSM
-        {
-            get
-            {
-                if (_fsm == null)
-                    _fsm = ModuleCenter.CreateModule<FSMManager>();
-                return _fsm;
-            }
-            set
-            {
-                if (_fsm == null)
-                    _fsm = value;
-            }
-        }
-
-        public static GameObjectPool GameObjectPool
-        {
-            get
-            {
-                if (_gameObjectPool == null)
-                {
-                    _gameObjectPool = ModuleCenter.CreateModule<GameObjectPool>();
-                    ModuleCenter.CreateModule<F8PoolGlobal>();
-                }
-
-                return _gameObjectPool;
-            }
-            set
-            {
-                if (_gameObjectPool == null)
-                {
-                    _gameObjectPool = value;
-                    ModuleCenter.CreateModule<F8PoolGlobal>();
-                }
             }
         }
 
