@@ -46,6 +46,7 @@ public class BuildToolWindow : EditorWindow
     {
         // 初始化样式
         InitializeStyles();
+        EditorGUILayout.BeginVertical();
         // 标题
         EditorGUILayout.Space(10);
         EditorGUILayout.LabelField("RainFramework 打包工具", titleStyle);
@@ -67,16 +68,14 @@ public class BuildToolWindow : EditorWindow
 
         // 一键打包按钮
         DrawBuildButton();
-        EditorGUILayout.Space(10);
 
-        // 重置背景色
-        GUI.backgroundColor = Color.white;
+        EditorGUILayout.EndVertical();
     }
 
     private void InitializeStyles()
     {
         if (titleStyle == null)
-            titleStyle = new GUIStyle(GUI.skin.label) { fontSize = 20, alignment = TextAnchor.MiddleCenter };
+            titleStyle = new GUIStyle(GUI.skin.label) { fontSize = 20, alignment = TextAnchor.MiddleCenter, fixedHeight = 34 };
 
         if (buttonStyle == null)
             buttonStyle = new GUIStyle(GUI.skin.button) { fontSize = 14, fontStyle = FontStyle.Bold, };
@@ -84,18 +83,15 @@ public class BuildToolWindow : EditorWindow
 
     private void DrawBuildButton()
     {
+        EditorGUILayout.Space(10);
         EditorGUILayout.BeginHorizontal();
-        GUILayout.FlexibleSpace();
-
         GUI.backgroundColor = Color.green;
         if (GUILayout.Button("打包", buttonStyle, GUILayout.Height(50), GUILayout.Width(200)))
         {
             StartBuild();
         }
-        GUI.backgroundColor = Color.white;
-
-        GUILayout.FlexibleSpace();
         EditorGUILayout.EndHorizontal();
+        EditorGUILayout.Space(10);
     }
 
     private void StartBuild()
