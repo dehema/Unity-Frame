@@ -7,7 +7,7 @@ namespace Rain.Core
     /// 输入管理器
     /// </summary>
     [UpdateRefresh]
-    public sealed class InputManager : ModuleSingleton<InputManager>, IModule
+    public sealed class InputMgr : ModuleSingleton<InputMgr>, IModule
     {
         private IInputHelper _helper;
         public long FrameCount = 0;

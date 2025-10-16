@@ -36,7 +36,7 @@ namespace Rain.Core
         {
             if (_hotUpdatePath == null)
             {
-                _hotUpdatePath = Application.persistentDataPath + HotUpdateManager.HotUpdateDirName + "/" + URLSetting.AssetBundlesName + "/" + URLSetting.GetPlatformName() + "/";
+                _hotUpdatePath = Application.persistentDataPath + HotUpdateMgr.HotUpdateDirName + "/" + URLSetting.AssetBundlesName + "/" + URLSetting.GetPlatformName() + "/";
             }
             return _hotUpdatePath;
         }
@@ -47,7 +47,7 @@ namespace Rain.Core
         {
             if (_packagePath == null)
             {
-                _packagePath = Application.persistentDataPath + HotUpdateManager.PackageDirName + "/" + URLSetting.AssetBundlesName + "/" + URLSetting.GetPlatformName() + "/";
+                _packagePath = Application.persistentDataPath + HotUpdateMgr.PackageDirName + "/" + URLSetting.AssetBundlesName + "/" + URLSetting.GetPlatformName() + "/";
             }
             return _packagePath;
         }
@@ -148,8 +148,8 @@ namespace Rain.Core
         public static SourceType GetAssetBundleSourceType(string assetBundleFullName)
         {
             string streamingAssetsPath = Application.streamingAssetsPath;
-            string hotUpdatePath = Application.persistentDataPath + HotUpdateManager.HotUpdateDirName;
-            string packagePath = Application.persistentDataPath + HotUpdateManager.PackageDirName;
+            string hotUpdatePath = Application.persistentDataPath + HotUpdateMgr.HotUpdateDirName;
+            string packagePath = Application.persistentDataPath + HotUpdateMgr.PackageDirName;
 
             if (assetBundleFullName.Contains(streamingAssetsPath))
             {

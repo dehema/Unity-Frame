@@ -8,7 +8,7 @@ namespace Rain.Core
     /// <summary>
     /// 提供资源管理工具 - 包括加载和卸载。
     /// </summary> 
-    public class ResourcesManager : ModuleSingleton<ResourcesManager>, IModule
+    public class ResourcesMgr : ModuleSingleton<ResourcesMgr>, IModule
     {
         
         private Dictionary<string, ResourcesLoader> resourceLoaders = new Dictionary<string, ResourcesLoader>();

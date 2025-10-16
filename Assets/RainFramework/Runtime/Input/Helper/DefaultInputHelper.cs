@@ -600,7 +600,7 @@ namespace Rain.Core
                     return;
 
                 _pressed = true;
-                _pressedFrame = InputManager.Ins.FrameCount + 1;
+                _pressedFrame = InputMgr.Ins.FrameCount + 1;
                 Performed?.Invoke(Name);
             }
             
@@ -610,7 +610,7 @@ namespace Rain.Core
                     return;
 
                 _pressed = false;
-                _releasedFrame = InputManager.Ins.FrameCount + 1;
+                _releasedFrame = InputMgr.Ins.FrameCount + 1;
                 Canceled?.Invoke(Name);
             }
 
@@ -626,7 +626,7 @@ namespace Rain.Core
             {
                 get
                 {
-                    return _pressedFrame == InputManager.Ins.FrameCount;
+                    return _pressedFrame == InputMgr.Ins.FrameCount;
                 }
             }
 
@@ -634,7 +634,7 @@ namespace Rain.Core
             {
                 get
                 {
-                    return _releasedFrame == InputManager.Ins.FrameCount;
+                    return _releasedFrame == InputMgr.Ins.FrameCount;
                 }
             }
             

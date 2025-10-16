@@ -14,9 +14,9 @@ namespace Rain.Core
 
     public class AssetMgr : ModuleSingleton<AssetMgr>, IModule
     {
-        private AssetBundleManager _assetBundleManager;
+        private AssetBundleMgr _assetBundleManager;
 
-        private ResourcesManager _resourcesManager;
+        private ResourcesMgr _resourcesManager;
 
         //强制更改资产加载模式为远程（微信小游戏使用）
         public static bool ForceRemoteAssetBundle = false;
@@ -218,7 +218,7 @@ namespace Rain.Core
                     assetPath = info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0];
                 }
 #endif
-                T o = ResourcesManager.Ins.GetAssetObject<T>(assetPath, subAssetName, out ResourcesLoader loader);
+                T o = ResourcesMgr.Ins.GetAssetObject<T>(assetPath, subAssetName, out ResourcesLoader loader);
                 return o;
             }
             else if (info.AssetType == AssetTypeEnum.ASSET_BUNDLE)
@@ -226,18 +226,18 @@ namespace Rain.Core
 #if UNITY_EDITOR
                 if (IsEditorMode)
                 {
-                    return AssetDatabaseManager.Ins.EditorLoadAsset<T>(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
+                    return AssetDatabaseMgr.Ins.EditorLoadAsset<T>(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
                         subAssetName, out EditorLoader editorLoader);
                 }
 #endif
-                T o = AssetBundleManager.Ins.GetAssetObject<T>(info.AssetBundlePath, info.AssetPath[0], subAssetName, out AssetBundleLoader loader);
+                T o = AssetBundleMgr.Ins.GetAssetObject<T>(info.AssetBundlePath, info.AssetPath[0], subAssetName, out AssetBundleLoader loader);
                 if (o != null)
                 {
                     return o;
                 }
-                AssetBundleLoader ab = AssetBundleManager.Ins.GetAssetBundleLoader(info.AssetBundlePath);
+                AssetBundleLoader ab = AssetBundleMgr.Ins.GetAssetBundleLoader(info.AssetBundlePath);
                 ab.Expand(info.AssetPath[0], typeof(T), subAssetName);
-                o = AssetBundleManager.Ins.GetAssetObject<T>(info.AssetBundlePath, info.AssetPath[0], subAssetName, out AssetBundleLoader loader2);
+                o = AssetBundleMgr.Ins.GetAssetObject<T>(info.AssetBundlePath, info.AssetPath[0], subAssetName, out AssetBundleLoader loader2);
                 if (o != null)
                 {
                     return o;
@@ -273,7 +273,7 @@ namespace Rain.Core
                     assetPath = info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0];
                 }
 #endif
-                Object o = ResourcesManager.Ins.GetAssetObject(assetPath, assetType, subAssetName, out ResourcesLoader loader);
+                Object o = ResourcesMgr.Ins.GetAssetObject(assetPath, assetType, subAssetName, out ResourcesLoader loader);
                 return o;
             }
             else if (info.AssetType == AssetTypeEnum.ASSET_BUNDLE)
@@ -281,18 +281,18 @@ namespace Rain.Core
 #if UNITY_EDITOR
                 if (IsEditorMode)
                 {
-                    return AssetDatabaseManager.Ins.EditorLoadAsset(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
+                    return AssetDatabaseMgr.Ins.EditorLoadAsset(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
                         out EditorLoader editorLoader, assetType, subAssetName);
                 }
 #endif
-                Object o = AssetBundleManager.Ins.GetAssetObject(info.AssetBundlePath, info.AssetPath[0], assetType, subAssetName, out AssetBundleLoader loader);
+                Object o = AssetBundleMgr.Ins.GetAssetObject(info.AssetBundlePath, info.AssetPath[0], assetType, subAssetName, out AssetBundleLoader loader);
                 if (o != null)
                 {
                     return o;
                 }
-                AssetBundleLoader ab = AssetBundleManager.Ins.GetAssetBundleLoader(info.AssetBundlePath);
+                AssetBundleLoader ab = AssetBundleMgr.Ins.GetAssetBundleLoader(info.AssetBundlePath);
                 ab.Expand(info.AssetPath[0], assetType, subAssetName);
-                o = AssetBundleManager.Ins.GetAssetObject(info.AssetBundlePath, info.AssetPath[0], assetType, subAssetName, out AssetBundleLoader loader2);
+                o = AssetBundleMgr.Ins.GetAssetObject(info.AssetBundlePath, info.AssetPath[0], assetType, subAssetName, out AssetBundleLoader loader2);
                 if (o != null)
                 {
                     return o;
@@ -326,7 +326,7 @@ namespace Rain.Core
                     assetPath = info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0];
                 }
 #endif
-                Object o = ResourcesManager.Ins.GetAssetObject(assetPath, null, subAssetName, out ResourcesLoader loader);
+                Object o = ResourcesMgr.Ins.GetAssetObject(assetPath, null, subAssetName, out ResourcesLoader loader);
                 return o;
             }
             else if (info.AssetType == AssetTypeEnum.ASSET_BUNDLE)
@@ -334,18 +334,18 @@ namespace Rain.Core
 #if UNITY_EDITOR
                 if (IsEditorMode)
                 {
-                    return AssetDatabaseManager.Ins.EditorLoadAsset<Object>(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
+                    return AssetDatabaseMgr.Ins.EditorLoadAsset<Object>(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
                         subAssetName, out EditorLoader editorLoader);
                 }
 #endif
-                Object o = AssetBundleManager.Ins.GetAssetObject(info.AssetBundlePath, info.AssetPath[0], null, subAssetName, out AssetBundleLoader loader);
+                Object o = AssetBundleMgr.Ins.GetAssetObject(info.AssetBundlePath, info.AssetPath[0], null, subAssetName, out AssetBundleLoader loader);
                 if (o != null)
                 {
                     return o;
                 }
-                AssetBundleLoader ab = AssetBundleManager.Ins.GetAssetBundleLoader(info.AssetBundlePath);
+                AssetBundleLoader ab = AssetBundleMgr.Ins.GetAssetBundleLoader(info.AssetBundlePath);
                 ab.Expand(info.AssetPath[0], default, subAssetName);
-                o = AssetBundleManager.Ins.GetAssetObject(info.AssetBundlePath, info.AssetPath[0], null, subAssetName, out AssetBundleLoader loader2);
+                o = AssetBundleMgr.Ins.GetAssetObject(info.AssetBundlePath, info.AssetPath[0], null, subAssetName, out AssetBundleLoader loader2);
                 if (o != null)
                 {
                     return o;
@@ -394,18 +394,18 @@ namespace Rain.Core
                     assetPath = info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0];
                 }
 #endif
-                return ResourcesManager.Ins.GetAllAssetObject(assetPath);
+                return ResourcesMgr.Ins.GetAllAssetObject(assetPath);
             }
             else if (info.AssetType == AssetTypeEnum.ASSET_BUNDLE)
             {
 #if UNITY_EDITOR
                 if (IsEditorMode)
                 {
-                    return AssetDatabaseManager.Ins.EditorLoadAllAsset(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
+                    return AssetDatabaseMgr.Ins.EditorLoadAllAsset(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
                         out EditorLoader editorLoader);
                 }
 #endif
-                return AssetBundleManager.Ins.GetAllAssetObject(info.AssetBundlePath);
+                return AssetBundleMgr.Ins.GetAllAssetObject(info.AssetBundlePath);
             }
 
             return null;
@@ -449,22 +449,22 @@ namespace Rain.Core
                     assetPath = info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0];
                 }
 #endif
-                ResourcesManager.Ins.LoadAll(assetPath, null, null, out ResourcesLoader loader);
+                ResourcesMgr.Ins.LoadAll(assetPath, null, null, out ResourcesLoader loader);
 
-                return ResourcesManager.Ins.GetAllAssetObject(assetPath);
+                return ResourcesMgr.Ins.GetAllAssetObject(assetPath);
             }
             else if (info.AssetType == AssetTypeEnum.ASSET_BUNDLE)
             {
 #if UNITY_EDITOR
                 if (IsEditorMode)
                 {
-                    return AssetDatabaseManager.Ins.EditorLoadAllAsset(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
+                    return AssetDatabaseMgr.Ins.EditorLoadAllAsset(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
                         out EditorLoader editorLoader);
                 }
 #endif
-                AssetBundleManager.Ins.Load(assetName, null, ref info, null, true);
+                AssetBundleMgr.Ins.Load(assetName, null, ref info, null, true);
 
-                return AssetBundleManager.Ins.GetAllAssetObject(info.AssetBundlePath);
+                return AssetBundleMgr.Ins.GetAllAssetObject(info.AssetBundlePath);
             }
 
             return null;
@@ -528,8 +528,8 @@ namespace Rain.Core
                     assetPath = info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0];
                 }
 #endif
-                ResourcesManager.Ins.LoadAll(assetPath, null, null, out ResourcesLoader loader, true);
-                End(ResourcesManager.Ins.GetAllAssetObject(assetPath));
+                ResourcesMgr.Ins.LoadAll(assetPath, null, null, out ResourcesLoader loader, true);
+                End(ResourcesMgr.Ins.GetAllAssetObject(assetPath));
                 return loader;
             }
             else if (info.AssetType == AssetTypeEnum.ASSET_BUNDLE)
@@ -537,26 +537,26 @@ namespace Rain.Core
 #if UNITY_EDITOR
                 if (IsEditorMode)
                 {
-                    var allAsset = AssetDatabaseManager.Ins.EditorLoadAllAsset(
+                    var allAsset = AssetDatabaseMgr.Ins.EditorLoadAllAsset(
                         info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0], out EditorLoader editorLoader);
                     End(allAsset);
                     return editorLoader;
                 }
 #endif
-                AssetBundleLoader loader = AssetBundleManager.Ins.GetAssetBundleLoader(info.AssetBundlePath);
+                AssetBundleLoader loader = AssetBundleMgr.Ins.GetAssetBundleLoader(info.AssetBundlePath);
 
                 if (loader == null || loader.AssetBundleContent == null || loader.GetDependentNamesLoadFinished() < loader.AddDependentNames())
                 {
-                    loader = AssetBundleManager.Ins.LoadAsync(assetName, null, info, null, (b) =>
+                    loader = AssetBundleMgr.Ins.LoadAsync(assetName, null, info, null, (b) =>
                     {
-                        End(AssetBundleManager.Ins.GetAllAssetObject(info.AssetBundlePath));
+                        End(AssetBundleMgr.Ins.GetAllAssetObject(info.AssetBundlePath));
                     }, true);
                     return loader;
                 }
                 else
                 {
                     loader.Expand(info.AssetPath[0], null, null, true);
-                    End(AssetBundleManager.Ins.GetAllAssetObject(info.AssetBundlePath));
+                    End(AssetBundleMgr.Ins.GetAllAssetObject(info.AssetBundlePath));
                     return loader;
                 }
             }
@@ -607,22 +607,22 @@ namespace Rain.Core
                     assetPath = info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0];
                 }
 #endif
-                ResourcesManager.Ins.LoadAll(assetPath, null, Guid.NewGuid().ToString(), out ResourcesLoader loader);
+                ResourcesMgr.Ins.LoadAll(assetPath, null, Guid.NewGuid().ToString(), out ResourcesLoader loader);
 
-                return ResourcesManager.Ins.GetAllAssetObject(assetPath);
+                return ResourcesMgr.Ins.GetAllAssetObject(assetPath);
             }
             else if (info.AssetType == AssetTypeEnum.ASSET_BUNDLE)
             {
 #if UNITY_EDITOR
                 if (IsEditorMode)
                 {
-                    return AssetDatabaseManager.Ins.EditorLoadAllAsset(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
+                    return AssetDatabaseMgr.Ins.EditorLoadAllAsset(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
                         out EditorLoader editorLoader);
                 }
 #endif
-                AssetBundleManager.Ins.Load(assetName, null, ref info, Guid.NewGuid().ToString());
+                AssetBundleMgr.Ins.Load(assetName, null, ref info, Guid.NewGuid().ToString());
 
-                return AssetBundleManager.Ins.GetAllAssetObject(info.AssetBundlePath);
+                return AssetBundleMgr.Ins.GetAllAssetObject(info.AssetBundlePath);
             }
 
             return null;
@@ -686,8 +686,8 @@ namespace Rain.Core
                     assetPath = info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0];
                 }
 #endif
-                ResourcesManager.Ins.LoadAll(assetPath, null, Guid.NewGuid().ToString(), out ResourcesLoader loader);
-                End(ResourcesManager.Ins.GetAllAssetObject(assetPath));
+                ResourcesMgr.Ins.LoadAll(assetPath, null, Guid.NewGuid().ToString(), out ResourcesLoader loader);
+                End(ResourcesMgr.Ins.GetAllAssetObject(assetPath));
                 return loader;
             }
             else if (info.AssetType == AssetTypeEnum.ASSET_BUNDLE)
@@ -695,26 +695,26 @@ namespace Rain.Core
 #if UNITY_EDITOR
                 if (IsEditorMode)
                 {
-                    var allAsset = AssetDatabaseManager.Ins.EditorLoadAllAsset(
+                    var allAsset = AssetDatabaseMgr.Ins.EditorLoadAllAsset(
                         info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0], out EditorLoader editorLoader);
                     End(allAsset);
                     return editorLoader;
                 }
 #endif
-                AssetBundleLoader loader = AssetBundleManager.Ins.GetAssetBundleLoader(info.AssetBundlePath);
+                AssetBundleLoader loader = AssetBundleMgr.Ins.GetAssetBundleLoader(info.AssetBundlePath);
 
                 if (loader == null || loader.AssetBundleContent == null || loader.GetDependentNamesLoadFinished() < loader.AddDependentNames())
                 {
-                    loader = AssetBundleManager.Ins.LoadAsync(assetName, null, info, Guid.NewGuid().ToString(), (b) =>
+                    loader = AssetBundleMgr.Ins.LoadAsync(assetName, null, info, Guid.NewGuid().ToString(), (b) =>
                     {
-                        End(AssetBundleManager.Ins.GetAllAssetObject(info.AssetBundlePath));
+                        End(AssetBundleMgr.Ins.GetAllAssetObject(info.AssetBundlePath));
                     });
                     return loader;
                 }
                 else
                 {
                     loader.Expand(info.AssetPath[0], null, Guid.NewGuid().ToString());
-                    End(AssetBundleManager.Ins.GetAllAssetObject(info.AssetBundlePath));
+                    End(AssetBundleMgr.Ins.GetAllAssetObject(info.AssetBundlePath));
                     return loader;
                 }
             }
@@ -753,7 +753,7 @@ namespace Rain.Core
                     assetPath = info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0];
                 }
 #endif
-                T o = ResourcesManager.Ins.GetAssetObject<T>(assetPath, subAssetName, out ResourcesLoader loader);
+                T o = ResourcesMgr.Ins.GetAssetObject<T>(assetPath, subAssetName, out ResourcesLoader loader);
                 if (o != null)
                 {
                     return o;
@@ -761,20 +761,20 @@ namespace Rain.Core
 
                 if (subAssetName.IsNullOrEmpty())
                 {
-                    return ResourcesManager.Ins.Load<T>(assetPath);
+                    return ResourcesMgr.Ins.Load<T>(assetPath);
                 }
-                return ResourcesManager.Ins.LoadAll<T>(assetPath, subAssetName, out ResourcesLoader loader2);
+                return ResourcesMgr.Ins.LoadAll<T>(assetPath, subAssetName, out ResourcesLoader loader2);
             }
             else if (info.AssetType == AssetTypeEnum.ASSET_BUNDLE)
             {
 #if UNITY_EDITOR
                 if (IsEditorMode)
                 {
-                    return AssetDatabaseManager.Ins.EditorLoadAsset<T>(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
+                    return AssetDatabaseMgr.Ins.EditorLoadAsset<T>(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
                         subAssetName, out EditorLoader editorLoader);
                 }
 #endif
-                T o2 = AssetBundleManager.Ins.GetAssetObject<T>(info.AssetBundlePath, info.AssetPath[0], subAssetName, out AssetBundleLoader loader);
+                T o2 = AssetBundleMgr.Ins.GetAssetObject<T>(info.AssetBundlePath, info.AssetPath[0], subAssetName, out AssetBundleLoader loader);
                 if (o2 != null)
                 {
                     return o2;
@@ -782,18 +782,18 @@ namespace Rain.Core
 
                 if (loader == null || loader.AssetBundleContent == null)
                 {
-                    AssetBundleManager.Ins.Load(assetName, typeof(T), ref info, subAssetName);
-                    loader = AssetBundleManager.Ins.GetAssetBundleLoader(info.AssetBundlePath);
+                    AssetBundleMgr.Ins.Load(assetName, typeof(T), ref info, subAssetName);
+                    loader = AssetBundleMgr.Ins.GetAssetBundleLoader(info.AssetBundlePath);
                 }
 
-                T o = AssetBundleManager.Ins.GetAssetObject<T>(info.AssetBundlePath, info.AssetPath[0], subAssetName, out AssetBundleLoader loader2);
+                T o = AssetBundleMgr.Ins.GetAssetObject<T>(info.AssetBundlePath, info.AssetPath[0], subAssetName, out AssetBundleLoader loader2);
                 if (o != null)
                 {
                     return o;
                 }
 
                 loader.Expand(info.AssetPath[0], typeof(T), subAssetName);
-                return AssetBundleManager.Ins.GetAssetObject<T>(info.AssetBundlePath, info.AssetPath[0], subAssetName, out AssetBundleLoader loader3);
+                return AssetBundleMgr.Ins.GetAssetObject<T>(info.AssetBundlePath, info.AssetPath[0], subAssetName, out AssetBundleLoader loader3);
             }
 
             return null;
@@ -832,11 +832,11 @@ namespace Rain.Core
                 {
                     AssetInfo subInfo = GetAssetInfo(subAssetName, mode);
                     string assetPath = subInfo.AssetPath?[0];
-                    Object o = ResourcesManager.Ins.GetAssetObject(assetPath, null, null, out ResourcesLoader loader);
+                    Object o = ResourcesMgr.Ins.GetAssetObject(assetPath, null, null, out ResourcesLoader loader);
 
                     if (o == null)
                     {
-                        ResourcesManager.Ins.Load(assetPath);
+                        ResourcesMgr.Ins.Load(assetPath);
                     }
                 }
             }
@@ -855,10 +855,10 @@ namespace Rain.Core
                         continue;
                     }
                     AssetInfo subInfo = GetAssetInfo(subAssetName, mode);
-                    AssetBundleLoader ab = AssetBundleManager.Ins.GetAssetBundleLoader(subInfo.AssetBundlePath);
+                    AssetBundleLoader ab = AssetBundleMgr.Ins.GetAssetBundleLoader(subInfo.AssetBundlePath);
                     if (ab == null || ab.AssetBundleContent == null)
                     {
-                        AssetBundleManager.Ins.Load(subAssetName, null, ref subInfo, null);
+                        AssetBundleMgr.Ins.Load(subAssetName, null, ref subInfo, null);
                     }
                 }
             }
@@ -891,7 +891,7 @@ namespace Rain.Core
                     assetPath = info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0];
                 }
 #endif
-                Object o = ResourcesManager.Ins.GetAssetObject(assetPath, assetType, subAssetName, out ResourcesLoader loader);
+                Object o = ResourcesMgr.Ins.GetAssetObject(assetPath, assetType, subAssetName, out ResourcesLoader loader);
                 if (o != null)
                 {
                     return o;
@@ -899,20 +899,20 @@ namespace Rain.Core
 
                 if (subAssetName.IsNullOrEmpty())
                 {
-                    return ResourcesManager.Ins.Load(assetPath, assetType);
+                    return ResourcesMgr.Ins.Load(assetPath, assetType);
                 }
-                return ResourcesManager.Ins.LoadAll(assetPath, assetType, subAssetName, out ResourcesLoader loader2);
+                return ResourcesMgr.Ins.LoadAll(assetPath, assetType, subAssetName, out ResourcesLoader loader2);
             }
             else if (info.AssetType == AssetTypeEnum.ASSET_BUNDLE)
             {
 #if UNITY_EDITOR
                 if (IsEditorMode)
                 {
-                    return AssetDatabaseManager.Ins.EditorLoadAsset(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
+                    return AssetDatabaseMgr.Ins.EditorLoadAsset(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
                         out EditorLoader editorLoader, assetType, subAssetName);
                 }
 #endif
-                Object o2 = AssetBundleManager.Ins.GetAssetObject(info.AssetBundlePath, info.AssetPath[0], assetType, subAssetName, out AssetBundleLoader loader);
+                Object o2 = AssetBundleMgr.Ins.GetAssetObject(info.AssetBundlePath, info.AssetPath[0], assetType, subAssetName, out AssetBundleLoader loader);
                 if (o2 != null)
                 {
                     return o2;
@@ -920,18 +920,18 @@ namespace Rain.Core
 
                 if (loader == null || loader.AssetBundleContent == null)
                 {
-                    AssetBundleManager.Ins.Load(assetName, assetType, ref info, subAssetName);
-                    loader = AssetBundleManager.Ins.GetAssetBundleLoader(info.AssetBundlePath);
+                    AssetBundleMgr.Ins.Load(assetName, assetType, ref info, subAssetName);
+                    loader = AssetBundleMgr.Ins.GetAssetBundleLoader(info.AssetBundlePath);
                 }
 
-                Object o = AssetBundleManager.Ins.GetAssetObject(info.AssetBundlePath, info.AssetPath[0], assetType, subAssetName, out AssetBundleLoader loader2);
+                Object o = AssetBundleMgr.Ins.GetAssetObject(info.AssetBundlePath, info.AssetPath[0], assetType, subAssetName, out AssetBundleLoader loader2);
                 if (o != null)
                 {
                     return o;
                 }
 
                 loader.Expand(info.AssetPath[0], assetType, subAssetName);
-                return AssetBundleManager.Ins.GetAssetObject(info.AssetBundlePath, info.AssetPath[0], assetType, subAssetName, out AssetBundleLoader loader3);
+                return AssetBundleMgr.Ins.GetAssetObject(info.AssetBundlePath, info.AssetPath[0], assetType, subAssetName, out AssetBundleLoader loader3);
             }
 
             return null;
@@ -962,7 +962,7 @@ namespace Rain.Core
                     assetPath = info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0];
                 }
 #endif
-                Object o = ResourcesManager.Ins.GetAssetObject(assetPath, null, subAssetName, out ResourcesLoader loader);
+                Object o = ResourcesMgr.Ins.GetAssetObject(assetPath, null, subAssetName, out ResourcesLoader loader);
                 if (o != null)
                 {
                     return o;
@@ -970,20 +970,20 @@ namespace Rain.Core
 
                 if (subAssetName.IsNullOrEmpty())
                 {
-                    return ResourcesManager.Ins.Load(assetPath);
+                    return ResourcesMgr.Ins.Load(assetPath);
                 }
-                return ResourcesManager.Ins.LoadAll(assetPath, null, subAssetName, out ResourcesLoader loader2);
+                return ResourcesMgr.Ins.LoadAll(assetPath, null, subAssetName, out ResourcesLoader loader2);
             }
             else if (info.AssetType == AssetTypeEnum.ASSET_BUNDLE)
             {
 #if UNITY_EDITOR
                 if (IsEditorMode)
                 {
-                    return AssetDatabaseManager.Ins.EditorLoadAsset<Object>(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
+                    return AssetDatabaseMgr.Ins.EditorLoadAsset<Object>(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
                         subAssetName, out EditorLoader editorLoader);
                 }
 #endif
-                Object o2 = AssetBundleManager.Ins.GetAssetObject(info.AssetBundlePath, info.AssetPath[0], null, subAssetName, out AssetBundleLoader loader);
+                Object o2 = AssetBundleMgr.Ins.GetAssetObject(info.AssetBundlePath, info.AssetPath[0], null, subAssetName, out AssetBundleLoader loader);
                 if (o2 != null)
                 {
                     return o2;
@@ -991,18 +991,18 @@ namespace Rain.Core
 
                 if (loader == null || loader.AssetBundleContent == null)
                 {
-                    AssetBundleManager.Ins.Load(assetName, default, ref info, subAssetName);
-                    loader = AssetBundleManager.Ins.GetAssetBundleLoader(info.AssetBundlePath);
+                    AssetBundleMgr.Ins.Load(assetName, default, ref info, subAssetName);
+                    loader = AssetBundleMgr.Ins.GetAssetBundleLoader(info.AssetBundlePath);
                 }
 
-                Object o = AssetBundleManager.Ins.GetAssetObject(info.AssetBundlePath, info.AssetPath[0], null, subAssetName, out AssetBundleLoader loader2);
+                Object o = AssetBundleMgr.Ins.GetAssetObject(info.AssetBundlePath, info.AssetPath[0], null, subAssetName, out AssetBundleLoader loader2);
                 if (o != null)
                 {
                     return o;
                 }
 
                 loader.Expand(info.AssetPath[0], null, subAssetName);
-                return AssetBundleManager.Ins.GetAssetObject(info.AssetBundlePath, info.AssetPath[0], null, subAssetName, out AssetBundleLoader loader3);
+                return AssetBundleMgr.Ins.GetAssetObject(info.AssetBundlePath, info.AssetPath[0], null, subAssetName, out AssetBundleLoader loader3);
             }
 
             return null;
@@ -1039,7 +1039,7 @@ namespace Rain.Core
                     assetPath = info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0];
                 }
 #endif
-                T o = ResourcesManager.Ins.GetAssetObject<T>(assetPath, subAssetName, out ResourcesLoader loader);
+                T o = ResourcesMgr.Ins.GetAssetObject<T>(assetPath, subAssetName, out ResourcesLoader loader);
                 if (o != null)
                 {
                     End(o);
@@ -1050,11 +1050,11 @@ namespace Rain.Core
                 {
                     if (subAssetName.IsNullOrEmpty())
                     {
-                        return ResourcesManager.Ins.LoadAsync<T>(assetPath, callback);
+                        return ResourcesMgr.Ins.LoadAsync<T>(assetPath, callback);
                     }
                     else
                     {
-                        T subAsset = ResourcesManager.Ins.LoadAll<T>(assetPath, subAssetName, out ResourcesLoader loader2);
+                        T subAsset = ResourcesMgr.Ins.LoadAll<T>(assetPath, subAssetName, out ResourcesLoader loader2);
                         End(subAsset);
                         return loader2;
                     }
@@ -1066,13 +1066,13 @@ namespace Rain.Core
 #if UNITY_EDITOR
                 if (IsEditorMode)
                 {
-                    T o = AssetDatabaseManager.Ins.EditorLoadAsset<T>(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
+                    T o = AssetDatabaseMgr.Ins.EditorLoadAsset<T>(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
                         subAssetName, out EditorLoader editorLoader);
                     End(o);
                     return editorLoader;
                 }
 #endif
-                T o2 = AssetBundleManager.Ins.GetAssetObject<T>(info.AssetBundlePath, info.AssetPath[0], subAssetName, out AssetBundleLoader loader);
+                T o2 = AssetBundleMgr.Ins.GetAssetObject<T>(info.AssetBundlePath, info.AssetPath[0], subAssetName, out AssetBundleLoader loader);
                 if (o2 != null)
                 {
                     End(o2);
@@ -1081,14 +1081,14 @@ namespace Rain.Core
 
                 if (loader == null || loader.AssetBundleContent == null || loader.GetDependentNamesLoadFinished() < loader.AddDependentNames())
                 {
-                    loader = AssetBundleManager.Ins.LoadAsync(assetName, typeof(T), info, subAssetName, (b) =>
+                    loader = AssetBundleMgr.Ins.LoadAsync(assetName, typeof(T), info, subAssetName, (b) =>
                     {
-                        T loadedAsset = AssetBundleManager.Ins.GetAssetObject<T>(info.AssetBundlePath, info.AssetPath[0], subAssetName, out _);
+                        T loadedAsset = AssetBundleMgr.Ins.GetAssetObject<T>(info.AssetBundlePath, info.AssetPath[0], subAssetName, out _);
 
                         if (loadedAsset == null)
                         {
                             loader?.Expand(info.AssetPath[0], typeof(T), subAssetName);
-                            loadedAsset = AssetBundleManager.Ins.GetAssetObject<T>(info.AssetBundlePath, info.AssetPath[0], subAssetName, out _);
+                            loadedAsset = AssetBundleMgr.Ins.GetAssetObject<T>(info.AssetBundlePath, info.AssetPath[0], subAssetName, out _);
                         }
 
                         End(loadedAsset);
@@ -1097,7 +1097,7 @@ namespace Rain.Core
                 }
                 // 扩展并获取资源
                 loader.Expand(info.AssetPath[0], typeof(T), subAssetName);
-                T expandedAsset = AssetBundleManager.Ins.GetAssetObject<T>(info.AssetBundlePath, info.AssetPath[0], subAssetName, out AssetBundleLoader finalLoader);
+                T expandedAsset = AssetBundleMgr.Ins.GetAssetObject<T>(info.AssetBundlePath, info.AssetPath[0], subAssetName, out AssetBundleLoader finalLoader);
                 End(expandedAsset);
                 return finalLoader;
             }
@@ -1134,7 +1134,7 @@ namespace Rain.Core
                     assetPath = info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0];
                 }
 #endif
-                T o = ResourcesManager.Ins.GetAssetObject<T>(assetPath, subAssetName, out ResourcesLoader loader);
+                T o = ResourcesMgr.Ins.GetAssetObject<T>(assetPath, subAssetName, out ResourcesLoader loader);
                 if (o != null)
                 {
                     yield return o;
@@ -1143,11 +1143,11 @@ namespace Rain.Core
                 {
                     if (subAssetName.IsNullOrEmpty())
                     {
-                        yield return ResourcesManager.Ins.LoadAsyncCoroutine<T>(assetPath);
+                        yield return ResourcesMgr.Ins.LoadAsyncCoroutine<T>(assetPath);
                     }
                     else
                     {
-                        yield return ResourcesManager.Ins.LoadAll<T>(assetPath, subAssetName, out ResourcesLoader loader2);
+                        yield return ResourcesMgr.Ins.LoadAll<T>(assetPath, subAssetName, out ResourcesLoader loader2);
                     }
                 }
             }
@@ -1156,13 +1156,13 @@ namespace Rain.Core
 #if UNITY_EDITOR
                 if (IsEditorMode)
                 {
-                    T o = AssetDatabaseManager.Ins.EditorLoadAsset<T>(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
+                    T o = AssetDatabaseMgr.Ins.EditorLoadAsset<T>(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
                         subAssetName, out EditorLoader editorLoader);
                     yield return o;
                     yield break;
                 }
 #endif
-                T o2 = AssetBundleManager.Ins.GetAssetObject<T>(info.AssetBundlePath, info.AssetPath[0], subAssetName, out AssetBundleLoader loader);
+                T o2 = AssetBundleMgr.Ins.GetAssetObject<T>(info.AssetBundlePath, info.AssetPath[0], subAssetName, out AssetBundleLoader loader);
                 if (o2 != null)
                 {
                     yield return o2;
@@ -1170,11 +1170,11 @@ namespace Rain.Core
 
                 if (loader == null || loader.AssetBundleContent == null || loader.GetDependentNamesLoadFinished() < loader.AddDependentNames())
                 {
-                    yield return AssetBundleManager.Ins.LoadAsyncCoroutine(assetName, typeof(T), info, subAssetName);
+                    yield return AssetBundleMgr.Ins.LoadAsyncCoroutine(assetName, typeof(T), info, subAssetName);
                 }
                 else
                 {
-                    T o = AssetBundleManager.Ins.GetAssetObject<T>(info.AssetBundlePath, info.AssetPath[0], subAssetName, out AssetBundleLoader loader2);
+                    T o = AssetBundleMgr.Ins.GetAssetObject<T>(info.AssetBundlePath, info.AssetPath[0], subAssetName, out AssetBundleLoader loader2);
                     if (o != null)
                     {
                         yield return o;
@@ -1182,7 +1182,7 @@ namespace Rain.Core
                     else
                     {
                         loader.Expand(info.AssetPath[0], typeof(T), subAssetName);
-                        yield return AssetBundleManager.Ins.GetAssetObject<T>(info.AssetBundlePath, info.AssetPath[0], subAssetName, out AssetBundleLoader loader3);
+                        yield return AssetBundleMgr.Ins.GetAssetObject<T>(info.AssetBundlePath, info.AssetPath[0], subAssetName, out AssetBundleLoader loader3);
                     }
                 }
             }
@@ -1212,7 +1212,7 @@ namespace Rain.Core
                     assetPath = info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0];
                 }
 #endif
-                Object o = ResourcesManager.Ins.GetAssetObject(assetPath, assetType, subAssetName, out ResourcesLoader loader);
+                Object o = ResourcesMgr.Ins.GetAssetObject(assetPath, assetType, subAssetName, out ResourcesLoader loader);
 
                 if (o != null)
                 {
@@ -1222,11 +1222,11 @@ namespace Rain.Core
                 {
                     if (subAssetName.IsNullOrEmpty())
                     {
-                        yield return ResourcesManager.Ins.LoadAsyncCoroutine(assetPath, assetType);
+                        yield return ResourcesMgr.Ins.LoadAsyncCoroutine(assetPath, assetType);
                     }
                     else
                     {
-                        yield return ResourcesManager.Ins.LoadAll(assetPath, assetType, subAssetName, out ResourcesLoader loader2);
+                        yield return ResourcesMgr.Ins.LoadAll(assetPath, assetType, subAssetName, out ResourcesLoader loader2);
                     }
                 }
             }
@@ -1235,13 +1235,13 @@ namespace Rain.Core
 #if UNITY_EDITOR
                 if (IsEditorMode)
                 {
-                    var o = AssetDatabaseManager.Ins.EditorLoadAsset(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
+                    var o = AssetDatabaseMgr.Ins.EditorLoadAsset(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
                         out EditorLoader editorLoader, assetType, subAssetName);
                     yield return o;
                     yield break;
                 }
 #endif
-                Object o2 = AssetBundleManager.Ins.GetAssetObject(info.AssetBundlePath, info.AssetPath[0], assetType, subAssetName, out AssetBundleLoader loader);
+                Object o2 = AssetBundleMgr.Ins.GetAssetObject(info.AssetBundlePath, info.AssetPath[0], assetType, subAssetName, out AssetBundleLoader loader);
                 if (o2 != null)
                 {
                     yield return o2;
@@ -1249,11 +1249,11 @@ namespace Rain.Core
 
                 if (loader == null || loader.AssetBundleContent == null || loader.GetDependentNamesLoadFinished() < loader.AddDependentNames())
                 {
-                    yield return AssetBundleManager.Ins.LoadAsyncCoroutine(assetName, assetType, info, subAssetName);
+                    yield return AssetBundleMgr.Ins.LoadAsyncCoroutine(assetName, assetType, info, subAssetName);
                 }
                 else
                 {
-                    Object o = AssetBundleManager.Ins.GetAssetObject(info.AssetBundlePath, info.AssetPath[0], assetType, subAssetName, out AssetBundleLoader loader2);
+                    Object o = AssetBundleMgr.Ins.GetAssetObject(info.AssetBundlePath, info.AssetPath[0], assetType, subAssetName, out AssetBundleLoader loader2);
                     if (o != null)
                     {
                         yield return o;
@@ -1261,7 +1261,7 @@ namespace Rain.Core
                     else
                     {
                         loader.Expand(info.AssetPath[0], assetType, subAssetName);
-                        yield return AssetBundleManager.Ins.GetAssetObject(info.AssetBundlePath, info.AssetPath[0], assetType, subAssetName, out AssetBundleLoader loader3);
+                        yield return AssetBundleMgr.Ins.GetAssetObject(info.AssetBundlePath, info.AssetPath[0], assetType, subAssetName, out AssetBundleLoader loader3);
                     }
                 }
             }
@@ -1309,7 +1309,7 @@ namespace Rain.Core
                 {
                     AssetInfo subInfo = GetAssetInfo(subAssetName, mode);
                     string assetPath = subInfo.AssetPath?[0];
-                    Object o = ResourcesManager.Ins.GetAssetObject(assetPath, null, null, out ResourcesLoader loader);
+                    Object o = ResourcesMgr.Ins.GetAssetObject(assetPath, null, null, out ResourcesLoader loader);
                     if (o != null)
                     {
                         dirLoader.Loaders.Add(loader);
@@ -1321,7 +1321,7 @@ namespace Rain.Core
                     }
                     else
                     {
-                        BaseLoader loader2 = ResourcesManager.Ins.LoadAsync(assetPath, (b) =>
+                        BaseLoader loader2 = ResourcesMgr.Ins.LoadAsync(assetPath, (b) =>
                         {
                             if (++assetCount >= info.AssetPath?.Length)
                             {
@@ -1351,10 +1351,10 @@ namespace Rain.Core
                         continue;
                     }
                     AssetInfo subInfo = GetAssetInfo(subAssetName, mode);
-                    AssetBundleLoader loader = AssetBundleManager.Ins.GetAssetBundleLoader(subInfo.AssetBundlePath);
+                    AssetBundleLoader loader = AssetBundleMgr.Ins.GetAssetBundleLoader(subInfo.AssetBundlePath);
                     if (loader == null || loader.AssetBundleContent == null || loader.GetDependentNamesLoadFinished() < loader.AddDependentNames())
                     {
-                        loader = AssetBundleManager.Ins.LoadAsync(subAssetName, null,
+                        loader = AssetBundleMgr.Ins.LoadAsync(subAssetName, null,
                             subInfo, "", (b) =>
                             {
                                 if (++assetCount >= info.AssetPath.Length)
@@ -1367,7 +1367,7 @@ namespace Rain.Core
                     }
                     else
                     {
-                        Object o = AssetBundleManager.Ins.GetAssetObject(subInfo.AssetBundlePath, subInfo.AssetPath[0], null, null, out AssetBundleLoader loader2);
+                        Object o = AssetBundleMgr.Ins.GetAssetObject(subInfo.AssetBundlePath, subInfo.AssetPath[0], null, null, out AssetBundleLoader loader2);
                         if (o != null)
                         {
                             dirLoader.Loaders.Add(loader2);
@@ -1431,7 +1431,7 @@ namespace Rain.Core
                 {
                     AssetInfo subInfo = GetAssetInfo(subAssetName, mode);
                     string assetPath = subInfo.AssetPath?[0];
-                    Object o = ResourcesManager.Ins.GetAssetObject(assetPath, null, null, out ResourcesLoader loader);
+                    Object o = ResourcesMgr.Ins.GetAssetObject(assetPath, null, null, out ResourcesLoader loader);
 
                     if (o != null)
                     {
@@ -1439,7 +1439,7 @@ namespace Rain.Core
                     }
                     else
                     {
-                        yield return ResourcesManager.Ins.LoadAsyncCoroutine(assetPath);
+                        yield return ResourcesMgr.Ins.LoadAsyncCoroutine(assetPath);
                     }
                 }
             }
@@ -1460,10 +1460,10 @@ namespace Rain.Core
                         continue;
                     }
                     AssetInfo subInfo = GetAssetInfo(subAssetName, mode);
-                    AssetBundleLoader loader = AssetBundleManager.Ins.GetAssetBundleLoader(subInfo.AssetBundlePath);
+                    AssetBundleLoader loader = AssetBundleMgr.Ins.GetAssetBundleLoader(subInfo.AssetBundlePath);
                     if (loader == null || loader.AssetBundleContent == null || loader.GetDependentNamesLoadFinished() < loader.AddDependentNames())
                     {
-                        yield return AssetBundleManager.Ins.LoadAsyncCoroutine(subAssetName, null, subInfo, null);
+                        yield return AssetBundleMgr.Ins.LoadAsyncCoroutine(subAssetName, null, subInfo, null);
                         if (++assetCount >= info.AssetPath.Length)
                         {
                             yield break;
@@ -1471,7 +1471,7 @@ namespace Rain.Core
                     }
                     else
                     {
-                        Object o = AssetBundleManager.Ins.GetAssetObject(subInfo.AssetBundlePath, subInfo.AssetPath[0], null, null, out AssetBundleLoader loader2);
+                        Object o = AssetBundleMgr.Ins.GetAssetObject(subInfo.AssetBundlePath, subInfo.AssetPath[0], null, null, out AssetBundleLoader loader2);
                         if (o != null)
                         {
                             if (++assetCount >= info.AssetPath.Length)
@@ -1522,7 +1522,7 @@ namespace Rain.Core
                     assetPath = info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0];
                 }
 #endif
-                Object o = ResourcesManager.Ins.GetAssetObject(assetPath, assetType, subAssetName, out ResourcesLoader loader);
+                Object o = ResourcesMgr.Ins.GetAssetObject(assetPath, assetType, subAssetName, out ResourcesLoader loader);
                 if (o != null)
                 {
                     End(o);
@@ -1533,11 +1533,11 @@ namespace Rain.Core
                 {
                     if (subAssetName.IsNullOrEmpty())
                     {
-                        return ResourcesManager.Ins.LoadAsync(assetPath, assetType, callback);
+                        return ResourcesMgr.Ins.LoadAsync(assetPath, assetType, callback);
                     }
                     else
                     {
-                        Object subAsset = ResourcesManager.Ins.LoadAll(assetPath, assetType, subAssetName, out ResourcesLoader loader2);
+                        Object subAsset = ResourcesMgr.Ins.LoadAll(assetPath, assetType, subAssetName, out ResourcesLoader loader2);
                         End(subAsset);
                         return loader2;
                     }
@@ -1549,13 +1549,13 @@ namespace Rain.Core
 #if UNITY_EDITOR
                 if (IsEditorMode)
                 {
-                    Object o = AssetDatabaseManager.Ins.EditorLoadAsset(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
+                    Object o = AssetDatabaseMgr.Ins.EditorLoadAsset(info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0],
                         out EditorLoader editorLoader, assetType, subAssetName);
                     End(o);
                     return editorLoader;
                 }
 #endif
-                Object o2 = AssetBundleManager.Ins.GetAssetObject(info.AssetBundlePath, info.AssetPath[0], assetType, subAssetName, out AssetBundleLoader loader);
+                Object o2 = AssetBundleMgr.Ins.GetAssetObject(info.AssetBundlePath, info.AssetPath[0], assetType, subAssetName, out AssetBundleLoader loader);
                 if (o2 != null)
                 {
                     End(o2);
@@ -1564,14 +1564,14 @@ namespace Rain.Core
 
                 if (loader == null || loader.AssetBundleContent == null || loader.GetDependentNamesLoadFinished() < loader.AddDependentNames())
                 {
-                    loader = AssetBundleManager.Ins.LoadAsync(assetName, assetType, info, subAssetName, (b) =>
+                    loader = AssetBundleMgr.Ins.LoadAsync(assetName, assetType, info, subAssetName, (b) =>
                     {
-                        Object loadedAsset = AssetBundleManager.Ins.GetAssetObject(info.AssetBundlePath, info.AssetPath[0], assetType, subAssetName, out _);
+                        Object loadedAsset = AssetBundleMgr.Ins.GetAssetObject(info.AssetBundlePath, info.AssetPath[0], assetType, subAssetName, out _);
 
                         if (loadedAsset == null)
                         {
                             loader?.Expand(info.AssetPath[0], assetType, subAssetName);
-                            loadedAsset = AssetBundleManager.Ins.GetAssetObject(info.AssetBundlePath, info.AssetPath[0], assetType, subAssetName, out _);
+                            loadedAsset = AssetBundleMgr.Ins.GetAssetObject(info.AssetBundlePath, info.AssetPath[0], assetType, subAssetName, out _);
                         }
 
                         End(loadedAsset);
@@ -1580,7 +1580,7 @@ namespace Rain.Core
                 }
                 // 扩展并获取资源
                 loader.Expand(info.AssetPath[0], assetType, subAssetName);
-                Object expandedAsset = AssetBundleManager.Ins.GetAssetObject(info.AssetBundlePath, info.AssetPath[0], assetType, subAssetName, out AssetBundleLoader finalLoader);
+                Object expandedAsset = AssetBundleMgr.Ins.GetAssetObject(info.AssetBundlePath, info.AssetPath[0], assetType, subAssetName, out AssetBundleLoader finalLoader);
                 End(expandedAsset);
                 return finalLoader;
             }
@@ -1622,7 +1622,7 @@ namespace Rain.Core
                     assetPath = info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0];
                 }
 #endif
-                Object o = ResourcesManager.Ins.GetAssetObject(assetPath, null, subAssetName, out ResourcesLoader loader);
+                Object o = ResourcesMgr.Ins.GetAssetObject(assetPath, null, subAssetName, out ResourcesLoader loader);
                 if (o != null)
                 {
                     End(o);
@@ -1633,11 +1633,11 @@ namespace Rain.Core
                 {
                     if (subAssetName.IsNullOrEmpty())
                     {
-                        return ResourcesManager.Ins.LoadAsync(assetPath, callback);
+                        return ResourcesMgr.Ins.LoadAsync(assetPath, callback);
                     }
                     else
                     {
-                        Object subAsset = ResourcesManager.Ins.LoadAll(assetPath, null, subAssetName, out ResourcesLoader loader2);
+                        Object subAsset = ResourcesMgr.Ins.LoadAll(assetPath, null, subAssetName, out ResourcesLoader loader2);
                         End(subAsset);
                         return loader2;
                     }
@@ -1649,13 +1649,13 @@ namespace Rain.Core
 #if UNITY_EDITOR
                 if (IsEditorMode)
                 {
-                    Object o = AssetDatabaseManager.Ins.EditorLoadAsset<Object>(
+                    Object o = AssetDatabaseMgr.Ins.EditorLoadAsset<Object>(
                         info.AssetPath == null ? SearchAsset(assetName) : info.AssetPath[0], subAssetName, out EditorLoader editorLoader);
                     End(o);
                     return editorLoader;
                 }
 #endif
-                Object o2 = AssetBundleManager.Ins.GetAssetObject(info.AssetBundlePath, info.AssetPath[0], null, subAssetName, out AssetBundleLoader loader);
+                Object o2 = AssetBundleMgr.Ins.GetAssetObject(info.AssetBundlePath, info.AssetPath[0], null, subAssetName, out AssetBundleLoader loader);
                 if (o2 != null)
                 {
                     End(o2);
@@ -1664,14 +1664,14 @@ namespace Rain.Core
 
                 if (loader == null || loader.AssetBundleContent == null || loader.GetDependentNamesLoadFinished() < loader.AddDependentNames())
                 {
-                    loader = AssetBundleManager.Ins.LoadAsync(assetName, null, info, subAssetName, (b) =>
+                    loader = AssetBundleMgr.Ins.LoadAsync(assetName, null, info, subAssetName, (b) =>
                     {
-                        Object loadedAsset = AssetBundleManager.Ins.GetAssetObject(info.AssetBundlePath, info.AssetPath[0], null, subAssetName, out _);
+                        Object loadedAsset = AssetBundleMgr.Ins.GetAssetObject(info.AssetBundlePath, info.AssetPath[0], null, subAssetName, out _);
 
                         if (loadedAsset == null)
                         {
                             loader?.Expand(info.AssetPath[0], null, subAssetName);
-                            loadedAsset = AssetBundleManager.Ins.GetAssetObject(info.AssetBundlePath, info.AssetPath[0], null, subAssetName, out _);
+                            loadedAsset = AssetBundleMgr.Ins.GetAssetObject(info.AssetBundlePath, info.AssetPath[0], null, subAssetName, out _);
                         }
 
                         End(loadedAsset);
@@ -1680,7 +1680,7 @@ namespace Rain.Core
                 }
                 // 扩展并获取资源
                 loader.Expand(info.AssetPath[0], null, subAssetName);
-                Object expandedAsset = AssetBundleManager.Ins.GetAssetObject(info.AssetBundlePath, info.AssetPath[0], null, subAssetName, out AssetBundleLoader finalLoader);
+                Object expandedAsset = AssetBundleMgr.Ins.GetAssetObject(info.AssetBundlePath, info.AssetPath[0], null, subAssetName, out AssetBundleLoader finalLoader);
                 End(expandedAsset);
                 return finalLoader;
             }
@@ -1714,11 +1714,11 @@ namespace Rain.Core
             {
                 if (remote || ForceRemoteAssetBundle)
                 {
-                    return new AssetInfo(AssetTypeEnum.ASSET_BUNDLE, assetName, assetmpping.AssetPath, AssetBundleManager.GetRemoteAssetBundleCompletePath(), assetmpping.AbName);
+                    return new AssetInfo(AssetTypeEnum.ASSET_BUNDLE, assetName, assetmpping.AssetPath, AssetBundleMgr.GetRemoteAssetBundleCompletePath(), assetmpping.AbName);
                 }
                 else
                 {
-                    return new AssetInfo(AssetTypeEnum.ASSET_BUNDLE, assetName, assetmpping.AssetPath, AssetBundleManager.GetAssetBundlePathWithoutAb(assetName), assetmpping.AbName);
+                    return new AssetInfo(AssetTypeEnum.ASSET_BUNDLE, assetName, assetmpping.AssetPath, AssetBundleMgr.GetAssetBundlePathWithoutAb(assetName), assetmpping.AbName);
                 }
             }
 
@@ -1739,12 +1739,12 @@ namespace Rain.Core
 #if UNITY_EDITOR
             if (IsEditorMode)
             {
-                AssetDatabaseManager.Ins.Unload(SearchAsset(assetName));
+                AssetDatabaseMgr.Ins.Unload(SearchAsset(assetName));
 
                 AssetInfo editorRes = GetAssetInfoFromResource(assetName);
                 if (IsLegal(ref editorRes))
                 {
-                    ResourcesManager.Ins.Unload(editorRes.AssetPath[0]);
+                    ResourcesMgr.Ins.Unload(editorRes.AssetPath[0]);
                 }
                 return;
             }
@@ -1752,17 +1752,17 @@ namespace Rain.Core
             AssetInfo ab = GetAssetInfoFromAssetBundle(assetName);
             if (IsLegal(ref ab))
             {
-                AssetBundleManager.Ins.Unload(ab.AssetBundlePath, unloadAllLoadedObjects);
+                AssetBundleMgr.Ins.Unload(ab.AssetBundlePath, unloadAllLoadedObjects);
             }
             AssetInfo abRemote = GetAssetInfoFromAssetBundle(assetName, true);
             if (IsLegal(ref abRemote))
             {
-                AssetBundleManager.Ins.Unload(abRemote.AssetBundlePath, unloadAllLoadedObjects);
+                AssetBundleMgr.Ins.Unload(abRemote.AssetBundlePath, unloadAllLoadedObjects);
             }
             AssetInfo res = GetAssetInfoFromResource(assetName);
             if (IsLegal(ref res))
             {
-                ResourcesManager.Ins.Unload(res.AssetPath[0]);
+                ResourcesMgr.Ins.Unload(res.AssetPath[0]);
             }
         }
 
@@ -1779,12 +1779,12 @@ namespace Rain.Core
 #if UNITY_EDITOR
             if (IsEditorMode)
             {
-                AssetDatabaseManager.Ins.Unload(SearchAsset(assetName));
+                AssetDatabaseMgr.Ins.Unload(SearchAsset(assetName));
 
                 AssetInfo editorRes = GetAssetInfoFromResource(assetName);
                 if (IsLegal(ref editorRes))
                 {
-                    ResourcesManager.Ins.Unload(editorRes.AssetPath[0]);
+                    ResourcesMgr.Ins.Unload(editorRes.AssetPath[0]);
                 }
                 callback?.Invoke();
                 return;
@@ -1793,17 +1793,17 @@ namespace Rain.Core
             AssetInfo ab = GetAssetInfoFromAssetBundle(assetName);
             if (IsLegal(ref ab))
             {
-                AssetBundleManager.Ins.UnloadAsync(ab.AssetBundlePath, unloadAllLoadedObjects, callback);
+                AssetBundleMgr.Ins.UnloadAsync(ab.AssetBundlePath, unloadAllLoadedObjects, callback);
             }
             AssetInfo abRemote = GetAssetInfoFromAssetBundle(assetName, true);
             if (IsLegal(ref abRemote))
             {
-                AssetBundleManager.Ins.UnloadAsync(abRemote.AssetBundlePath, unloadAllLoadedObjects, callback);
+                AssetBundleMgr.Ins.UnloadAsync(abRemote.AssetBundlePath, unloadAllLoadedObjects, callback);
             }
             AssetInfo res = GetAssetInfoFromResource(assetName);
             if (IsLegal(ref res))
             {
-                ResourcesManager.Ins.Unload(res.AssetPath[0]);
+                ResourcesMgr.Ins.Unload(res.AssetPath[0]);
                 callback?.Invoke();
             }
         }
@@ -1843,20 +1843,20 @@ namespace Rain.Core
             AssetInfo res = GetAssetInfoFromResource(assetName);
             if (IsLegal(ref res))
             {
-                float resProgress = ResourcesManager.Ins.GetLoadProgress(res.AssetPath[0]);
+                float resProgress = ResourcesMgr.Ins.GetLoadProgress(res.AssetPath[0]);
                 if (resProgress > -1f)
                 {
                     progress = Mathf.Min(progress, resProgress);
                 }
             }
 
-            float bundleProgress = AssetBundleManager.Ins.GetLoadProgress(assetBundlePath);
+            float bundleProgress = AssetBundleMgr.Ins.GetLoadProgress(assetBundlePath);
             if (bundleProgress > -1f)
             {
                 progress = Mathf.Min(progress, bundleProgress);
             }
 
-            float bundleProgressRemote = AssetBundleManager.Ins.GetLoadProgress(assetBundlePathRemote);
+            float bundleProgressRemote = AssetBundleMgr.Ins.GetLoadProgress(assetBundlePathRemote);
             if (bundleProgressRemote > -1f)
             {
                 progress = Mathf.Min(progress, bundleProgressRemote);
@@ -1885,12 +1885,12 @@ namespace Rain.Core
             }
 #endif
             float progress = 2.1f;
-            float abProgress = AssetBundleManager.Ins.GetLoadProgress();
+            float abProgress = AssetBundleMgr.Ins.GetLoadProgress();
             if (abProgress > -1f)
             {
                 progress = Mathf.Min(progress, abProgress);
             }
-            float resProgress = ResourcesManager.Ins.GetLoadProgress();
+            float resProgress = ResourcesMgr.Ins.GetLoadProgress();
             if (resProgress > -1f)
             {
                 progress = Mathf.Min(progress, resProgress);
@@ -1998,8 +1998,8 @@ namespace Rain.Core
         {
             AssetBundleMap.Mappings = JsonConvert.DeserializeObject<Dictionary<string, AssetBundleMap.AssetMapping>>(Resources.Load<TextAsset>(nameof(AssetBundleMap)).ToString());
             ResourceMap.Mappings = JsonConvert.DeserializeObject<Dictionary<string, string[]>>(Resources.Load<TextAsset>(nameof(ResourceMap)).ToString());
-            _assetBundleManager = ModuleCenter.CreateModule<AssetBundleManager>();
-            _resourcesManager = ModuleCenter.CreateModule<ResourcesManager>();
+            _assetBundleManager = ModuleCenter.CreateModule<AssetBundleMgr>();
+            _resourcesManager = ModuleCenter.CreateModule<ResourcesMgr>();
         }
 
         public void OnUpdate()

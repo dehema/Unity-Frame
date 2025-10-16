@@ -10,7 +10,7 @@ namespace Rain.Core
     /// 提供资产捆绑包管理工具，包括加载、扩展和卸载。
     /// </summary>
     [UpdateRefresh]
-    public class AssetBundleManager : ModuleSingleton<AssetBundleManager>, IModule
+    public class AssetBundleMgr : ModuleSingleton<AssetBundleMgr>, IModule
     {
         
         private AssetBundleManifest manifest;

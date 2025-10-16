@@ -2,7 +2,7 @@ using System;
 
 namespace Rain.Core
 {
-    public interface IMessageManager
+    public interface IMessageMgr
     {
         void AddEventListener<T>(T eventName, Action listener, object handle = null) where T : Enum, IConvertible;
         void AddEventListener(int eventId, Action listener, object handle = null);

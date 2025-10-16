@@ -12,25 +12,22 @@ namespace Rain.Launcher
         private static DataMgr _dataMgr;
         // 全局消息
         private static MsgMgr _message;
-        // 输入管理-->使用了消息模块
-        private static InputManager _inputManager;
-        // 游戏时间管理-->使用了消息模块
+        // 输入管理
+        private static InputMgr _inputManager;
+        // 游戏时间管理
         private static TimerMgr _timer;
         // 资产管理
         private static AssetMgr _asset;
-        // 音频管理-->使用了资产模块-->使用了游戏对象池模块-->使用了补间动画模块-->使用了时间模块
+        // 音频管理
         private static AudioMgr _audio;
-        // UI界面管理-->使用了资产模块
+        // UI界面管理
         private static UIMgr _uiMgr;
         // 下载管理器
-        private static DownloadManager _downloadManager;
+        private static DownloadMgr _downloadMgr;
         // 日志助手
         private static LogMgr _logMgr;
-
-
-        /* ------------------------可选模块------------------------ */
-        // 热更新版本管理-->使用了下载模块-->使用了资产模块
-        private static HotUpdateManager _hotUpdateManager;
+        // 热更新版本管理
+        private static HotUpdateMgr _hotUpdateMgr;
 
         public static DataMgr Data
         {
@@ -46,6 +43,7 @@ namespace Rain.Launcher
                     _dataMgr = value;
             }
         }
+
         public static MsgMgr Msg
         {
             get
@@ -61,12 +59,12 @@ namespace Rain.Launcher
             }
         }
 
-        public static InputManager Input
+        public static InputMgr Input
         {
             get
             {
                 if (_inputManager == null)
-                    _inputManager = ModuleCenter.CreateModule<InputManager>(new DefaultInputHelper());
+                    _inputManager = ModuleCenter.CreateModule<InputMgr>(new DefaultInputHelper());
                 return _inputManager;
             }
             set
@@ -136,18 +134,18 @@ namespace Rain.Launcher
             }
         }
 
-        public static DownloadManager Download
+        public static DownloadMgr Download
         {
             get
             {
-                if (_downloadManager == null)
-                    _downloadManager = ModuleCenter.CreateModule<DownloadManager>();
-                return _downloadManager;
+                if (_downloadMgr == null)
+                    _downloadMgr = ModuleCenter.CreateModule<DownloadMgr>();
+                return _downloadMgr;
             }
             set
             {
-                if (_downloadManager == null)
-                    _downloadManager = value;
+                if (_downloadMgr == null)
+                    _downloadMgr = value;
             }
         }
 
@@ -166,18 +164,18 @@ namespace Rain.Launcher
             }
         }
 
-        public static HotUpdateManager HotUpdate
+        public static HotUpdateMgr HotUpdate
         {
             get
             {
-                if (_hotUpdateManager == null)
-                    _hotUpdateManager = ModuleCenter.CreateModule<HotUpdateManager>();
-                return _hotUpdateManager;
+                if (_hotUpdateMgr == null)
+                    _hotUpdateMgr = ModuleCenter.CreateModule<HotUpdateMgr>();
+                return _hotUpdateMgr;
             }
             set
             {
-                if (_hotUpdateManager == null)
-                    _hotUpdateManager = value;
+                if (_hotUpdateMgr == null)
+                    _hotUpdateMgr = value;
             }
         }
     }

@@ -5,7 +5,7 @@ using Object = UnityEngine.Object;
 
 namespace Rain.Core
 {
-    public class AssetDatabaseManager : Singleton<AssetDatabaseManager>
+    public class AssetDatabaseMgr : Singleton<AssetDatabaseMgr>
     {
         private Dictionary<string, EditorLoader> editorLoaders = new Dictionary<string, EditorLoader>();
         

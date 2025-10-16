@@ -17,7 +17,7 @@ namespace Rain.Core
     *
     */
     //================================================
-    public class DownloadManager : ModuleSingleton<DownloadManager>, IModule
+    public class DownloadMgr : ModuleSingleton<DownloadMgr>, IModule
     {
         public bool DeleteFileOnAbort
         {

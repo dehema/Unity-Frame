@@ -10,7 +10,7 @@ using UnityEngine.Networking;
 
 namespace Rain.Core
 {
-    public class HotUpdateManager : ModuleSingleton<HotUpdateManager>, IModule
+    public class HotUpdateMgr : ModuleSingleton<HotUpdateMgr>, IModule
     {
         public static string Separator = "_";
         public static string PackageSplit = "Package" + Separator;
@@ -191,7 +191,7 @@ namespace Rain.Core
             }
 
             // 创建热更下载器
-            hotUpdateDownloader = DownloadManager.Ins.CreateDownloader("hotUpdateDownloader", new Downloader());
+            hotUpdateDownloader = DownloadMgr.Ins.CreateDownloader("hotUpdateDownloader", new Downloader());
 
             // 设置热更下载器回调
             hotUpdateDownloader.OnDownloadSuccess += (eventArgs) =>
@@ -254,7 +254,7 @@ namespace Rain.Core
                         JsonConvert.SerializeObject(AssetBundleMap.Mappings));
                 }
 
-                AssetBundleManager.Ins.LoadAssetBundleManifestSync();
+                AssetBundleMgr.Ins.LoadAssetBundleManifestSync();
             }
             // 下载器开始下载
             hotUpdateDownloader.LaunchDownload();
@@ -298,7 +298,7 @@ namespace Rain.Core
             List<string> downloadPaths = new List<string>(subPackages.Count);
 
             // 创建分包下载器
-            packageDownloader = DownloadManager.Ins.CreateDownloader("packageDownloader", new Downloader());
+            packageDownloader = DownloadMgr.Ins.CreateDownloader("packageDownloader", new Downloader());
 
             // 设置分包下载器回调
             packageDownloader.OnDownloadSuccess += (eventArgs) =>

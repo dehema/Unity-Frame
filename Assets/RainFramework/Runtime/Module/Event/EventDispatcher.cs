@@ -4,7 +4,7 @@ using Rain.Core;
 
 namespace Rain.UI
 {
-    public class EventDispatcher : IMessageManager
+    public class EventDispatcher : IMessageMgr
     {
         private Dictionary<int, HashSet<IEventDataBase>> events = new Dictionary<int, HashSet<IEventDataBase>>();
         // 存储待删除的事件处理器列表
