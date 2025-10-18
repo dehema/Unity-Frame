@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Newtonsoft.Json;
+using Rain.Core;
 using UnityEditor;
 using UnityEngine;
 
@@ -18,15 +20,13 @@ public class BuildToolSetting : BuildToolBase
     {
         // 版本号设置
         EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("版本号:", GUILayout.Width(80));
+        EditorGUILayout.LabelField("版本号:", GUILayout.Width(100));
         config.version = EditorGUILayout.TextField(config.version);
         EditorGUILayout.EndHorizontal();
 
-        EditorGUILayout.Space(5);
-
         // 安装包导出目录
         EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("安装包导出目录:", GUILayout.Width(120));
+        EditorGUILayout.LabelField("安装包导出目录:", GUILayout.Width(100));
         config.exportPath = EditorGUILayout.TextField(config.exportPath);
         if (GUILayout.Button("浏览", GUILayout.Width(60)))
         {
@@ -38,6 +38,13 @@ public class BuildToolSetting : BuildToolBase
         }
         EditorGUILayout.EndHorizontal();
 
+        //版本号设置
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("远端地址:", GUILayout.Width(100));
+        config.assetRemoteAddress = EditorGUILayout.TextField(config.assetRemoteAddress);
+        EditorGUILayout.EndHorizontal();
+
+        //目标平台
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("目标平台:", GUILayout.Width(80));
         config.buildTarget = (BuildTarget)EditorGUILayout.EnumPopup(config.buildTarget);
@@ -45,6 +52,10 @@ public class BuildToolSetting : BuildToolBase
 
         EditorGUILayout.BeginHorizontal();
 
+        if (GUILayout.Button("构建游戏版本文件"))
+        {
+            BuildGameVersionFile();
+        }
         if (GUILayout.Button("打开导出目录"))
         {
             OpenPackageExportDirectory();
@@ -82,5 +93,19 @@ public class BuildToolSetting : BuildToolBase
                 Debug.Log("导出目录已清理");
             }
         }
+    }
+
+    /// <summary>
+    /// 构建游戏版本配置
+    /// </summary>
+    private void BuildGameVersionFile()
+    {
+        GameVersion gameVersion = new GameVersion();
+        gameVersion.Version = config.version;
+        gameVersion.AssetRemoteAddress = config.assetRemoteAddress;
+        gameVersion.EnableHotUpdate = true;
+        string jsonPath = Path.Combine(config.assetRemoteAddress, $"{nameof(GameVersion)}.json");
+        string json = JsonConvert.SerializeObject(gameVersion, Formatting.Indented);
+        File.WriteAllText(jsonPath, json);
     }
 }

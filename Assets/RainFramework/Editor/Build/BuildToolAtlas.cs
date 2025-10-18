@@ -98,20 +98,10 @@ public class BuildToolAtlas : BuildToolBase
     {
         EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("打包图集", GUILayout.Height(30)))
-        {
             BuildAtlas();
-        }
-
         if (GUILayout.Button("清理图集", GUILayout.Height(30)))
-        {
             ClearAtlas();
-        }
-
         EditorGUILayout.EndHorizontal();
-
-        EditorGUILayout.HelpBox("打包图集：根据AssetBundles/Art/Resources/UI下的文件夹结构，在AssetBundles/Art/Atlas中创建对应的图集文件", MessageType.Info);
-
-        // 显示Atlas文件夹内的图集列表
         DrawAtlasList();
     }
 

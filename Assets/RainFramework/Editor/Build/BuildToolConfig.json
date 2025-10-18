@@ -1,11 +1,10 @@
 {
+    "version": "1.0.0",
     "exportPath": "C:\\Users\\Administrator\\Desktop\\RainBuilds",
     "buildTarget": 13,
     "developmentBuild": false,
-    "copyToStreamingAssets": false,
-    "buildAssetBundles": false,
     "abOutputPath": "C:/Users/Administrator/AppData/LocalLow/Demo/Rain/AssetBundles",
-    "onlineABUrl": "E:\\Program Files\\nginx-1.28.0\\server\\rain\\AssetBundles",
+    "assetRemoteAddress": "E:\\Program Files\\nginx-1.28.0\\server\\rain",
     "autoBuildAB": true,
     "autoPackAtlas": true,
     "atlasSourcePath": "Assets/AssetBundles/Art/Resources/UI",

@@ -19,13 +19,11 @@ public class BuildToolConfig
     public string version = "1.0.0";
     public string exportPath = "";
     public BuildTarget buildTarget = BuildTarget.Android;
-    public bool developmentBuild = false;
-    public bool copyToStreamingAssets = false;
-    public bool buildAssetBundles = false;
+    public bool developmentBuild = false;       //是否是开发版本
 
     // AB包相关配置
     public string abOutputPath = "";
-    public string onlineABUrl = "";
+    public string assetRemoteAddress = ""; //远端ab地址
     public bool autoBuildAB = true;
 
     // 图集相关配置
@@ -37,7 +35,8 @@ public class BuildToolConfig
     public bool showAdvancedOptions = false;
     public bool clearBuildCache = false;
 
-
+    //ab包地址
+    public string ABRemoteAddress => Path.Combine(assetRemoteAddress, "AssetBundles");
     /// <summary>
     /// 加载配置
     /// </summary>

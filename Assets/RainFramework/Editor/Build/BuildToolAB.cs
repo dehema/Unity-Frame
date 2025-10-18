@@ -6,7 +6,6 @@ using UnityEngine.U2D;
 using System.Collections.Generic;
 using Path = System.IO.Path;
 using Newtonsoft.Json;
-using YamlDotNet.Core;
 
 /// <summary>
 /// AB包设置工具
@@ -24,8 +23,8 @@ public class BuildToolAB : BuildToolBase
     protected override void DrawContent()
     {
         // AB包输出路径设置
-        EditorGUILayout.LabelField("AB包输出路径:", EditorStyles.boldLabel);
         EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("AB包输出路径:", GUILayout.Width(100));
         config.abOutputPath = EditorGUILayout.TextField(config.abOutputPath);
         if (GUILayout.Button("选择", GUILayout.Width(60)))
         {
@@ -37,13 +36,7 @@ public class BuildToolAB : BuildToolBase
         }
         EditorGUILayout.EndHorizontal();
 
-        EditorGUILayout.Space(10);
-
-        // 线上AB包地址设置
-        EditorGUILayout.LabelField("线上AB包地址:", EditorStyles.boldLabel);
-        config.onlineABUrl = EditorGUILayout.TextField(config.onlineABUrl);
-
-        EditorGUILayout.Space(10);
+        EditorGUILayout.Space(5);
 
         // AB包操作按钮
         EditorGUILayout.BeginHorizontal();
@@ -66,7 +59,7 @@ public class BuildToolAB : BuildToolBase
 
         EditorGUILayout.EndHorizontal();
 
-        EditorGUILayout.Space(10);
+        EditorGUILayout.Space(5);
 
         // 自动打包选项
         config.autoBuildAB = EditorGUILayout.Toggle("自动打包AB包", config.autoBuildAB);
@@ -89,59 +82,51 @@ public class BuildToolAB : BuildToolBase
     /// </summary>
     public void SetAllAtlasAssetBundles()
     {
-        try
+        string[] atlasFiles = Directory.GetFiles(BuildToolAtlas.atlasPath, "*.spriteatlas", SearchOption.AllDirectories);
+        if (atlasFiles.Length == 0)
+            return;
+        EditorUtility.DisplayProgressBar("设置AB包", "正在处理图集...", 0f);
+        for (int i = 0; i < atlasFiles.Length; i++)
         {
-            string[] atlasFiles = Directory.GetFiles(BuildToolAtlas.atlasPath, "*.spriteatlas", SearchOption.AllDirectories);
-            if (atlasFiles.Length == 0)
-                return;
-            EditorUtility.DisplayProgressBar("设置AB包", "正在处理图集...", 0f);
-            for (int i = 0; i < atlasFiles.Length; i++)
+            string atlasFile = atlasFiles[i];
+            string fileName = Path.GetFileNameWithoutExtension(atlasFile);
+
+            try
             {
-                string atlasFile = atlasFiles[i];
-                string fileName = Path.GetFileNameWithoutExtension(atlasFile);
+                EditorUtility.DisplayProgressBar("设置AB包", $"正在处理: {fileName}", (float)i / atlasFiles.Length);
 
-                try
+                string relativePath = atlasFile.Replace(Application.dataPath, "Assets");
+                SpriteAtlas atlas = AssetDatabase.LoadAssetAtPath<SpriteAtlas>(relativePath);
+
+                if (atlas != null)
                 {
-                    EditorUtility.DisplayProgressBar("设置AB包", $"正在处理: {fileName}", (float)i / atlasFiles.Length);
-
-                    string relativePath = atlasFile.Replace(Application.dataPath, "Assets");
-                    SpriteAtlas atlas = AssetDatabase.LoadAssetAtPath<SpriteAtlas>(relativePath);
-
-                    if (atlas != null)
+                    // 生成AB包名称（基于图集路径）
+                    string abName = GenerateAssetBundleName(relativePath);
+                    // 设置AssetBundle标签
+                    AssetImporter importer = AssetImporter.GetAtPath(relativePath);
+                    if (importer != null)
                     {
-                        // 生成AB包名称（基于图集路径）
-                        string abName = GenerateAssetBundleName(relativePath);
-                        // 设置AssetBundle标签
-                        AssetImporter importer = AssetImporter.GetAtPath(relativePath);
-                        if (importer != null)
-                        {
-                            importer.assetBundleName = abName;
-                            importer.assetBundleVariant = "";
-                            Debug.Log($"图集 {fileName} 设置AB包标签: {abName}");
-                        }
-                        else
-                        {
-                            Debug.LogError($"无法获取图集 {fileName} 的AssetImporter");
-                        }
+                        importer.assetBundleName = abName;
+                        importer.assetBundleVariant = "";
+                        Debug.Log($"图集 {fileName} 设置AB包标签: {abName}");
                     }
                     else
                     {
-                        Debug.LogError($"无法加载图集: {relativePath}");
+                        Debug.LogError($"无法获取图集 {fileName} 的AssetImporter");
                     }
                 }
-                catch (Exception e)
+                else
                 {
-                    Debug.LogError($"设置图集 {fileName} AB包标签失败: {e.Message}");
+                    Debug.LogError($"无法加载图集: {relativePath}");
                 }
             }
-            EditorUtility.ClearProgressBar();
-            AssetDatabase.Refresh();
+            catch (Exception e)
+            {
+                Debug.LogError($"设置图集 {fileName} AB包标签失败: {e.Message}");
+            }
         }
-        catch (Exception e)
-        {
-            EditorUtility.ClearProgressBar();
-            EditorUtility.DisplayDialog("设置AB包失败", $"错误: {e.Message}", "确定");
-        }
+        EditorUtility.ClearProgressBar();
+        AssetDatabase.Refresh();
     }
 
     /// <summary>
@@ -444,94 +429,53 @@ public class BuildToolAB : BuildToolBase
     /// </summary>
     public void UploadAssetBundles()
     {
-        if (string.IsNullOrEmpty(config.onlineABUrl))
+        string targetFolderPath = Path.Combine(config.ABRemoteAddress);
+
+        // 创建目标文件夹
+        EditorUtility.DisplayProgressBar("上传AB包", "正在创建目标文件夹...", 0f);
+        if (!Directory.Exists(targetFolderPath))
+            Directory.CreateDirectory(targetFolderPath);
+
+        EditorUtility.DisplayProgressBar("上传AB包", "正在复制文件...", 0.2f);
+
+        // 复制所有文件和文件夹
+        int copiedFiles = 0;
+        int totalFiles = Directory.GetFiles(config.abOutputPath, "*", SearchOption.AllDirectories).Length;
+        int currentFile = 0;
+
+        // 复制所有文件
+        string[] allFiles = Directory.GetFiles(config.abOutputPath, "*", SearchOption.AllDirectories);
+        foreach (string sourceFile in allFiles)
         {
-            EditorUtility.DisplayDialog("提示", "请先设置线上AB包地址", "确定");
-            return;
-        }
+            currentFile++;
+            EditorUtility.DisplayProgressBar("上传AB包",
+                $"正在复制: {Path.GetFileName(sourceFile)}",
+                0.2f + (0.8f * currentFile / totalFiles));
 
-        if (string.IsNullOrEmpty(config.abOutputPath) || !Directory.Exists(config.abOutputPath))
-        {
-            EditorUtility.DisplayDialog("错误", "AB包输出目录不存在，请先打包AB包", "确定");
-            return;
-        }
+            // 计算相对路径
+            string relativePath = Path.GetRelativePath(config.abOutputPath, sourceFile);
+            string targetFile = Path.Combine(targetFolderPath, relativePath);
 
-        try
-        {
-            // 生成当前时间的文件夹名（精确到秒）
-            string timeFolderName = DateTime.Now.ToString("yyyyMMdd_HHmmss");
-            string targetFolderPath = Path.Combine(config.onlineABUrl, timeFolderName);
-
-            EditorUtility.DisplayProgressBar("上传AB包", "正在创建目标文件夹...", 0f);
-
-            // 创建目标文件夹
-            if (!Directory.Exists(targetFolderPath))
+            // 确保目标目录存在
+            string targetDir = Path.GetDirectoryName(targetFile);
+            if (!Directory.Exists(targetDir))
             {
-                Directory.CreateDirectory(targetFolderPath);
-                Debug.Log($"已创建目标文件夹: {targetFolderPath}");
+                Directory.CreateDirectory(targetDir);
             }
 
-            EditorUtility.DisplayProgressBar("上传AB包", "正在复制文件...", 0.2f);
-
-            // 复制所有文件和文件夹
-            int copiedFiles = 0;
-            int totalFiles = Directory.GetFiles(config.abOutputPath, "*", SearchOption.AllDirectories).Length;
-            int currentFile = 0;
-
-            // 复制所有文件
-            string[] allFiles = Directory.GetFiles(config.abOutputPath, "*", SearchOption.AllDirectories);
-            foreach (string sourceFile in allFiles)
-            {
-                try
-                {
-                    currentFile++;
-                    EditorUtility.DisplayProgressBar("上传AB包",
-                        $"正在复制: {Path.GetFileName(sourceFile)}",
-                        0.2f + (0.8f * currentFile / totalFiles));
-
-                    // 计算相对路径
-                    string relativePath = Path.GetRelativePath(config.abOutputPath, sourceFile);
-                    string targetFile = Path.Combine(targetFolderPath, relativePath);
-
-                    // 确保目标目录存在
-                    string targetDir = Path.GetDirectoryName(targetFile);
-                    if (!Directory.Exists(targetDir))
-                    {
-                        Directory.CreateDirectory(targetDir);
-                    }
-
-                    // 复制文件
-                    File.Copy(sourceFile, targetFile, true);
-                    copiedFiles++;
-
-                    Debug.Log($"已复制文件: {relativePath}");
-                }
-                catch (Exception e)
-                {
-                    Debug.LogError($"复制文件失败: {sourceFile}, 错误: {e.Message}");
-                }
-            }
-
-            EditorUtility.ClearProgressBar();
-
-            Debug.Log($"AB包上传完成 - 共复制 {copiedFiles} 个文件到: {targetFolderPath}");
-            //EditorUtility.DisplayDialog("上传完成", $"AB包已上传到:\n{targetFolderPath}\n\n共复制 {copiedFiles} 个文件", "确定");
-
-            // 打开目标文件夹
-            try
-            {
-                EditorUtility.RevealInFinder(targetFolderPath + "/");
-            }
-            catch (Exception e)
-            {
-                Debug.LogWarning($"无法打开目标文件夹: {e.Message}");
-            }
+            // 复制文件
+            File.Copy(sourceFile, targetFile, true);
+            copiedFiles++;
+            //Debug.Log($"已复制文件: {relativePath}");
         }
-        catch (Exception e)
-        {
-            EditorUtility.ClearProgressBar();
-            EditorUtility.DisplayDialog("上传失败", $"错误: {e.Message}", "确定");
-        }
+
+        EditorUtility.ClearProgressBar();
+
+        Debug.Log($"AB包上传完成 - 共复制 {copiedFiles} 个文件到: {targetFolderPath}");
+        //EditorUtility.DisplayDialog("上传完成", $"AB包已上传到:\n{targetFolderPath}\n\n共复制 {copiedFiles} 个文件", "确定");
+
+        // 打开目标文件夹
+        EditorUtility.RevealInFinder(targetFolderPath + "/");
     }
 
     /// <summary>
@@ -599,27 +543,7 @@ public class BuildToolAB : BuildToolBase
     /// </summary>
     public void OpenOnlineAssetBundleDirectory()
     {
-        if (string.IsNullOrEmpty(config.onlineABUrl))
-        {
-            EditorUtility.DisplayDialog("错误", "请先设置线上AB包地址", "确定");
-            return;
-        }
-
-        if (!Directory.Exists(config.onlineABUrl))
-        {
-            EditorUtility.DisplayDialog("提示", "线上AB包目录不存在", "确定");
-            return;
-        }
-
-        try
-        {
-            EditorUtility.RevealInFinder(config.onlineABUrl + "/");
-        }
-        catch (Exception e)
-        {
-            Debug.LogError($"打开线上AB包目录失败: {e.Message}");
-            EditorUtility.DisplayDialog("错误", $"无法打开线上AB包目录: {e.Message}", "确定");
-        }
+        EditorUtility.RevealInFinder(config.ABRemoteAddress + "/");
     }
 }
 
