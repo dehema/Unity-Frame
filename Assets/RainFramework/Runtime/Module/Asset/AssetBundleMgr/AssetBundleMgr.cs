@@ -12,7 +12,7 @@ namespace Rain.Core
     [UpdateRefresh]
     public class AssetBundleMgr : ModuleSingleton<AssetBundleMgr>, IModule
     {
-        
+
         private AssetBundleManifest manifest;
         private Dictionary<string, AssetBundleLoader> assetBundleLoaders = new Dictionary<string, AssetBundleLoader>();
         private List<AssetBundleLoader> assetBundleLoadersList = new List<AssetBundleLoader>();
@@ -36,7 +36,7 @@ namespace Rain.Core
             AssetBundle result;
 
             List<string> assetBundlePaths = new List<string>(GetDependenciedAssetBundles(info.AbName));
-            
+
             for (int i = 0; i < assetBundlePaths.Count; i++)
             {
                 assetBundlePaths[i] = GetAssetBundlePathByAbName(assetBundlePaths[i]);
@@ -66,9 +66,9 @@ namespace Rain.Core
                 {
                     loader.AssetBundleLoadRequest?.assetBundle.Unload(false);
                 }
-                
+
                 loader.Load();
-                
+
                 ++loadedCount;
                 if (loadedCount == assetBundlePaths.Count)
                 {
@@ -122,7 +122,7 @@ namespace Rain.Core
                     loader = new AssetBundleLoader();
                     loader.Init(assetBundlePath);
                     loader.AddParentBundle(info.AssetBundlePath);
-                    
+
                     assetBundleLoaders.Add(assetBundlePath, loader);
                 }
                 if (lastLoader == null)
@@ -134,7 +134,8 @@ namespace Rain.Core
                     }
                 }
                 loader.LoadAsync(
-                    (ab) => {
+                    (ab) =>
+                    {
                         ++loadedCount;
                         lastLoader.AddDependentNames(assetBundlePath, true);
                         if (loadedCount == assetBundlePaths.Count)
@@ -193,7 +194,7 @@ namespace Rain.Core
                     lastLoader.AddDependentNames(assetBundlePath, true);
                 });
             }
-            
+
             yield return new WaitUntil(() =>
             {
                 int finishedCount = 0;
@@ -207,10 +208,10 @@ namespace Rain.Core
                 }
                 return finishedCount > endIndex;
             });
-            
+
             yield return lastLoader!.ExpandAsyncCoroutine(info.AssetPath[0], assetType, subAssetName, isLoadAll);
         }
-        
+
         /// <summary>
         /// 通过资源包路径同步卸载。
         /// </summary>
@@ -221,7 +222,8 @@ namespace Rain.Core
         public void Unload(
             string assetBundlePath,
             bool unloadAllLoadedObjects = false
-        ){
+        )
+        {
             List<AssetBundleLoader> bundleLoaders = GetRelatedLoaders(assetBundlePath);
             foreach (AssetBundleLoader loader in bundleLoaders)
             {
@@ -244,7 +246,8 @@ namespace Rain.Core
         public void Unload(
             AssetBundleLoader loader,
             bool unloadAllLoadedObjects = false
-        ){
+        )
+        {
             if (loader == null)
                 return;
 
@@ -280,7 +283,8 @@ namespace Rain.Core
         public void Unload(
             AssetBundle ab,
             bool unloadAllLoadedObjects = false
-        ){
+        )
+        {
             if (ab == null)
                 return;
 
@@ -316,7 +320,8 @@ namespace Rain.Core
             string assetBundlePath,
             bool unloadAllLoadedObjects = false,
             AssetBundleLoader.OnUnloadFinished callback = null
-        ){
+        )
+        {
             List<AssetBundleLoader> bundleLoaders = GetRelatedLoaders(assetBundlePath);
             int unloadedCount = 0;
 
@@ -324,7 +329,8 @@ namespace Rain.Core
             {
                 loader.UnloadAsync(
                     unloadAllLoadedObjects,
-                    () => {
+                    () =>
+                    {
                         ++unloadedCount;
                         if (unloadedCount == bundleLoaders.Count)
                         {
@@ -356,7 +362,8 @@ namespace Rain.Core
             AssetBundleLoader loader,
             bool unloadAllLoadedObjects = false,
             AssetBundleLoader.OnUnloadFinished callback = null
-        ){
+        )
+        {
             if (loader == null)
                 return;
 
@@ -394,7 +401,8 @@ namespace Rain.Core
             AssetBundle ab,
             bool unloadAllLoadedObjects = false,
             AssetBundleLoader.OnUnloadFinished callback = null
-        ){
+        )
+        {
             if (ab == null)
                 return;
 
@@ -540,7 +548,7 @@ namespace Rain.Core
             }
             return null;
         }
-        
+
         public Dictionary<string, Object> LoadAll(string assetBundlePath)
         {
             if (assetBundleLoaders.TryGetValue(assetBundlePath, out AssetBundleLoader loader))
@@ -549,7 +557,7 @@ namespace Rain.Core
             }
             return null;
         }
-        
+
         /// <summary>
         /// 获取所有加载器的加载进度。
         /// 正常值范围从 0 到 1。
@@ -648,7 +656,7 @@ namespace Rain.Core
             {
                 return -1f;
             }
-            
+
             float allProgress = 0f;
             foreach (AssetBundleLoader loader in bundleLoaders)
             {
@@ -877,33 +885,33 @@ namespace Rain.Core
         public static string GetAssetBundlePathWithoutAb(string assetName)
         {
             string fullPath;
-            
+
             if (GameConfig.LocalGameVersion.EnableHotUpdate &&
-                AssetBundleMap.Mappings.TryGetValue(assetName, out AssetBundleMap.AssetMapping assetMapping) &&
+                GameConfig.RemoteAssetBundleMap.ABMap.TryGetValue(assetName, out AssetMapping assetMapping) &&
                 assetMapping != null &&
                 !string.IsNullOrEmpty(assetMapping.Updated))
             {
-                fullPath = AssetBundleHelper.GetAssetBundleFullName(null, AssetBundleHelper.SourceType.HOT_UPDATE_PATH);
+                fullPath = AssetBundleHelper.GetAssetBundleFullName(null, AssetBundleHelper.SourceType.HotUpdatePath);
             }
             else if (GameConfig.LocalGameVersion.EnablePackage &&
-                     AssetBundleMap.Mappings.TryGetValue(assetName, out AssetBundleMap.AssetMapping assetMappingPackage) &&
+                     GameConfig.RemoteAssetBundleMap.ABMap.TryGetValue(assetName, out AssetMapping assetMappingPackage) &&
                      assetMappingPackage != null &&
                      !string.IsNullOrEmpty(assetMappingPackage.Package))
             {
-                fullPath = AssetBundleHelper.GetAssetBundleFullName(null, AssetBundleHelper.SourceType.PACKAGE_PATH);
+                fullPath = AssetBundleHelper.GetAssetBundleFullName(null, AssetBundleHelper.SourceType.PackagePath);
             }
             else if (AssetMgr.ForceRemoteAssetBundle)
             {
-                fullPath = AssetBundleHelper.GetAssetBundleFullName(null, AssetBundleHelper.SourceType.REMOTE_ADDRESS);
+                fullPath = AssetBundleHelper.GetAssetBundleFullName(null, AssetBundleHelper.SourceType.RemoteAddress);
             }
             else
             {
-                fullPath = AssetBundleHelper.GetAssetBundleFullName(null, AssetBundleHelper.SourceType.STREAMING_ASSETS);
+                fullPath = AssetBundleHelper.GetAssetBundleFullName(null, AssetBundleHelper.SourceType.StreamingAssets);
             }
-            
+
             return fullPath;
         }
-        
+
         /// <summary>
         /// 获取没有ab名的路径，传入abName
         /// </summary>
@@ -912,42 +920,42 @@ namespace Rain.Core
         public static string GetAssetBundlePathByAbName(string abName)
         {
             string fullPath;
-            
-            if (GameConfig.LocalGameVersion.EnableHotUpdate && File.Exists(AssetBundleHelper.GetAssetBundleFullName(abName, AssetBundleHelper.SourceType.HOT_UPDATE_PATH)))
+
+            if (GameConfig.LocalGameVersion.EnableHotUpdate && File.Exists(AssetBundleHelper.GetAssetBundleFullName(abName, AssetBundleHelper.SourceType.HotUpdatePath)))
             {
-                fullPath = AssetBundleHelper.GetAssetBundleFullName(abName, AssetBundleHelper.SourceType.HOT_UPDATE_PATH);
+                fullPath = AssetBundleHelper.GetAssetBundleFullName(abName, AssetBundleHelper.SourceType.HotUpdatePath);
             }
-            else if (GameConfig.LocalGameVersion.EnablePackage && File.Exists(AssetBundleHelper.GetAssetBundleFullName(abName, AssetBundleHelper.SourceType.PACKAGE_PATH)))
+            else if (GameConfig.LocalGameVersion.EnablePackage && File.Exists(AssetBundleHelper.GetAssetBundleFullName(abName, AssetBundleHelper.SourceType.PackagePath)))
             {
-                fullPath = AssetBundleHelper.GetAssetBundleFullName(abName, AssetBundleHelper.SourceType.PACKAGE_PATH);
+                fullPath = AssetBundleHelper.GetAssetBundleFullName(abName, AssetBundleHelper.SourceType.PackagePath);
             }
             else if (AssetMgr.ForceRemoteAssetBundle)
             {
-                fullPath = AssetBundleHelper.GetAssetBundleFullName(abName, AssetBundleHelper.SourceType.REMOTE_ADDRESS);
+                fullPath = AssetBundleHelper.GetAssetBundleFullName(abName, AssetBundleHelper.SourceType.RemoteAddress);
             }
             else
             {
-                fullPath = AssetBundleHelper.GetAssetBundleFullName(abName, AssetBundleHelper.SourceType.STREAMING_ASSETS);
+                fullPath = AssetBundleHelper.GetAssetBundleFullName(abName, AssetBundleHelper.SourceType.StreamingAssets);
             }
-            
+
             return fullPath;
         }
-        
+
         public static string GetRemoteAssetBundleCompletePath()
         {
             if (!string.IsNullOrEmpty(GameConfig.LocalGameVersion.AssetRemoteAddress))
             {
                 string remoteABFullPath
-                    = AssetBundleHelper.GetAssetBundleFullName(null, AssetBundleHelper.SourceType.REMOTE_ADDRESS);
+                    = AssetBundleHelper.GetAssetBundleFullName(null, AssetBundleHelper.SourceType.RemoteAddress);
                 return remoteABFullPath;
             }
             return null;
         }
-        
+
         private string[] GetDependenciedAssetBundles(string abName)
         {
             if (manifest == null)
-                return new string[] {};
+                return new string[] { };
             return manifest.GetAllDependencies(abName);
         }
 
@@ -957,7 +965,7 @@ namespace Rain.Core
                 return default(Hash128);
             return manifest.GetAssetBundleHash(abName);
         }
-        
+
         private List<AssetBundleLoader> GetRelatedLoaders(string assetBundlePath)
         {
             List<AssetBundleLoader> result = new List<AssetBundleLoader>();
@@ -985,7 +993,7 @@ namespace Rain.Core
         // WebGL专用异步加载AssetBundleManifest
         public IEnumerator LoadAssetBundleManifest()
         {
-            if (AssetBundleMap.Mappings.Count == 0)
+            if (GameConfig.RemoteAssetBundleMap.ABMap.Count == 0)
                 yield break;
             string manifestPath = GetAssetBundlePathByAbName(URLSetting.GetPlatformName());
             if (manifestPath == null)
@@ -1027,11 +1035,11 @@ namespace Rain.Core
                 }
             }
         }
-        
+
         public void LoadAssetBundleManifestSync()
         {
 #if !UNITY_WEBGL
-            if (AssetBundleMap.Mappings.Count == 0)
+            if (GameConfig.RemoteAssetBundleMap.ABMap.Count == 0)
                 return;
 #if UNITY_EDITOR
             if (AssetMgr.Ins.IsEditorMode)
@@ -1055,12 +1063,12 @@ namespace Rain.Core
             }
 #endif
         }
-        
+
         public void OnInit(object createParam)
         {
             LoadAssetBundleManifestSync();
         }
-        
+
         public void OnUpdate()
         {
             assetBundleLoadersList.Clear();
@@ -1077,12 +1085,12 @@ namespace Rain.Core
 
         public void OnLateUpdate()
         {
-            
+
         }
 
         public void OnFixedUpdate()
         {
-            
+
         }
 
         public void OnTermination()

@@ -21,7 +21,6 @@ public abstract class BuildToolBase
     public void DrawGUI()
     {
         // 绘制折叠面板
-        EditorGUILayout.Space(10);
         EditorGUILayout.BeginHorizontal();
         isWindowExpanded = EditorGUILayout.Foldout(isWindowExpanded, $"【{pageName}】", true, EditorStyles.foldoutHeader);
         EditorGUILayout.EndHorizontal();

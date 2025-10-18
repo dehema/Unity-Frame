@@ -12,14 +12,17 @@ namespace Rain.Core
 {
     public class HotUpdateMgr : ModuleSingletonMono<HotUpdateMgr>, IModule
     {
-        public static string Separator = "_";
-        public static string PackageSplit = "Package" + Separator;
+        public static string PackageSplit = "Package";
         public const string HotUpdateDirName = "/HotUpdate";
         public static string PackageDirName = "/Package";
 
         private Downloader hotUpdateDownloader;
 
         private Downloader packageDownloader;
+
+        public bool UseLocalConfig = false;      //是否使用本地配置
+        public string AssetBundlesConfigPath =>
+            Path.Combine(AssetBundleHelper.GetAssetBundlePath(AssetBundleHelper.SourceType.HotUpdatePath), nameof(AssetBundleMap) + ".json");
 
         public void OnInit(object createParam)
         {
@@ -57,7 +60,6 @@ namespace Rain.Core
             }
             string path = GameConfig.LocalGameVersion.AssetRemoteAddress + "/" + nameof(GameVersion) + ".json";
             Debug.Log($"初始化远程版本：{path}");
-            yield return new WaitForSeconds(5);
 
             UnityWebRequest webRequest = UnityWebRequest.Get(path);
             yield return webRequest.SendWebRequest();
@@ -82,8 +84,13 @@ namespace Rain.Core
             {
                 yield break;
             }
+            //获取到远端版本信息后再去获取资源信息
+            while (GameConfig.RemoteGameVersion == null)
+            {
+                yield return new WaitForEndOfFrame();
+            }
 
-            string path = GameConfig.LocalGameVersion.AssetRemoteAddress + HotUpdateDirName + Separator + nameof(AssetBundleMap) + ".json";
+            string path = GameConfig.LocalGameVersion.AssetRemoteAddress + HotUpdateDirName + nameof(AssetBundleMap) + ".json";
             Debug.Log($"初始化资源版本：{path}");
 
             UnityWebRequest webRequest = UnityWebRequest.Get(path);
@@ -95,7 +102,7 @@ namespace Rain.Core
             else
             {
                 string text = webRequest.downloadHandler.text;
-                Dictionary<string, AssetBundleMap.AssetMapping> assetBundleMap = JsonConvert.DeserializeObject<Dictionary<string, AssetBundleMap.AssetMapping>>(text);
+                AssetBundleMap assetBundleMap = JsonConvert.DeserializeObject<AssetBundleMap>(text);
                 GameConfig.RemoteAssetBundleMap = assetBundleMap;
             }
             webRequest.Dispose();
@@ -104,7 +111,7 @@ namespace Rain.Core
             if (File.Exists(Application.persistentDataPath + "/" + nameof(AssetBundleMap) + ".json"))
             {
                 string json = FileTools.SafeReadAllText(Application.persistentDataPath + "/" + nameof(AssetBundleMap) + ".json");
-                AssetBundleMap.Mappings = JsonConvert.DeserializeObject<Dictionary<string, AssetBundleMap.AssetMapping>>(json);
+                AssetBundleMap Mappings = JsonConvert.DeserializeObject<AssetBundleMap>(json);
             }
         }
 
@@ -130,7 +137,7 @@ namespace Rain.Core
                 return Tuple.Create(hotUpdateAssetUrl, allSize);
             }
 
-            if (GameConfig.RemoteAssetBundleMap.Count <= 0) // 热更资产Map数量
+            if (GameConfig.RemoteAssetBundleMap.ABMap.Count <= 0) // 热更资产Map数量
             {
                 return Tuple.Create(hotUpdateAssetUrl, allSize);
             }
@@ -144,11 +151,11 @@ namespace Rain.Core
 
             var resAssetBundleMappings = GameConfig.RemoteAssetBundleMap;
 
-            var assetBundleMappings = AssetBundleMap.Mappings;
+            var assetBundleMappings = GameConfig.RemoteAssetBundleMap.ABMap;
 
-            foreach (var resAssetMapping in resAssetBundleMappings)
+            foreach (var resAssetMapping in assetBundleMappings)
             {
-                assetBundleMappings.TryGetValue(resAssetMapping.Key, out AssetBundleMap.AssetMapping assetMapping);
+                assetBundleMappings.TryGetValue(resAssetMapping.Key, out AssetMapping assetMapping);
 
                 if ((assetMapping == null || resAssetMapping.Value.MD5 != assetMapping.MD5) // 新增资源，MD5不同则需更新
                     && !resAssetMapping.Value.AbName.IsNullOrEmpty() && !resAssetMapping.Value.MD5.IsNullOrEmpty())
@@ -156,7 +163,7 @@ namespace Rain.Core
                     string abPath = resAssetMapping.Value.Version + "/" + URLSetting.AssetBundlesName + "/" +
                                               URLSetting.GetPlatformName() + "/" + resAssetMapping.Value.AbName;
 
-                    string persistentAbPath = Application.persistentDataPath + HotUpdateDirName + Separator + abPath;
+                    string persistentAbPath = Application.persistentDataPath + HotUpdateDirName + abPath;
 
                     // 校验本地热更资源文件md5
                     if (File.Exists(persistentAbPath) && FileTools.CreateMd5ForFile(persistentAbPath) == resAssetMapping.Value.MD5)
@@ -236,7 +243,7 @@ namespace Rain.Core
                 {
                     int index = assetUrl.IndexOf('/');
                     string result = assetUrl.Substring(index + 1);
-                    hotUpdateDownloader.AddDownload(GameConfig.LocalGameVersion.AssetRemoteAddress + HotUpdateDirName + Separator + assetUrl,
+                    hotUpdateDownloader.AddDownload(GameConfig.LocalGameVersion.AssetRemoteAddress + HotUpdateDirName + assetUrl,
                         Application.persistentDataPath + HotUpdateDirName + "/" + result);
                     tempDownloadUrl.Add(assetUrl);
                 }
@@ -251,11 +258,10 @@ namespace Rain.Core
                         JsonConvert.SerializeObject(GameConfig.LocalGameVersion));
                 }
 
-                if (GameConfig.RemoteAssetBundleMap.Count > 0)
+                if (GameConfig.RemoteAssetBundleMap.ABMap.Count > 0)
                 {
-                    AssetBundleMap.Mappings = GameConfig.RemoteAssetBundleMap;
                     FileTools.SafeWriteAllText(Application.persistentDataPath + "/" + nameof(AssetBundleMap) + ".json",
-                        JsonConvert.SerializeObject(AssetBundleMap.Mappings));
+                        JsonConvert.SerializeObject(GameConfig.RemoteGameVersion));
                 }
 
                 AssetBundleMgr.Ins.LoadAssetBundleManifestSync();

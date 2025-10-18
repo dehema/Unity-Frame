@@ -21,19 +21,19 @@ public class BuildToolSetting : BuildToolBase
         // 版本号设置
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("版本号:", GUILayout.Width(100));
-        config.version = EditorGUILayout.TextField(config.version);
+        config.Version = EditorGUILayout.TextField(config.Version);
         EditorGUILayout.EndHorizontal();
 
         // 安装包导出目录
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("安装包导出目录:", GUILayout.Width(100));
-        config.exportPath = EditorGUILayout.TextField(config.exportPath);
+        config.PackageExportPath = EditorGUILayout.TextField(config.PackageExportPath);
         if (GUILayout.Button("浏览", GUILayout.Width(60)))
         {
-            string selectedPath = EditorUtility.OpenFolderPanel("选择导出目录", config.exportPath, "");
+            string selectedPath = EditorUtility.OpenFolderPanel("选择导出目录", config.PackageExportPath, "");
             if (!string.IsNullOrEmpty(selectedPath))
             {
-                config.exportPath = selectedPath;
+                config.PackageExportPath = selectedPath;
             }
         }
         EditorGUILayout.EndHorizontal();
@@ -41,13 +41,15 @@ public class BuildToolSetting : BuildToolBase
         //版本号设置
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("远端地址:", GUILayout.Width(100));
-        config.assetRemoteAddress = EditorGUILayout.TextField(config.assetRemoteAddress);
+        config.GameRemoteAddress = EditorGUILayout.TextField(config.GameRemoteAddress);
+        if (GUILayout.Button("打开", GUILayout.Width(60)))
+            EditorUtility.RevealInFinder(config.GameRemoteAddress + "/");
         EditorGUILayout.EndHorizontal();
 
         //目标平台
         EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("目标平台:", GUILayout.Width(80));
-        config.buildTarget = (BuildTarget)EditorGUILayout.EnumPopup(config.buildTarget);
+        EditorGUILayout.LabelField("目标平台:", GUILayout.Width(100));
+        config.BuildTarget = (BuildTarget)EditorGUILayout.EnumPopup(config.BuildTarget);
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
@@ -61,21 +63,19 @@ public class BuildToolSetting : BuildToolBase
         {
             OpenPackageExportDirectory();
         }
-
         if (GUILayout.Button("清理导出目录", GUILayout.Height(30)))
         {
             ClearPackageExportDirectory();
         }
-
         EditorGUILayout.EndHorizontal();
 
     }
 
     private void OpenPackageExportDirectory()
     {
-        if (Directory.Exists(config.exportPath))
+        if (Directory.Exists(config.PackageExportPath))
         {
-            EditorUtility.RevealInFinder(config.exportPath + "/");
+            EditorUtility.RevealInFinder(config.PackageExportPath + "/");
         }
         else
         {
@@ -85,12 +85,12 @@ public class BuildToolSetting : BuildToolBase
 
     private void ClearPackageExportDirectory()
     {
-        if (Directory.Exists(config.exportPath))
+        if (Directory.Exists(config.PackageExportPath))
         {
             if (EditorUtility.DisplayDialog("确认", "确定要清理导出目录吗？", "确定", "取消"))
             {
-                Directory.Delete(config.exportPath, true);
-                Directory.CreateDirectory(config.exportPath);
+                Directory.Delete(config.PackageExportPath, true);
+                Directory.CreateDirectory(config.PackageExportPath);
                 Debug.Log("导出目录已清理");
             }
         }
@@ -103,7 +103,7 @@ public class BuildToolSetting : BuildToolBase
     {
         GameVersion gameVersion = new GameVersion();
         gameVersion.Version = "0.0.1";
-        gameVersion.AssetRemoteAddress = config.assetRemoteAddress;
+        gameVersion.AssetRemoteAddress = config.ABRemoteAddress;
         string jsonPath = Path.Combine(Application.dataPath, "Resources", $"{nameof(GameVersion)}.json");
         string json = JsonConvert.SerializeObject(gameVersion, Formatting.Indented);
         File.WriteAllText(jsonPath, json);
@@ -116,9 +116,9 @@ public class BuildToolSetting : BuildToolBase
     private void BuildRemoteGameVersionFile()
     {
         GameVersion gameVersion = new GameVersion();
-        gameVersion.Version = config.version;
-        gameVersion.AssetRemoteAddress = config.assetRemoteAddress;
-        string jsonPath = Path.Combine(config.assetRemoteAddress, $"{nameof(GameVersion)}.json");
+        gameVersion.Version = config.Version;
+        gameVersion.AssetRemoteAddress = config.GameRemoteAddress;
+        string jsonPath = Path.Combine(config.GameRemoteAddress, $"{nameof(GameVersion)}.json");
         string json = JsonConvert.SerializeObject(gameVersion, Formatting.Indented);
         File.WriteAllText(jsonPath, json);
     }

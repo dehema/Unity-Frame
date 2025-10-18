@@ -3,9 +3,9 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.U2D;
-using System.Collections.Generic;
 using Path = System.IO.Path;
 using Newtonsoft.Json;
+using Rain.Core;
 
 /// <summary>
 /// AB包设置工具
@@ -25,15 +25,9 @@ public class BuildToolAB : BuildToolBase
         // AB包输出路径设置
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("AB包输出路径:", GUILayout.Width(100));
-        config.abOutputPath = EditorGUILayout.TextField(config.abOutputPath);
-        if (GUILayout.Button("选择", GUILayout.Width(60)))
-        {
-            string path = EditorUtility.OpenFolderPanel("选择AB包输出路径", config.abOutputPath, "");
-            if (!string.IsNullOrEmpty(path))
-            {
-                config.abOutputPath = path;
-            }
-        }
+        EditorGUILayout.LabelField(config.ABOutputPath);
+        if (GUILayout.Button("打开", GUILayout.Width(60)))
+            OpenAssetBundleDirectory();
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.Space(5);
@@ -52,8 +46,6 @@ public class BuildToolAB : BuildToolBase
         }
         if (GUILayout.Button("上传AB", GUILayout.Height(30)))
             UploadAssetBundles();
-        if (GUILayout.Button("打开打包目录", GUILayout.Height(30)))
-            OpenAssetBundleDirectory();
         if (GUILayout.Button("打开上传地址", GUILayout.Height(30)))
             OpenOnlineAssetBundleDirectory();
 
@@ -62,7 +54,7 @@ public class BuildToolAB : BuildToolBase
         EditorGUILayout.Space(5);
 
         // 自动打包选项
-        config.autoBuildAB = EditorGUILayout.Toggle("自动打包AB包", config.autoBuildAB);
+        config.AutoBuildAB = EditorGUILayout.Toggle("自动打包AB包", config.AutoBuildAB);
 
         // 显示当前AB包状态
         DrawABStatusInfo();
@@ -290,35 +282,35 @@ public class BuildToolAB : BuildToolBase
     {
         try
         {
-            if (string.IsNullOrEmpty(config.abOutputPath))
+            if (string.IsNullOrEmpty(config.ABOutputPath))
             {
                 EditorUtility.DisplayDialog("错误", "请先设置AB包输出路径", "确定");
                 return;
             }
 
             // 确保输出目录存在
-            if (!Directory.Exists(config.abOutputPath))
+            if (!Directory.Exists(config.ABOutputPath))
             {
-                Directory.CreateDirectory(config.abOutputPath);
+                Directory.CreateDirectory(config.ABOutputPath);
             }
 
             //删除目录下的所有文件和子文件夹
-            ClearDirectory(config.abOutputPath);
+            ClearDirectory(config.ABOutputPath);
 
 
             EditorUtility.DisplayProgressBar("打包AB包", "正在构建AssetBundle...", 0f);
 
             // 构建AssetBundle
-            BuildPipeline.BuildAssetBundles(config.abOutputPath,
+            BuildPipeline.BuildAssetBundles(config.ABOutputPath,
                 BuildAssetBundleOptions.None,
                 EditorUserBuildSettings.activeBuildTarget);
 
             EditorUtility.ClearProgressBar();
             AssetDatabase.Refresh();
 
-            Debug.Log($"AB包打包完成，输出目录: {config.abOutputPath}");
-            EditorUtility.RevealInFinder(config.abOutputPath + "/");
-            Debug.Log($"打包完成，AB包已打包到:\n{config.abOutputPath}");
+            Debug.Log($"AB包打包完成，输出目录: {config.ABOutputPath}");
+            EditorUtility.RevealInFinder(config.ABOutputPath + "/");
+            Debug.Log($"打包完成，AB包已打包到:\n{config.ABOutputPath}");
         }
         catch (Exception e)
         {
@@ -332,20 +324,26 @@ public class BuildToolAB : BuildToolBase
     /// </summary>
     void CreateABFileList()
     {
-        BuildToolABFileList fileList = new BuildToolABFileList();
-        fileList.version = config.version;
+        AssetBundleMap assetBundleMap = new AssetBundleMap();
+        assetBundleMap.Version = config.Version;
         // 获取AB包输出目录下的所有文件
-        string[] allFiles = Directory.GetFiles(config.abOutputPath, "*", SearchOption.AllDirectories);
+        string[] allFiles = Directory.GetFiles(config.ABOutputPath, "*", SearchOption.AllDirectories);
         foreach (string filePath in allFiles)
         {
             try
             {
-                string relativePath = Path.GetRelativePath(config.abOutputPath, filePath);
+                string relativePath = Path.GetRelativePath(config.ABOutputPath, filePath);
                 if (relativePath.EndsWith(".manifest"))
                     continue;
                 string md5 = CalculateFileMD5(filePath);
-                fileList.fileNames[relativePath] = md5;
-                //Debug.Log($"添加文件到列表: {relativePath} | MD5: {md5}");
+
+                AssetMapping assetMapping = new AssetMapping();
+                assetMapping.AbName = relativePath;
+                assetMapping.AssetPath = new string[] { relativePath };
+                assetMapping.Version = config.Version;
+                assetMapping.MD5 = md5;
+                assetMapping.Size = new FileInfo(filePath).Length.ToString();
+                assetBundleMap.ABMap[relativePath] = assetMapping;
             }
             catch (Exception e)
             {
@@ -353,8 +351,8 @@ public class BuildToolAB : BuildToolBase
             }
         }
         // 保存文件列表到JSON
-        string jsonPath = Path.Combine(config.abOutputPath, "ABFileList.json");
-        string json = JsonConvert.SerializeObject(fileList, Formatting.Indented);
+        string jsonPath = Path.Combine(config.ABOutputPath, $"{nameof(AssetBundleMap)}.json");
+        string json = JsonConvert.SerializeObject(assetBundleMap, Formatting.Indented);
         File.WriteAllText(jsonPath, json);
     }
 
@@ -429,32 +427,30 @@ public class BuildToolAB : BuildToolBase
     /// </summary>
     public void UploadAssetBundles()
     {
-        string targetFolderPath = Path.Combine(config.ABRemoteAddress);
-
         // 创建目标文件夹
         EditorUtility.DisplayProgressBar("上传AB包", "正在创建目标文件夹...", 0f);
-        if (!Directory.Exists(targetFolderPath))
-            Directory.CreateDirectory(targetFolderPath);
+        if (!Directory.Exists(config.ABRemoteAddress))
+            Directory.CreateDirectory(config.ABRemoteAddress);
 
         EditorUtility.DisplayProgressBar("上传AB包", "正在复制文件...", 0.2f);
 
         // 复制所有文件和文件夹
         int copiedFiles = 0;
-        int totalFiles = Directory.GetFiles(config.abOutputPath, "*", SearchOption.AllDirectories).Length;
         int currentFile = 0;
 
         // 复制所有文件
-        string[] allFiles = Directory.GetFiles(config.abOutputPath, "*", SearchOption.AllDirectories);
+        string[] allFiles = Directory.GetFiles(config.ABOutputPath, "*", SearchOption.AllDirectories);
+        int totalFileNums = allFiles.Length;
         foreach (string sourceFile in allFiles)
         {
             currentFile++;
             EditorUtility.DisplayProgressBar("上传AB包",
                 $"正在复制: {Path.GetFileName(sourceFile)}",
-                0.2f + (0.8f * currentFile / totalFiles));
+                0.2f + (0.8f * currentFile / totalFileNums));
 
             // 计算相对路径
-            string relativePath = Path.GetRelativePath(config.abOutputPath, sourceFile);
-            string targetFile = Path.Combine(targetFolderPath, relativePath);
+            string relativePath = Path.GetRelativePath(config.ABOutputPath, sourceFile);
+            string targetFile = Path.Combine(config.ABRemoteAddress, relativePath);
 
             // 确保目标目录存在
             string targetDir = Path.GetDirectoryName(targetFile);
@@ -471,11 +467,11 @@ public class BuildToolAB : BuildToolBase
 
         EditorUtility.ClearProgressBar();
 
-        Debug.Log($"AB包上传完成 - 共复制 {copiedFiles} 个文件到: {targetFolderPath}");
+        Debug.Log($"AB包上传完成 - 共复制 {copiedFiles} 个文件到: {config.ABRemoteAddress}");
         //EditorUtility.DisplayDialog("上传完成", $"AB包已上传到:\n{targetFolderPath}\n\n共复制 {copiedFiles} 个文件", "确定");
 
         // 打开目标文件夹
-        EditorUtility.RevealInFinder(targetFolderPath + "/");
+        EditorUtility.RevealInFinder(config.ABRemoteAddress + "/");
     }
 
     /// <summary>
@@ -483,19 +479,19 @@ public class BuildToolAB : BuildToolBase
     /// </summary>
     public void OpenAssetBundleDirectory()
     {
-        if (string.IsNullOrEmpty(config.abOutputPath))
+        if (string.IsNullOrEmpty(config.ABOutputPath))
         {
             EditorUtility.DisplayDialog("错误", "请先设置AB包输出路径", "确定");
             return;
         }
 
-        if (!Directory.Exists(config.abOutputPath))
+        if (!Directory.Exists(config.ABOutputPath))
         {
             EditorUtility.DisplayDialog("提示", "AB包输出目录不存在", "确定");
             return;
         }
 
-        EditorUtility.RevealInFinder(config.abOutputPath + "/");
+        EditorUtility.RevealInFinder(config.ABOutputPath + "/");
     }
 
     /// <summary>
@@ -503,7 +499,7 @@ public class BuildToolAB : BuildToolBase
     /// </summary>
     public bool IsAutoBuildABEnabled()
     {
-        return config.autoBuildAB;
+        return config.AutoBuildAB;
     }
 
     /// <summary>
@@ -545,23 +541,4 @@ public class BuildToolAB : BuildToolBase
     {
         EditorUtility.RevealInFinder(config.ABRemoteAddress + "/");
     }
-}
-
-/// <summary>
-/// AB包文件列表
-/// </summary>
-public class BuildToolABFileList
-{
-    /// <summary>
-    /// 版本
-    /// </summary>
-    public string version;
-    /// <summary>
-    /// 文件名和MD5
-    /// </summary>
-    public Dictionary<string, string> fileNames = new Dictionary<string, string>();
-    /// <summary>
-    /// 生成日期
-    /// </summary>
-    public string createTime = DateTime.Now.ToString("G");
 }

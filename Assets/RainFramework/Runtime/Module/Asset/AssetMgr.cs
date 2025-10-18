@@ -1710,7 +1710,7 @@ namespace Rain.Core
 
         private AssetInfo GetAssetInfoFromAssetBundle(string assetName, bool remote = false, bool showTip = false)
         {
-            if (AssetBundleMap.Mappings.TryGetValue(assetName, out AssetBundleMap.AssetMapping assetmpping))
+            if (GameConfig.RemoteAssetBundleMap.ABMap.TryGetValue(assetName, out AssetMapping assetmpping))
             {
                 if (remote || ForceRemoteAssetBundle)
                 {
@@ -1996,7 +1996,7 @@ namespace Rain.Core
 
         public void OnInit(object createParam)
         {
-            AssetBundleMap.Mappings = JsonConvert.DeserializeObject<Dictionary<string, AssetBundleMap.AssetMapping>>(Resources.Load<TextAsset>(nameof(AssetBundleMap)).ToString());
+            GameConfig.RemoteAssetBundleMap.ABMap = JsonConvert.DeserializeObject<Dictionary<string, AssetMapping>>(Resources.Load<TextAsset>(nameof(AssetBundleMap)).ToString());
             ResourceMap.Mappings = JsonConvert.DeserializeObject<Dictionary<string, string[]>>(Resources.Load<TextAsset>(nameof(ResourceMap)).ToString());
             _assetBundleManager = ModuleCenter.CreateModule<AssetBundleMgr>();
             _resourcesManager = ModuleCenter.CreateModule<ResourcesMgr>();

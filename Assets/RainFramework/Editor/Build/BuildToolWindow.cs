@@ -101,13 +101,13 @@ public class BuildToolWindow : EditorWindow
             EditorUtility.DisplayProgressBar("打包中", "正在准备打包...", 0f);
 
             // 创建导出目录
-            if (!Directory.Exists(config.exportPath))
+            if (!Directory.Exists(config.PackageExportPath))
             {
-                Directory.CreateDirectory(config.exportPath);
+                Directory.CreateDirectory(config.PackageExportPath);
             }
 
             // 自动打包AB包（如果启用）
-            if (config.autoBuildAB)
+            if (config.AutoBuildAB)
             {
                 EditorUtility.DisplayProgressBar("打包中", "自动打包AB包...", 0.25f);
                 // TODO: 调用AB包打包功能
@@ -118,7 +118,7 @@ public class BuildToolWindow : EditorWindow
             BuildPlayer();
 
             EditorUtility.ClearProgressBar();
-            EditorUtility.DisplayDialog("打包完成", $"打包完成！\n导出目录: {config.exportPath}", "确定");
+            EditorUtility.DisplayDialog("打包完成", $"打包完成！\n导出目录: {config.PackageExportPath}", "确定");
         }
         catch (Exception e)
         {
@@ -136,8 +136,8 @@ public class BuildToolWindow : EditorWindow
         {
             scenes = scenes,
             locationPathName = buildPath,
-            target = config.buildTarget,
-            options = config.developmentBuild ? BuildOptions.Development : BuildOptions.None
+            target = config.BuildTarget,
+            options = config.DevelopmentBuild ? BuildOptions.Development : BuildOptions.None
         };
 
         BuildPipeline.BuildPlayer(buildPlayerOptions);
@@ -156,19 +156,19 @@ public class BuildToolWindow : EditorWindow
     private string GetBuildPath()
     {
         string fileName = GetBuildFileName();
-        return Path.Combine(config.exportPath, fileName);
+        return Path.Combine(config.PackageExportPath, fileName);
     }
 
     private string GetBuildFileName()
     {
-        string platform = config.buildTarget.ToString();
+        string platform = config.BuildTarget.ToString();
         string extension = GetBuildExtension();
         return $"{Application.productName}_{platform}_{DateTime.Now:yyyyMMdd_HHmmss}{extension}";
     }
 
     private string GetBuildExtension()
     {
-        switch (config.buildTarget)
+        switch (config.BuildTarget)
         {
             case BuildTarget.StandaloneWindows:
             case BuildTarget.StandaloneWindows64:

@@ -1,6 +1,6 @@
 {
   "Version": "0.0.1",
-  "AssetRemoteAddress": "E:\\Program Files\\nginx-1.28.0\\server\\rain",
+  "AssetRemoteAddress": "E:\\Program Files\\nginx-1.28.0\\GameServer\\rain/HotUpdate/AssetBundles/Android",
   "EnableHotUpdate": true,
   "HotUpdateVersion": null,
   "EnablePackage": false,

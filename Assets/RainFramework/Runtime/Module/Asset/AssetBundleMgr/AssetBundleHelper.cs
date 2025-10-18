@@ -57,11 +57,11 @@ namespace Rain.Core
         /// </summary>
         public enum SourceType : byte
         {
-            NONE,
-            STREAMING_ASSETS,
-            HOT_UPDATE_PATH,
-            PACKAGE_PATH,
-            REMOTE_ADDRESS
+            None,
+            StreamingAssets,
+            HotUpdatePath,
+            PackagePath,
+            RemoteAddress
         }
 
         /// <summary>
@@ -69,21 +69,21 @@ namespace Rain.Core
         /// </summary>
         /// <param name="type">源类型。</param>
         /// <returns>正确的路径。</returns>
-        public static string GetAssetBundlePath(SourceType type = SourceType.STREAMING_ASSETS)
+        public static string GetAssetBundlePath(SourceType type = SourceType.StreamingAssets)
         {
             string assetBundlePath;
             switch (type)
             {
-                case SourceType.STREAMING_ASSETS:
+                case SourceType.StreamingAssets:
                     assetBundlePath = GetStreamingAssetsPath();
                     break;
-                case SourceType.HOT_UPDATE_PATH:
+                case SourceType.HotUpdatePath:
                     assetBundlePath = GetHotUpdatePath();
                     break;
-                case SourceType.PACKAGE_PATH:
+                case SourceType.PackagePath:
                     assetBundlePath = GetPackagePath();
                     break;
-                case SourceType.REMOTE_ADDRESS:
+                case SourceType.RemoteAddress:
                     if (string.IsNullOrEmpty(GameConfig.LocalGameVersion.AssetRemoteAddress))
                     {
                         Debug.LogError("加载远程包需要配置远程地址：AssetRemoteAddress");
@@ -102,7 +102,7 @@ namespace Rain.Core
         /// 根据环境获取资产捆绑清单文件的路径。
         /// </summary>
         /// <returns>正确的路径。</returns>
-        public static string GetAssetBundleManifestPath(SourceType type = SourceType.STREAMING_ASSETS)
+        public static string GetAssetBundleManifestPath(SourceType type = SourceType.StreamingAssets)
         {
             string platformAssetBundlePath = GetAssetBundlePath(type);
             if (platformAssetBundlePath == null)
@@ -116,7 +116,7 @@ namespace Rain.Core
         /// 根据环境获取带后缀的资产捆绑清单文件的路径。
         /// </summary>
         /// <returns>正确的路径。</returns>
-        public static string GetAssetBundleManifestPathWithSuffix(SourceType type = SourceType.STREAMING_ASSETS)
+        public static string GetAssetBundleManifestPathWithSuffix(SourceType type = SourceType.StreamingAssets)
         {
             string manifestPath = GetAssetBundleManifestPath(type);
             if (manifestPath == null)
@@ -131,7 +131,7 @@ namespace Rain.Core
         /// <param name="assetBundleFileName">资产捆绑包的文件名。</param>
         /// <param name="type">源类型。</param>
         /// <returns>正确的路径。</returns>
-        public static string GetAssetBundleFullName(string assetBundleFileName = null, SourceType type = SourceType.STREAMING_ASSETS)
+        public static string GetAssetBundleFullName(string assetBundleFileName = null, SourceType type = SourceType.StreamingAssets)
         {
             string assetBundlePath = GetAssetBundlePath(type);
             if (assetBundlePath == null)
@@ -153,23 +153,23 @@ namespace Rain.Core
 
             if (assetBundleFullName.Contains(streamingAssetsPath))
             {
-                return SourceType.STREAMING_ASSETS;
+                return SourceType.StreamingAssets;
             }
             else if (assetBundleFullName.Contains(hotUpdatePath))
             {
-                return SourceType.HOT_UPDATE_PATH;
+                return SourceType.HotUpdatePath;
             }
             else if (assetBundleFullName.Contains(packagePath))
             {
-                return SourceType.PACKAGE_PATH;
+                return SourceType.PackagePath;
             }
             else if (FileTools.IsLegalHTTPURI(assetBundleFullName))
             {
-                return SourceType.REMOTE_ADDRESS;
+                return SourceType.RemoteAddress;
             }
             else
             {
-                return SourceType.NONE;
+                return SourceType.None;
             }
         }
     }

@@ -31,12 +31,21 @@ namespace Rain.Core
 
     public class GameConfig
     {
+        /// <summary>
+        /// 本地版本信息
+        /// </summary>
         public static GameVersion LocalGameVersion = new GameVersion();
 
+        /// <summary>
+        /// 远程版本信息
+        /// </summary>
         public static GameVersion RemoteGameVersion = new GameVersion();
 
-        public static Dictionary<string, AssetBundleMap.AssetMapping> RemoteAssetBundleMap =
-            new Dictionary<string, AssetBundleMap.AssetMapping>();
+        /// <summary>
+        /// AB包映射表
+        /// </summary>
+        public static AssetBundleMap RemoteAssetBundleMap = new AssetBundleMap();
+
         /// <summary>
         /// 判断版本号大小，1为version1大，-1为version2大，0为一样大
         /// </summary>
