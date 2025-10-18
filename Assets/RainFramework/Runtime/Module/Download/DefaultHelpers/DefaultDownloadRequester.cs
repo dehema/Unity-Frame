@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using UnityEngine;
 using UnityEngine.Networking;
 
 namespace Rain.Core
@@ -59,13 +60,13 @@ namespace Rain.Core
                     }
                     else
                     {
-                        RLog.LogError("Content-Length 标头找不到或无效: " + request.error);
+                        Debug.LogError("Content-Length 标头找不到或无效: " + request.error);
                         callback?.Invoke(-1);
                     }
                 }
                 else
                 {
-                    RLog.LogError("检索文件大小时出错: " + request.error);
+                    Debug.LogError("检索文件大小时出错: " + request.error);
                     callback?.Invoke(-1);
                 }
             }

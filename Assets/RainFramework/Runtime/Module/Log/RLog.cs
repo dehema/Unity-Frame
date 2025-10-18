@@ -41,29 +41,29 @@ namespace Rain.Core
             Debug.unityLogger.filterLogType = LogType.Error;
         }
 
-        public static void Log(string s, Object context)
-        {
-            sb.Clear();
-            sb.Append(s);
+        //public static void Log(string s, Object context)
+        //{
+        //    sb.Clear();
+        //    sb.Append(s);
 
-            Debug.Log(sb.ToString(), context);
-        }
+        //    Debug.Log(sb.ToString(), context);
+        //}
 
-        public static void Log(string s, params object[] p)
-        {
-            sb.Clear();
-            if (p != null && p.Length > 0)
-                sb.AppendFormat(s, p);
-            else
-                sb.Append(s);
+        //public static void Log(string s, params object[] p)
+        //{
+        //    sb.Clear();
+        //    if (p != null && p.Length > 0)
+        //        sb.AppendFormat(s, p);
+        //    else
+        //        sb.Append(s);
 
-            Debug.Log(sb.ToString());
-        }
+        //    Debug.Log(sb.ToString());
+        //}
 
-        public static void Log(object o)
-        {
-            Debug.Log(o);
-        }
+        //public static void Log(object o)
+        //{
+        //    Debug.Log(o);
+        //}
 
         public static void LogUtil(string s, Object context)
         {
@@ -276,35 +276,35 @@ namespace Rain.Core
             Debug.LogAssertion(o);
         }
 
-        public static void LogWarning(string s, Object context)
-        {
-            Debug.LogWarning(s, context);
-        }
+        //public static void LogWarning(string s, Object context)
+        //{
+        //    Debug.LogWarning(s, context);
+        //}
 
-        public static void LogWarning(string s, params object[] p)
-        {
-            Debug.LogWarning((p != null && p.Length > 0 ? string.Format(s, p) : s));
-        }
+        //public static void LogWarning(string s, params object[] p)
+        //{
+        //    Debug.LogWarning((p != null && p.Length > 0 ? string.Format(s, p) : s));
+        //}
 
-        public static void LogWarning(object o)
-        {
-            Debug.LogWarning(o);
-        }
+        //public static void LogWarning(object o)
+        //{
+        //    Debug.LogWarning(o);
+        //}
 
-        public static void LogError(string s, Object context)
-        {
-            Debug.LogError(s, context);
-        }
+        //public static void LogError(string s, Object context)
+        //{
+        //    Debug.LogError(s, context);
+        //}
 
-        public static void LogError(string s, params object[] p)
-        {
-            Debug.LogError((p != null && p.Length > 0 ? string.Format(s, p) : s));
-        }
+        //public static void LogError(string s, params object[] p)
+        //{
+        //    Debug.LogError((p != null && p.Length > 0 ? string.Format(s, p) : s));
+        //}
 
-        public static void LogError(object o)
-        {
-            Debug.LogError(o);
-        }
+        //public static void LogError(object o)
+        //{
+        //    Debug.LogError(o);
+        //}
     }
 
 }

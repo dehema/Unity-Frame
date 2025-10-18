@@ -450,7 +450,7 @@ namespace Rain.Core
             }
             else
             {
-                RLog.LogError("初始化Input模块参数有误！");
+                Debug.LogError("初始化Input模块参数有误！");
             }
         }
         

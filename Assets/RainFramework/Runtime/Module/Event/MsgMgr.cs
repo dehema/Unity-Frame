@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Rain.Core
 {
@@ -18,7 +19,7 @@ namespace Rain.Core
         // 输出消息死循环的函数
         private void MessageLoop(string debugInfo)
         {
-            RLog.LogError("消息死循环：{0}", debugInfo);
+            Debug.LogError($"消息死循环：{debugInfo}");
         }
 
         // 输出不存在事件处理函数的警告

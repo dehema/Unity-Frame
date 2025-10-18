@@ -232,7 +232,7 @@ namespace Rain.Core
                     {
                         assetBundleLoadState = LoaderState.FINISHED;
                         string errMsg = string.Format("找不到远程资产捆绑包 {0} ，请检查", assetBundlePath);
-                        RLog.LogError(errMsg);
+                        Debug.LogError(errMsg);
                     }
                 }
                 else
@@ -243,7 +243,7 @@ namespace Rain.Core
                     {
                         assetBundleLoadState = LoaderState.FINISHED;
                         string errMsg = string.Format("找不到本地资产捆绑包 {0} ，请检查", assetBundlePath);
-                        RLog.LogError(errMsg);
+                        Debug.LogError(errMsg);
                     }
                 }
             }
@@ -551,7 +551,7 @@ namespace Rain.Core
                 }
                 else
                 {
-                    RLog.LogError("与输入的资产类型不一致：" + assetPath);
+                    Debug.LogError("与输入的资产类型不一致：" + assetPath);
                     return null;
                 }
             }
@@ -628,7 +628,7 @@ namespace Rain.Core
                         }
                         else
                         {
-                            RLog.LogError("与输入的资产类型不一致：" + assetPath);
+                            Debug.LogError("与输入的资产类型不一致：" + assetPath);
                             End();
                         }
                     }
@@ -660,7 +660,7 @@ namespace Rain.Core
                                 {
                                     assetBundleLoadState = LoaderState.FINISHED;
                                     string errMsg = string.Format("无法加载本地资产捆绑包 {0} ", assetBundlePath);
-                                    RLog.LogError(errMsg);
+                                    Debug.LogError(errMsg);
                                 }
                                 else
                                 {
@@ -680,7 +680,7 @@ namespace Rain.Core
                                 {
                                     assetBundleLoadState = LoaderState.FINISHED;
                                     string errMsg = string.Format("无法加载远程资产捆绑包 {0} ，请重试", assetBundlePath);
-                                    RLog.LogError(errMsg);
+                                    Debug.LogError(errMsg);
                                 }
                                 else
                                 {
@@ -984,7 +984,7 @@ namespace Rain.Core
             if (assetPath == null ||
                 obj == null)
             {
-                RLog.LogError("加载资产对象Object为空，请检查类型和路径：" + assetPath);
+                Debug.LogError("加载资产对象Object为空，请检查类型和路径：" + assetPath);
                 return;
             }
 

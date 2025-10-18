@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Rain.Core
 {
@@ -102,7 +103,7 @@ namespace Rain.Core
             {
                 return _downloader;
             }
-            RLog.LogError("已存在同名的下载器！");
+            Debug.LogError("已存在同名的下载器！");
             return null;
         }
         

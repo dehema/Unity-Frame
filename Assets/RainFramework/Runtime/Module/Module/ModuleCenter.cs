@@ -342,7 +342,7 @@ namespace Rain.Core
                     return _coms[i].Module as T;
             }
 
-            RLog.LogError($"未找到游戏模块 {type}");
+            Debug.LogError($"未找到游戏模块 {type}");
             return null;
         }
 
@@ -367,7 +367,7 @@ namespace Rain.Core
         public static MonoBehaviour GetBehaviour()
         {
             if (_behaviour == null)
-                RLog.LogError($"{nameof(ModuleCenter)} 未初始化。使用 ModuleCenter.Initialize");
+                Debug.LogError($"{nameof(ModuleCenter)} 未初始化。使用 ModuleCenter.Initialize");
             return _behaviour;
         }
     }

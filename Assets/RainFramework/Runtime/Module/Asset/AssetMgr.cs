@@ -168,7 +168,7 @@ namespace Rain.Core
                 }
                 else
                 {
-                    RLog.LogError("AssetBundle和Resource都找不到指定资源可用的索引：" + assetName);
+                    Debug.LogError("AssetBundle和Resource都找不到指定资源可用的索引：" + assetName);
                     return new AssetInfo();
                 }
             }
@@ -186,7 +186,7 @@ namespace Rain.Core
                 }
                 else
                 {
-                    RLog.LogError("AssetBundle找不到指定远程资源可用的索引：" + assetName);
+                    Debug.LogError("AssetBundle找不到指定远程资源可用的索引：" + assetName);
                     return new AssetInfo();
                 }
             }
@@ -242,7 +242,7 @@ namespace Rain.Core
                 {
                     return o;
                 }
-                RLog.LogError("获取不到资产或者类型错误！");
+                Debug.LogError("获取不到资产或者类型错误！");
             }
 
             return null;
@@ -297,7 +297,7 @@ namespace Rain.Core
                 {
                     return o;
                 }
-                RLog.LogError("获取不到资产或者类型错误！");
+                Debug.LogError("获取不到资产或者类型错误！");
             }
 
             return null;
@@ -350,7 +350,7 @@ namespace Rain.Core
                 {
                     return o;
                 }
-                RLog.LogError("获取不到资产！");
+                Debug.LogError("获取不到资产！");
             }
 
             return null;
@@ -1703,7 +1703,7 @@ namespace Rain.Core
 
             if (showTip)
             {
-                RLog.LogError("Resource找不到指定资源可用的索引：" + assetName);
+                Debug.LogError("Resource找不到指定资源可用的索引：" + assetName);
             }
             return new AssetInfo(AssetTypeEnum.RESOURCE, assetName);
         }
@@ -1724,7 +1724,7 @@ namespace Rain.Core
 
             if (showTip)
             {
-                RLog.LogError("AssetBundle找不到指定资源可用的索引：" + assetName);
+                Debug.LogError("AssetBundle找不到指定资源可用的索引：" + assetName);
             }
             return new AssetInfo(AssetTypeEnum.ASSET_BUNDLE, assetName);
         }

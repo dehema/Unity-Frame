@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Rain.Core
 {
@@ -86,7 +87,7 @@ namespace Rain.Core
             {
                 if (typeof(T) != _mReferenceType)
                 {
-                    RLog.LogError("Type is invalid.");
+                    Debug.LogError("Type is invalid.");
                     return null;
                 }
 
@@ -127,7 +128,7 @@ namespace Rain.Core
                 {
                     if (_mEnableStrictCheck && _mReferences.Contains(reference))
                     {
-                        RLog.LogError("The reference has been released.");
+                        Debug.LogError("The reference has been released.");
                         return;
                     }
 
@@ -142,7 +143,7 @@ namespace Rain.Core
             {
                 if (typeof(T) != _mReferenceType)
                 {
-                    RLog.LogError("Type is invalid.");
+                    Debug.LogError("Type is invalid.");
                     return;
                 }
 

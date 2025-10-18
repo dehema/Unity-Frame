@@ -86,12 +86,12 @@ namespace Rain.Core
                 case SourceType.REMOTE_ADDRESS:
                     if (string.IsNullOrEmpty(GameConfig.LocalGameVersion.AssetRemoteAddress))
                     {
-                        RLog.LogError("加载远程包需要配置远程地址：AssetRemoteAddress");
+                        Debug.LogError("加载远程包需要配置远程地址：AssetRemoteAddress");
                     }
                     assetBundlePath = GetRemoteAddress();
                     break;
                 default:
-                    RLog.LogError("AssetBundle的源类型不能为空");
+                    Debug.LogError("AssetBundle的源类型不能为空");
                     return null;
             }
             

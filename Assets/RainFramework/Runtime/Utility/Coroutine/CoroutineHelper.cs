@@ -394,7 +394,7 @@ namespace Rain.Core
                     }
                     catch (Exception e)
                     {
-                        RLog.LogError(e);
+                        Debug.LogError(e);
                     }
 
                     removalDelayTaskList.Add(task);
@@ -435,7 +435,7 @@ namespace Rain.Core
                     }
                     catch (Exception e)
                     {
-                        RLog.LogError(e);
+                        Debug.LogError(e);
                         triggered = true;
                     }
                 }
@@ -448,7 +448,7 @@ namespace Rain.Core
                     }
                     catch (Exception e)
                     {
-                        RLog.LogError(e);
+                        Debug.LogError(e);
                     }
 
                     removalConditionTaskList.Add(task);

@@ -100,18 +100,18 @@ namespace Rain.UI
                 
                 if (e.Cancelled == true)
                 {
-                    RLog.Log(ConsoleViewConst.SEND_MAIL_CANCELED);
+                    Debug.Log(ConsoleViewConst.SEND_MAIL_CANCELED);
                     Popup.Ins.ShowPopup(ConsoleViewConst.SEND_MAIL_CANCELED);
                 }
                 else if (e.Error != null)
                 {
                     string message = string.Format(ConsoleViewConst.SEND_MAIL_FAILED, e.Error.Message);
-                    RLog.LogError(message);
+                    Debug.LogError(message);
                     Popup.Ins.ShowPopup(message, "ERROR");
                 }
                 else
                 {
-                    RLog.Log(ConsoleViewConst.SEND_MAIL_SUCCEEDED);
+                    Debug.Log(ConsoleViewConst.SEND_MAIL_SUCCEEDED);
                     Popup.Ins.ShowPopup(ConsoleViewConst.SEND_MAIL_SUCCEEDED);
                 }
                 

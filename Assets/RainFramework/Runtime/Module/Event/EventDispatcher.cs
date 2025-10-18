@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Rain.Core;
+using UnityEngine;
 
 namespace Rain.UI
 {
@@ -101,7 +102,7 @@ namespace Rain.UI
                     HashSet<IEventDataBase> ebs = events[eventId];
                     if (ebs.Count < 0)
                     {
-                        RLog.Log("不可能为零");
+                        Debug.Log("不可能为零");
                         return;
                     }
 

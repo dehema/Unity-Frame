@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Rain.Core
 {
@@ -103,7 +104,7 @@ namespace Rain.Core
         {
             if (reference == null)
             {
-                RLog.LogError("Reference is invalid.");
+                Debug.LogError("Reference is invalid.");
                 return;
             }
 
@@ -182,19 +183,19 @@ namespace Rain.Core
 
             if (referenceType == null)
             {
-                RLog.LogError("Reference type is invalid.");
+                Debug.LogError("Reference type is invalid.");
                 return;
             }
 
             if (!referenceType.IsClass || referenceType.IsAbstract)
             {
-                RLog.LogError("Reference type is not a non-abstract class type.");
+                Debug.LogError("Reference type is not a non-abstract class type.");
                 return;
             }
 
             if (!typeof(IReference).IsAssignableFrom(referenceType))
             {
-                RLog.LogError(string.Format("Reference type '{0}' is invalid.", referenceType.FullName));
+                Debug.LogError(string.Format("Reference type '{0}' is invalid.", referenceType.FullName));
                 return;
             }
         }
@@ -203,7 +204,7 @@ namespace Rain.Core
         {
             if (referenceType == null)
             {
-                RLog.LogError("ReferenceType is invalid.");
+                Debug.LogError("ReferenceType is invalid.");
                 return null;
             }
 

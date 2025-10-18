@@ -83,7 +83,7 @@ namespace Rain.Core
             catch (Exception e)
             {
                 string message = string.Format("无法发送uri：{0} 的文件下载请求。异常：{1}", uri, e.Message);
-                RLog.LogError(message);
+                Debug.LogError(message);
                 LoadFail();
             }
         }
@@ -106,7 +106,7 @@ namespace Rain.Core
             catch (Exception e)
             {
                 string message = string.Format("无法为uri：{0} 资产捆绑包下载请求。异常：{1}", uri, e.Message);
-                RLog.LogError(message);
+                Debug.LogError(message);
                 LoadFail();
             }
         }
@@ -115,7 +115,7 @@ namespace Rain.Core
         {
             if (!FileTools.IsLegalURI(uri))
             {
-                RLog.LogError($"无法为uri：{uri}资产捆绑包下载请求。无效的URI。");
+                Debug.LogError($"无法为uri：{uri}资产捆绑包下载请求。无效的URI。");
                 LoadFail();
                 yield break;
             }
@@ -129,7 +129,7 @@ namespace Rain.Core
             }
             catch (Exception e)
             {
-                RLog.LogError($"无法创建 UnityWebRequest，URI：{uri}。异常：{e.Message}");
+                Debug.LogError($"无法创建 UnityWebRequest，URI：{uri}。异常：{e.Message}");
                 LoadFail();
                 yield break;
             }
@@ -139,7 +139,7 @@ namespace Rain.Core
             
             if (uwr.result != UnityWebRequest.Result.Success)
             {
-                RLog.LogError($"无法对 URI：{uri} 发起资源包下载请求。错误：{uwr.error}");
+                Debug.LogError($"无法对 URI：{uri} 发起资源包下载请求。错误：{uwr.error}");
                 LoadFail();
             }
         }

@@ -290,7 +290,7 @@ namespace Rain.Core
                         }
                         else
                         {
-                            RLog.LogError("与输入的资产类型不一致：" + resourcePath);
+                            Debug.LogError("与输入的资产类型不一致：" + resourcePath);
                             End();
                         }
                     };
@@ -477,7 +477,7 @@ namespace Rain.Core
             if (resourcePath == null ||
                 obj == null)
             {
-                RLog.LogError("加载资产对象Object为空，请检查类型和路径：" + resourcePath);
+                Debug.LogError("加载资产对象Object为空，请检查类型和路径：" + resourcePath);
                 return;
             }
 

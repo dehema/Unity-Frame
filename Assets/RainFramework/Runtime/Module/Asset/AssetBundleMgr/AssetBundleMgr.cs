@@ -1007,7 +1007,7 @@ namespace Rain.Core
                 }
                 else
                 {
-                    RLog.LogError("AssetBundle清单加载失败：" + manifestPath);
+                    Debug.LogError("AssetBundle清单加载失败：" + manifestPath);
                 }
             }
             else
@@ -1023,7 +1023,7 @@ namespace Rain.Core
                 }
                 else
                 {
-                    RLog.LogError("AssetBundle清单加载失败：" + manifestPath);
+                    Debug.LogError("AssetBundle清单加载失败：" + manifestPath);
                 }
             }
         }
@@ -1051,7 +1051,7 @@ namespace Rain.Core
             }
             else
             {
-                RLog.LogError("AssetBundle清单加载失败：" + manifestPath);
+                Debug.LogError("AssetBundle清单加载失败：" + manifestPath);
             }
 #endif
         }

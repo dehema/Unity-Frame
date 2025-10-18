@@ -11,7 +11,7 @@ namespace Rain.Core
             get
             {
                 if (_instance == null)
-                    RLog.LogError($"模块 {typeof(T)} 未创建。");
+                    Debug.LogError($"模块 {typeof(T)} 未创建。");
                 return _instance;
             }
         }

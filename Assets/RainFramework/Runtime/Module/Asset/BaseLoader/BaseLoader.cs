@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace Rain.Core
@@ -51,7 +52,7 @@ namespace Rain.Core
             {
                 if (LoaderSuccess)
                 {
-                    RLog.LogError("加载已完成，请使用GetAssetObject方法获取资产！");
+                    Debug.LogError("加载已完成，请使用GetAssetObject方法获取资产！");
                 }
 
                 return null;

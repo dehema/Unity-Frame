@@ -10,12 +10,11 @@ using UnityEngine.Networking;
 
 namespace Rain.Core
 {
-    public class HotUpdateMgr : ModuleSingleton<HotUpdateMgr>, IModule
+    public class HotUpdateMgr : ModuleSingletonMono<HotUpdateMgr>, IModule
     {
         public static string Separator = "_";
         public static string PackageSplit = "Package" + Separator;
-        public static string RemoteDirName = "/Remote/" + URLSetting.GetPlatformName();
-        public static string HotUpdateDirName = "/HotUpdate";
+        public const string HotUpdateDirName = "/HotUpdate";
         public static string PackageDirName = "/Package";
 
         private Downloader hotUpdateDownloader;
@@ -26,6 +25,11 @@ namespace Rain.Core
         {
             GameVersion gameVersion = JsonConvert.DeserializeObject<GameVersion>(Resources.Load<TextAsset>(nameof(GameVersion)).ToString());
             GameConfig.LocalGameVersion = gameVersion;
+            InitLocalVersion();
+            //Util.Unity.AddCoroutine(InitRemoteVersion(), (Coroutine coroutine) => { });
+            //Util.Unity.AddCoroutine(InitAssetVersion(), (Coroutine coroutine) => { });
+            StartCoroutine(InitRemoteVersion());
+            StartCoroutine(InitAssetVersion());
         }
 
         // 初始化本地版本
@@ -51,15 +55,15 @@ namespace Rain.Core
             {
                 yield break;
             }
-
             string path = GameConfig.LocalGameVersion.AssetRemoteAddress + "/" + nameof(GameVersion) + ".json";
-            RLog.Log($"初始化远程版本：{path}");
+            Debug.Log($"初始化远程版本：{path}");
+            yield return new WaitForSeconds(5);
 
             UnityWebRequest webRequest = UnityWebRequest.Get(path);
             yield return webRequest.SendWebRequest();
             if (webRequest.result != UnityWebRequest.Result.Success)
             {
-                RLog.LogError($"获取游戏远程版本失败：{path} ，错误：{webRequest.error}");
+                Debug.LogError($"获取游戏远程版本失败：{path} ，错误：{webRequest.error}");
             }
             else
             {
@@ -80,13 +84,13 @@ namespace Rain.Core
             }
 
             string path = GameConfig.LocalGameVersion.AssetRemoteAddress + HotUpdateDirName + Separator + nameof(AssetBundleMap) + ".json";
-            RLog.Log($"始化资源版本：{path}");
+            Debug.Log($"初始化资源版本：{path}");
 
             UnityWebRequest webRequest = UnityWebRequest.Get(path);
             yield return webRequest.SendWebRequest();
             if (webRequest.result != UnityWebRequest.Result.Success)
             {
-                RLog.LogError($"获取游戏资源版本失败：{path} ，错误：{webRequest.error}");
+                Debug.LogError($"获取游戏资源版本失败：{path} ，错误：{webRequest.error}");
             }
             else
             {
@@ -200,7 +204,7 @@ namespace Rain.Core
             };
             hotUpdateDownloader.OnDownloadFailure += (eventArgs) =>
             {
-                RLog.LogError($"获取热更资源失败。：{eventArgs.DownloadInfo.DownloadUrl}\n{eventArgs.ErrorMessage}");
+                Debug.LogError($"获取热更资源失败。：{eventArgs.DownloadInfo.DownloadUrl}\n{eventArgs.ErrorMessage}");
                 failure?.Invoke();
             };
             hotUpdateDownloader.OnDownloadStart += (eventArgs) =>
@@ -308,7 +312,7 @@ namespace Rain.Core
             };
             packageDownloader.OnDownloadFailure += (eventArgs) =>
             {
-                RLog.LogError($"获取分包资源失败。：{eventArgs.DownloadInfo.DownloadUrl}\n{eventArgs.ErrorMessage}");
+                Debug.LogError($"获取分包资源失败。：{eventArgs.DownloadInfo.DownloadUrl}\n{eventArgs.ErrorMessage}");
                 failure?.Invoke();
             };
             packageDownloader.OnDownloadStart += (eventArgs) =>
@@ -433,7 +437,7 @@ namespace Rain.Core
             hotUpdateDownloader = null;
             packageDownloader.CancelDownload();
             packageDownloader = null;
-            base.Destroy();
+            Destroy(gameObject);
         }
     }
 }
