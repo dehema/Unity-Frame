@@ -21,13 +21,12 @@ namespace Rain.Core
         private Downloader packageDownloader;
 
         public bool UseLocalConfig = false;      //是否使用本地配置
-        public string AssetBundlesConfigPath =>
-            Path.Combine(AssetBundleHelper.GetAssetBundlePath(AssetBundleHelper.SourceType.HotUpdatePath), nameof(AssetBundleMap) + ".json");
+        public string AssetBundlesConfigPath => Path.Combine(GameConfig.LocalGameVersion.GameRemoteAddress, nameof(AssetBundleMap) + ".json");
 
         public void OnInit(object createParam)
         {
-            GameVersion gameVersion = JsonConvert.DeserializeObject<GameVersion>(Resources.Load<TextAsset>(nameof(GameVersion)).ToString());
-            GameConfig.LocalGameVersion = gameVersion;
+            string text = File.ReadAllText(Path.Combine(Application.persistentDataPath, $"{nameof(GameVersion)}.json"));
+            GameConfig.LocalGameVersion = JsonConvert.DeserializeObject<GameVersion>(text);
             InitLocalVersion();
             //Util.Unity.AddCoroutine(InitRemoteVersion(), (Coroutine coroutine) => { });
             //Util.Unity.AddCoroutine(InitAssetVersion(), (Coroutine coroutine) => { });
@@ -46,8 +45,10 @@ namespace Rain.Core
             }
             else
             {
+                //没有就写一份
                 FileTools.SafeWriteAllText(Application.persistentDataPath + "/" + nameof(GameVersion) + ".json",
                     JsonConvert.SerializeObject(GameConfig.LocalGameVersion));
+                Debug.Log("创建GameVersion.json");
             }
         }
 
@@ -58,7 +59,7 @@ namespace Rain.Core
             {
                 yield break;
             }
-            string path = GameConfig.LocalGameVersion.AssetRemoteAddress + "/" + nameof(GameVersion) + ".json";
+            string path = GameConfig.LocalGameVersion.GameRemoteAddress + "/" + nameof(GameVersion) + ".json";
             Debug.Log($"初始化远程版本：{path}");
 
             UnityWebRequest webRequest = UnityWebRequest.Get(path);
@@ -90,14 +91,13 @@ namespace Rain.Core
                 yield return new WaitForEndOfFrame();
             }
 
-            string path = GameConfig.LocalGameVersion.AssetRemoteAddress + HotUpdateDirName + nameof(AssetBundleMap) + ".json";
-            Debug.Log($"初始化资源版本：{path}");
+            Debug.Log($"初始化资源版本：{AssetBundlesConfigPath}");
 
-            UnityWebRequest webRequest = UnityWebRequest.Get(path);
+            UnityWebRequest webRequest = UnityWebRequest.Get(AssetBundlesConfigPath);
             yield return webRequest.SendWebRequest();
             if (webRequest.result != UnityWebRequest.Result.Success)
             {
-                Debug.LogError($"获取游戏资源版本失败：{path} ，错误：{webRequest.error}");
+                Debug.LogError($"获取游戏资源版本失败：{AssetBundlesConfigPath} ，错误：{webRequest.error}");
             }
             else
             {
@@ -107,12 +107,6 @@ namespace Rain.Core
             }
             webRequest.Dispose();
             webRequest = null;
-
-            if (File.Exists(Application.persistentDataPath + "/" + nameof(AssetBundleMap) + ".json"))
-            {
-                string json = FileTools.SafeReadAllText(Application.persistentDataPath + "/" + nameof(AssetBundleMap) + ".json");
-                AssetBundleMap Mappings = JsonConvert.DeserializeObject<AssetBundleMap>(json);
-            }
         }
 
         // 游戏修复，资源清理
@@ -243,7 +237,7 @@ namespace Rain.Core
                 {
                     int index = assetUrl.IndexOf('/');
                     string result = assetUrl.Substring(index + 1);
-                    hotUpdateDownloader.AddDownload(GameConfig.LocalGameVersion.AssetRemoteAddress + HotUpdateDirName + assetUrl,
+                    hotUpdateDownloader.AddDownload(GameConfig.LocalGameVersion.GameRemoteAddress + HotUpdateDirName + assetUrl,
                         Application.persistentDataPath + HotUpdateDirName + "/" + result);
                     tempDownloadUrl.Add(assetUrl);
                 }
@@ -358,7 +352,7 @@ namespace Rain.Core
                     fileSizeInBytes = fileInfo.Length;
                 }
                 // 断点续传
-                packageDownloader.AddDownload(GameConfig.LocalGameVersion.AssetRemoteAddress + "/" + PackageSplit + package + ".zip",
+                packageDownloader.AddDownload(GameConfig.LocalGameVersion.GameRemoteAddress + "/" + PackageSplit + package + ".zip",
                     persistentPackagePath, fileSizeInBytes, true);
             }
 

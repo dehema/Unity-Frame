@@ -25,7 +25,7 @@ namespace Rain.Core
         {
             if (_remoteAddress == null)
             {
-                _remoteAddress = GameConfig.LocalGameVersion.AssetRemoteAddress + "/" + URLSetting.AssetBundlesName + "/" + URLSetting.GetPlatformName() + "/";
+                _remoteAddress = GameConfig.LocalGameVersion.GameRemoteAddress + "/" + URLSetting.AssetBundlesName + "/" + URLSetting.GetPlatformName() + "/";
             }
             return _remoteAddress;
         }
@@ -84,7 +84,7 @@ namespace Rain.Core
                     assetBundlePath = GetPackagePath();
                     break;
                 case SourceType.RemoteAddress:
-                    if (string.IsNullOrEmpty(GameConfig.LocalGameVersion.AssetRemoteAddress))
+                    if (string.IsNullOrEmpty(GameConfig.LocalGameVersion.GameRemoteAddress))
                     {
                         Debug.LogError("加载远程包需要配置远程地址：AssetRemoteAddress");
                     }

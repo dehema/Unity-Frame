@@ -943,7 +943,7 @@ namespace Rain.Core
 
         public static string GetRemoteAssetBundleCompletePath()
         {
-            if (!string.IsNullOrEmpty(GameConfig.LocalGameVersion.AssetRemoteAddress))
+            if (!string.IsNullOrEmpty(GameConfig.LocalGameVersion.GameRemoteAddress))
             {
                 string remoteABFullPath
                     = AssetBundleHelper.GetAssetBundleFullName(null, AssetBundleHelper.SourceType.RemoteAddress);

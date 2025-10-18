@@ -5,18 +5,18 @@ namespace Rain.Core
 {
     public class GameVersion
     {
-        public string Version;                  //版本号
-        public string AssetRemoteAddress;       //资源远程地址
+        public string Version = "0.0.0";        //版本号
+        public string GameRemoteAddress;        //游戏远程地址
         public bool EnableHotUpdate = true;     //是否开启热更
         public List<string> HotUpdateVersion;   //热更版本列表
         public bool EnablePackage;              //是否开启分包
         public List<string> SubPackage;         //分包列表
 
-        public GameVersion(string version, string assetRemoteAddress = null, bool enableHotUpdate = false,
+        public GameVersion(string version, string gameRemoteAddress = null, bool enableHotUpdate = false,
             List<string> hotUpdateVersion = null, bool enablePackage = false, List<string> subPackage = null)
         {
             Version = version;
-            AssetRemoteAddress = assetRemoteAddress;
+            GameRemoteAddress = gameRemoteAddress;
             EnableHotUpdate = enableHotUpdate;
             HotUpdateVersion = hotUpdateVersion;
             EnablePackage = enablePackage;

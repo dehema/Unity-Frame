@@ -59,11 +59,11 @@ public class BuildToolSetting : BuildToolBase
             BuildLocalGameVersionFile();
             BuildRemoteGameVersionFile();
         }
-        if (GUILayout.Button("打开导出目录", GUILayout.Height(30)))
+        if (GUILayout.Button("打开打包目录", GUILayout.Height(30)))
         {
             OpenPackageExportDirectory();
         }
-        if (GUILayout.Button("清理导出目录", GUILayout.Height(30)))
+        if (GUILayout.Button("清理打包目录", GUILayout.Height(30)))
         {
             ClearPackageExportDirectory();
         }
@@ -103,9 +103,9 @@ public class BuildToolSetting : BuildToolBase
     {
         GameVersion gameVersion = new GameVersion();
         gameVersion.Version = "0.0.1";
-        gameVersion.AssetRemoteAddress = config.ABRemoteAddress;
-        string jsonPath = Path.Combine(Application.dataPath, "Resources", $"{nameof(GameVersion)}.json");
+        gameVersion.GameRemoteAddress = config.GameRemoteAddress;
         string json = JsonConvert.SerializeObject(gameVersion, Formatting.Indented);
+        string jsonPath = Path.Combine(Application.persistentDataPath, $"{nameof(GameVersion)}.json");
         File.WriteAllText(jsonPath, json);
     }
 
@@ -117,7 +117,7 @@ public class BuildToolSetting : BuildToolBase
     {
         GameVersion gameVersion = new GameVersion();
         gameVersion.Version = config.Version;
-        gameVersion.AssetRemoteAddress = config.GameRemoteAddress;
+        gameVersion.GameRemoteAddress = config.GameRemoteAddress;
         string jsonPath = Path.Combine(config.GameRemoteAddress, $"{nameof(GameVersion)}.json");
         string json = JsonConvert.SerializeObject(gameVersion, Formatting.Indented);
         File.WriteAllText(jsonPath, json);

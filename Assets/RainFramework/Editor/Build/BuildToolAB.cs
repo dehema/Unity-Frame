@@ -58,7 +58,73 @@ public class BuildToolAB : BuildToolBase
 
         // 显示当前AB包状态
         DrawABStatusInfo();
+    }
 
+    /// <summary>
+    /// 绘制AB包状态信息
+    /// </summary>
+    private void DrawABStatusInfo()
+    {
+        if (!Directory.Exists(BuildToolAtlas.atlasPath))
+        {
+            EditorGUILayout.LabelField("Atlas目录不存在", EditorStyles.centeredGreyMiniLabel);
+            return;
+        }
+
+        string[] atlasFiles = Directory.GetFiles(BuildToolAtlas.atlasPath, "*.spriteatlas", SearchOption.AllDirectories);
+
+        if (atlasFiles.Length > 0)
+        {
+            EditorGUILayout.Space(10);
+            EditorGUILayout.LabelField($"图集AB包状态 ({atlasFiles.Length} 个):", EditorStyles.boldLabel);
+            EditorGUILayout.BeginVertical("box");
+
+            int setCount = 0;
+            int unsetCount = 0;
+
+            foreach (string atlasFile in atlasFiles)
+            {
+                string relativePath = atlasFile.Replace(Application.dataPath, "Assets");
+                AssetImporter importer = AssetImporter.GetAtPath(relativePath);
+
+                if (importer != null)
+                {
+                    string fileName = Path.GetFileNameWithoutExtension(atlasFile);
+                    string abName = importer.assetBundleName;
+                    bool isSet = !string.IsNullOrEmpty(abName);
+
+                    if (isSet) setCount++;
+                    else unsetCount++;
+
+                    EditorGUILayout.BeginHorizontal();
+                    EditorGUILayout.LabelField($"{fileName}", GUILayout.Width(150));
+
+                    if (isSet)
+                    {
+                        EditorGUILayout.LabelField($"✓ {abName}", GUILayout.Width(120));
+                        GUI.color = Color.green;
+                        EditorGUILayout.LabelField("已设置", GUILayout.Width(60));
+                        GUI.color = Color.white;
+                    }
+                    else
+                    {
+                        EditorGUILayout.LabelField("未设置", GUILayout.Width(120));
+                        GUI.color = Color.red;
+                        EditorGUILayout.LabelField("未设置", GUILayout.Width(60));
+                        GUI.color = Color.white;
+                    }
+                    EditorGUILayout.EndHorizontal();
+                }
+            }
+
+            EditorGUILayout.Space(5);
+            EditorGUILayout.LabelField($"统计: 已设置 {setCount} 个, 未设置 {unsetCount} 个", EditorStyles.centeredGreyMiniLabel);
+            EditorGUILayout.EndVertical();
+        }
+        else
+        {
+            EditorGUILayout.LabelField("暂无图集文件", EditorStyles.centeredGreyMiniLabel);
+        }
     }
 
     /// <summary>
@@ -207,75 +273,6 @@ public class BuildToolAB : BuildToolBase
     }
 
     /// <summary>
-    /// 绘制AB包状态信息
-    /// </summary>
-    private void DrawABStatusInfo()
-    {
-        if (!Directory.Exists(BuildToolAtlas.atlasPath))
-        {
-            EditorGUILayout.Space(5);
-            EditorGUILayout.LabelField("Atlas目录不存在", EditorStyles.centeredGreyMiniLabel);
-            return;
-        }
-
-        string[] atlasFiles = Directory.GetFiles(BuildToolAtlas.atlasPath, "*.spriteatlas", SearchOption.AllDirectories);
-
-        if (atlasFiles.Length > 0)
-        {
-            EditorGUILayout.Space(10);
-            EditorGUILayout.LabelField($"图集AB包状态 ({atlasFiles.Length} 个):", EditorStyles.boldLabel);
-            EditorGUILayout.BeginVertical("box");
-
-            int setCount = 0;
-            int unsetCount = 0;
-
-            foreach (string atlasFile in atlasFiles)
-            {
-                string relativePath = atlasFile.Replace(Application.dataPath, "Assets");
-                AssetImporter importer = AssetImporter.GetAtPath(relativePath);
-
-                if (importer != null)
-                {
-                    string fileName = Path.GetFileNameWithoutExtension(atlasFile);
-                    string abName = importer.assetBundleName;
-                    bool isSet = !string.IsNullOrEmpty(abName);
-
-                    if (isSet) setCount++;
-                    else unsetCount++;
-
-                    EditorGUILayout.BeginHorizontal();
-                    EditorGUILayout.LabelField($"{fileName}", GUILayout.Width(150));
-
-                    if (isSet)
-                    {
-                        EditorGUILayout.LabelField($"✓ {abName}", GUILayout.Width(120));
-                        GUI.color = Color.green;
-                        EditorGUILayout.LabelField("已设置", GUILayout.Width(60));
-                        GUI.color = Color.white;
-                    }
-                    else
-                    {
-                        EditorGUILayout.LabelField("未设置", GUILayout.Width(120));
-                        GUI.color = Color.red;
-                        EditorGUILayout.LabelField("未设置", GUILayout.Width(60));
-                        GUI.color = Color.white;
-                    }
-                    EditorGUILayout.EndHorizontal();
-                }
-            }
-
-            EditorGUILayout.Space(5);
-            EditorGUILayout.LabelField($"统计: 已设置 {setCount} 个, 未设置 {unsetCount} 个", EditorStyles.centeredGreyMiniLabel);
-            EditorGUILayout.EndVertical();
-        }
-        else
-        {
-            EditorGUILayout.Space(5);
-            EditorGUILayout.LabelField("暂无图集文件", EditorStyles.centeredGreyMiniLabel);
-        }
-    }
-
-    /// <summary>
     /// 一键打包所有AssetBundle到AB包输出目录
     /// </summary>
     public void BuildAllAssetBundles()
@@ -351,7 +348,7 @@ public class BuildToolAB : BuildToolBase
             }
         }
         // 保存文件列表到JSON
-        string jsonPath = Path.Combine(config.ABOutputPath, $"{nameof(AssetBundleMap)}.json");
+        string jsonPath = Path.Combine(Application.persistentDataPath, $"{nameof(AssetBundleMap)}.json");
         string json = JsonConvert.SerializeObject(assetBundleMap, Formatting.Indented);
         File.WriteAllText(jsonPath, json);
     }
@@ -469,6 +466,13 @@ public class BuildToolAB : BuildToolBase
 
         Debug.Log($"AB包上传完成 - 共复制 {copiedFiles} 个文件到: {config.ABRemoteAddress}");
         //EditorUtility.DisplayDialog("上传完成", $"AB包已上传到:\n{targetFolderPath}\n\n共复制 {copiedFiles} 个文件", "确定");
+
+        //复制AssetBundleMap.json
+        string jsonPath = Path.Combine(Application.persistentDataPath, $"{nameof(AssetBundleMap)}.json");
+        if (File.Exists(jsonPath))
+        {
+            File.Copy(jsonPath, Path.Combine(config.GameRemoteAddress, $"{nameof(AssetBundleMap)}.json"));
+        }
 
         // 打开目标文件夹
         EditorUtility.RevealInFinder(config.ABRemoteAddress + "/");
