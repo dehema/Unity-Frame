@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.U2D;
 using System.Collections.Generic;
 using Path = System.IO.Path;
+using Newtonsoft.Json;
 
 /// <summary>
 /// AB包设置工具
@@ -21,23 +22,6 @@ public class BuildToolAB : BuildToolBase
     /// </summary>
     protected override void DrawContent()
     {
-        // AB包设置按钮
-        EditorGUILayout.BeginHorizontal();
-
-        if (GUILayout.Button("一键设置AB", GUILayout.Height(30)))
-        {
-            SetAllAssetBundles();
-        }
-
-        if (GUILayout.Button("清除AB设置", GUILayout.Height(30)))
-        {
-            ClearAllAssetBundles();
-        }
-
-        EditorGUILayout.EndHorizontal();
-
-        EditorGUILayout.Space(10);
-
         // AB包输出路径设置
         EditorGUILayout.LabelField("AB包输出路径:", EditorStyles.boldLabel);
         EditorGUILayout.BeginHorizontal();
@@ -63,25 +47,21 @@ public class BuildToolAB : BuildToolBase
         // AB包操作按钮
         EditorGUILayout.BeginHorizontal();
 
-        if (GUILayout.Button("一键打包AB", GUILayout.Height(30)))
+        if (GUILayout.Button("设置AB", GUILayout.Height(30)))
+            SetAllAssetBundles();
+        if (GUILayout.Button("清除AB", GUILayout.Height(30)))
+            ClearAllAssetBundles();
+        if (GUILayout.Button("打包AB", GUILayout.Height(30)))
         {
             BuildAllAssetBundles();
+            CreateABFileList();
         }
-
-        if (GUILayout.Button("上传AB包", GUILayout.Height(30)))
-        {
+        if (GUILayout.Button("上传AB", GUILayout.Height(30)))
             UploadAssetBundles();
-        }
-
-        if (GUILayout.Button("打开输出AB目录", GUILayout.Height(30)))
-        {
+        if (GUILayout.Button("打开打包目录", GUILayout.Height(30)))
             OpenAssetBundleDirectory();
-        }
-
-        if (GUILayout.Button("打开线上AB目录", GUILayout.Height(30)))
-        {
+        if (GUILayout.Button("打开上传地址", GUILayout.Height(30)))
             OpenOnlineAssetBundleDirectory();
-        }
 
         EditorGUILayout.EndHorizontal();
 
@@ -110,25 +90,10 @@ public class BuildToolAB : BuildToolBase
     {
         try
         {
-            if (!Directory.Exists(BuildToolAtlas.atlasPath))
-            {
-                EditorUtility.DisplayDialog("错误", "Atlas目录不存在，请先创建图集", "确定");
-                return;
-            }
-
             string[] atlasFiles = Directory.GetFiles(BuildToolAtlas.atlasPath, "*.spriteatlas", SearchOption.AllDirectories);
-
             if (atlasFiles.Length == 0)
-            {
-                EditorUtility.DisplayDialog("提示", "没有找到图集文件", "确定");
                 return;
-            }
-
             EditorUtility.DisplayProgressBar("设置AB包", "正在处理图集...", 0f);
-
-            int successCount = 0;
-            int failCount = 0;
-
             for (int i = 0; i < atlasFiles.Length; i++)
             {
                 string atlasFile = atlasFiles[i];
@@ -145,43 +110,31 @@ public class BuildToolAB : BuildToolBase
                     {
                         // 生成AB包名称（基于图集路径）
                         string abName = GenerateAssetBundleName(relativePath);
-
                         // 设置AssetBundle标签
                         AssetImporter importer = AssetImporter.GetAtPath(relativePath);
                         if (importer != null)
                         {
                             importer.assetBundleName = abName;
                             importer.assetBundleVariant = "";
-                            successCount++;
                             Debug.Log($"图集 {fileName} 设置AB包标签: {abName}");
                         }
                         else
                         {
-                            failCount++;
                             Debug.LogError($"无法获取图集 {fileName} 的AssetImporter");
                         }
                     }
                     else
                     {
-                        failCount++;
                         Debug.LogError($"无法加载图集: {relativePath}");
                     }
                 }
                 catch (Exception e)
                 {
-                    failCount++;
                     Debug.LogError($"设置图集 {fileName} AB包标签失败: {e.Message}");
                 }
             }
-
             EditorUtility.ClearProgressBar();
             AssetDatabase.Refresh();
-
-            Debug.Log($"AB包设置完成 - 成功: {successCount}, 失败: {failCount}");
-
-            EditorUtility.DisplayDialog("AB包设置完成",
-                $"成功设置 {successCount} 个图集\n" +
-                $"失败 {failCount} 个图集", "确定");
         }
         catch (Exception e)
         {
@@ -270,7 +223,7 @@ public class BuildToolAB : BuildToolBase
         string fileName = Path.GetFileNameWithoutExtension(atlasPath);
 
         // 生成AB包名称，使用小写并添加前缀
-        string abName = $"atlas_{fileName.ToLower()}";
+        string abName = fileName;
 
         return abName;
     }
@@ -364,7 +317,7 @@ public class BuildToolAB : BuildToolBase
             }
 
             //删除目录下的所有文件和子文件夹
-            CleanDirectory(config.abOutputPath);
+            ClearDirectory(config.abOutputPath);
 
 
             EditorUtility.DisplayProgressBar("打包AB包", "正在构建AssetBundle...", 0f);
@@ -378,8 +331,8 @@ public class BuildToolAB : BuildToolBase
             AssetDatabase.Refresh();
 
             Debug.Log($"AB包打包完成，输出目录: {config.abOutputPath}");
-            EditorUtility.RevealInFinder(config.abOutputPath);
-            EditorUtility.DisplayDialog("打包完成", $"AB包已打包到:\n{config.abOutputPath}", "确定");
+            EditorUtility.RevealInFinder(config.abOutputPath + "/");
+            Debug.Log($"打包完成，AB包已打包到:\n{config.abOutputPath}");
         }
         catch (Exception e)
         {
@@ -389,10 +342,55 @@ public class BuildToolAB : BuildToolBase
     }
 
     /// <summary>
+    /// 创建ab文件列表
+    /// </summary>
+    void CreateABFileList()
+    {
+        BuildToolABFileList fileList = new BuildToolABFileList();
+        // 获取AB包输出目录下的所有文件
+        string[] allFiles = Directory.GetFiles(config.abOutputPath, "*", SearchOption.AllDirectories);
+        foreach (string filePath in allFiles)
+        {
+            try
+            {
+                string relativePath = Path.GetRelativePath(config.abOutputPath, filePath);
+                if (relativePath.EndsWith(".manifest"))
+                    continue;
+                string md5 = CalculateFileMD5(filePath);
+                fileList.fileNames[relativePath] = md5;
+                //Debug.Log($"添加文件到列表: {relativePath} | MD5: {md5}");
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"处理文件失败: {filePath}, 错误: {e.Message}");
+            }
+        }
+        // 保存文件列表到JSON
+        string jsonPath = Path.Combine(config.abOutputPath, "ABFileList.json");
+        string json = JsonConvert.SerializeObject(fileList, Formatting.Indented);
+        File.WriteAllText(jsonPath, json);
+    }
+
+    /// <summary>
+    /// 计算文件MD5
+    /// </summary>
+    private string CalculateFileMD5(string filePath)
+    {
+        using (var md5 = System.Security.Cryptography.MD5.Create())
+        {
+            using (var stream = File.OpenRead(filePath))
+            {
+                byte[] hash = md5.ComputeHash(stream);
+                return System.BitConverter.ToString(hash).Replace("-", "").ToLower();
+            }
+        }
+    }
+
+    /// <summary>
     /// 清除文件夹下的所有文件和子文件夹 
     /// </summary>
     /// <param name="_direPath"></param>
-    private void CleanDirectory(string _direPath)
+    private void ClearDirectory(string _direPath)
     {
         try
         {
@@ -551,7 +549,7 @@ public class BuildToolAB : BuildToolBase
             return;
         }
 
-        EditorUtility.RevealInFinder(config.abOutputPath);
+        EditorUtility.RevealInFinder(config.abOutputPath + "/");
     }
 
     /// <summary>
@@ -613,7 +611,7 @@ public class BuildToolAB : BuildToolBase
 
         try
         {
-            EditorUtility.RevealInFinder(config.onlineABUrl);
+            EditorUtility.RevealInFinder(config.onlineABUrl + "/");
         }
         catch (Exception e)
         {
@@ -621,4 +619,23 @@ public class BuildToolAB : BuildToolBase
             EditorUtility.DisplayDialog("错误", $"无法打开线上AB包目录: {e.Message}", "确定");
         }
     }
+}
+
+/// <summary>
+/// AB包文件列表
+/// </summary>
+public class BuildToolABFileList
+{
+    /// <summary>
+    /// 版本
+    /// </summary>
+    public string version = Application.version;
+    /// <summary>
+    /// 文件名和MD5
+    /// </summary>
+    public Dictionary<string, string> fileNames = new Dictionary<string, string>();
+    /// <summary>
+    /// 生成日期
+    /// </summary>
+    public string createTime = DateTime.Now.ToString("G");
 }
