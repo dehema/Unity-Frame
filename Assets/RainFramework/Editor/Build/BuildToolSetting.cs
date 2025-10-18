@@ -52,16 +52,17 @@ public class BuildToolSetting : BuildToolBase
 
         EditorGUILayout.BeginHorizontal();
 
-        if (GUILayout.Button("构建游戏版本文件"))
+        if (GUILayout.Button("构建游戏版本文件", GUILayout.Height(30)))
         {
-            BuildGameVersionFile();
+            BuildLocalGameVersionFile();
+            BuildRemoteGameVersionFile();
         }
-        if (GUILayout.Button("打开导出目录"))
+        if (GUILayout.Button("打开导出目录", GUILayout.Height(30)))
         {
             OpenPackageExportDirectory();
         }
 
-        if (GUILayout.Button("清理导出目录"))
+        if (GUILayout.Button("清理导出目录", GUILayout.Height(30)))
         {
             ClearPackageExportDirectory();
         }
@@ -96,14 +97,27 @@ public class BuildToolSetting : BuildToolBase
     }
 
     /// <summary>
-    /// 构建游戏版本配置
+    /// 构建本地游戏版本配置
     /// </summary>
-    private void BuildGameVersionFile()
+    private void BuildLocalGameVersionFile()
+    {
+        GameVersion gameVersion = new GameVersion();
+        gameVersion.Version = "0.0.1";
+        gameVersion.AssetRemoteAddress = config.assetRemoteAddress;
+        string jsonPath = Path.Combine(Application.dataPath, "Resources", $"{nameof(GameVersion)}.json");
+        string json = JsonConvert.SerializeObject(gameVersion, Formatting.Indented);
+        File.WriteAllText(jsonPath, json);
+    }
+
+    /// <summary>
+    /// 构建远端游戏版本配置
+    /// </summary>
+
+    private void BuildRemoteGameVersionFile()
     {
         GameVersion gameVersion = new GameVersion();
         gameVersion.Version = config.version;
         gameVersion.AssetRemoteAddress = config.assetRemoteAddress;
-        gameVersion.EnableHotUpdate = true;
         string jsonPath = Path.Combine(config.assetRemoteAddress, $"{nameof(GameVersion)}.json");
         string json = JsonConvert.SerializeObject(gameVersion, Formatting.Indented);
         File.WriteAllText(jsonPath, json);
