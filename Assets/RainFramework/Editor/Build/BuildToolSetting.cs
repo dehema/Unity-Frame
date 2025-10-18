@@ -5,23 +5,32 @@ using UnityEditor;
 using UnityEngine;
 
 /// <summary>
-/// ´ò°üÉèÖÃ
+/// æ‰“åŒ…è®¾ç½®
 /// </summary>
 public class BuildToolSetting : BuildToolBase
 {
     public BuildToolSetting(BuildToolConfig _config) : base(_config)
     {
-        pageName = "´ò°üÉèÖÃ";
+        pageName = "æ‰“åŒ…è®¾ç½®";
     }
 
     protected override void DrawContent()
     {
+        // ç‰ˆæœ¬å·è®¾ç½®
         EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("°²×°°üµ¼³öÄ¿Â¼:", GUILayout.Width(120));
+        EditorGUILayout.LabelField("ç‰ˆæœ¬å·:", GUILayout.Width(80));
+        config.version = EditorGUILayout.TextField(config.version);
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.Space(5);
+
+        // å®‰è£…åŒ…å¯¼å‡ºç›®å½•
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("å®‰è£…åŒ…å¯¼å‡ºç›®å½•:", GUILayout.Width(120));
         config.exportPath = EditorGUILayout.TextField(config.exportPath);
-        if (GUILayout.Button("ä¯ÀÀ", GUILayout.Width(60)))
+        if (GUILayout.Button("æµè§ˆ", GUILayout.Width(60)))
         {
-            string selectedPath = EditorUtility.OpenFolderPanel("Ñ¡Ôñµ¼³öÄ¿Â¼", config.exportPath, "");
+            string selectedPath = EditorUtility.OpenFolderPanel("é€‰æ‹©å¯¼å‡ºç›®å½•", config.exportPath, "");
             if (!string.IsNullOrEmpty(selectedPath))
             {
                 config.exportPath = selectedPath;
@@ -30,18 +39,18 @@ public class BuildToolSetting : BuildToolBase
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("Ä¿±êÆ½Ì¨:", GUILayout.Width(80));
+        EditorGUILayout.LabelField("ç›®æ ‡å¹³å°:", GUILayout.Width(80));
         config.buildTarget = (BuildTarget)EditorGUILayout.EnumPopup(config.buildTarget);
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
 
-        if (GUILayout.Button("´ò¿ªµ¼³öÄ¿Â¼"))
+        if (GUILayout.Button("æ‰“å¼€å¯¼å‡ºç›®å½•"))
         {
             OpenPackageExportDirectory();
         }
 
-        if (GUILayout.Button("ÇåÀíµ¼³öÄ¿Â¼"))
+        if (GUILayout.Button("æ¸…ç†å¯¼å‡ºç›®å½•"))
         {
             ClearPackageExportDirectory();
         }
@@ -58,7 +67,7 @@ public class BuildToolSetting : BuildToolBase
         }
         else
         {
-            EditorUtility.DisplayDialog("´íÎó", "µ¼³öÄ¿Â¼²»´æÔÚ", "È·¶¨");
+            EditorUtility.DisplayDialog("é”™è¯¯", "å¯¼å‡ºç›®å½•ä¸å­˜åœ¨", "ç¡®å®š");
         }
     }
 
@@ -66,11 +75,11 @@ public class BuildToolSetting : BuildToolBase
     {
         if (Directory.Exists(config.exportPath))
         {
-            if (EditorUtility.DisplayDialog("È·ÈÏ", "È·¶¨ÒªÇåÀíµ¼³öÄ¿Â¼Âğ£¿", "È·¶¨", "È¡Ïû"))
+            if (EditorUtility.DisplayDialog("ç¡®è®¤", "ç¡®å®šè¦æ¸…ç†å¯¼å‡ºç›®å½•å—ï¼Ÿ", "ç¡®å®š", "å–æ¶ˆ"))
             {
                 Directory.Delete(config.exportPath, true);
                 Directory.CreateDirectory(config.exportPath);
-                Debug.Log("µ¼³öÄ¿Â¼ÒÑÇåÀí");
+                Debug.Log("å¯¼å‡ºç›®å½•å·²æ¸…ç†");
             }
         }
     }

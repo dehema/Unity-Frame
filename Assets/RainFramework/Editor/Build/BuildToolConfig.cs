@@ -16,6 +16,7 @@ public class BuildToolConfig
     public const string configPath = "Assets/RainFramework/Editor/Build/BuildToolConfig.json";
 
     // 基础打包配置
+    public string version = "1.0.0";
     public string exportPath = "";
     public BuildTarget buildTarget = BuildTarget.Android;
     public bool developmentBuild = false;

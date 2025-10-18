@@ -6,6 +6,7 @@ using UnityEngine.U2D;
 using System.Collections.Generic;
 using Path = System.IO.Path;
 using Newtonsoft.Json;
+using YamlDotNet.Core;
 
 /// <summary>
 /// AB包设置工具
@@ -347,6 +348,7 @@ public class BuildToolAB : BuildToolBase
     void CreateABFileList()
     {
         BuildToolABFileList fileList = new BuildToolABFileList();
+        fileList.version = config.version;
         // 获取AB包输出目录下的所有文件
         string[] allFiles = Directory.GetFiles(config.abOutputPath, "*", SearchOption.AllDirectories);
         foreach (string filePath in allFiles)
@@ -629,7 +631,7 @@ public class BuildToolABFileList
     /// <summary>
     /// 版本
     /// </summary>
-    public string version = Application.version;
+    public string version;
     /// <summary>
     /// 文件名和MD5
     /// </summary>
