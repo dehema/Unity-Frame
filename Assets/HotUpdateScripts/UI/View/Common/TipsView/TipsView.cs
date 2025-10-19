@@ -119,8 +119,8 @@ public partial class TipsView : BaseView
         if (!commonFloat.activeSelf)
         {
             txtCommonFloat_Text.text = _tips;
-            float width = Utility.GetTextWidth(txtCommonFloat_Text, _tips);
-            float height = Utility.GetTextHeight(txtCommonFloat_Text, _tips);
+            float width = Util.Common.GetTextWidth(txtCommonFloat_Text, _tips);
+            float height = Util.Common.GetTextHeight(txtCommonFloat_Text, _tips);
             txtCommonFloat_Rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, width);
             txtCommonFloat_Rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, height);
             txtCommonFloat_Rect.anchoredPosition = Vector2.zero;

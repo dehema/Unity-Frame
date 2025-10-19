@@ -544,7 +544,7 @@ public class EditorDevTools_Dev : EditorDevTools_Base
               .WithNamingConvention(CamelCaseNamingConvention.Instance)
               .Build();
         AllSceneConfig allSceneConfig = deserializer.Deserialize<AllSceneConfig>(config);
-        Utility.Log(allSceneConfig);
+        Util.Log(allSceneConfig);
 
         //创建模板
         string template = File.ReadAllText(SceneTemplatePath);

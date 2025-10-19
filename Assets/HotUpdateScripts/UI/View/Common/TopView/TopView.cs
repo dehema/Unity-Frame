@@ -31,10 +31,10 @@ public partial class TopView : BaseView
     {
         DataMgr.Ins.playerData.gold.Bind((dm) =>
         {
-            Utility.DONumVal(oldGold, DataMgr.Ins.playerData.gold.Value, _num =>
+            Util.Common.DONumVal(oldGold, DataMgr.Ins.playerData.gold.Value, _num =>
             {
                 int num = (int)_num;
-                ui.goldNum_Text.text = Utility.GetValByThousands(num);
+                ui.goldNum_Text.text = Util.Common.GetValByThousands(num);
                 oldGold = num;
             });
         });

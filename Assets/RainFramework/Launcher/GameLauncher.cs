@@ -23,6 +23,7 @@ namespace Rain.Launcher
             //按顺序创建模块，可按需添加
             RA.Msg = ModuleCenter.CreateModule<MsgMgr>();
             RA.Data = ModuleCenter.CreateModule<DataMgr>();
+            RA.Download = ModuleCenter.CreateModule<DownloadMgr>();
             //RA.Input = ModuleCenter.CreateModule<InputManager>(new DefaultInputHelper());
             //RA.Storage = ModuleCenter.CreateModule<StorageManager>();
             RA.Timer = ModuleCenter.CreateModule<TimerMgr>();
@@ -70,7 +71,7 @@ namespace Rain.Launcher
             UIMgr.Ins.OpenView(ViewName.DebugView, viewParam);
 
             //UIMgr.Ins.OpenViewAsync(ViewName.DebugView);
-            Utility.Log("hello world");
+            Util.Log("hello world");
 #else
             //LoginViewParam param = new LoginViewParam();
             //param.action = () =>

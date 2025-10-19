@@ -42,7 +42,12 @@ namespace Rain.Core
         public static GameVersion RemoteGameVersion = new GameVersion();
 
         /// <summary>
-        /// AB包映射表
+        /// 本地AB包映射表
+        /// </summary>
+        public static AssetBundleMap LocalAssetBundleMap = new AssetBundleMap();
+
+        /// <summary>
+        /// 远端AB包映射表
         /// </summary>
         public static AssetBundleMap RemoteAssetBundleMap = new AssetBundleMap();
 

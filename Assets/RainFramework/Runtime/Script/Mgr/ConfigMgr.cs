@@ -120,7 +120,7 @@ public class ConfigMgr : MonoSingleton<ConfigMgr>
         var deserializer = new DeserializerBuilder()
               .WithNamingConvention(CamelCaseNamingConvention.Instance)
               .Build();
-        Utility.Log(config);
+        Util.Log(config);
         uiViewConfig = deserializer.Deserialize<UIViewConfig>(config);
         foreach (var group in uiViewConfig.view)
         {

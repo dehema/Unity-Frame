@@ -330,8 +330,6 @@ public class BuildToolAB : BuildToolBase
             try
             {
                 string relativePath = Path.GetRelativePath(config.ABOutputPath, filePath);
-                if (relativePath.EndsWith(".manifest"))
-                    continue;
                 string md5 = CalculateFileMD5(filePath);
 
                 AssetMapping assetMapping = new AssetMapping();

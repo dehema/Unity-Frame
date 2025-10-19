@@ -24,7 +24,7 @@ namespace Rain.UI
         public virtual void Init(IViewParam _viewParam = null)
         {
             _viewName = GetType().ToString();
-            Utility.Log(_viewName + ".Init()");
+            Util.Log(_viewName + ".Init()");
             //canvas
             canvas.renderMode = RenderMode.ScreenSpaceCamera;
             canvas.worldCamera = Camera.main;
@@ -38,7 +38,7 @@ namespace Rain.UI
             //}
             //bg
             __imgBg = transform.GetChild(0)?.GetComponent<Image>();
-            Color bgColor = Utility.ColorHexToRGB(viewConfig.bgColor);
+            Color bgColor = Util.Common.ColorHexToRGB(viewConfig.bgColor);
             __imgBg.gameObject.SetActive(viewConfig.hasBg);
             __imgBg.raycastTarget = viewConfig.hasBg;
             __imgBg.color = bgColor;
@@ -68,7 +68,7 @@ namespace Rain.UI
 
         public virtual void OnOpen(IViewParam _viewParam = null)
         {
-            //Utility.Log(_viewName + ".OnOpen()", gameObject);
+            //Util.Log(_viewName + ".OnOpen()", gameObject);
             if (viewConfig.showMethod == ViewShowMethod.pop)
             {
                 CanvasGroup.alpha = 0;
@@ -81,7 +81,7 @@ namespace Rain.UI
 
         public virtual void OnClose(Action _cb)
         {
-            //Utility.Log(_viewName + ".OnClose()", gameObject);
+            //Util.Log(_viewName + ".OnClose()", gameObject);
             //UI
             if (viewConfig.showMethod == ViewShowMethod.pop)
             {

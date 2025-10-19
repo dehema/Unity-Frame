@@ -28,10 +28,7 @@ namespace Rain.Core
             string text = File.ReadAllText(Path.Combine(Application.persistentDataPath, $"{nameof(GameVersion)}.json"));
             GameConfig.LocalGameVersion = JsonConvert.DeserializeObject<GameVersion>(text);
             InitLocalVersion();
-            //Util.Unity.AddCoroutine(InitRemoteVersion(), (Coroutine coroutine) => { });
-            //Util.Unity.AddCoroutine(InitAssetVersion(), (Coroutine coroutine) => { });
-            StartCoroutine(InitRemoteVersion());
-            StartCoroutine(InitAssetVersion());
+            InitLocalAssetBundleMap();
         }
 
         // 初始化本地版本
@@ -49,6 +46,22 @@ namespace Rain.Core
                 FileTools.SafeWriteAllText(Application.persistentDataPath + "/" + nameof(GameVersion) + ".json",
                     JsonConvert.SerializeObject(GameConfig.LocalGameVersion));
                 Debug.Log("创建GameVersion.json");
+            }
+        }
+
+        public void InitLocalAssetBundleMap()
+        {
+            if (File.Exists(Application.persistentDataPath + "/" + nameof(AssetBundleMap) + ".json"))
+            {
+                string json = FileTools.SafeReadAllText(Application.persistentDataPath + "/" + nameof(AssetBundleMap) + ".json");
+                GameConfig.LocalAssetBundleMap = JsonConvert.DeserializeObject<AssetBundleMap>(json);
+            }
+            else
+            {
+                //没有就写一份
+                FileTools.SafeWriteAllText(Application.persistentDataPath + "/" + nameof(AssetBundleMap) + ".json",
+                    JsonConvert.SerializeObject(GameConfig.LocalAssetBundleMap));
+                Debug.Log("创建AssetBundleMap.json");
             }
         }
 
@@ -78,18 +91,14 @@ namespace Rain.Core
             webRequest = null;
         }
 
-        // 初始化资源版本
-        public IEnumerator InitAssetVersion()
+        // 初始化远端资源版本
+        public IEnumerator InitRemoteAssetBundleMap()
         {
             if (!GameConfig.LocalGameVersion.EnableHotUpdate && !GameConfig.LocalGameVersion.EnablePackage)
-            {
                 yield break;
-            }
             //获取到远端版本信息后再去获取资源信息
             while (GameConfig.RemoteGameVersion == null)
-            {
                 yield return new WaitForEndOfFrame();
-            }
 
             Debug.Log($"初始化资源版本：{AssetBundlesConfigPath}");
 
@@ -102,8 +111,7 @@ namespace Rain.Core
             else
             {
                 string text = webRequest.downloadHandler.text;
-                AssetBundleMap assetBundleMap = JsonConvert.DeserializeObject<AssetBundleMap>(text);
-                GameConfig.RemoteAssetBundleMap = assetBundleMap;
+                GameConfig.RemoteAssetBundleMap = JsonConvert.DeserializeObject<AssetBundleMap>(text);
             }
             webRequest.Dispose();
             webRequest = null;
@@ -143,39 +151,38 @@ namespace Rain.Core
                 return Tuple.Create(hotUpdateAssetUrl, allSize);
             }
 
-            var resAssetBundleMappings = GameConfig.RemoteAssetBundleMap;
+            var remoteABMap = GameConfig.RemoteAssetBundleMap;
 
-            var assetBundleMappings = GameConfig.RemoteAssetBundleMap.ABMap;
+            var localABMap = GameConfig.LocalAssetBundleMap.ABMap;
 
-            foreach (var resAssetMapping in assetBundleMappings)
+            foreach (var remoteABMapping in remoteABMap.ABMap)
             {
-                assetBundleMappings.TryGetValue(resAssetMapping.Key, out AssetMapping assetMapping);
+                localABMap.TryGetValue(remoteABMapping.Key, out AssetMapping assetMapping);
 
-                if ((assetMapping == null || resAssetMapping.Value.MD5 != assetMapping.MD5) // 新增资源，MD5不同则需更新
-                    && !resAssetMapping.Value.AbName.IsNullOrEmpty() && !resAssetMapping.Value.MD5.IsNullOrEmpty())
+                if ((assetMapping == null || remoteABMapping.Value.MD5 != assetMapping.MD5) // 新增资源，MD5不同则需更新
+                    && !remoteABMapping.Value.AbName.IsNullOrEmpty() && !remoteABMapping.Value.MD5.IsNullOrEmpty())
                 {
-                    string abPath = resAssetMapping.Value.Version + "/" + URLSetting.AssetBundlesName + "/" +
-                                              URLSetting.GetPlatformName() + "/" + resAssetMapping.Value.AbName;
+                    string abPath = HotUpdateDirName + "/" + URLSetting.AssetBundlesName + "/" + URLSetting.GetPlatformName() + "/" + remoteABMapping.Value.AbName;
 
-                    string persistentAbPath = Application.persistentDataPath + HotUpdateDirName + abPath;
+                    string persistentAbPath = Application.persistentDataPath + abPath;
 
                     // 校验本地热更资源文件md5
-                    if (File.Exists(persistentAbPath) && FileTools.CreateMd5ForFile(persistentAbPath) == resAssetMapping.Value.MD5)
+                    if (File.Exists(persistentAbPath) && FileTools.CreateMd5ForFile(persistentAbPath) == remoteABMapping.Value.MD5)
                     {
                         continue;
                     }
-                    allSize += string.IsNullOrEmpty(resAssetMapping.Value.Size) ? 0 : long.Parse(resAssetMapping.Value.Size);
-                    hotUpdateAssetUrl.TryAdd(resAssetMapping.Key, abPath);
+                    allSize += string.IsNullOrEmpty(remoteABMapping.Value.Size) ? 0 : long.Parse(remoteABMapping.Value.Size);
+                    hotUpdateAssetUrl.TryAdd(remoteABMapping.Key, abPath);
                 }
             }
-
+            //返回远端资源信息 大小
             return Tuple.Create(hotUpdateAssetUrl, allSize);
         }
 
         /// <summary>
         /// 开始热更新包下载
         /// </summary>
-        /// <param name="hotUpdateAssetUrl"></param>
+        /// <param name="hotUpdateAssetUrl"><远端资产名字, 路径></param>
         /// <param name="completed"></param>
         /// <param name="failure"></param>
         /// <param name="overallProgress"></param>
@@ -219,7 +226,6 @@ namespace Rain.Core
 
                 // 计算进度百分比
                 float progress = currentTaskIndex / taskCount * 100f;
-                // LogF8.LogVersion(progress);
                 overallProgress?.Invoke(progress);
             };
             hotUpdateDownloader.OnAllDownloadTaskCompleted += (eventArgs) =>
@@ -237,8 +243,8 @@ namespace Rain.Core
                 {
                     int index = assetUrl.IndexOf('/');
                     string result = assetUrl.Substring(index + 1);
-                    hotUpdateDownloader.AddDownload(GameConfig.LocalGameVersion.GameRemoteAddress + HotUpdateDirName + assetUrl,
-                        Application.persistentDataPath + HotUpdateDirName + "/" + result);
+                    hotUpdateDownloader.AddDownload(GameConfig.LocalGameVersion.GameRemoteAddress + assetUrl,
+                        Application.persistentDataPath + "/" + result);
                     tempDownloadUrl.Add(assetUrl);
                 }
             }
@@ -249,7 +255,7 @@ namespace Rain.Core
                     GameConfig.LocalGameVersion.Version = GameConfig.RemoteGameVersion.Version;
                     GameConfig.LocalGameVersion.HotUpdateVersion = new List<string>();
                     FileTools.SafeWriteAllText(Application.persistentDataPath + "/" + nameof(GameVersion) + ".json",
-                        JsonConvert.SerializeObject(GameConfig.LocalGameVersion));
+                        JsonConvert.SerializeObject(GameConfig.LocalGameVersion, Formatting.Indented));
                 }
 
                 if (GameConfig.RemoteAssetBundleMap.ABMap.Count > 0)

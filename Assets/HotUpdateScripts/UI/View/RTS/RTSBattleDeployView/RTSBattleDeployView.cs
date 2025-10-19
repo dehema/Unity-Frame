@@ -62,7 +62,7 @@ public partial class RTSBattleDeployView : BaseView
             }
 
             TextMeshProUGUI text = item.transform.Find("Text").GetComponent<TextMeshProUGUI>();
-            text.color = tg.isOn ? Utility.ColorHexToRGB("#0073CC") : Color.white;
+            text.color = tg.isOn ? Util.Common.ColorHexToRGB("#0073CC") : Color.white;
         }
     }
 
