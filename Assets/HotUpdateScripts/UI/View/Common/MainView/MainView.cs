@@ -8,7 +8,7 @@ using UnityEngine;
 /// 主UI
 /// </summary>
 public partial class MainView : BaseView
-{
+{ 
     public override void Init(IViewParam _viewParam = null)
     {
         base.Init(_viewParam);

@@ -22,21 +22,30 @@ public partial class CityHUDView : BaseView
     {
         base.Init(_viewParam);
         param = _viewParam as CityHUDViewParam;
-        MsgMgr.Ins.AddEventListener(MsgEvent.CameraMove, OnCameraMove, cityCreator);
-        MsgMgr.Ins.AddEventListener(MsgEvent.CameraZoomRatioChange, OnCameraScale, cityCreator);
-        MsgMgr.Ins.AddEventListener(MsgEvent.SelectCityBuilding, OnSelectBuilding, cityCreator);
-        InitBuildingMenus();
     }
 
     public override void OnOpen(IViewParam _viewParam = null)
     {
         base.OnOpen(_viewParam);
+        InitBuildingMenus();
+        MsgMgr.Ins.AddEventListener(MsgEvent.CameraMove, OnCameraMove, this);
+        MsgMgr.Ins.AddEventListener(MsgEvent.CameraZoomRatioChange, OnCameraScale, this);
+        MsgMgr.Ins.AddEventListener(MsgEvent.SelectCityBuilding, OnSelectBuilding, this);
         ResetNameFadeVal();
+    }
+
+    public override void OnClose(Action _cb)
+    {
+        MsgMgr.Ins.RemoveEventListener(MsgEvent.CameraMove, OnCameraMove, this);
+        MsgMgr.Ins.RemoveEventListener(MsgEvent.CameraZoomRatioChange, OnCameraScale, this);
+        MsgMgr.Ins.RemoveEventListener(MsgEvent.SelectCityBuilding, OnSelectBuilding, this);
+        base.OnClose(_cb);
     }
 
     private void InitBuildingMenus()
     {
         hudItems.Clear();
+        poolBuildingMenu?.CollectAll();
         poolBuildingMenu = PoolMgr.Ins.CreatePool(ui.buildingHudItem);
         foreach (var item in cityCreator.buildingSlots)
         {

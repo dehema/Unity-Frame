@@ -5,14 +5,14 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-public class SceneMgr : MonoSingleton<SceneMgr>
+public class SceneMgr : ModuleSingletonMono<SceneMgr>, IModule
 {
     //要切换的场景名称
     string targetSceneName;
     public SceneID currSceneID;
     public Camera Camera { get; set; }
 
-    private void Start()
+    public void OnInit(object createParam)
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
         SceneManager.sceneUnloaded += OnSceneUnloaded;
@@ -23,6 +23,7 @@ public class SceneMgr : MonoSingleton<SceneMgr>
         SceneManager.sceneLoaded -= OnSceneLoaded;
         SceneManager.sceneUnloaded -= OnSceneUnloaded;
     }
+
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         SceneChangeParam param = new SceneChangeParam();
@@ -84,6 +85,7 @@ public class SceneMgr : MonoSingleton<SceneMgr>
         {
             view?.Close();
             OnSceneChangeComplete();
+            _changeSuccess?.Invoke();
         }));
 
     }
@@ -124,6 +126,23 @@ public class SceneMgr : MonoSingleton<SceneMgr>
     void OnSceneChangeComplete()
     {
         Debug.Log("跳转到场景:" + targetSceneName);
+    }
+
+    public void OnUpdate()
+    {
+    }
+
+    public void OnLateUpdate()
+    {
+    }
+
+    public void OnFixedUpdate()
+    {
+    }
+
+    public void OnTermination()
+    {
+        Debug.Log(1);
     }
 }
 

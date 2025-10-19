@@ -29,13 +29,6 @@ public class ConfigMgr : MonoSingleton<ConfigMgr>
     public static TbCityBuildingLevel CityBuildingLevel => cfg.TbCityBuildingLevel;
     public static TbCityBuildingSlot CityBuildingSlot => cfg.TbCityBuildingSlot;
 
-
-
-    public void Init()
-    {
-        //deployFormation = new DeployFormation();
-    }
-
     public void LoadAllConfig(bool _localConfig = true)
     {
         uiViewConfig = LoadViewConfig();

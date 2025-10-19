@@ -151,7 +151,6 @@ public partial class LoginView : BaseView
     /// </summary>
     private void OnLoginComplete()
     {
-        SceneMgr.Ins.ChangeScene(SceneID.MainCity);
         param?.action?.Invoke();
         Close();
     }

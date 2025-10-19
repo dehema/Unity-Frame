@@ -46,10 +46,10 @@ namespace Rain.Launcher
             //RA.SDK = ModuleCenter.CreateModule<SDKManager>();
             //RA.Download = ModuleCenter.CreateModule<DownloadManager>();
             RA.Log = ModuleCenter.CreateModule<LogMgr>();
+            RA.Scene = ModuleCenter.CreateModule<SceneMgr>();
             LogMgr.Ins.OnEnterGame();
 
             // 游戏初始化
-            ConfigMgr.Ins.Init();
             ConfigMgr.Ins.LoadAllConfig();
             DataMgr.Ins.Load();
             LangMgr.Ins.Init();

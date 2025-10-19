@@ -28,6 +28,8 @@ namespace Rain.Launcher
         private static LogMgr _logMgr;
         // 热更新版本管理
         private static HotUpdateMgr _hotUpdateMgr;
+        // 场景
+        private static SceneMgr _sceneMgr;
 
         public static DataMgr Data
         {
@@ -176,6 +178,21 @@ namespace Rain.Launcher
             {
                 if (_hotUpdateMgr == null)
                     _hotUpdateMgr = value;
+            }
+        }
+
+        public static SceneMgr Scene
+        {
+            get
+            {
+                if (_sceneMgr == null)
+                    _sceneMgr = ModuleCenter.CreateModule<SceneMgr>();
+                return _sceneMgr;
+            }
+            set
+            {
+                if (_sceneMgr == null)
+                    _sceneMgr = value;
             }
         }
     }
