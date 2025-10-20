@@ -15,7 +15,7 @@ namespace Rain.UI.Editor
 
 
 
-        [MenuItem("开发工具/开发工具 _F5", priority = 0)]
+        [MenuItem("开发工具/开发工具 &d", priority = 0)]
         static void ShowWindow()
         {
             EditorDevTools window = GetWindow<EditorDevTools>("Rain开发工具", typeof(EditorWindow).Assembly.GetType("UnityEditor.ConsoleWindow"));
@@ -43,11 +43,11 @@ namespace Rain.UI.Editor
             // 如果样式未初始化，则创建新样式
             if (editorDevTools_Style == null)
                 editorDevTools_Style = new EditorDevTools_Style(GUI.skin);
-            
+
             // 递归设置样式到所有页面
             SetStyleRecursively(rootPages, editorDevTools_Style);
         }
-        
+
         /// <summary>
         /// 递归设置样式到页面及其子页面
         /// </summary>

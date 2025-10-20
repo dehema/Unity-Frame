@@ -5,6 +5,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using SimpleJSON;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -21,12 +22,10 @@ namespace Rain.Core
         private Downloader packageDownloader;
 
         public bool UseLocalConfig = false;      //是否使用本地配置
-        public string AssetBundlesConfigPath => Path.Combine(GameConfig.LocalGameVersion.GameRemoteAddress, nameof(AssetBundleMap) + ".json");
+        public string AssetBundlesConfigPath => Path.Combine(GameConfig.ResGameVersion.GameRemoteAddress, nameof(AssetBundleMap) + ".json");
 
         public void OnInit(object createParam)
         {
-            string text = File.ReadAllText(Path.Combine(Application.persistentDataPath, $"{nameof(GameVersion)}.json"));
-            GameConfig.LocalGameVersion = JsonConvert.DeserializeObject<GameVersion>(text);
             InitLocalVersion();
             InitLocalAssetBundleMap();
         }
@@ -36,6 +35,13 @@ namespace Rain.Core
         /// </summary>
         public void InitLocalVersion()
         {
+            //留一份resource里的固定备份
+            TextAsset resTextAsset = Resources.Load<TextAsset>("GameVersion");
+            if (resTextAsset != null)
+            {
+                GameConfig.ResGameVersion = JsonConvert.DeserializeObject<GameVersion>(resTextAsset.text);
+            }
+
             if (File.Exists(Application.persistentDataPath + "/" + nameof(GameVersion) + ".json"))
             {
                 string json =
@@ -45,8 +51,9 @@ namespace Rain.Core
             else
             {
                 //没有就写一份
+                GameConfig.LocalGameVersion.GameRemoteAddress = GameConfig.ResGameVersion.GameRemoteAddress;
                 FileTools.SafeWriteAllText(Application.persistentDataPath + "/" + nameof(GameVersion) + ".json",
-                    JsonConvert.SerializeObject(GameConfig.LocalGameVersion));
+                    JsonConvert.SerializeObject(GameConfig.LocalGameVersion, Formatting.Indented));
                 Debug.Log("创建GameVersion.json");
             }
         }
@@ -65,7 +72,7 @@ namespace Rain.Core
             {
                 //没有就写一份
                 FileTools.SafeWriteAllText(Application.persistentDataPath + "/" + nameof(AssetBundleMap) + ".json",
-                    JsonConvert.SerializeObject(GameConfig.LocalAssetBundleMap));
+                    JsonConvert.SerializeObject(GameConfig.LocalAssetBundleMap, Formatting.Indented));
                 Debug.Log("创建AssetBundleMap.json");
             }
         }

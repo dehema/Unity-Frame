@@ -1,0 +1,8 @@
+{
+  "Version": "1.0.0",
+  "GameRemoteAddress": "E:\\Program Files\\nginx-1.28.0\\GameServer\\rain",
+  "EnableHotUpdate": true,
+  "HotUpdateVersion": null,
+  "EnablePackage": false,
+  "SubPackage": null
+}

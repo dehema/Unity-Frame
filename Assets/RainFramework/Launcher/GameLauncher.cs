@@ -19,8 +19,6 @@ namespace Rain.Launcher
 
             //热更模块
             RA.HotUpdate = ModuleCenter.CreateModule<HotUpdateMgr>();
-
-            //按顺序创建模块，可按需添加
             RA.Msg = ModuleCenter.CreateModule<MsgMgr>();
             RA.Data = ModuleCenter.CreateModule<DataMgr>();
             RA.Download = ModuleCenter.CreateModule<DownloadMgr>();

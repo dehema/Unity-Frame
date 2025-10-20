@@ -31,6 +31,7 @@ namespace Rain.Core
 
     public class GameConfig
     {
+
         /// <summary>
         /// 本地版本信息
         /// </summary>
@@ -40,6 +41,10 @@ namespace Rain.Core
         /// 远程版本信息
         /// </summary>
         public static GameVersion RemoteGameVersion = new GameVersion();
+        /// <summary>
+        /// 本地版本信息(备份)
+        /// </summary>
+        public static GameVersion ResGameVersion = new GameVersion();
 
         /// <summary>
         /// 本地AB包映射表

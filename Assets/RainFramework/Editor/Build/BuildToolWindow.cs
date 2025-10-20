@@ -19,7 +19,7 @@ public class BuildToolWindow : EditorWindow
     public static GUIStyle buttonStyle;
 
 
-    [MenuItem("开发工具/打包工具 _F8")]
+    [MenuItem("开发工具/打包工具 &b", priority = 0)]
     public static void ShowWindow()
     {
         BuildToolWindow window = GetWindow<BuildToolWindow>("打包工具", typeof(EditorWindow).Assembly.GetType("UnityEditor.GameView"));
