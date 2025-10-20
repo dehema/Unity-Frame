@@ -37,7 +37,36 @@ namespace Rain.Core
         // 输出不存在事件的警告
         private void NotEventLogDispatch(string eventId)
         {
-            RLog.LogEvent("没有创建监听，发送事件：【{0}】", eventId);
+            string eventName = GetEventName(eventId);
+            if (!string.IsNullOrEmpty(eventName))
+            {
+                RLog.LogEvent("没有创建监听，发送事件：【{0}】【{1}】", eventId, eventName);
+            }
+            else
+            {
+                RLog.LogEvent("没有创建监听，发送事件：【{0}】", eventId);
+            }
+        }
+
+        // 获取事件名称
+        private string GetEventName(string eventId)
+        {
+            if (int.TryParse(eventId, out int eventIdInt))
+            {
+                // 通过反射获取MsgEvent枚举的名称
+                var enumType = typeof(MsgEvent);
+                var enumValues = System.Enum.GetValues(enumType);
+                var enumNames = System.Enum.GetNames(enumType);
+
+                for (int i = 0; i < enumValues.Length; i++)
+                {
+                    if ((int)enumValues.GetValue(i) == eventIdInt)
+                    {
+                        return enumNames[i];
+                    }
+                }
+            }
+            return null;
         }
 
         // 输出不存在事件的警告
