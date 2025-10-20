@@ -131,10 +131,14 @@ public class CameraController_City : MonoBehaviour
     private void HandleZoom()
     {
         // 处理鼠标滚轮缩放（PC端）
+#if UNITY_STANDALONE || UNITY_EDITOR
         HandleMouseZoom();
+#endif
 
         // 处理触摸缩放（移动端）
+#if UNITY_ANDROID || UNITY_IOS
         HandleTouchZoom();
+#endif
 
         if (mainCamera.orthographicSize == targetOrthographicSize)
         {
@@ -235,10 +239,14 @@ public class CameraController_City : MonoBehaviour
     private void HandlePanning()
     {
         // 处理鼠标平移（PC端）
+#if UNITY_STANDALONE || UNITY_EDITOR
         HandleMousePanning();
+#endif
 
         // 处理触摸平移（移动端）
+#if UNITY_ANDROID || UNITY_IOS
         HandleTouchPanning();
+#endif
 
         if (mainCamera.transform.position == targetPosition)
         {
@@ -284,16 +292,18 @@ public class CameraController_City : MonoBehaviour
             // 计算鼠标位置差值
             Vector3 mouseDelta = Input.mousePosition - lastMousePosition;
 
-            // 根据相机正交尺寸调整移动速度（缩放越大，移动速度越快）
-            //float moveSpeedFactor = mainCamera.orthographicSize / defaultOrthographicSize;
-            float moveSpeedFactor = 1;
-
+            // 根据屏幕尺寸和相机正交尺寸计算移动比例
+            // 屏幕像素到世界坐标的转换比例
+            float screenToWorldRatio = (mainCamera.orthographicSize * 2) / Screen.height;
+            
             // 计算相机移动方向和距离
             // 注意：鼠标向右移动，相机应该向左移动，所以使用负值
-            // 使用世界坐标系的XZ平面移动
-            Vector3 moveDirection = new Vector3(-mouseDelta.x * moveSpeedFactor * mousePanSpeed * Time.deltaTime, 0, -mouseDelta.y * moveSpeedFactor * mousePanSpeed * Time.deltaTime);
+            Vector3 moveDirection = new Vector3(
+                -mouseDelta.x * screenToWorldRatio * mousePanSpeed, 
+                0, 
+                -mouseDelta.y * screenToWorldRatio * mousePanSpeed
+            );
 
-            // 直接在世界坐标系中移动，不需要转换
             // 考虑相机的旋转角度，确保移动方向正确
             moveDirection = Quaternion.Euler(0, mainCamera.transform.eulerAngles.y, 0) * moveDirection;
             moveDirection.y = 0; // 确保Y轴不变
@@ -328,13 +338,17 @@ public class CameraController_City : MonoBehaviour
                 // 计算触摸位置差值
                 Vector2 touchDelta = touch.position - lastTouchPosition;
 
-                // 根据相机正交尺寸调整移动速度
-                float moveSpeedFactor = 1;
-
+                // 根据屏幕尺寸和相机正交尺寸计算移动比例
+                // 屏幕像素到世界坐标的转换比例
+                float screenToWorldRatio = (mainCamera.orthographicSize * 2) / Screen.height;
+                
                 // 计算相机移动方向和距离
                 // 注意：触摸向右移动，相机应该向左移动，所以使用负值
-                float factor = moveSpeedFactor * TouchPanSpeed;
-                Vector3 moveDirection = new Vector3(-touchDelta.x * factor, 0, -touchDelta.y * factor);
+                Vector3 moveDirection = new Vector3(
+                    -touchDelta.x * screenToWorldRatio * TouchPanSpeed, 
+                    0, 
+                    -touchDelta.y * screenToWorldRatio * TouchPanSpeed
+                );
 
                 // 考虑相机的旋转角度，确保移动方向正确
                 moveDirection = Quaternion.Euler(0, mainCamera.transform.eulerAngles.y, 0) * moveDirection;
