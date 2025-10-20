@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using Rain.Core;
 using UnityEngine;
@@ -41,9 +41,11 @@ public class CameraController_City : MonoBehaviour
     private bool isMiddleMouseDragging = false;
     private Vector3 lastMousePosition;
     // 触摸输入相关变量
-    private bool isTouchPanning = false;
     private Vector2 lastTouchPosition;
     private float lastTouchDistance;
+    //当前帧是否移动
+    private bool isTouchPanning = false;
+    //当前帧是否缩放
     private bool isTwoFingerZoom = false;
 
     public Vector4 PosLimit { get => posLimit; set => posLimit = value; }
@@ -295,12 +297,12 @@ public class CameraController_City : MonoBehaviour
             // 根据屏幕尺寸和相机正交尺寸计算移动比例
             // 屏幕像素到世界坐标的转换比例
             float screenToWorldRatio = (mainCamera.orthographicSize * 2) / Screen.height;
-            
+
             // 计算相机移动方向和距离
             // 注意：鼠标向右移动，相机应该向左移动，所以使用负值
             Vector3 moveDirection = new Vector3(
-                -mouseDelta.x * screenToWorldRatio * mousePanSpeed, 
-                0, 
+                -mouseDelta.x * screenToWorldRatio * mousePanSpeed,
+                0,
                 -mouseDelta.y * screenToWorldRatio * mousePanSpeed
             );
 
@@ -341,12 +343,12 @@ public class CameraController_City : MonoBehaviour
                 // 根据屏幕尺寸和相机正交尺寸计算移动比例
                 // 屏幕像素到世界坐标的转换比例
                 float screenToWorldRatio = (mainCamera.orthographicSize * 2) / Screen.height;
-                
+
                 // 计算相机移动方向和距离
                 // 注意：触摸向右移动，相机应该向左移动，所以使用负值
                 Vector3 moveDirection = new Vector3(
-                    -touchDelta.x * screenToWorldRatio * TouchPanSpeed, 
-                    0, 
+                    -touchDelta.x * screenToWorldRatio * TouchPanSpeed,
+                    0,
                     -touchDelta.y * screenToWorldRatio * TouchPanSpeed
                 );
 
@@ -373,37 +375,52 @@ public class CameraController_City : MonoBehaviour
         }
     }
 
+    GameObject _pressedTarget = null;
+    Vector3 _pressMousePos;
     /// <summary>
     /// 处理射线检测
     /// </summary>
     private void HandleRaycast()
     {
         // 检测鼠标左键点击
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButtonDown(0))
         {
-            bool isOverUI = EventSystem.current.IsPointerOverGameObject();
-            if (isOverUI)
-            {
-                return; // 点到UI
-            }
-            // 从相机位置发射射线到鼠标位置
-            Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-
-            // 只检测Layer 7的对象
-            int layerMask = 1 << 7; // Layer 7
-
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
+            _pressedTarget = GetHandleRaycast();
+            _pressMousePos = Input.mousePosition;
+        }
+        else if (_pressedTarget != null && Input.mousePosition == _pressMousePos && Input.GetMouseButtonUp(0))
+        {
+            if (_pressedTarget == GetHandleRaycast())
             {
                 // 检查命中的对象是否有BuildingController脚本
-                BuildingController buildingController = hit.collider.GetComponent<BuildingController>();
+                BuildingController buildingController = _pressedTarget.GetComponent<BuildingController>();
                 if (buildingController != null)
                 {
-                    // 触发BuildingController的SelectBuilding函数
                     buildingController.OnSelect();
                 }
             }
         }
+    }
+
+    private GameObject GetHandleRaycast()
+    {
+        bool isOverUI = EventSystem.current.IsPointerOverGameObject();
+        if (isOverUI)
+        {
+            return null; // 点到UI
+        }
+        // 从相机位置发射射线到鼠标位置
+        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        // 只检测Layer 7的对象
+        int layerMask = 1 << 7; // Layer 7
+
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
+        {
+            return hit.collider.gameObject;
+        }
+        return null;
     }
 
     /// <summary>
