@@ -31,7 +31,9 @@ namespace Rain.Core
             InitLocalAssetBundleMap();
         }
 
-        // 初始化本地版本
+        /// <summary>
+        /// 初始化本地版本
+        /// </summary>
         public void InitLocalVersion()
         {
             if (File.Exists(Application.persistentDataPath + "/" + nameof(GameVersion) + ".json"))
@@ -49,6 +51,9 @@ namespace Rain.Core
             }
         }
 
+        /// <summary>
+        /// 初始化本地ab列表啊
+        /// </summary>
         public void InitLocalAssetBundleMap()
         {
             if (File.Exists(Application.persistentDataPath + "/" + nameof(AssetBundleMap) + ".json"))
@@ -65,7 +70,10 @@ namespace Rain.Core
             }
         }
 
-        // 初始化远程版本
+        /// <summary>
+        /// 初始化远程版本
+        /// </summary>
+        /// <returns></returns>
         public IEnumerator InitRemoteVersion()
         {
             if (!GameConfig.LocalGameVersion.EnableHotUpdate && !GameConfig.LocalGameVersion.EnablePackage)
@@ -91,7 +99,10 @@ namespace Rain.Core
             webRequest = null;
         }
 
-        // 初始化远端资源版本
+        /// <summary>
+        /// 初始化远端资源版本
+        /// </summary>
+        /// <returns></returns>
         public IEnumerator InitRemoteAssetBundleMap()
         {
             if (!GameConfig.LocalGameVersion.EnableHotUpdate && !GameConfig.LocalGameVersion.EnablePackage)
@@ -117,7 +128,9 @@ namespace Rain.Core
             webRequest = null;
         }
 
-        // 游戏修复，资源清理
+        /// <summary>
+        /// 游戏修复，资源清理
+        /// </summary>
         public void GameRepairAssetClean()
         {
             FileTools.SafeClearDir(Application.persistentDataPath + HotUpdateDirName);
@@ -248,6 +261,7 @@ namespace Rain.Core
                     tempDownloadUrl.Add(assetUrl);
                 }
             }
+            //覆写本地版本文件
             void WriteVersion()
             {
                 if (!GameConfig.RemoteGameVersion.Version.IsNullOrEmpty())
@@ -269,6 +283,8 @@ namespace Rain.Core
             // 下载器开始下载
             hotUpdateDownloader.LaunchDownload();
         }
+
+        #region 分包
 
         // 检查需要下载的分包
         public List<string> CheckPackageUpdate(List<string> subPackage)
@@ -408,6 +424,7 @@ namespace Rain.Core
         //    }
         //    completed?.Invoke();
         //}
+        #endregion
 
         public static string GetAssetBundlesPath(string fullPath)
         {

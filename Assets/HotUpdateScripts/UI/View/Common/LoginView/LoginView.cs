@@ -106,31 +106,35 @@ public partial class LoginView : BaseView
                 break;
 
             case LoginState.CheckVersion:
-                // 检查版本的逻辑
-                Debug.Log("版本检查完成");
-                yield return StartCoroutine(HotUpdateMgr.Ins.InitRemoteVersion());
-                yield return StartCoroutine(HotUpdateMgr.Ins.InitRemoteAssetBundleMap());
-                //检查是否需要更新
-                Tuple<Dictionary<string, string>, long> tuple = HotUpdateMgr.Ins.CheckHotUpdate();
-                float startVal = ui.progress_Slider.value;
-                Debug.Log($"热更新：{tuple.Item1.Count}个文件，总大小{Util.Converter.FormatBytes(tuple.Item2, 1)}");
-                bool complete = false;
-                HotUpdateMgr.Ins.StartHotUpdate(tuple.Item1,
-                    completed: () =>
-                    {
-                        ui.progress_Slider.DOKill();
-                        ui.progress_Slider.value = targetProgress;
-                        complete = true;
-                    },
-                    overallProgress: (progress) =>
-                    {
-                        float _progress = Mathf.Lerp(startVal, targetProgress, progress);
-                        ui.progress_Slider.DOValue(_progress, duration);
-                    }
-                );
-                while (!complete)
                 {
-                    yield return new WaitForEndOfFrame();
+
+                    // 检查版本的逻辑
+                    Debug.Log("版本检查完成");
+                    yield return StartCoroutine(HotUpdateMgr.Ins.InitRemoteVersion());
+                    yield return StartCoroutine(HotUpdateMgr.Ins.InitRemoteAssetBundleMap());
+                    //检查是否需要更新
+                    Tuple<Dictionary<string, string>, long> tuple = HotUpdateMgr.Ins.CheckHotUpdate();
+                    float startVal = ui.progress_Slider.value;
+                    Debug.Log($"热更新：{tuple.Item1.Count}个文件，总大小{Util.Converter.FormatBytes(tuple.Item2, 1)}");
+                    bool complete = false;
+                    HotUpdateMgr.Ins.StartHotUpdate(tuple.Item1,
+                        completed: () =>
+                        {
+                            ui.progress_Slider.DOKill();
+                            ui.progress_Slider.value = targetProgress;
+                            complete = true;
+                        },
+                        overallProgress: (progress) =>
+                        {
+                            float _progress = Mathf.Lerp(startVal, targetProgress, progress);
+                            ui.progress_Slider.DOValue(_progress, duration);
+                        }
+                    );
+                    while (!complete)
+                    {
+                        yield return new WaitForEndOfFrame();
+                    }
+                    Util.Log(ResourceMap.Mappings);
                 }
                 break;
 

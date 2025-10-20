@@ -1997,7 +1997,16 @@ namespace Rain.Core
         public void OnInit(object createParam)
         {
             GameConfig.RemoteAssetBundleMap.ABMap = JsonConvert.DeserializeObject<Dictionary<string, AssetMapping>>(Resources.Load<TextAsset>(nameof(AssetBundleMap)).ToString());
-            ResourceMap.Mappings = JsonConvert.DeserializeObject<Dictionary<string, string[]>>(Resources.Load<TextAsset>(nameof(ResourceMap)).ToString());
+            TextAsset textAsset = Resources.Load<TextAsset>(nameof(ResourceMap));
+            if (textAsset == null)
+            {
+                Debug.LogWarning($"找不到{nameof(ResourceMap)}文件");
+            }
+            else
+            {
+                string text = textAsset.ToString();
+                ResourceMap.Mappings = JsonConvert.DeserializeObject<Dictionary<string, string[]>>(text);
+            }
             _assetBundleManager = ModuleCenter.CreateModule<AssetBundleMgr>();
             _resourcesManager = ModuleCenter.CreateModule<ResourcesMgr>();
         }
