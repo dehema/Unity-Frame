@@ -272,10 +272,11 @@ namespace Rain.Core
                         JsonConvert.SerializeObject(GameConfig.LocalGameVersion, Formatting.Indented));
                 }
 
+                //热更完成之后直接使用远端ab资源列表文件覆盖本地文件
                 if (GameConfig.RemoteAssetBundleMap.ABMap.Count > 0)
                 {
                     FileTools.SafeWriteAllText(Application.persistentDataPath + "/" + nameof(AssetBundleMap) + ".json",
-                        JsonConvert.SerializeObject(GameConfig.RemoteGameVersion));
+                        JsonConvert.SerializeObject(GameConfig.RemoteAssetBundleMap, Formatting.Indented));
                 }
 
                 AssetBundleMgr.Ins.LoadAssetBundleManifestSync();

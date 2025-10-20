@@ -19,7 +19,7 @@ public class BuildToolWindow : EditorWindow
     public static GUIStyle buttonStyle;
 
 
-    [MenuItem("开发工具/打包工具 _F5")] // F5快捷键
+    [MenuItem("开发工具/打包工具 _F8")]
     public static void ShowWindow()
     {
         BuildToolWindow window = GetWindow<BuildToolWindow>("打包工具", typeof(EditorWindow).Assembly.GetType("UnityEditor.GameView"));
@@ -46,7 +46,7 @@ public class BuildToolWindow : EditorWindow
     {
         // 初始化样式
         InitializeStyles();
-        
+
         // 标题区域 - 固定在顶部，不在ScrollView内
         EditorGUILayout.LabelField("RainFramework 打包工具", titleStyle);
         EditorGUILayout.Space(10);

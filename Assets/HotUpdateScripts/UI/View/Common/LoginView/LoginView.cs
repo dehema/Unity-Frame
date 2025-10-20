@@ -107,7 +107,6 @@ public partial class LoginView : BaseView
 
             case LoginState.CheckVersion:
                 {
-
                     // 检查版本的逻辑
                     Debug.Log("版本检查完成");
                     yield return StartCoroutine(HotUpdateMgr.Ins.InitRemoteVersion());

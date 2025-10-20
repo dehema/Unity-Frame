@@ -15,7 +15,7 @@ namespace Rain.UI.Editor
 
 
 
-        [MenuItem("开发工具/开发工具 &d", priority = 0)]
+        [MenuItem("开发工具/开发工具 _F5", priority = 0)]
         static void ShowWindow()
         {
             EditorDevTools window = GetWindow<EditorDevTools>("Rain开发工具", typeof(EditorWindow).Assembly.GetType("UnityEditor.ConsoleWindow"));
