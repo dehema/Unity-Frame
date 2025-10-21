@@ -19,34 +19,26 @@ namespace Rain.Launcher
             // 初始化模块中心
             ModuleCenter.Initialize(this);
 
-            //热更模块
-            RA.HotUpdate = ModuleCenter.CreateModule<HotUpdateMgr>();
-            RA.Msg = ModuleCenter.CreateModule<MsgMgr>();
-            RA.Data = ModuleCenter.CreateModule<DataMgr>();
-            RA.Download = ModuleCenter.CreateModule<DownloadMgr>();
-            //RA.Input = ModuleCenter.CreateModule<InputManager>(new DefaultInputHelper());
-            //RA.Storage = ModuleCenter.CreateModule<StorageManager>();
-            RA.Timer = ModuleCenter.CreateModule<TimerMgr>();
-            //RA.Procedure = ModuleCenter.CreateModule<ProcedureManager>();
-            //RA.Network = ModuleCenter.CreateModule<NetworkManager>();
-            //RA.FSM = ModuleCenter.CreateModule<FSMManager>();
-            //RA.GameObjectPool = ModuleCenter.CreateModule<GameObjectPool>();
-            RA.Asset = ModuleCenter.CreateModule<AssetMgr>();
-#if UNITY_WEBGL
-            yield return AssetBundleManager.Instance.LoadAssetBundleManifest(); // WebGL专用，如果游戏中没有使用任何AB包加载资源，可以删除此方法的调用！
-#endif
-            //RA.Config = ModuleCenter.CreateModule<F8DataManager>();
-            RA.Audio = ModuleCenter.CreateModule<AudioMgr>();
-            //RA.Tween = ModuleCenter.CreateModule<F8Tween>();
-            RA.UIMgr = ModuleCenter.CreateModule<UIMgr>();
-#if UNITY_WEBGL
-            yield return F8DataManager.Instance.LoadLocalizedStringsIEnumerator(); // WebGL专用
-#endif
-            //RA.Local = ModuleCenter.CreateModule<Localization>();
-            //RA.SDK = ModuleCenter.CreateModule<SDKManager>();
-            //RA.Download = ModuleCenter.CreateModule<DownloadManager>();
+            //日志
             RA.Log = ModuleCenter.CreateModule<LogMgr>();
+            //消息
+            RA.Msg = ModuleCenter.CreateModule<MsgMgr>();
+            //数据
+            RA.Data = ModuleCenter.CreateModule<DataMgr>();
+            //下载
+            RA.Download = ModuleCenter.CreateModule<DownloadMgr>();
+            //计时
+            RA.Timer = ModuleCenter.CreateModule<TimerMgr>();
+            //资源
+            RA.Asset = ModuleCenter.CreateModule<AssetMgr>();
+            //音频
+            RA.Audio = ModuleCenter.CreateModule<AudioMgr>();
+            //UI
+            RA.UIMgr = ModuleCenter.CreateModule<UIMgr>();
+            //场景
             RA.Scene = ModuleCenter.CreateModule<SceneMgr>();
+            //热更
+            RA.HotUpdate = ModuleCenter.CreateModule<HotUpdateMgr>();
             LogMgr.Ins.OnEnterGame();
 
             // 游戏初始化

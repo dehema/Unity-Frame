@@ -98,7 +98,9 @@ public class BuildToolAtlas : BuildToolBase
     {
         EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("打包图集", BuildToolWindow.btStyle, GUILayout.Height(30)))
+        {
             BuildAtlas();
+        }
         if (GUILayout.Button("清理图集", BuildToolWindow.btStyle, GUILayout.Height(30)))
             ClearAtlas();
         EditorGUILayout.EndHorizontal();
@@ -110,45 +112,37 @@ public class BuildToolAtlas : BuildToolBase
     /// </summary>
     public void BuildAtlas()
     {
-        try
+        EditorUtility.DisplayProgressBar("打包图集", "正在扫描UI文件夹...", 0f);
+
+        // 确保Atlas目录存在
+        if (!Directory.Exists(atlasPath))
         {
-            EditorUtility.DisplayProgressBar("打包图集", "正在扫描UI文件夹...", 0f);
-
-            // 确保Atlas目录存在
-            if (!Directory.Exists(atlasPath))
-            {
-                Directory.CreateDirectory(atlasPath);
-                AssetDatabase.Refresh();
-            }
-
-            // 获取UI目录下的所有文件夹
-            string[] uiFolders = Directory.GetDirectories(sourcePath);
-            int totalFolders = uiFolders.Length;
-            int processedFolders = 0;
-
-            foreach (string folderPath in uiFolders)
-            {
-                string folderName = Path.GetFileName(folderPath);
-                EditorUtility.DisplayProgressBar("打包图集", $"正在处理文件夹: {folderName}", (float)processedFolders / totalFolders);
-
-                // 创建对应的图集文件
-                CreateAtlasForFolder(folderPath, folderName, atlasPath);
-
-                processedFolders++;
-            }
-
-            EditorUtility.ClearProgressBar();
+            Directory.CreateDirectory(atlasPath);
             AssetDatabase.Refresh();
-            Debug.Log($"打包图集完成，成功处理 {processedFolders} 个文件夹的图集");
+        }
 
-            // 自动进行Pack Preview
-            AutoPackPreview();
-        }
-        catch (Exception e)
+        // 获取UI目录下的所有文件夹
+        string[] uiFolders = Directory.GetDirectories(sourcePath);
+        int totalFolders = uiFolders.Length;
+        int processedFolders = 0;
+
+        foreach (string folderPath in uiFolders)
         {
-            EditorUtility.ClearProgressBar();
-            EditorUtility.DisplayDialog("打包图集失败", $"错误: {e.Message}", "确定");
+            string folderName = Path.GetFileName(folderPath);
+            EditorUtility.DisplayProgressBar("打包图集", $"正在处理文件夹: {folderName}", (float)processedFolders / totalFolders);
+
+            // 创建对应的图集文件
+            CreateAtlasForFolder(folderPath, folderName, atlasPath);
+
+            processedFolders++;
         }
+
+        EditorUtility.ClearProgressBar();
+        AssetDatabase.Refresh();
+        Debug.Log($"打包图集完成，成功处理 {processedFolders} 个文件夹的图集");
+
+        // 自动进行Pack Preview
+        AutoPackPreview();
     }
 
     /// <summary>
@@ -189,54 +183,46 @@ public class BuildToolAtlas : BuildToolBase
             return;
         }
 
-        try
+        // 使用Unity的SpriteAtlas创建图集
+        SpriteAtlas spriteAtlas = new SpriteAtlas();
+
+        // 设置图集参数
+        SpriteAtlasTextureSettings textureSettings = new SpriteAtlasTextureSettings
         {
-            // 使用Unity的SpriteAtlas创建图集
-            SpriteAtlas spriteAtlas = new SpriteAtlas();
+            readable = false,
+            generateMipMaps = false,
+            sRGB = true,
+            filterMode = FilterMode.Bilinear,
+        };
+        spriteAtlas.SetTextureSettings(textureSettings);
 
-            // 设置图集参数
-            SpriteAtlasTextureSettings textureSettings = new SpriteAtlasTextureSettings
-            {
-                readable = false,
-                generateMipMaps = false,
-                sRGB = true,
-                filterMode = FilterMode.Bilinear,
-            };
-            spriteAtlas.SetTextureSettings(textureSettings);
-
-            SpriteAtlasPackingSettings packingSettings = new SpriteAtlasPackingSettings
-            {
-                blockOffset = 1,
-                enableRotation = false,
-                enableTightPacking = false,
-                padding = 2
-            };
-            spriteAtlas.SetPackingSettings(packingSettings);
-
-            // 添加所有纹理到图集
-            var objects = new UnityEngine.Object[textures.Count];
-            for (int i = 0; i < textures.Count; i++)
-            {
-                objects[i] = textures[i];
-            }
-            spriteAtlas.Add(objects);
-
-            // 创建图集资源文件
-            string atlasAssetPath = Path.Combine(atlasPath, $"{folderName}.spriteatlas");
-
-            AssetDatabase.CreateAsset(spriteAtlas, atlasAssetPath);
-
-            Debug.Log($"为图集 {folderName} 创建了 {textures.Count} 个sprite，图集文件: {atlasPath}");
-
-            AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh();
-            Debug.Log($"图集 {folderName} 创建完成");
-        }
-        catch (Exception e)
+        SpriteAtlasPackingSettings packingSettings = new SpriteAtlasPackingSettings
         {
-            Debug.LogError($"创建图集 {folderName} 时发生错误: {e.Message}");
-            Debug.LogError($"错误堆栈: {e.StackTrace}");
+            blockOffset = 1,
+            enableRotation = false,
+            enableTightPacking = false,
+            padding = 2
+        };
+        spriteAtlas.SetPackingSettings(packingSettings);
+
+        // 添加所有纹理到图集
+        var objects = new UnityEngine.Object[textures.Count];
+        for (int i = 0; i < textures.Count; i++)
+        {
+            objects[i] = textures[i];
         }
+        spriteAtlas.Add(objects);
+
+        // 创建图集资源文件
+        string atlasAssetPath = Path.Combine(atlasPath, $"atlas_{folderName}.spriteatlas");
+
+        AssetDatabase.CreateAsset(spriteAtlas, atlasAssetPath);
+
+        Debug.Log($"为图集 {folderName} 创建了 {textures.Count} 个sprite，图集文件: {atlasPath}");
+
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
+        Debug.Log($"图集 {folderName} 创建完成");
     }
 
     /// <summary>
@@ -279,74 +265,59 @@ public class BuildToolAtlas : BuildToolBase
     /// </summary>
     private void AutoPackPreview()
     {
-        try
+        if (!Directory.Exists(atlasPath))
         {
-            if (!Directory.Exists(atlasPath))
+            Debug.LogWarning("Atlas目录不存在，无法进行Pack Preview");
+            return;
+        }
+
+        string[] atlasFiles = Directory.GetFiles(atlasPath, "*.spriteatlas", SearchOption.AllDirectories);
+
+        if (atlasFiles.Length == 0)
+        {
+            Debug.LogWarning("没有找到图集文件，无法进行Pack Preview");
+            return;
+        }
+
+        Debug.Log($"开始自动Pack Preview，共 {atlasFiles.Length} 个图集");
+
+        int successCount = 0;
+        int failCount = 0;
+
+        for (int i = 0; i < atlasFiles.Length; i++)
+        {
+            string atlasFile = atlasFiles[i];
+            string fileName = Path.GetFileNameWithoutExtension(atlasFile);
+
+            // 显示进度条
+            EditorUtility.DisplayProgressBar("Pack Preview", $"正在处理图集: {fileName}", (float)i / atlasFiles.Length);
+
+            string relativePath = atlasFile.Replace(Application.dataPath, "Assets");
+            SpriteAtlas atlas = AssetDatabase.LoadAssetAtPath<SpriteAtlas>(relativePath);
+
+            if (atlas != null)
             {
-                Debug.LogWarning("Atlas目录不存在，无法进行Pack Preview");
-                return;
+                // 执行Pack Preview
+                SpriteAtlasUtility.PackAtlases(new SpriteAtlas[] { atlas }, EditorUserBuildSettings.activeBuildTarget);
+                successCount++;
+                Debug.Log($"图集 {fileName} Pack Preview 完成");
             }
-
-            string[] atlasFiles = Directory.GetFiles(atlasPath, "*.spriteatlas", SearchOption.AllDirectories);
-
-            if (atlasFiles.Length == 0)
+            else
             {
-                Debug.LogWarning("没有找到图集文件，无法进行Pack Preview");
-                return;
-            }
-
-            Debug.Log($"开始自动Pack Preview，共 {atlasFiles.Length} 个图集");
-
-            int successCount = 0;
-            int failCount = 0;
-
-            for (int i = 0; i < atlasFiles.Length; i++)
-            {
-                string atlasFile = atlasFiles[i];
-                string fileName = Path.GetFileNameWithoutExtension(atlasFile);
-
-                try
-                {
-                    // 显示进度条
-                    EditorUtility.DisplayProgressBar("Pack Preview", $"正在处理图集: {fileName}", (float)i / atlasFiles.Length);
-
-                    string relativePath = atlasFile.Replace(Application.dataPath, "Assets");
-                    SpriteAtlas atlas = AssetDatabase.LoadAssetAtPath<SpriteAtlas>(relativePath);
-
-                    if (atlas != null)
-                    {
-                        // 执行Pack Preview
-                        SpriteAtlasUtility.PackAtlases(new SpriteAtlas[] { atlas }, EditorUserBuildSettings.activeBuildTarget);
-                        successCount++;
-                        Debug.Log($"图集 {fileName} Pack Preview 完成");
-                    }
-                    else
-                    {
-                        failCount++;
-                        Debug.LogError($"无法加载图集: {relativePath}");
-                    }
-                }
-                catch (Exception e)
-                {
-                    failCount++;
-                    Debug.LogError($"图集 {fileName} Pack Preview 失败: {e.Message}");
-                }
-            }
-
-            // 清除进度条
-            EditorUtility.ClearProgressBar();
-
-            Debug.Log($"Pack Preview 完成 - 成功: {successCount}, 失败: {failCount}");
-
-            // 显示完成提示
-            if (successCount > 0)
-            {
-                EditorUtility.DisplayDialog("Pack Preview 完成", $"成功处理 {successCount} 个图集\n" + $"失败 {failCount} 个图集", "确定");
+                failCount++;
+                Debug.LogError($"无法加载图集: {relativePath}");
             }
         }
-        catch (Exception e)
+
+        // 清除进度条
+        EditorUtility.ClearProgressBar();
+
+        Debug.Log($"Pack Preview 完成 - 成功: {successCount}, 失败: {failCount}");
+
+        // 显示完成提示
+        if (successCount > 0)
         {
-            Debug.LogError($"自动Pack Preview 过程中发生错误: {e.Message}");
+            EditorUtility.DisplayDialog("Pack Preview 完成", $"成功处理 {successCount} 个图集\n" + $"失败 {failCount} 个图集", "确定");
         }
     }
 

@@ -6,7 +6,7 @@ SpriteAtlas:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Gun
+  m_Name: atlas_Gun
   m_EditorData:
     serializedVersion: 2
     textureSettings:
@@ -40,25 +40,10 @@ SpriteAtlas:
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
-    packedSpriteRenderDataKeys:
-    - ca455d966883df84ca004c1241720bc2: 21300000
-    - 050544f8e411bb24aa0da2ffb856c771: 21300000
-    - 5812f0fbb5bba9e4c948f59b44e97e86: 21300000
-    - 8f08201e4a9b88d45af0a88e816cd41b: 21300000
-    - 9200739f35bf74942bf231a8f2433634: 21300000
+    packedSpriteRenderDataKeys: []
   m_MasterAtlas: {fileID: 0}
-  m_PackedSprites:
-  - {fileID: 21300000, guid: ca455d966883df84ca004c1241720bc2, type: 3}
-  - {fileID: 21300000, guid: 050544f8e411bb24aa0da2ffb856c771, type: 3}
-  - {fileID: 21300000, guid: 5812f0fbb5bba9e4c948f59b44e97e86, type: 3}
-  - {fileID: 21300000, guid: 8f08201e4a9b88d45af0a88e816cd41b, type: 3}
-  - {fileID: 21300000, guid: 9200739f35bf74942bf231a8f2433634, type: 3}
-  m_PackedSpriteNamesToIndex:
-  - Scar
-  - AK12
-  - M4A1
-  - SG552
-  - M870
+  m_PackedSprites: []
+  m_PackedSpriteNamesToIndex: []
   m_RenderDataMap: {}
-  m_Tag: Gun
+  m_Tag: atlas_Gun
   m_IsVariant: 0

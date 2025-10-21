@@ -6,7 +6,7 @@ SpriteAtlas:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Number
+  m_Name: atlas_Number
   m_EditorData:
     serializedVersion: 2
     textureSettings:
@@ -45,40 +45,10 @@ SpriteAtlas:
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
-    packedSpriteRenderDataKeys:
-    - 4bdfb530e169a614ea7a0dae5923f3b7: 21300000
-    - 5d6ff5937c0df4b43af485dd28eba762: 21300000
-    - f8c367b4d7f0cff4a991fef0103bdd83: 21300000
-    - a13401d9874418a4b815e14d3751a77e: 21300000
-    - f3c1bd2b2836615458489c7e72b17e74: 21300000
-    - fb2834cbbab520c4e8367ae00e0068ef: 21300000
-    - f0ef56dc529b87846996830def3e096b: 21300000
-    - a3fdd72dbeeebb84aa2dcdae1e441ca6: 21300000
-    - 861b670e0af0f9c4ba941f0481200412: 21300000
-    - 8a5e145e74270da4f898892a2f6ad2c9: 21300000
+    packedSpriteRenderDataKeys: []
   m_MasterAtlas: {fileID: 0}
-  m_PackedSprites:
-  - {fileID: 21300000, guid: 4bdfb530e169a614ea7a0dae5923f3b7, type: 3}
-  - {fileID: 21300000, guid: 5d6ff5937c0df4b43af485dd28eba762, type: 3}
-  - {fileID: 21300000, guid: f8c367b4d7f0cff4a991fef0103bdd83, type: 3}
-  - {fileID: 21300000, guid: a13401d9874418a4b815e14d3751a77e, type: 3}
-  - {fileID: 21300000, guid: f3c1bd2b2836615458489c7e72b17e74, type: 3}
-  - {fileID: 21300000, guid: fb2834cbbab520c4e8367ae00e0068ef, type: 3}
-  - {fileID: 21300000, guid: f0ef56dc529b87846996830def3e096b, type: 3}
-  - {fileID: 21300000, guid: a3fdd72dbeeebb84aa2dcdae1e441ca6, type: 3}
-  - {fileID: 21300000, guid: 861b670e0af0f9c4ba941f0481200412, type: 3}
-  - {fileID: 21300000, guid: 8a5e145e74270da4f898892a2f6ad2c9, type: 3}
-  m_PackedSpriteNamesToIndex:
-  - 1
-  - 8
-  - 0
-  - 2
-  - 7
-  - 4
-  - 3
-  - 9
-  - 6
-  - 5
+  m_PackedSprites: []
+  m_PackedSpriteNamesToIndex: []
   m_RenderDataMap: {}
-  m_Tag: Number
+  m_Tag: atlas_Number
   m_IsVariant: 0

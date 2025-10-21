@@ -32,11 +32,11 @@ public partial class DemoView : BaseView
         Debug.Log("UI打开");
 
         //同步加载
-        Sprite sprite = AssetMgr.Ins.Load<Sprite>("beastmen_centigors1");
+        Sprite sprite = AssetMgr.Ins.Load<Sprite>("Btn_Rectangle00_n_Green");
         ui.imgBuild1_Image.sprite = sprite;
 
         //异步加载
-        BaseLoader baseLoader = AssetMgr.Ins.LoadAsync<Sprite>("beastmen_centigors2", (OnAssetObject) =>
+        BaseLoader baseLoader = AssetMgr.Ins.LoadAsync<Sprite>("Btn_Rectangle00_n_Blue", (OnAssetObject) =>
         {
             ui.imgBuild2_Image.sprite = OnAssetObject;
         });
@@ -48,6 +48,8 @@ public partial class DemoView : BaseView
         {
             Debug.Log("onComplete");
         });
+
+        //AssetMgr.Ins.Load<>
     }
 
     /// <summary>

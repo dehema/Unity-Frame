@@ -6,7 +6,7 @@ SpriteAtlas:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: 2D
+  m_Name: atlas_2D
   m_EditorData:
     serializedVersion: 2
     textureSettings:
@@ -45,5 +45,5 @@ SpriteAtlas:
   m_PackedSprites: []
   m_PackedSpriteNamesToIndex: []
   m_RenderDataMap: {}
-  m_Tag: 2D
+  m_Tag: atlas_2D
   m_IsVariant: 0
