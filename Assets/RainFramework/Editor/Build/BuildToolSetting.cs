@@ -28,7 +28,7 @@ public class BuildToolSetting : BuildToolBase
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("安装包导出目录:", GUILayout.Width(100));
         config.PackageExportPath = EditorGUILayout.TextField(config.PackageExportPath);
-        if (GUILayout.Button("浏览", GUILayout.Width(60)))
+        if (GUILayout.Button("浏览", BuildToolWindow.btStyle, GUILayout.Width(60)))
         {
             string selectedPath = EditorUtility.OpenFolderPanel("选择导出目录", config.PackageExportPath, "");
             if (!string.IsNullOrEmpty(selectedPath))
@@ -42,7 +42,7 @@ public class BuildToolSetting : BuildToolBase
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("远端地址:", GUILayout.Width(100));
         config.GameRemoteAddress = EditorGUILayout.TextField(config.GameRemoteAddress);
-        if (GUILayout.Button("打开", GUILayout.Width(60)))
+        if (GUILayout.Button("打开", BuildToolWindow.btStyle, GUILayout.Width(60)))
             EditorUtility.RevealInFinder(config.GameRemoteAddress + "/");
         EditorGUILayout.EndHorizontal();
 
@@ -54,16 +54,16 @@ public class BuildToolSetting : BuildToolBase
 
         EditorGUILayout.BeginHorizontal();
 
-        if (GUILayout.Button("构建游戏版本文件", GUILayout.Height(30)))
+        if (GUILayout.Button("构建游戏版本文件", BuildToolWindow.btStyle, GUILayout.Height(30)))
         {
             BuildLocalGameVersionFile();
             BuildRemoteGameVersionFile();
         }
-        if (GUILayout.Button("打开打包目录", GUILayout.Height(30)))
+        if (GUILayout.Button("打开打包目录", BuildToolWindow.btStyle, GUILayout.Height(30)))
         {
             OpenPackageExportDirectory();
         }
-        if (GUILayout.Button("清理打包目录", GUILayout.Height(30)))
+        if (GUILayout.Button("清理打包目录", BuildToolWindow.btStyle, GUILayout.Height(30)))
         {
             ClearPackageExportDirectory();
         }

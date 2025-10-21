@@ -27,7 +27,7 @@ public class BuildToolAB : BuildToolBase
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("AB包输出路径:", GUILayout.Width(100));
         EditorGUILayout.LabelField(config.ABOutputPath);
-        if (GUILayout.Button("打开", GUILayout.Width(60)))
+        if (GUILayout.Button("打开", BuildToolWindow.btStyle, GUILayout.Width(60)))
             OpenAssetBundleDirectory();
         EditorGUILayout.EndHorizontal();
 
@@ -36,19 +36,19 @@ public class BuildToolAB : BuildToolBase
         // AB包操作按钮
         EditorGUILayout.BeginHorizontal();
 
-        if (GUILayout.Button("设置AB", GUILayout.Height(30)))
+        if (GUILayout.Button("设置AB", BuildToolWindow.btStyle, GUILayout.Height(30)))
             SetAllAssetBundles();
-        if (GUILayout.Button("清除AB", GUILayout.Height(30)))
+        if (GUILayout.Button("清除AB", BuildToolWindow.btStyle, GUILayout.Height(30)))
             ClearAllAssetBundles();
-        if (GUILayout.Button("打包AB", GUILayout.Height(30)))
+        if (GUILayout.Button("打包AB", BuildToolWindow.btStyle, GUILayout.Height(30)))
         {
             BuildAllAssetBundles();
             CreateABFileList();
             WriteResourceMapFile();
         }
-        if (GUILayout.Button("上传AB", GUILayout.Height(30)))
+        if (GUILayout.Button("上传AB", BuildToolWindow.btStyle, GUILayout.Height(30)))
             UploadAssetBundles();
-        if (GUILayout.Button("打开上传地址", GUILayout.Height(30)))
+        if (GUILayout.Button("打开上传地址", BuildToolWindow.btStyle, GUILayout.Height(30)))
             OpenOnlineAssetBundleDirectory();
 
         EditorGUILayout.EndHorizontal();

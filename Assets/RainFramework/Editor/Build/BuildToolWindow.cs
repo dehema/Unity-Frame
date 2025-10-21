@@ -16,7 +16,8 @@ public class BuildToolWindow : EditorWindow
     BuildToolAB buildToolAB;
     private Vector2 scrollPosition;
     public static GUIStyle titleStyle;
-    public static GUIStyle buttonStyle;
+    public static GUIStyle btStyle;
+    public static GUIStyle largeBtStyle;
 
 
     [MenuItem("开发工具/打包工具 _F5")]
@@ -75,8 +76,11 @@ public class BuildToolWindow : EditorWindow
         if (titleStyle == null)
             titleStyle = new GUIStyle(GUI.skin.label) { fontSize = 20, alignment = TextAnchor.MiddleCenter, fixedHeight = 34 };
 
-        if (buttonStyle == null)
-            buttonStyle = new GUIStyle(GUI.skin.button) { fontSize = 14, fontStyle = FontStyle.Bold, };
+        if (btStyle == null)
+            btStyle = new GUIStyle(GUI.skin.button) { fontSize = 12, hover = { textColor = Color.green } };
+
+        if (largeBtStyle == null)
+            largeBtStyle = new GUIStyle(btStyle) { fontSize = 18, fontStyle = FontStyle.Bold, };
     }
 
     private void DrawBuildButton()
@@ -85,7 +89,7 @@ public class BuildToolWindow : EditorWindow
         EditorGUILayout.BeginHorizontal();
         GUILayout.FlexibleSpace();
         GUI.backgroundColor = Color.green;
-        if (GUILayout.Button("打包", buttonStyle, GUILayout.Height(50), GUILayout.Width(200)))
+        if (GUILayout.Button("打包", largeBtStyle, GUILayout.Height(50), GUILayout.Width(200)))
         {
             StartBuild();
         }

@@ -53,7 +53,7 @@ public class BuildToolAtlas : BuildToolBase
                     EditorGUILayout.LabelField(fileSize, GUILayout.Width(80));
 
                     // 选择按钮
-                    if (GUILayout.Button("选择", GUILayout.Width(50)))
+                    if (GUILayout.Button("选择", BuildToolWindow.btStyle, GUILayout.Width(50)))
                     {
                         SpriteAtlas atlas = AssetDatabase.LoadAssetAtPath<SpriteAtlas>(relativePath);
                         if (atlas != null)
@@ -64,7 +64,7 @@ public class BuildToolAtlas : BuildToolBase
                     }
 
                     // 删除按钮
-                    if (GUILayout.Button("删除", GUILayout.Width(50)))
+                    if (GUILayout.Button("删除", BuildToolWindow.btStyle, GUILayout.Width(50)))
                     {
                         if (EditorUtility.DisplayDialog("确认删除", $"确定要删除图集 {fileName} 吗？", "确定", "取消"))
                         {
@@ -97,9 +97,9 @@ public class BuildToolAtlas : BuildToolBase
     protected override void DrawContent()
     {
         EditorGUILayout.BeginHorizontal();
-        if (GUILayout.Button("打包图集", GUILayout.Height(30)))
+        if (GUILayout.Button("打包图集", BuildToolWindow.btStyle, GUILayout.Height(30)))
             BuildAtlas();
-        if (GUILayout.Button("清理图集", GUILayout.Height(30)))
+        if (GUILayout.Button("清理图集", BuildToolWindow.btStyle, GUILayout.Height(30)))
             ClearAtlas();
         EditorGUILayout.EndHorizontal();
         DrawAtlasList();

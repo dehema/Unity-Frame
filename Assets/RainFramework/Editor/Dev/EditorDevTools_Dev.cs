@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using DotLiquid;
+using Newtonsoft.Json;
 using Rain.Core;
 using Rain.UI;
 using Rain.UI.Editor;
@@ -153,21 +154,32 @@ public class EditorDevTools_Dev : EditorDevTools_Base
         GUILayout.BeginHorizontal();
         if (EditorApplication.isPlaying)
         {
-            if (GUILayout.Button("停止游戏 Ctrl+P", style.btLarge, GUILayout.Height(30)))
+            GUILayout.FlexibleSpace();
+            if (GUILayout.Button("停止游戏 Ctrl+P", style.btLarge, GUILayout.Height(40)))
             {
                 EditorCoroutineUtility.StartCoroutine(StopGame(), this);
             }
+            GUILayout.FlexibleSpace();
         }
         else
         {
-            if (GUILayout.Button("启动游戏 Ctrl+P | Ctrl+R", style.btLarge, GUILayout.Height(30)))
+            GUILayout.FlexibleSpace();
+            GUI.backgroundColor = Color.green;
+            if (GUILayout.Button("启动游戏 Ctrl+P | Ctrl+R", style.btLarge, GUILayout.Width(200), GUILayout.Height(40)))
             {
                 StartGame();
             }
+            GUILayout.FlexibleSpace();
+            GUI.backgroundColor = Color.white;
+            if (GUILayout.Button("生成资源表", style.btLarge, GUILayout.Width(200), GUILayout.Height(40)))
+            {
+                GenerateResMap();
+            }
+            GUILayout.FlexibleSpace();
         }
         if (EditorApplication.isPlaying)
         {
-            if (GUILayout.Button("重启游戏 Ctrl+R", style.btLarge, GUILayout.Height(30)))
+            if (GUILayout.Button("重启游戏 Ctrl+R", style.btLarge, GUILayout.Height(40)))
             {
                 ResetGame();
             }
@@ -199,6 +211,117 @@ public class EditorDevTools_Dev : EditorDevTools_Base
             GameSettingStatic.ResLog = GUILayout.Toggle(GameSettingStatic.ResLog, "资源log");
             GUILayout.EndHorizontal();
         }
+    }
+
+    /// <summary>
+    /// 生成资源表
+    /// </summary>
+    private void GenerateResMap()
+    {
+        string resMapPath = Application.dataPath + "/RainFramework/Resources/";
+
+        // 确保目录存在
+        FileTools.CheckDirAndCreateWhenNeeded(resMapPath);
+
+        // 扫描所有能被 Resources.Load 读取的文件
+        Dictionary<string, ResMapping> resourceMappings = new Dictionary<string, ResMapping>();
+
+        // 获取所有 Assets 路径
+        string[] allAssetPaths = AssetDatabase.GetAllAssetPaths();
+
+        foreach (string assetPath in allAssetPaths)
+        {
+            // 跳过文件夹和 .meta 文件
+            if (!assetPath.StartsWith("Assets") || Directory.Exists(assetPath) || assetPath.EndsWith(".meta"))
+                continue;
+
+            // 检查文件是否在 Resources 文件夹下
+            if (IsInResourcesFolder(assetPath))
+            {
+                // 获取相对于 Resources 的路径（用于 Resources.Load）
+                string relativePath = GetRelativePathToResources(assetPath);
+
+                // 获取文件名（不含扩展名）作为资源名称
+                string fileName = Path.GetFileNameWithoutExtension(assetPath);
+
+                // 创建资源映射
+                ResMapping mapping = new ResMapping
+                {
+                    assetName = fileName,
+                    logicPath = relativePath,
+                    abName = "" // Resources 不需要 AB 名称
+                };
+
+                // 如果资源名称已存在，记录警告
+                if (resourceMappings.ContainsKey(fileName))
+                {
+                    RLog.LogAsset($"警告: 资源名称 '{fileName}' 重复，路径: {assetPath}，已存在路径: {resourceMappings[fileName].logicPath}");
+                }
+                else
+                {
+                    resourceMappings[fileName] = mapping;
+                    //RLog.LogAsset($"添加资源: {fileName} -> {relativePath}");
+                }
+            }
+        }
+
+        // 生成 JSON 文件
+        string jsonContent = JsonConvert.SerializeObject(resourceMappings, Formatting.Indented);
+        string jsonFilePath = resMapPath + $"{nameof(ResMap)}.json";
+
+        // 删除旧文件
+        FileTools.SafeDeleteFile(jsonFilePath);
+        FileTools.SafeDeleteFile(jsonFilePath + ".meta");
+
+        // 写入新文件
+        if (FileTools.SafeWriteAllText(jsonFilePath, jsonContent))
+        {
+            RLog.LogAsset($"成功生成资源映射文件: {jsonFilePath}");
+            RLog.LogAsset($"共扫描到 {resourceMappings.Count} 个资源文件");
+        }
+        else
+        {
+            RLog.LogAsset($"生成资源映射文件失败: {jsonFilePath}");
+        }
+
+        AssetDatabase.Refresh();
+    }
+
+    /// <summary>
+    /// 检查文件是否在 Resources 文件夹下
+    /// </summary>
+    /// <param name="assetPath">资源路径</param>
+    /// <returns>是否在 Resources 文件夹下</returns>
+    private bool IsInResourcesFolder(string assetPath)
+    {
+        // 检查路径中是否包含 /Resources/ 或路径以 /Resources 结尾
+        return assetPath.Contains("/Resources/") || assetPath.EndsWith("/Resources");
+    }
+
+    /// <summary>
+    /// 获取相对于Resources文件夹的路径
+    /// </summary>
+    /// <param name="assetPath">资源路径</param>
+    /// <returns>相对于Resources的路径</returns>
+    private string GetRelativePathToResources(string assetPath)
+    {
+        // 找到 Resources 在路径中的位置
+        int resourcesIndex = assetPath.IndexOf("/Resources/");
+        if (resourcesIndex == -1)
+        {
+            // 如果路径以 Resources 结尾，去掉最后的 Resources
+            if (assetPath.EndsWith("/Resources"))
+            {
+                return "";
+            }
+            return assetPath;
+        }
+
+        // 获取 Resources 之后的路径部分
+        string relativePath = assetPath.Substring(resourcesIndex + "/Resources/".Length);
+
+        // 去掉文件扩展名
+        return Path.ChangeExtension(relativePath, null);
     }
 
     /// <summary>
