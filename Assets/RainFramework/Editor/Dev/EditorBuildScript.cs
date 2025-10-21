@@ -6,9 +6,12 @@ using UnityEngine;
 
 namespace Rain.UI.Editor
 {
+    /// <summary>
+    /// 该类用作外部cmd参数调用Unity打包Android
+    /// </summary>
     public class EditorBuildScript
     {
-        [MenuItem("Build/Android")]
+        [MenuItem("开发工具/打包/Android")]
         public static void BuildAndroid()
         {
             // 获取命令行参数

@@ -24,6 +24,12 @@ public partial class DemoView : BaseView
         //注册按钮事件
         //ui.btClose_Button.
         ui.btClose_Button.SetButton(Close);
+    }
+
+    public override void OnOpen(IViewParam viewParam = null)
+    {
+        base.OnOpen(viewParam);
+        Debug.Log("UI打开");
 
         //同步加载
         Sprite sprite = AssetMgr.Ins.Load<Sprite>("beastmen_centigors1");
@@ -35,19 +41,13 @@ public partial class DemoView : BaseView
             ui.imgBuild2_Image.sprite = OnAssetObject;
         });
 
-        TimerMgr.Ins.AddTimer(this, step: 2, field: 0, onSecond: () =>
+        TimerMgr.Ins.AddTimer(this, step: 1, field: 0, onSecond: () =>
         {
             Debug.Log("onSecond");
         }, onComplete: () =>
         {
             Debug.Log("onComplete");
         });
-    }
-
-    public override void OnOpen(IViewParam viewParam = null)
-    {
-        base.OnOpen(viewParam);
-        Debug.Log("UI打开");
     }
 
     /// <summary>
@@ -70,7 +70,6 @@ public partial class DemoView : BaseView
         }
     }
 
-
     public class DemoViewParam : IViewParam
     {
         public int number;
@@ -78,5 +77,4 @@ public partial class DemoView : BaseView
         public Action action;
         public Action<string> actionParams;
     }
-
 }

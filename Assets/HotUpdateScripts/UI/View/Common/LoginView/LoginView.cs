@@ -5,6 +5,7 @@ using DG.Tweening;
 using Rain.Core;
 using Rain.UI;
 using UnityEngine;
+using UnityEngine.U2D;
 using static SettingField;
 
 /// <summary>
@@ -133,7 +134,6 @@ public partial class LoginView : BaseView
                     {
                         yield return new WaitForEndOfFrame();
                     }
-                    Util.Log(ResourceMap.Mappings);
                 }
                 break;
 

@@ -43,7 +43,7 @@ namespace Rain.Core
             public AssetInfo(
                 AssetTypeEnum assetType = default,
                 string assetName = default,
-                string[] assetPath = default,
+                string assetPath = default,
                 string assetBundlePathWithoutAb = default,
                 string abName = default)
             {
@@ -59,19 +59,19 @@ namespace Rain.Core
         [System.Flags]
         public enum AssetAccessMode : byte
         {
-            NONE = 0,
-            UNKNOWN = 0b00000001,
-            RESOURCE = 0b00000010,
-            ASSET_BUNDLE = 0b00000100,
-            REMOTE_ASSET_BUNDLE = 0b00001000
+            None = 0,
+            Unknown = 0b00000001,
+            Resource = 0b00000010,
+            AssetBundle = 0b00000100,
+            RemoteAssetBundle = 0b00001000
         }
 
         //资产类型
         public enum AssetTypeEnum : byte
         {
-            NONE,
-            RESOURCE,
-            ASSET_BUNDLE
+            None,
+            Resource,
+            AssetBundle
         }
 
         // 是否采用编辑器模式
@@ -99,14 +99,14 @@ namespace Rain.Core
 #if UNITY_EDITOR
             if (IsEditorMode)
             {
-                if (assetInfo.AssetType == AssetTypeEnum.RESOURCE)
-                    if (assetInfo.AssetPath != default || SearchAsset(assetInfo.AssetName, AssetAccessMode.RESOURCE) != null)
+                if (assetInfo.AssetType == AssetTypeEnum.Resource)
+                    if (assetInfo.AssetPath != default || SearchAsset(assetInfo.AssetName, AssetAccessMode.Resource) != null)
                     {
                         return true;
                     }
 
-                if (assetInfo.AssetType == AssetTypeEnum.ASSET_BUNDLE)
-                    if ((assetInfo.AssetPath != default && assetInfo.AssetBundlePath != default) || SearchAsset(assetInfo.AssetName, AssetAccessMode.ASSET_BUNDLE) != null)
+                if (assetInfo.AssetType == AssetTypeEnum.AssetBundle)
+                    if ((assetInfo.AssetPath != default && assetInfo.AssetBundlePath != default) || SearchAsset(assetInfo.AssetName, AssetAccessMode.AssetBundle) != null)
                     {
                         return true;
                     }
@@ -114,14 +114,14 @@ namespace Rain.Core
                 return false;
             }
 #endif
-            if (assetInfo.AssetType == AssetTypeEnum.NONE)
+            if (assetInfo.AssetType == AssetTypeEnum.None)
                 return false;
 
-            if (assetInfo.AssetType == AssetTypeEnum.RESOURCE &&
+            if (assetInfo.AssetType == AssetTypeEnum.Resource &&
                 assetInfo.AssetPath == default)
                 return false;
 
-            if (assetInfo.AssetType == AssetTypeEnum.ASSET_BUNDLE &&
+            if (assetInfo.AssetType == AssetTypeEnum.AssetBundle &&
                 (assetInfo.AssetPath == default || assetInfo.AssetBundlePath == default))
                 return false;
 
@@ -135,26 +135,26 @@ namespace Rain.Core
         /// <param name="accessMode">访问模式。</param>
         /// <returns>资产信息。</returns>
         public AssetInfo GetAssetInfo(string assetName,
-            AssetAccessMode accessMode = AssetAccessMode.UNKNOWN)
+            AssetAccessMode accessMode = AssetAccessMode.Unknown)
         {
             if (ForceRemoteAssetBundle)
             {
-                accessMode = AssetAccessMode.REMOTE_ASSET_BUNDLE;
+                accessMode = AssetAccessMode.RemoteAssetBundle;
             }
 
-            if (accessMode.HasFlag(AssetAccessMode.RESOURCE))
+            if (accessMode.HasFlag(AssetAccessMode.Resource))
             {
                 bool showTip = !IsEditorMode;
 
                 return GetAssetInfoFromResource(assetName, showTip);
             }
-            else if (accessMode.HasFlag(AssetAccessMode.ASSET_BUNDLE))
+            else if (accessMode.HasFlag(AssetAccessMode.AssetBundle))
             {
                 bool showTip = !IsEditorMode;
 
                 return GetAssetInfoFromAssetBundle(assetName, false, showTip);
             }
-            else if (accessMode.HasFlag(AssetAccessMode.UNKNOWN))
+            else if (accessMode.HasFlag(AssetAccessMode.Unknown))
             {
                 AssetInfo r = GetAssetInfoFromAssetBundle(assetName);
                 if (!IsLegal(ref r))
@@ -172,7 +172,7 @@ namespace Rain.Core
                     return new AssetInfo();
                 }
             }
-            else if (accessMode.HasFlag(AssetAccessMode.REMOTE_ASSET_BUNDLE))
+            else if (accessMode.HasFlag(AssetAccessMode.RemoteAssetBundle))
             {
                 AssetInfo r = GetAssetInfoFromAssetBundle(assetName, true);
                 if (!IsLegal(ref r))
@@ -204,12 +204,12 @@ namespace Rain.Core
         public T GetAssetObject<T>(
             string assetName,
             string subAssetName = null,
-            AssetAccessMode mode = AssetAccessMode.UNKNOWN)
+            AssetAccessMode mode = AssetAccessMode.Unknown)
             where T : Object
         {
             AssetInfo info = GetAssetInfo(assetName, mode);
 
-            if (info.AssetType == AssetTypeEnum.RESOURCE)
+            if (info.AssetType == AssetTypeEnum.Resource)
             {
                 string assetPath = info.AssetPath?[0];
 #if UNITY_EDITOR
@@ -221,7 +221,7 @@ namespace Rain.Core
                 T o = ResourcesMgr.Ins.GetAssetObject<T>(assetPath, subAssetName, out ResourcesLoader loader);
                 return o;
             }
-            else if (info.AssetType == AssetTypeEnum.ASSET_BUNDLE)
+            else if (info.AssetType == AssetTypeEnum.AssetBundle)
             {
 #if UNITY_EDITOR
                 if (IsEditorMode)
@@ -260,11 +260,11 @@ namespace Rain.Core
             string assetName,
             System.Type assetType,
             string subAssetName = null,
-            AssetAccessMode mode = AssetAccessMode.UNKNOWN)
+            AssetAccessMode mode = AssetAccessMode.Unknown)
         {
             AssetInfo info = GetAssetInfo(assetName, mode);
 
-            if (info.AssetType == AssetTypeEnum.RESOURCE)
+            if (info.AssetType == AssetTypeEnum.Resource)
             {
                 string assetPath = info.AssetPath?[0];
 #if UNITY_EDITOR
@@ -276,7 +276,7 @@ namespace Rain.Core
                 Object o = ResourcesMgr.Ins.GetAssetObject(assetPath, assetType, subAssetName, out ResourcesLoader loader);
                 return o;
             }
-            else if (info.AssetType == AssetTypeEnum.ASSET_BUNDLE)
+            else if (info.AssetType == AssetTypeEnum.AssetBundle)
             {
 #if UNITY_EDITOR
                 if (IsEditorMode)
@@ -313,11 +313,11 @@ namespace Rain.Core
         public Object GetAssetObject(
             string assetName,
             string subAssetName = null,
-            AssetAccessMode mode = AssetAccessMode.UNKNOWN)
+            AssetAccessMode mode = AssetAccessMode.Unknown)
         {
             AssetInfo info = GetAssetInfo(assetName, mode);
 
-            if (info.AssetType == AssetTypeEnum.RESOURCE)
+            if (info.AssetType == AssetTypeEnum.Resource)
             {
                 string assetPath = info.AssetPath?[0];
 #if UNITY_EDITOR
@@ -329,7 +329,7 @@ namespace Rain.Core
                 Object o = ResourcesMgr.Ins.GetAssetObject(assetPath, null, subAssetName, out ResourcesLoader loader);
                 return o;
             }
-            else if (info.AssetType == AssetTypeEnum.ASSET_BUNDLE)
+            else if (info.AssetType == AssetTypeEnum.AssetBundle)
             {
 #if UNITY_EDITOR
                 if (IsEditorMode)
@@ -362,7 +362,7 @@ namespace Rain.Core
         /// <param name="assetName"></param>
         /// <param name="mode"></param>
         /// <returns></returns>
-        public Dictionary<string, TObject> GetAllAssetObject<TObject>(string assetName, AssetAccessMode mode = AssetAccessMode.UNKNOWN) where TObject : Object
+        public Dictionary<string, TObject> GetAllAssetObject<TObject>(string assetName, AssetAccessMode mode = AssetAccessMode.Unknown) where TObject : Object
         {
             Dictionary<string, TObject> allAsset = new Dictionary<string, TObject>();
             foreach (var item in GetAllAssetObject(assetName, mode))
@@ -381,11 +381,11 @@ namespace Rain.Core
         /// <param name="assetName"></param>
         /// <param name="mode"></param>
         /// <returns></returns>
-        public Dictionary<string, Object> GetAllAssetObject(string assetName, AssetAccessMode mode = AssetAccessMode.UNKNOWN)
+        public Dictionary<string, Object> GetAllAssetObject(string assetName, AssetAccessMode mode = AssetAccessMode.Unknown)
         {
             AssetInfo info = GetAssetInfo(assetName, mode);
 
-            if (info.AssetType == AssetTypeEnum.RESOURCE)
+            if (info.AssetType == AssetTypeEnum.Resource)
             {
                 string assetPath = info.AssetPath?[0];
 #if UNITY_EDITOR
@@ -396,7 +396,7 @@ namespace Rain.Core
 #endif
                 return ResourcesMgr.Ins.GetAllAssetObject(assetPath);
             }
-            else if (info.AssetType == AssetTypeEnum.ASSET_BUNDLE)
+            else if (info.AssetType == AssetTypeEnum.AssetBundle)
             {
 #if UNITY_EDITOR
                 if (IsEditorMode)
@@ -417,7 +417,7 @@ namespace Rain.Core
         /// <param name="assetName"></param>
         /// <param name="mode"></param>
         /// <returns></returns>
-        public Dictionary<string, TObject> LoadAll<TObject>(string assetName, AssetAccessMode mode = AssetAccessMode.UNKNOWN) where TObject : Object
+        public Dictionary<string, TObject> LoadAll<TObject>(string assetName, AssetAccessMode mode = AssetAccessMode.Unknown) where TObject : Object
         {
             Dictionary<string, TObject> allAsset = new Dictionary<string, TObject>();
             foreach (var item in LoadAll(assetName, mode))
@@ -436,11 +436,11 @@ namespace Rain.Core
         /// <param name="assetName"></param>
         /// <param name="mode"></param>
         /// <returns></returns>
-        public Dictionary<string, Object> LoadAll(string assetName, AssetAccessMode mode = AssetAccessMode.UNKNOWN)
+        public Dictionary<string, Object> LoadAll(string assetName, AssetAccessMode mode = AssetAccessMode.Unknown)
         {
             AssetInfo info = GetAssetInfo(assetName, mode);
 
-            if (info.AssetType == AssetTypeEnum.RESOURCE)
+            if (info.AssetType == AssetTypeEnum.Resource)
             {
                 string assetPath = info.AssetPath?[0];
 #if UNITY_EDITOR
@@ -453,7 +453,7 @@ namespace Rain.Core
 
                 return ResourcesMgr.Ins.GetAllAssetObject(assetPath);
             }
-            else if (info.AssetType == AssetTypeEnum.ASSET_BUNDLE)
+            else if (info.AssetType == AssetTypeEnum.AssetBundle)
             {
 #if UNITY_EDITOR
                 if (IsEditorMode)
@@ -477,7 +477,7 @@ namespace Rain.Core
         /// <param name="callback"></param>
         /// <param name="mode"></param>
         /// <returns></returns>
-        public BaseLoader LoadAllAsync<TObject>(string assetName, OnAllAssetObject<TObject> callback = null, AssetAccessMode mode = AssetAccessMode.UNKNOWN) where TObject : Object
+        public BaseLoader LoadAllAsync<TObject>(string assetName, OnAllAssetObject<TObject> callback = null, AssetAccessMode mode = AssetAccessMode.Unknown) where TObject : Object
         {
             void NonGenericCallback(Dictionary<string, Object> allAssets)
             {
@@ -510,7 +510,7 @@ namespace Rain.Core
         /// <param name="callback"></param>
         /// <param name="mode"></param>
         /// <returns></returns>
-        public BaseLoader LoadAllAsync(string assetName, OnAllAssetObject<Object> callback = null, AssetAccessMode mode = AssetAccessMode.UNKNOWN)
+        public BaseLoader LoadAllAsync(string assetName, OnAllAssetObject<Object> callback = null, AssetAccessMode mode = AssetAccessMode.Unknown)
         {
             AssetInfo info = GetAssetInfo(assetName, mode);
             if (!IsLegal(ref info))
@@ -519,7 +519,7 @@ namespace Rain.Core
                 return new BaseLoader();
             }
 
-            if (info.AssetType == AssetTypeEnum.RESOURCE)
+            if (info.AssetType == AssetTypeEnum.Resource)
             {
                 string assetPath = info.AssetPath?[0];
 #if UNITY_EDITOR
@@ -532,7 +532,7 @@ namespace Rain.Core
                 End(ResourcesMgr.Ins.GetAllAssetObject(assetPath));
                 return loader;
             }
-            else if (info.AssetType == AssetTypeEnum.ASSET_BUNDLE)
+            else if (info.AssetType == AssetTypeEnum.AssetBundle)
             {
 #if UNITY_EDITOR
                 if (IsEditorMode)
@@ -574,7 +574,7 @@ namespace Rain.Core
         /// <param name="assetName"></param>
         /// <param name="mode"></param>
         /// <returns></returns>
-        public Dictionary<string, TObject> LoadSub<TObject>(string assetName, AssetAccessMode mode = AssetAccessMode.UNKNOWN) where TObject : Object
+        public Dictionary<string, TObject> LoadSub<TObject>(string assetName, AssetAccessMode mode = AssetAccessMode.Unknown) where TObject : Object
         {
             Dictionary<string, TObject> allAsset = new Dictionary<string, TObject>();
             foreach (var item in LoadSub(assetName, mode))
@@ -594,11 +594,11 @@ namespace Rain.Core
         /// <param name="assetName"></param>
         /// <param name="mode"></param>
         /// <returns></returns>
-        public Dictionary<string, Object> LoadSub(string assetName, AssetAccessMode mode = AssetAccessMode.UNKNOWN)
+        public Dictionary<string, Object> LoadSub(string assetName, AssetAccessMode mode = AssetAccessMode.Unknown)
         {
             AssetInfo info = GetAssetInfo(assetName, mode);
 
-            if (info.AssetType == AssetTypeEnum.RESOURCE)
+            if (info.AssetType == AssetTypeEnum.Resource)
             {
                 string assetPath = info.AssetPath?[0];
 #if UNITY_EDITOR
@@ -611,7 +611,7 @@ namespace Rain.Core
 
                 return ResourcesMgr.Ins.GetAllAssetObject(assetPath);
             }
-            else if (info.AssetType == AssetTypeEnum.ASSET_BUNDLE)
+            else if (info.AssetType == AssetTypeEnum.AssetBundle)
             {
 #if UNITY_EDITOR
                 if (IsEditorMode)
@@ -635,7 +635,7 @@ namespace Rain.Core
         /// <param name="callback"></param>
         /// <param name="mode"></param>
         /// <returns></returns>
-        public BaseLoader LoadSubAsync<TObject>(string assetName, OnAllAssetObject<TObject> callback = null, AssetAccessMode mode = AssetAccessMode.UNKNOWN) where TObject : Object
+        public BaseLoader LoadSubAsync<TObject>(string assetName, OnAllAssetObject<TObject> callback = null, AssetAccessMode mode = AssetAccessMode.Unknown) where TObject : Object
         {
             void NonGenericCallback(Dictionary<string, Object> allAssets)
             {
@@ -668,7 +668,7 @@ namespace Rain.Core
         /// <param name="callback"></param>
         /// <param name="mode"></param>
         /// <returns></returns>
-        public BaseLoader LoadSubAsync(string assetName, OnAllAssetObject<Object> callback = null, AssetAccessMode mode = AssetAccessMode.UNKNOWN)
+        public BaseLoader LoadSubAsync(string assetName, OnAllAssetObject<Object> callback = null, AssetAccessMode mode = AssetAccessMode.Unknown)
         {
             AssetInfo info = GetAssetInfo(assetName, mode);
             if (!IsLegal(ref info))
@@ -677,7 +677,7 @@ namespace Rain.Core
                 return new BaseLoader();
             }
 
-            if (info.AssetType == AssetTypeEnum.RESOURCE)
+            if (info.AssetType == AssetTypeEnum.Resource)
             {
                 string assetPath = info.AssetPath?[0];
 #if UNITY_EDITOR
@@ -690,7 +690,7 @@ namespace Rain.Core
                 End(ResourcesMgr.Ins.GetAllAssetObject(assetPath));
                 return loader;
             }
-            else if (info.AssetType == AssetTypeEnum.ASSET_BUNDLE)
+            else if (info.AssetType == AssetTypeEnum.AssetBundle)
             {
 #if UNITY_EDITOR
                 if (IsEditorMode)
@@ -737,14 +737,14 @@ namespace Rain.Core
         public T Load<T>(
             string assetName,
             string subAssetName = null,
-            AssetAccessMode mode = AssetAccessMode.UNKNOWN)
+            AssetAccessMode mode = AssetAccessMode.Unknown)
             where T : Object
         {
             AssetInfo info = GetAssetInfo(assetName, mode);
             if (!IsLegal(ref info))
                 return null;
 
-            if (info.AssetType == AssetTypeEnum.RESOURCE)
+            if (info.AssetType == AssetTypeEnum.Resource)
             {
                 string assetPath = info.AssetPath?[0];
 #if UNITY_EDITOR
@@ -765,7 +765,7 @@ namespace Rain.Core
                 }
                 return ResourcesMgr.Ins.LoadAll<T>(assetPath, subAssetName, out ResourcesLoader loader2);
             }
-            else if (info.AssetType == AssetTypeEnum.ASSET_BUNDLE)
+            else if (info.AssetType == AssetTypeEnum.AssetBundle)
             {
 #if UNITY_EDITOR
                 if (IsEditorMode)
@@ -806,14 +806,14 @@ namespace Rain.Core
         /// <param name="mode">访问模式。</param>
         public void LoadDir(
             string assetName,
-            AssetAccessMode mode = AssetAccessMode.UNKNOWN)
+            AssetAccessMode mode = AssetAccessMode.Unknown)
         {
             assetName += DirSuffix;
             AssetInfo info = GetAssetInfo(assetName, mode);
             if (!IsLegal(ref info))
                 return;
 
-            if (info.AssetType == AssetTypeEnum.RESOURCE)
+            if (info.AssetType == AssetTypeEnum.Resource)
             {
 #if UNITY_EDITOR
                 if (IsEditorMode)
@@ -840,7 +840,7 @@ namespace Rain.Core
                     }
                 }
             }
-            else if (info.AssetType == AssetTypeEnum.ASSET_BUNDLE)
+            else if (info.AssetType == AssetTypeEnum.AssetBundle)
             {
 #if UNITY_EDITOR
                 if (IsEditorMode)
@@ -876,13 +876,13 @@ namespace Rain.Core
             string assetName,
             System.Type assetType,
             string subAssetName = null,
-            AssetAccessMode mode = AssetAccessMode.UNKNOWN)
+            AssetAccessMode mode = AssetAccessMode.Unknown)
         {
             AssetInfo info = GetAssetInfo(assetName, mode);
             if (!IsLegal(ref info))
                 return null;
 
-            if (info.AssetType == AssetTypeEnum.RESOURCE)
+            if (info.AssetType == AssetTypeEnum.Resource)
             {
                 string assetPath = info.AssetPath?[0];
 #if UNITY_EDITOR
@@ -903,7 +903,7 @@ namespace Rain.Core
                 }
                 return ResourcesMgr.Ins.LoadAll(assetPath, assetType, subAssetName, out ResourcesLoader loader2);
             }
-            else if (info.AssetType == AssetTypeEnum.ASSET_BUNDLE)
+            else if (info.AssetType == AssetTypeEnum.AssetBundle)
             {
 #if UNITY_EDITOR
                 if (IsEditorMode)
@@ -947,13 +947,13 @@ namespace Rain.Core
         public Object Load(
             string assetName,
             string subAssetName = null,
-            AssetAccessMode mode = AssetAccessMode.UNKNOWN)
+            AssetAccessMode mode = AssetAccessMode.Unknown)
         {
             AssetInfo info = GetAssetInfo(assetName, mode);
             if (!IsLegal(ref info))
                 return null;
 
-            if (info.AssetType == AssetTypeEnum.RESOURCE)
+            if (info.AssetType == AssetTypeEnum.Resource)
             {
                 string assetPath = info.AssetPath?[0];
 #if UNITY_EDITOR
@@ -974,7 +974,7 @@ namespace Rain.Core
                 }
                 return ResourcesMgr.Ins.LoadAll(assetPath, null, subAssetName, out ResourcesLoader loader2);
             }
-            else if (info.AssetType == AssetTypeEnum.ASSET_BUNDLE)
+            else if (info.AssetType == AssetTypeEnum.AssetBundle)
             {
 #if UNITY_EDITOR
                 if (IsEditorMode)
@@ -1020,7 +1020,7 @@ namespace Rain.Core
             string assetName,
             OnAssetObject<T> callback = null,
             string subAssetName = null,
-            AssetAccessMode mode = AssetAccessMode.UNKNOWN)
+            AssetAccessMode mode = AssetAccessMode.Unknown)
             where T : Object
         {
             AssetInfo info = GetAssetInfo(assetName, mode);
@@ -1030,7 +1030,7 @@ namespace Rain.Core
                 return new BaseLoader();
             }
 
-            if (info.AssetType == AssetTypeEnum.RESOURCE)
+            if (info.AssetType == AssetTypeEnum.Resource)
             {
                 string assetPath = info.AssetPath?[0];
 #if UNITY_EDITOR
@@ -1061,7 +1061,7 @@ namespace Rain.Core
                 }
                 return null;
             }
-            else if (info.AssetType == AssetTypeEnum.ASSET_BUNDLE)
+            else if (info.AssetType == AssetTypeEnum.AssetBundle)
             {
 #if UNITY_EDITOR
                 if (IsEditorMode)
@@ -1117,7 +1117,7 @@ namespace Rain.Core
         /// <param name="assetName">资产路径字符串。</param>
         /// <param name="subAssetName">子资产名称。</param>
         /// <param name="mode">访问模式。</param>
-        public IEnumerator LoadAsyncCoroutine<T>(string assetName, string subAssetName = null, AssetAccessMode mode = AssetAccessMode.UNKNOWN) where T : Object
+        public IEnumerator LoadAsyncCoroutine<T>(string assetName, string subAssetName = null, AssetAccessMode mode = AssetAccessMode.Unknown) where T : Object
         {
             AssetInfo info = GetAssetInfo(assetName, mode);
             if (!IsLegal(ref info))
@@ -1125,7 +1125,7 @@ namespace Rain.Core
                 yield break;
             }
 
-            if (info.AssetType == AssetTypeEnum.RESOURCE)
+            if (info.AssetType == AssetTypeEnum.Resource)
             {
                 string assetPath = info.AssetPath?[0];
 #if UNITY_EDITOR
@@ -1151,7 +1151,7 @@ namespace Rain.Core
                     }
                 }
             }
-            else if (info.AssetType == AssetTypeEnum.ASSET_BUNDLE)
+            else if (info.AssetType == AssetTypeEnum.AssetBundle)
             {
 #if UNITY_EDITOR
                 if (IsEditorMode)
@@ -1195,7 +1195,7 @@ namespace Rain.Core
         /// <param name="assetType">目标资产类型。</param>
         /// <param name="subAssetName">子资产名称。</param>
         /// <param name="mode">访问模式。</param>
-        public IEnumerator LoadAsyncCoroutine(string assetName, System.Type assetType = null, string subAssetName = null, AssetAccessMode mode = AssetAccessMode.UNKNOWN)
+        public IEnumerator LoadAsyncCoroutine(string assetName, System.Type assetType = null, string subAssetName = null, AssetAccessMode mode = AssetAccessMode.Unknown)
         {
             AssetInfo info = GetAssetInfo(assetName, mode);
             if (!IsLegal(ref info))
@@ -1203,7 +1203,7 @@ namespace Rain.Core
                 yield break;
             }
 
-            if (info.AssetType == AssetTypeEnum.RESOURCE)
+            if (info.AssetType == AssetTypeEnum.Resource)
             {
                 string assetPath = info.AssetPath?[0];
 #if UNITY_EDITOR
@@ -1230,7 +1230,7 @@ namespace Rain.Core
                     }
                 }
             }
-            else if (info.AssetType == AssetTypeEnum.ASSET_BUNDLE)
+            else if (info.AssetType == AssetTypeEnum.AssetBundle)
             {
 #if UNITY_EDITOR
                 if (IsEditorMode)
@@ -1276,7 +1276,7 @@ namespace Rain.Core
         public BaseDirLoader LoadDirAsync(
             string assetName,
             Action callback = null,
-            AssetAccessMode mode = AssetAccessMode.UNKNOWN)
+            AssetAccessMode mode = AssetAccessMode.Unknown)
         {
             assetName += DirSuffix;
             AssetInfo info = GetAssetInfo(assetName, mode);
@@ -1287,7 +1287,7 @@ namespace Rain.Core
                 return dirLoader;
             }
 
-            if (info.AssetType == AssetTypeEnum.RESOURCE)
+            if (info.AssetType == AssetTypeEnum.Resource)
             {
 #if UNITY_EDITOR
                 if (IsEditorMode)
@@ -1333,7 +1333,7 @@ namespace Rain.Core
                     }
                 }
             }
-            else if (info.AssetType == AssetTypeEnum.ASSET_BUNDLE)
+            else if (info.AssetType == AssetTypeEnum.AssetBundle)
             {
 #if UNITY_EDITOR
                 if (IsEditorMode)
@@ -1403,7 +1403,7 @@ namespace Rain.Core
         /// </summary>
         /// <param name="assetName">资产路径字符串。</param>
         /// <param name="mode">访问模式。</param>
-        public IEnumerable LoadDirAsyncCoroutine(string assetName, AssetAccessMode mode = AssetAccessMode.UNKNOWN)
+        public IEnumerable LoadDirAsyncCoroutine(string assetName, AssetAccessMode mode = AssetAccessMode.Unknown)
         {
             assetName += DirSuffix;
             AssetInfo info = GetAssetInfo(assetName, mode);
@@ -1412,7 +1412,7 @@ namespace Rain.Core
                 yield break;
             }
 
-            if (info.AssetType == AssetTypeEnum.RESOURCE)
+            if (info.AssetType == AssetTypeEnum.Resource)
             {
 #if UNITY_EDITOR
                 if (IsEditorMode)
@@ -1443,7 +1443,7 @@ namespace Rain.Core
                     }
                 }
             }
-            else if (info.AssetType == AssetTypeEnum.ASSET_BUNDLE)
+            else if (info.AssetType == AssetTypeEnum.AssetBundle)
             {
 #if UNITY_EDITOR
                 if (IsEditorMode)
@@ -1504,7 +1504,7 @@ namespace Rain.Core
             System.Type assetType,
             OnAssetObject<Object> callback = null,
             string subAssetName = null,
-            AssetAccessMode mode = AssetAccessMode.UNKNOWN)
+            AssetAccessMode mode = AssetAccessMode.Unknown)
         {
             AssetInfo info = GetAssetInfo(assetName, mode);
             if (!IsLegal(ref info))
@@ -1513,7 +1513,7 @@ namespace Rain.Core
                 return new BaseLoader();
             }
 
-            if (info.AssetType == AssetTypeEnum.RESOURCE)
+            if (info.AssetType == AssetTypeEnum.Resource)
             {
                 string assetPath = info.AssetPath?[0];
 #if UNITY_EDITOR
@@ -1544,7 +1544,7 @@ namespace Rain.Core
                 }
                 return null;
             }
-            else if (info.AssetType == AssetTypeEnum.ASSET_BUNDLE)
+            else if (info.AssetType == AssetTypeEnum.AssetBundle)
             {
 #if UNITY_EDITOR
                 if (IsEditorMode)
@@ -1604,7 +1604,7 @@ namespace Rain.Core
             string assetName,
             OnAssetObject<Object> callback = null,
             string subAssetName = null,
-            AssetAccessMode mode = AssetAccessMode.UNKNOWN)
+            AssetAccessMode mode = AssetAccessMode.Unknown)
         {
             AssetInfo info = GetAssetInfo(assetName, mode);
             if (!IsLegal(ref info))
@@ -1613,7 +1613,7 @@ namespace Rain.Core
                 return new BaseLoader();
             }
 
-            if (info.AssetType == AssetTypeEnum.RESOURCE)
+            if (info.AssetType == AssetTypeEnum.Resource)
             {
                 string assetPath = info.AssetPath?[0];
 #if UNITY_EDITOR
@@ -1644,7 +1644,7 @@ namespace Rain.Core
                 }
                 return null;
             }
-            else if (info.AssetType == AssetTypeEnum.ASSET_BUNDLE)
+            else if (info.AssetType == AssetTypeEnum.AssetBundle)
             {
 #if UNITY_EDITOR
                 if (IsEditorMode)
@@ -1693,32 +1693,49 @@ namespace Rain.Core
             return null;
         }
 
-
+        /// <summary>
+        /// 从Resources中获取资源信息
+        /// </summary>
+        /// <param name="assetName"></param>
+        /// <param name="showTip"></param>
+        /// <returns></returns>
         private AssetInfo GetAssetInfoFromResource(string assetName, bool showTip = false)
         {
-            if (ResourceMap.Mappings.TryGetValue(assetName, out string[] value))
+            ResMapping resMapping = GetResInResMappings(assetName);
+            if (resMapping != null)
             {
-                return new AssetInfo(AssetTypeEnum.RESOURCE, assetName, value, default, default);
+                return new AssetInfo(AssetTypeEnum.Resource, assetName, resMapping.logicPath, default, default);
             }
 
             if (showTip)
             {
                 Debug.LogError("Resource找不到指定资源可用的索引：" + assetName);
             }
-            return new AssetInfo(AssetTypeEnum.RESOURCE, assetName);
+            return new AssetInfo(AssetTypeEnum.Resource, assetName);
+        }
+
+        /// <summary>
+        /// 从资源映射表中获取资源映射信息
+        /// </summary>
+        /// <param name="assetName"></param>
+        /// <returns></returns>
+        private ResMapping GetResInResMappings(string assetName)
+        {
+            ResMap.ResMappings.TryGetValue(assetName, out ResMapping resMapping);
+            return resMapping;
         }
 
         private AssetInfo GetAssetInfoFromAssetBundle(string assetName, bool remote = false, bool showTip = false)
         {
-            if (GameConfig.RemoteAssetBundleMap.ABMap.TryGetValue(assetName, out AssetMapping assetmpping))
+            if (GameConfig.LocalAssetBundleMap.ABMap.TryGetValue(assetName, out AssetMapping assetmpping))
             {
                 if (remote || ForceRemoteAssetBundle)
                 {
-                    return new AssetInfo(AssetTypeEnum.ASSET_BUNDLE, assetName, assetmpping.AssetPath, AssetBundleMgr.GetRemoteAssetBundleCompletePath(), assetmpping.AbName);
+                    return new AssetInfo(AssetTypeEnum.AssetBundle, assetName, assetmpping.AssetPath, AssetBundleMgr.GetRemoteAssetBundleCompletePath(), assetmpping.AbName);
                 }
                 else
                 {
-                    return new AssetInfo(AssetTypeEnum.ASSET_BUNDLE, assetName, assetmpping.AssetPath, AssetBundleMgr.GetAssetBundlePathWithoutAb(assetName), assetmpping.AbName);
+                    return new AssetInfo(AssetTypeEnum.AssetBundle, assetName, assetmpping.AssetPath, AssetBundleMgr.GetAssetBundlePathWithoutAb(assetName), assetmpping.AbName);
                 }
             }
 
@@ -1726,7 +1743,7 @@ namespace Rain.Core
             {
                 Debug.LogError("AssetBundle找不到指定资源可用的索引：" + assetName);
             }
-            return new AssetInfo(AssetTypeEnum.ASSET_BUNDLE, assetName);
+            return new AssetInfo(AssetTypeEnum.AssetBundle, assetName);
         }
 
         /// <summary>
@@ -1909,24 +1926,24 @@ namespace Rain.Core
         private Dictionary<string, string> findAssetPaths = new Dictionary<string, string>();
         private Dictionary<string, string> resourcesFindAssetPaths = new Dictionary<string, string>();
         private Dictionary<string, string> assetBundlesFindAssetPaths = new Dictionary<string, string>();
-        private string SearchAsset(string assetName, AssetAccessMode accessMode = AssetAccessMode.UNKNOWN)
+        private string SearchAsset(string assetName, AssetAccessMode accessMode = AssetAccessMode.Unknown)
         {
             // 缓存路径
-            if (accessMode == AssetAccessMode.UNKNOWN)
+            if (accessMode == AssetAccessMode.Unknown)
             {
                 if (findAssetPaths.TryGetValue(assetName, out string value))
                 {
                     return value;
                 }
             }
-            else if (accessMode == AssetAccessMode.RESOURCE)
+            else if (accessMode == AssetAccessMode.Resource)
             {
                 if (resourcesFindAssetPaths.TryGetValue(assetName, out string value))
                 {
                     return value;
                 }
             }
-            else if (accessMode == AssetAccessMode.ASSET_BUNDLE)
+            else if (accessMode == AssetAccessMode.AssetBundle)
             {
                 if (assetBundlesFindAssetPaths.TryGetValue(assetName, out string value))
                 {
@@ -1952,15 +1969,15 @@ namespace Rain.Core
 
             // 查找指定资源
             string[] dirs = null;
-            if (accessMode == AssetAccessMode.UNKNOWN)
+            if (accessMode == AssetAccessMode.Unknown)
             {
                 dirs = searchDirs.ToArray();
             }
-            else if (accessMode == AssetAccessMode.RESOURCE)
+            else if (accessMode == AssetAccessMode.Resource)
             {
                 dirs = resourcesDirs.ToArray();
             }
-            else if (accessMode == AssetAccessMode.ASSET_BUNDLE)
+            else if (accessMode == AssetAccessMode.AssetBundle)
             {
                 dirs = assetBundlesDirs.ToArray();
             }
@@ -1974,15 +1991,15 @@ namespace Rain.Core
                 if (Path.GetFileNameWithoutExtension(assetPath) == assetName)
                 {
                     assetPath = assetPath.ToLower();
-                    if (accessMode == AssetAccessMode.UNKNOWN)
+                    if (accessMode == AssetAccessMode.Unknown)
                     {
                         findAssetPaths[assetName] = assetPath;
                     }
-                    else if (accessMode == AssetAccessMode.RESOURCE)
+                    else if (accessMode == AssetAccessMode.Resource)
                     {
                         resourcesFindAssetPaths[assetName] = assetPath;
                     }
-                    else if (accessMode == AssetAccessMode.ASSET_BUNDLE)
+                    else if (accessMode == AssetAccessMode.AssetBundle)
                     {
                         assetBundlesFindAssetPaths[assetName] = assetPath;
                     }
@@ -1996,16 +2013,16 @@ namespace Rain.Core
 
         public void OnInit(object createParam)
         {
-            GameConfig.RemoteAssetBundleMap.ABMap = JsonConvert.DeserializeObject<Dictionary<string, AssetMapping>>(Resources.Load<TextAsset>(nameof(AssetBundleMap)).ToString());
-            TextAsset textAsset = Resources.Load<TextAsset>(nameof(ResourceMap));
+            GameConfig.LocalAssetBundleMap.ABMap = JsonConvert.DeserializeObject<Dictionary<string, AssetMapping>>(Resources.Load<TextAsset>(nameof(AssetBundleMap)).ToString());
+            TextAsset textAsset = Resources.Load<TextAsset>(nameof(ResMap));
             if (textAsset == null)
             {
-                Debug.LogWarning($"找不到{nameof(ResourceMap)}文件");
+                Debug.LogWarning($"找不到{nameof(ResMap)}文件");
             }
             else
             {
                 string text = textAsset.ToString();
-                ResourceMap.Mappings = JsonConvert.DeserializeObject<Dictionary<string, string[]>>(text);
+                ResMap.ResMappings = JsonConvert.DeserializeObject<List<ResMapping>>(text);
             }
             _assetBundleManager = ModuleCenter.CreateModule<AssetBundleMgr>();
             _resourcesManager = ModuleCenter.CreateModule<ResourcesMgr>();

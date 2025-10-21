@@ -6,6 +6,7 @@ using UnityEngine.U2D;
 using Path = System.IO.Path;
 using Newtonsoft.Json;
 using Rain.Core;
+using System.Collections.Generic;
 
 /// <summary>
 /// AB包设置工具
@@ -43,6 +44,7 @@ public class BuildToolAB : BuildToolBase
         {
             BuildAllAssetBundles();
             CreateABFileList();
+            WriteResourceMapFile();
         }
         if (GUILayout.Button("上传AB", GUILayout.Height(30)))
             UploadAssetBundles();
@@ -542,5 +544,26 @@ public class BuildToolAB : BuildToolBase
     public void OpenOnlineAssetBundleDirectory()
     {
         EditorUtility.RevealInFinder(config.ABRemoteAddress + "/");
+    }
+
+    private static Dictionary<string, string[]> resourceMapping;
+    /// <summary>
+    /// 写入ResourceMap文件
+    /// </summary>
+    public void WriteResourceMapFile()
+    {
+        string resourceMapPath = Application.dataPath + "/RainFramework/Resources/" + nameof(ResMap) + ".json";
+        FileTools.SafeDeleteFile(resourceMapPath);
+        FileTools.SafeDeleteFile(resourceMapPath + ".meta");
+        FileTools.CheckFileAndCreateDirWhenNeeded(resourceMapPath);
+        AssetDatabase.Refresh();
+
+
+        string ResourceMapPath = Application.dataPath + "/F8Framework/AssetMap/Resources/" + nameof(ResMap) + ".json";
+        FileTools.CheckFileAndCreateDirWhenNeeded(ResourceMapPath);
+        FileTools.SafeWriteAllText(ResourceMapPath, JsonConvert.SerializeObject(resourceMapping));
+        AssetDatabase.Refresh();
+
+        RLog.LogAsset($"写入Resources资产数据，生成：{nameof(ResMap)}文件");
     }
 }
