@@ -72,7 +72,7 @@ namespace Rain.Core
                 ++loadedCount;
                 if (loadedCount == assetBundlePaths.Count)
                 {
-                    loader.Expand(info.AssetPath[0], assetType, subAssetName, isLoadAll);
+                    loader.Expand(info.AssetPath, assetType, subAssetName, isLoadAll);
                 }
             }
 
@@ -141,7 +141,7 @@ namespace Rain.Core
                         if (loadedCount == assetBundlePaths.Count)
                         {
                             // 所有依赖项加载完成后，加载主资源
-                            lastLoader.ExpandAsync(info.AssetPath[0], assetType, subAssetName, () =>
+                            lastLoader.ExpandAsync(info.AssetPath, assetType, subAssetName, () =>
                             {
                                 // 主资源加载完成后，如果需要展开，则在展开完成后回调
                                 loadCallback?.Invoke(GetAssetBundle(info.AssetBundlePath));
@@ -209,7 +209,7 @@ namespace Rain.Core
                 return finishedCount > endIndex;
             });
 
-            yield return lastLoader!.ExpandAsyncCoroutine(info.AssetPath[0], assetType, subAssetName, isLoadAll);
+            yield return lastLoader!.ExpandAsyncCoroutine(info.AssetPath, assetType, subAssetName, isLoadAll);
         }
 
         /// <summary>

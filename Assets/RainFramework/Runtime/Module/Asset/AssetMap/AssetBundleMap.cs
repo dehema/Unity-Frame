@@ -25,7 +25,7 @@ namespace Rain.Core
     public class AssetMapping
     {
         public string AbName;
-        public string[] AssetPath;
+        public string AssetPath;
         public string Version;
         public string Size;
         public string MD5;
@@ -42,7 +42,7 @@ namespace Rain.Core
         /// <param name="md5"></param>
         /// <param name="package">使用文件夹区分包，例如Package_0目录下的就是包编号：0。</param>
         /// <param name="updated"></param>
-        public AssetMapping(string abName, string[] assetPath, string version, string size, string md5, string package, string updated)
+        public AssetMapping(string abName, string assetPath, string version, string size, string md5, string package, string updated)
         {
             AbName = abName;
             AssetPath = assetPath;

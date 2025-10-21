@@ -336,7 +336,7 @@ public class BuildToolAB : BuildToolBase
 
                 AssetMapping assetMapping = new AssetMapping();
                 assetMapping.AbName = relativePath;
-                assetMapping.AssetPath = new string[] { relativePath };
+                assetMapping.AssetPath = relativePath;
                 assetMapping.Version = config.Version;
                 assetMapping.MD5 = md5;
                 assetMapping.Size = new FileInfo(filePath).Length.ToString();
