@@ -18,9 +18,9 @@ namespace Rain.Core
             }
             return _streamingAssetsPath;
         }
-        
+
         private static string _remoteAddress;
-        
+
         private static string GetRemoteAddress()
         {
             if (_remoteAddress == null)
@@ -31,7 +31,7 @@ namespace Rain.Core
         }
 
         private static string _hotUpdatePath;
-        
+
         private static string GetHotUpdatePath()
         {
             if (_hotUpdatePath == null)
@@ -42,7 +42,7 @@ namespace Rain.Core
         }
 
         private static string _packagePath;
-        
+
         private static string GetPackagePath()
         {
             if (_packagePath == null)
@@ -51,17 +51,29 @@ namespace Rain.Core
             }
             return _packagePath;
         }
-        
+
+        private static string _persistentPath;
+
+        private static string GetPersistentPath()
+        {
+            if (_persistentPath == null)
+            {
+                _persistentPath = Application.persistentDataPath + HotUpdateMgr.HotUpdateDirName + "/" + URLSetting.AssetBundlesName + "/" + URLSetting.GetPlatformName() + "/";
+            }
+            return _persistentPath;
+        }
+
         /// <summary>
         /// 源类型的枚举。
         /// </summary>
         public enum SourceType : byte
         {
             None,
+            PersistentAssets,
             StreamingAssets,
             HotUpdatePath,
             PackagePath,
-            RemoteAddress
+            RemoteAddress,
         }
 
         /// <summary>
@@ -74,6 +86,9 @@ namespace Rain.Core
             string assetBundlePath;
             switch (type)
             {
+                case SourceType.PersistentAssets:
+                    assetBundlePath = GetPersistentPath();
+                    break;
                 case SourceType.StreamingAssets:
                     assetBundlePath = GetStreamingAssetsPath();
                     break;
@@ -94,7 +109,7 @@ namespace Rain.Core
                     Debug.LogError("AssetBundle的源类型不能为空");
                     return null;
             }
-            
+
             return assetBundlePath;
         }
 
@@ -131,7 +146,7 @@ namespace Rain.Core
         /// <param name="assetBundleFileName">资产捆绑包的文件名。</param>
         /// <param name="type">源类型。</param>
         /// <returns>正确的路径。</returns>
-        public static string GetAssetBundleFullName(string assetBundleFileName = null, SourceType type = SourceType.StreamingAssets)
+        public static string GetAssetBundleFullName(string assetBundleFileName = null, SourceType type = SourceType.PersistentAssets)
         {
             string assetBundlePath = GetAssetBundlePath(type);
             if (assetBundlePath == null)

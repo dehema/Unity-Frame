@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Rain.UI;
 using TMPro;
+using Rain.UI;
+using Rain.Core;
 
-public partial class DemoView : BaseView
+public partial class DemoView : Rain.UI.BaseView
 {
     [System.Serializable]
     struct SerializableUIComponents
@@ -19,6 +20,8 @@ public partial class DemoView : BaseView
         [SerializeField] public Image imgBuild1_Image;
         [SerializeField] public GameObject imgBuild2;
         [SerializeField] public Image imgBuild2_Image;
+        [SerializeField] public GameObject imgBuild3;
+        [SerializeField] public Image imgBuild3_Image;
         [SerializeField] public GameObject btClose;
         [SerializeField] public Button btClose_Button;
     }

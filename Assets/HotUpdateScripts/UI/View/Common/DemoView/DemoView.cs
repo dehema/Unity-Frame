@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using Rain.Core;
 using Rain.UI;
 using UnityEngine;
+using UnityEngine.U2D;
 using UnityEngine.UI;
+using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 public partial class DemoView : BaseView
 {
@@ -32,15 +34,16 @@ public partial class DemoView : BaseView
         Debug.Log("UI打开");
 
         //同步加载
-        Sprite sprite = AssetMgr.Ins.Load<Sprite>("Btn_Rectangle00_n_Green");
+        Sprite sprite = AssetMgr.Ins.Load<Sprite>("Btn_Rectangle00_n_Blue");
         ui.imgBuild1_Image.sprite = sprite;
 
         //异步加载
-        BaseLoader baseLoader = AssetMgr.Ins.LoadAsync<Sprite>("Btn_Rectangle00_n_Blue", (OnAssetObject) =>
+        BaseLoader baseLoader = AssetMgr.Ins.LoadAsync<Sprite>("Btn_Rectangle00_n_Gray", (OnAssetObject) =>
         {
             ui.imgBuild2_Image.sprite = OnAssetObject;
         });
 
+        //计时器
         TimerMgr.Ins.AddTimer(this, step: 1, field: 0, onSecond: () =>
         {
             Debug.Log("onSecond");
@@ -49,8 +52,12 @@ public partial class DemoView : BaseView
             Debug.Log("onComplete");
         });
 
-        //AssetMgr.Ins.Load<>
+        //图集
+        SpriteAtlas atlas = AssetMgr.Ins.Load<SpriteAtlas>("atlas_common");
+        Sprite targetSprite = atlas?.GetSprite("Btn_Rectangle00_n_Green");
+        ui.imgBuild3_Image.sprite = targetSprite;
     }
+
 
     /// <summary>
     /// 关闭事件 回调在UIMgr里实现
@@ -64,12 +71,10 @@ public partial class DemoView : BaseView
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            AudioMgr.Ins.PlayAudioEffect("Electronic high shot");
-
-
-        }
+        //    if (Input.GetMouseButtonDown(0))
+        //    {
+        //        AudioMgr.Ins.PlayAudioEffect("Electronic high shot");
+        //    }
     }
 
     public class DemoViewParam : IViewParam

@@ -18,7 +18,7 @@ namespace Rain.Core
             set => _resMappings = value;
         }
 
-        public static Dictionary<string, ResMapping> _resMappings = new Dictionary<string, ResMapping>();
+        private static Dictionary<string, ResMapping> _resMappings = new Dictionary<string, ResMapping>();
     }
 
     /// <summary>
@@ -28,6 +28,6 @@ namespace Rain.Core
     {
         public string assetName;    // 资源在 AB 包内的名称（物理名称）
         public string logicPath;    // 业务层调用的路径（逻辑路径）
-        public string abName;       // 所属 AB 包名称
+        public string AbName;       // 所属 AB 包名称
     }
 }

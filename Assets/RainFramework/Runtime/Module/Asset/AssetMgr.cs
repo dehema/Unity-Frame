@@ -2,8 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using DotLiquid;
 using Newtonsoft.Json;
 using UnityEngine;
+using UnityEngine.Networking;
 using Object = UnityEngine.Object;
 
 namespace Rain.Core
@@ -740,6 +742,7 @@ namespace Rain.Core
             AssetAccessMode mode = AssetAccessMode.Unknown)
             where T : Object
         {
+            //获取资源信息
             AssetInfo info = GetAssetInfo(assetName, mode);
             if (!IsLegal(ref info))
                 return null;
@@ -777,6 +780,7 @@ namespace Rain.Core
                         subAssetName, out EditorLoader editorLoader);
                 }
 #endif
+                //检查是否已经加载过该ab
                 T o2 = AssetBundleMgr.Ins.GetAssetObject<T>(info.AssetBundlePath, info.AssetPath, subAssetName, out AssetBundleLoader loader);
                 if (o2 != null)
                 {
@@ -785,6 +789,7 @@ namespace Rain.Core
 
                 if (loader == null || loader.AssetBundleContent == null)
                 {
+                    //重新加载ab
                     AssetBundleMgr.Ins.Load(assetName, typeof(T), ref info, subAssetName);
                     loader = AssetBundleMgr.Ins.GetAssetBundleLoader(info.AssetBundlePath);
                 }
@@ -1696,7 +1701,10 @@ namespace Rain.Core
                 }
                 else
                 {
-                    return new AssetInfo(AssetTypeEnum.AssetBundle, assetName, assetmpping.AssetPath, AssetBundleMgr.GetAssetBundlePathWithoutAb(assetName), assetmpping.AbName);
+                    if (ResMap.ResMappings.TryGetValue(assetName, out ResMapping resMapping))
+                        return new AssetInfo(AssetTypeEnum.AssetBundle, assetName, assetmpping.AssetPath, AssetBundleMgr.GetAssetBundlePathWithoutAb(assetName), resMapping.AbName);
+                    else
+                        return new AssetInfo(AssetTypeEnum.AssetBundle, assetName, assetmpping.AssetPath, AssetBundleMgr.GetAssetBundlePathWithoutAb(assetName), assetmpping.AbName);
                 }
             }
 
@@ -1976,19 +1984,27 @@ namespace Rain.Core
         {
             //读取本地ab配置
             //GameConfig.LocalAssetBundleMap.ABMap = JsonConvert.DeserializeObject<Dictionary<string, AssetMapping>>(Resources.Load<TextAsset>(nameof(AssetBundleMap)).ToString());
-            //读取本地资源映射表
-            TextAsset textAsset = Resources.Load<TextAsset>(nameof(ResMap));
-            if (textAsset == null)
-            {
-                Debug.LogWarning($"找不到{nameof(ResMap)}文件");
-            }
-            else
-            {
-                string text = textAsset.ToString();
-                ResMap.ResMappings = JsonConvert.DeserializeObject<Dictionary<string, ResMapping>>(text);
-            }
+            LoadLocalResMap();
             _assetBundleManager = ModuleCenter.CreateModule<AssetBundleMgr>();
             _resourcesManager = ModuleCenter.CreateModule<ResMgr>();
+        }
+
+        void LoadLocalResMap()
+        {
+            if (ResMap.ResMappings.Count == 0)
+            {
+                //读取本地资源映射表
+                TextAsset textAsset = Resources.Load<TextAsset>(nameof(ResMap));
+                if (textAsset == null)
+                {
+                    Debug.LogError($"找不到{nameof(ResMap)}.json文件");
+                }
+                else
+                {
+                    string text = textAsset.ToString();
+                    ResMap.ResMappings = JsonConvert.DeserializeObject<Dictionary<string, ResMapping>>(text);
+                }
+            }
         }
 
         public void OnUpdate()

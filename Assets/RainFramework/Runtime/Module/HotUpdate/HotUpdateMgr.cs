@@ -107,7 +107,7 @@ namespace Rain.Core
         }
 
         /// <summary>
-        /// 初始化远端资源版本
+        /// 初始化远端ab资源数据
         /// </summary>
         /// <returns></returns>
         public IEnumerator InitRemoteAssetBundleMap()
@@ -134,6 +134,34 @@ namespace Rain.Core
             webRequest.Dispose();
             webRequest = null;
         }
+
+        /// <summary>
+        /// 初始化远端资源数据
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerator LoadRemoteResMap()
+        {
+            string path = GameConfig.LocalGameVersion.GameRemoteAddress + "/" + nameof(ResMap) + ".json";
+
+            UnityWebRequest webRequest = UnityWebRequest.Get(path);
+            yield return webRequest.SendWebRequest();
+            if (webRequest.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError($"获取初始化远端资源数据失败：{path} ，错误：{webRequest.error}");
+            }
+            else
+            {
+                lock (ResMap.ResMappings)
+                {
+                    string text = webRequest.downloadHandler.text;
+                    Dictionary<string, ResMapping> resMappings = JsonConvert.DeserializeObject<Dictionary<string, ResMapping>>(text);
+                    ResMap.ResMappings = resMappings;
+                }
+            }
+            webRequest.Dispose();
+            webRequest = null;
+        }
+
 
         /// <summary>
         /// 游戏修复，资源清理

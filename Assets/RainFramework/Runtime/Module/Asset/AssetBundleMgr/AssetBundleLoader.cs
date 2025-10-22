@@ -23,9 +23,9 @@ namespace Rain.Core
         public LoaderType loadType;
         public LoaderType unloadType;
 
-        public LoaderState assetBundleLoadState = LoaderState.NONE;
-        private LoaderState assetBundleExpandState = LoaderState.NONE;
-        public LoaderState assetBundleUnloadState = LoaderState.NONE;
+        public LoaderState assetBundleLoadState = LoaderState.None;
+        private LoaderState assetBundleExpandState = LoaderState.None;
+        public LoaderState assetBundleUnloadState = LoaderState.None;
 
         private AssetBundleCreateRequest assetBundleLoadRequest;
         private DownloadRequest assetBundleDownloadRequest;
@@ -39,9 +39,9 @@ namespace Rain.Core
         public List<string> parentBundleNames = new List<string>();
 
         public Dictionary<string, bool> dependentNames = new Dictionary<string, bool>();
-        
-        public override bool LoaderSuccess => assetBundleLoadState == LoaderState.FINISHED && assetBundleExpandState == LoaderState.FINISHED;
-        
+
+        public override bool LoaderSuccess => assetBundleLoadState == LoaderState.Finished && assetBundleExpandState == LoaderState.Finished;
+
         /// <summary>
         /// 异步资产捆绑包加载完成的回调。
         /// </summary>
@@ -63,17 +63,17 @@ namespace Rain.Core
         /// </summary>
         public enum LoaderState : byte
         {
-            NONE,
-            WORKING,
-            FINISHED
+            None,
+            Working,
+            Finished
         }
 
         public enum LoaderType : byte
         {
-            NONE,
-            LOCAL_SYNC,
-            LOCAL_ASYNC,
-            REMOTE_ASYNC
+            None,
+            Local_Sync,
+            Local_Async,
+            Remote_Async
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace Rain.Core
             this.abName = GetSubPath(this.assetBundlePath);
             this.hash128 = AssetBundleMgr.Ins.GetAssetBundleHash(this.abName);
         }
-        
+
         public override T GetAssetObject<T>(string subAssetName = null)
         {
             if (this.assetBundleContent != null &&
@@ -109,7 +109,7 @@ namespace Rain.Core
             }
             return null;
         }
-        
+
         public override Object GetAssetObject(string subAssetName = null)
         {
             if (this.assetBundleContent != null &&
@@ -130,7 +130,7 @@ namespace Rain.Core
             }
             return null;
         }
-        
+
         /// <summary>
         /// 获取最近加载的单个资产对象。
         /// </summary>
@@ -139,7 +139,7 @@ namespace Rain.Core
         {
             return assetObject;
         }
-        
+
         /// <summary>
         /// 获取所有已加载的资产对象。
         /// </summary>
@@ -156,7 +156,7 @@ namespace Rain.Core
             }
             return allAsset;
         }
-        
+
         /// <summary>
         /// 获取所有已加载的资产对象。
         /// </summary>
@@ -165,7 +165,7 @@ namespace Rain.Core
         {
             return assetObjects;
         }
-        
+
         /// <summary>
         /// 同步加载资产。
         /// </summary>
@@ -173,14 +173,14 @@ namespace Rain.Core
         public virtual AssetBundle Load()
         {
             ClearUnloadData();
-            if (assetBundleLoadState == LoaderState.FINISHED &&
+            if (assetBundleLoadState == LoaderState.Finished &&
                 assetBundleContent == null)
-                assetBundleLoadState = LoaderState.NONE;
+                assetBundleLoadState = LoaderState.None;
 
-            if (assetBundleLoadState == LoaderState.FINISHED)
+            if (assetBundleLoadState == LoaderState.Finished)
                 return assetBundleContent;
 
-            loadType = LoaderType.LOCAL_SYNC;
+            loadType = LoaderType.Local_Sync;
             if (FileTools.IsLegalHTTPURI(assetBundlePath))
             {
 #if UNITY_WEBGL
@@ -204,7 +204,7 @@ namespace Rain.Core
                 GetAssetPaths();
             }
 
-            assetBundleLoadState = LoaderState.FINISHED;
+            assetBundleLoadState = LoaderState.Finished;
             return assetBundleContent;
         }
 
@@ -215,40 +215,40 @@ namespace Rain.Core
         public virtual void LoadAsync(OnLoadFinished callback = null)
         {
             ClearUnloadData();
-            if (assetBundleLoadState == LoaderState.FINISHED &&
+            if (assetBundleLoadState == LoaderState.Finished &&
                 assetBundleContent == null)
-                assetBundleLoadState = LoaderState.NONE;
+                assetBundleLoadState = LoaderState.None;
 
             onLoadFinished += callback;
 
-            if (assetBundleLoadState == LoaderState.NONE)
+            if (assetBundleLoadState == LoaderState.None)
             {
-                assetBundleLoadState = LoaderState.WORKING;
+                assetBundleLoadState = LoaderState.Working;
                 if (FileTools.IsLegalHTTPURI(assetBundlePath))
                 {
-                    loadType = LoaderType.REMOTE_ASYNC;
+                    loadType = LoaderType.Remote_Async;
                     assetBundleDownloadRequest = new DownloadRequest(assetBundlePath, hash128);
                     if (assetBundleDownloadRequest == null)
                     {
-                        assetBundleLoadState = LoaderState.FINISHED;
+                        assetBundleLoadState = LoaderState.Finished;
                         string errMsg = string.Format("找不到远程资产捆绑包 {0} ，请检查", assetBundlePath);
                         Debug.LogError(errMsg);
                     }
                 }
                 else
                 {
-                    loadType = LoaderType.LOCAL_ASYNC;
+                    loadType = LoaderType.Local_Async;
                     assetBundleLoadRequest = AssetBundle.LoadFromFileAsync(assetBundlePath);
                     if (assetBundleLoadRequest == null)
                     {
-                        assetBundleLoadState = LoaderState.FINISHED;
+                        assetBundleLoadState = LoaderState.Finished;
                         string errMsg = string.Format("找不到本地资产捆绑包 {0} ，请检查", assetBundlePath);
                         Debug.LogError(errMsg);
                     }
                 }
             }
         }
-        
+
         /// <summary>
         /// 同步扩展资产。
         /// 对于Unity中无法扩展的流场景资产包类型，
@@ -258,34 +258,35 @@ namespace Rain.Core
         {
             if (assetBundleContent == null)
             {
-                assetBundleExpandState = LoaderState.NONE;
+                assetBundleExpandState = LoaderState.None;
                 return;
             }
-            
-            if (assetBundleExpandState == LoaderState.FINISHED && !assetObjects.ContainsKey(assetPath))
-                assetBundleExpandState = LoaderState.NONE;
 
-            if (assetBundleExpandState == LoaderState.FINISHED && subAssetName != null && !assetObjects.ContainsKey(subAssetName))
-                assetBundleExpandState = LoaderState.NONE;
-            
-            if (assetBundleExpandState == LoaderState.FINISHED && isLoadAll)
-                assetBundleExpandState = LoaderState.NONE;
-            
-            if (assetBundleExpandState == LoaderState.FINISHED)
+            if (assetBundleExpandState == LoaderState.Finished && !assetObjects.ContainsKey(assetPath))
+                assetBundleExpandState = LoaderState.None;
+
+            if (assetBundleExpandState == LoaderState.Finished && subAssetName != null && !assetObjects.ContainsKey(subAssetName))
+                assetBundleExpandState = LoaderState.None;
+
+            if (assetBundleExpandState == LoaderState.Finished && isLoadAll)
+                assetBundleExpandState = LoaderState.None;
+
+            if (assetBundleExpandState == LoaderState.Finished)
                 return;
 
             expandCount = 0;
+            string assetPathLower = assetPath.ToLower();
             if (isLoadAll)
             {
                 for (int i = 0; i < assetPaths.Count; i++)
                 {
-                    if (assetPaths[i].Equals(assetPath))
+                    if (assetPaths[i].Equals(assetPathLower))
                     {
-                        LoadAssetObject(assetPaths[i], assetType, subAssetName, isLoadAll);
+                        LoadAssetObject(assetPath, assetType, subAssetName, isLoadAll);
                     }
                     else
                     {
-                        LoadAssetObject(assetPaths[i], null, subAssetName, isLoadAll);
+                        LoadAssetObject(assetPath, null, subAssetName, isLoadAll);
                     }
                 }
             }
@@ -293,15 +294,15 @@ namespace Rain.Core
             {
                 for (int i = 0; i < assetPaths.Count; i++)
                 {
-                    if (assetPaths[i].Equals(assetPath))
+                    if (assetPaths[i].Equals(assetPathLower))
                     {
-                        LoadAssetObject(assetPaths[i], assetType, subAssetName, isLoadAll);
+                        LoadAssetObject(assetPath, assetType, subAssetName, isLoadAll);
                     }
                 }
             }
             expandCount = assetPaths.Count;
 
-            assetBundleExpandState = LoaderState.FINISHED;
+            assetBundleExpandState = LoaderState.Finished;
             return;
         }
 
@@ -314,25 +315,25 @@ namespace Rain.Core
         {
             if (assetBundleContent == null)
             {
-                assetBundleExpandState = LoaderState.NONE;
+                assetBundleExpandState = LoaderState.None;
                 return;
             }
-            
-            if (assetBundleExpandState == LoaderState.FINISHED && !assetObjects.ContainsKey(assetPath))
-                assetBundleExpandState = LoaderState.NONE;
 
-            if (assetBundleExpandState == LoaderState.FINISHED && subAssetName != null && !assetObjects.ContainsKey(subAssetName))
-                assetBundleExpandState = LoaderState.NONE;
-            
-            if (assetBundleExpandState == LoaderState.FINISHED && isLoadAll)
-                assetBundleExpandState = LoaderState.NONE;
-            
+            if (assetBundleExpandState == LoaderState.Finished && !assetObjects.ContainsKey(assetPath))
+                assetBundleExpandState = LoaderState.None;
+
+            if (assetBundleExpandState == LoaderState.Finished && subAssetName != null && !assetObjects.ContainsKey(subAssetName))
+                assetBundleExpandState = LoaderState.None;
+
+            if (assetBundleExpandState == LoaderState.Finished && isLoadAll)
+                assetBundleExpandState = LoaderState.None;
+
             onExpandFinished += callback;
 
-            if (assetBundleExpandState == LoaderState.NONE)
+            if (assetBundleExpandState == LoaderState.None)
             {
                 expandCount = 0;
-                assetBundleExpandState = LoaderState.WORKING;
+                assetBundleExpandState = LoaderState.Working;
                 if (isLoadAll)
                 {
                     for (int i = 0; i < assetPaths.Count; i++)
@@ -370,23 +371,23 @@ namespace Rain.Core
         {
             if (assetBundleContent == null)
             {
-                assetBundleExpandState = LoaderState.NONE;
+                assetBundleExpandState = LoaderState.None;
                 yield break;
             }
-            
-            if (assetBundleExpandState == LoaderState.FINISHED && !assetObjects.ContainsKey(assetPath))
-                assetBundleExpandState = LoaderState.NONE;
 
-            if (assetBundleExpandState == LoaderState.FINISHED && subAssetName != null && !assetObjects.ContainsKey(subAssetName))
-                assetBundleExpandState = LoaderState.NONE;
-            
-            if (assetBundleExpandState == LoaderState.FINISHED && isLoadAll)
-                assetBundleExpandState = LoaderState.NONE;
+            if (assetBundleExpandState == LoaderState.Finished && !assetObjects.ContainsKey(assetPath))
+                assetBundleExpandState = LoaderState.None;
 
-            if (assetBundleExpandState == LoaderState.NONE)
+            if (assetBundleExpandState == LoaderState.Finished && subAssetName != null && !assetObjects.ContainsKey(subAssetName))
+                assetBundleExpandState = LoaderState.None;
+
+            if (assetBundleExpandState == LoaderState.Finished && isLoadAll)
+                assetBundleExpandState = LoaderState.None;
+
+            if (assetBundleExpandState == LoaderState.None)
             {
                 expandCount = 0;
-                assetBundleExpandState = LoaderState.WORKING;
+                assetBundleExpandState = LoaderState.Working;
                 if (isLoadAll)
                 {
                     for (int i = 0; i < assetPaths.Count; i++)
@@ -413,12 +414,12 @@ namespace Rain.Core
                 }
                 yield return new WaitUntil(() => ExpandProgress >= 1f);
             }
-            else if (assetBundleExpandState == LoaderState.WORKING)
+            else if (assetBundleExpandState == LoaderState.Working)
             {
                 yield return new WaitUntil(() => ExpandProgress >= 1f);
             }
         }
-        
+
         /// <summary>
         /// 同步卸载资产。
         /// </summary>
@@ -428,7 +429,7 @@ namespace Rain.Core
         /// </param>
         public virtual void Unload(bool unloadAllLoadedObjects = false)
         {
-            unloadType = LoaderType.LOCAL_SYNC;
+            unloadType = LoaderType.Local_Sync;
             if (assetBundleContent != null)
             {
                 assetBundleContent.Unload(unloadAllLoadedObjects);
@@ -437,7 +438,7 @@ namespace Rain.Core
             {
                 ClearLoadedData();
             }
-            assetBundleUnloadState = LoaderState.FINISHED;
+            assetBundleUnloadState = LoaderState.Finished;
         }
 
         /// <summary>
@@ -451,19 +452,19 @@ namespace Rain.Core
         public virtual void UnloadAsync(bool unloadAllLoadedObjects = false, OnUnloadFinished callback = null)
         {
             if (assetBundleContent == null)
-                assetBundleUnloadState = LoaderState.FINISHED;
+                assetBundleUnloadState = LoaderState.Finished;
 
             onUnloadFinished += callback;
 
-            if (assetBundleUnloadState == LoaderState.NONE)
+            if (assetBundleUnloadState == LoaderState.None)
             {
-                assetBundleUnloadState = LoaderState.WORKING;
-                unloadType = LoaderType.LOCAL_ASYNC;
+                assetBundleUnloadState = LoaderState.Working;
+                unloadType = LoaderType.Local_Async;
                 assetBundleUnloadRequest = assetBundleContent.UnloadAsync(unloadAllLoadedObjects);
                 ClearLoadedData();
             }
         }
-        
+
         /// <summary>
         /// 尝试获取资产对象。
         /// </summary>
@@ -501,7 +502,7 @@ namespace Rain.Core
             Object o = null;
             if (isLoadAll)
             {
-                var objects = assetType == null ? 
+                var objects = assetType == null ?
                     assetBundleContent.LoadAllAssets() :
                     assetBundleContent.LoadAllAssets(assetType);
                 foreach (var obj in objects)
@@ -517,14 +518,14 @@ namespace Rain.Core
             {
                 if (subAssetName.IsNullOrEmpty())
                 {
-                    o = assetType == null ? 
+                    o = assetType == null ?
                         assetBundleContent.LoadAsset(assetPath) :
                         assetBundleContent.LoadAsset(assetPath, assetType);
                     SetAssetObject(assetPath, o);
                 }
                 else
                 {
-                    var objects = assetType == null ? 
+                    var objects = assetType == null ?
                         assetBundleContent.LoadAssetWithSubAssets(assetPath) :
                         assetBundleContent.LoadAssetWithSubAssets(assetPath, assetType);
                     foreach (var obj in objects)
@@ -538,7 +539,7 @@ namespace Rain.Core
                 }
             }
             assetObject = o;
-            
+
             if (assetType == null)
             {
                 return o;
@@ -556,7 +557,7 @@ namespace Rain.Core
                 }
             }
         }
-        
+
         /// <summary>
         /// 通过资产捆绑路径异步加载。
         /// </summary>
@@ -582,7 +583,7 @@ namespace Rain.Core
             AssetBundleRequest rq;
             if (isLoadAll)
             {
-                rq = assetType == null ? 
+                rq = assetType == null ?
                     assetBundleContent.LoadAllAssetsAsync() :
                     assetBundleContent.LoadAllAssetsAsync(assetType);
             }
@@ -590,23 +591,24 @@ namespace Rain.Core
             {
                 if (subAssetName.IsNullOrEmpty())
                 {
-                    rq = assetType == null ? 
+                    rq = assetType == null ?
                         assetBundleContent.LoadAssetAsync(assetPath) :
                         assetBundleContent.LoadAssetAsync(assetPath, assetType);
                 }
                 else
                 {
-                    rq = assetType == null ? 
+                    rq = assetType == null ?
                         assetBundleContent.LoadAssetWithSubAssetsAsync(assetPath) :
                         assetBundleContent.LoadAssetWithSubAssetsAsync(assetPath, assetType);
                 }
             }
-            
+
             rq.completed +=
-                ao => {
+                ao =>
+                {
                     Object o = rq.asset;
                     SetAssetObject(assetPath, o);
-                    
+
                     foreach (var obj in rq.allAssets)
                     {
                         SetAssetObject(obj.name, obj);
@@ -615,7 +617,7 @@ namespace Rain.Core
                             o = obj;
                         }
                     }
-                    
+
                     if (assetType == null)
                     {
                         End(o);
@@ -641,24 +643,24 @@ namespace Rain.Core
                     callback(o);
             }
         }
-        
+
         /// <summary>
         /// 派生类型的更新行为可以通过重写来实现。
         /// </summary>
         public virtual void OnUpdate()
         {
-            if (assetBundleLoadState == LoaderState.WORKING)
+            if (assetBundleLoadState == LoaderState.Working)
             {
                 switch (loadType)
                 {
-                    case LoaderType.LOCAL_ASYNC:
+                    case LoaderType.Local_Async:
                         if (assetBundleLoadRequest != null)
                         {
                             if (assetBundleLoadRequest.isDone)
                             {
                                 if (!assetBundleLoadRequest.assetBundle)
                                 {
-                                    assetBundleLoadState = LoaderState.FINISHED;
+                                    assetBundleLoadState = LoaderState.Finished;
                                     string errMsg = string.Format("无法加载本地资产捆绑包 {0} ", assetBundlePath);
                                     Debug.LogError(errMsg);
                                 }
@@ -666,19 +668,19 @@ namespace Rain.Core
                                 {
                                     assetBundleContent = assetBundleLoadRequest.assetBundle;
                                     GetAssetPaths();
-                                    assetBundleLoadState = LoaderState.FINISHED;
+                                    assetBundleLoadState = LoaderState.Finished;
                                 }
                             }
                         }
                         break;
-                    case LoaderType.REMOTE_ASYNC:
+                    case LoaderType.Remote_Async:
                         if (assetBundleDownloadRequest != null)
                         {
                             if (assetBundleDownloadRequest.IsFinished)
                             {
                                 if (!assetBundleDownloadRequest.DownloadedAssetBundle)
                                 {
-                                    assetBundleLoadState = LoaderState.FINISHED;
+                                    assetBundleLoadState = LoaderState.Finished;
                                     string errMsg = string.Format("无法加载远程资产捆绑包 {0} ，请重试", assetBundlePath);
                                     Debug.LogError(errMsg);
                                 }
@@ -686,14 +688,14 @@ namespace Rain.Core
                                 {
                                     assetBundleContent = assetBundleDownloadRequest.DownloadedAssetBundle;
                                     GetAssetPaths();
-                                    assetBundleLoadState = LoaderState.FINISHED;
+                                    assetBundleLoadState = LoaderState.Finished;
                                 }
                             }
                         }
                         break;
                 }
 
-                if (assetBundleLoadState == LoaderState.FINISHED &&
+                if (assetBundleLoadState == LoaderState.Finished &&
                     onLoadFinishedImpl != null)
                 {
                     onLoadFinishedImpl(assetBundleContent);
@@ -701,22 +703,22 @@ namespace Rain.Core
                 }
             }
 
-            if (assetBundleUnloadState == LoaderState.WORKING)
+            if (assetBundleUnloadState == LoaderState.Working)
             {
                 switch (unloadType)
                 {
-                    case LoaderType.LOCAL_ASYNC:
+                    case LoaderType.Local_Async:
                         if (assetBundleUnloadRequest != null)
                         {
                             if (assetBundleUnloadRequest.isDone)
                             {
-                                assetBundleUnloadState = LoaderState.FINISHED;
+                                assetBundleUnloadState = LoaderState.Finished;
                             }
                         }
                         break;
                 }
 
-                if (assetBundleUnloadState == LoaderState.FINISHED &&
+                if (assetBundleUnloadState == LoaderState.Finished &&
                     onUnloadFinishedImpl != null)
                 {
                     onUnloadFinishedImpl();
@@ -737,12 +739,12 @@ namespace Rain.Core
             if (assetBundleContent != null)
                 Unload(unloadAllLoadedObjects);
 
-            loadType = LoaderType.NONE;
-            unloadType = LoaderType.NONE;
+            loadType = LoaderType.None;
+            unloadType = LoaderType.None;
 
-            assetBundleLoadState = LoaderState.NONE;
-            assetBundleExpandState = LoaderState.NONE;
-            assetBundleUnloadState = LoaderState.NONE;
+            assetBundleLoadState = LoaderState.None;
+            assetBundleExpandState = LoaderState.None;
+            assetBundleUnloadState = LoaderState.None;
 
             assetBundleLoadRequest = null;
             assetBundleDownloadRequest?.Dispose();
@@ -759,7 +761,7 @@ namespace Rain.Core
             parentBundleNames.Clear();
             dependentNames.Clear();
         }
-        
+
         /// <summary>
         /// 获取已加载完成的依赖项名称数量。
         /// </summary>
@@ -773,10 +775,10 @@ namespace Rain.Core
                     loadFinishedCount += 1;
                 }
             }
-            
+
             return loadFinishedCount;
         }
-        
+
         /// <summary>
         /// 添加依赖项名称。
         /// </summary>
@@ -815,7 +817,7 @@ namespace Rain.Core
 
             return dependentNames.Count;
         }
-        
+
         /// <summary>
         /// 添加父级捆绑包名称。
         /// </summary>
@@ -871,9 +873,9 @@ namespace Rain.Core
         /// </summary>
         private void ClearLoadedData()
         {
-            loadType = LoaderType.NONE;
-            assetBundleLoadState = LoaderState.NONE;
-            assetBundleExpandState = LoaderState.NONE;
+            loadType = LoaderType.None;
+            assetBundleLoadState = LoaderState.None;
+            assetBundleExpandState = LoaderState.None;
             assetBundleContent = null;
             assetObject = null;
             assetObjects.Clear();
@@ -884,14 +886,14 @@ namespace Rain.Core
             onLoadFinishedImpl = null;
             onExpandFinishedImpl = null;
         }
-        
+
         /// <summary>
         /// 清除已卸载的数据。
         /// </summary>
         private void ClearUnloadData()
         {
-            unloadType = LoaderType.NONE;
-            assetBundleUnloadState = LoaderState.NONE;
+            unloadType = LoaderType.None;
+            assetBundleUnloadState = LoaderState.None;
             assetBundleUnloadRequest = null;
             onUnloadFinishedImpl = null;
         }
@@ -905,7 +907,7 @@ namespace Rain.Core
             ++expandCount;
             if (expandCount == 1)
             {
-                assetBundleExpandState = LoaderState.FINISHED;
+                assetBundleExpandState = LoaderState.Finished;
                 if (onExpandFinishedImpl != null)
                 {
                     onExpandFinishedImpl();
@@ -924,7 +926,7 @@ namespace Rain.Core
             ++expandCount;
             if (expandCount == assetPaths.Count)
             {
-                assetBundleExpandState = LoaderState.FINISHED;
+                assetBundleExpandState = LoaderState.Finished;
                 if (onExpandFinishedImpl != null)
                 {
                     onExpandFinishedImpl();
@@ -933,7 +935,7 @@ namespace Rain.Core
                 }
             }
         }
-        
+
         /// <summary>
         /// 获取资产路径列表。
         /// </summary>
@@ -958,7 +960,7 @@ namespace Rain.Core
                 }
             }
         }
-        
+
         private string GetSubPath(string fullPath)
         {
             int index = fullPath.IndexOf(keyword);
@@ -973,7 +975,7 @@ namespace Rain.Core
                 return fullPath;
             }
         }
-        
+
         /// <summary>
         /// 设置资产对象。
         /// </summary>
@@ -998,7 +1000,7 @@ namespace Rain.Core
         {
             get => assetBundleLoadRequest;
         }
-            
+
         /// <summary>
         /// 此加载程序的资产捆绑包路径。
         /// </summary>
@@ -1020,7 +1022,7 @@ namespace Rain.Core
         /// </summary>
         public bool IsLoadFinished
         {
-            get => assetBundleLoadState == LoaderState.FINISHED;
+            get => assetBundleLoadState == LoaderState.Finished;
         }
 
         /// <summary>
@@ -1028,7 +1030,7 @@ namespace Rain.Core
         /// </summary>
         public bool IsExpandFinished
         {
-            get => assetBundleExpandState == LoaderState.FINISHED;
+            get => assetBundleExpandState == LoaderState.Finished;
         }
 
         /// <summary>
@@ -1036,7 +1038,7 @@ namespace Rain.Core
         /// </summary>
         public bool IsUnloadFinished
         {
-            get => assetBundleUnloadState == LoaderState.FINISHED;
+            get => assetBundleUnloadState == LoaderState.Finished;
         }
 
         /// <summary>
@@ -1044,7 +1046,7 @@ namespace Rain.Core
         /// </summary>
         public bool IsUnloadCalled
         {
-            get => assetBundleUnloadState != LoaderState.NONE;
+            get => assetBundleUnloadState != LoaderState.None;
         }
 
         /// <summary>
@@ -1057,15 +1059,15 @@ namespace Rain.Core
             {
                 switch (loadType)
                 {
-                    case LoaderType.LOCAL_SYNC:
-                        if (assetBundleLoadState == LoaderState.FINISHED)
+                    case LoaderType.Local_Sync:
+                        if (assetBundleLoadState == LoaderState.Finished)
                             return 1f;
                         break;
-                    case LoaderType.LOCAL_ASYNC:
+                    case LoaderType.Local_Async:
                         if (assetBundleLoadRequest != null)
                             return assetBundleLoadRequest.progress;
                         break;
-                    case LoaderType.REMOTE_ASYNC:
+                    case LoaderType.Remote_Async:
                         if (assetBundleDownloadRequest != null)
                             return assetBundleDownloadRequest.Progress;
                         break;
@@ -1100,11 +1102,11 @@ namespace Rain.Core
             {
                 switch (unloadType)
                 {
-                    case LoaderType.LOCAL_SYNC:
-                        if (assetBundleUnloadState == LoaderState.FINISHED)
+                    case LoaderType.Local_Sync:
+                        if (assetBundleUnloadState == LoaderState.Finished)
                             return 1f;
                         break;
-                    case LoaderType.LOCAL_ASYNC:
+                    case LoaderType.Local_Async:
                         if (assetBundleUnloadRequest != null)
                             return assetBundleUnloadRequest.progress;
                         break;
@@ -1115,12 +1117,12 @@ namespace Rain.Core
 
         private event OnLoadFinished onLoadFinished
         {
-            add 
+            add
             {
                 if (value == null)
                     return;
 
-                if (assetBundleLoadState == LoaderState.FINISHED)
+                if (assetBundleLoadState == LoaderState.Finished)
                     value(assetBundleContent);
                 else
                     onLoadFinishedImpl += value;
@@ -1139,7 +1141,7 @@ namespace Rain.Core
                 if (value == null)
                     return;
 
-                if (assetBundleExpandState == LoaderState.FINISHED)
+                if (assetBundleExpandState == LoaderState.Finished)
                     value();
                 else
                     onExpandFinishedImpl += value;
@@ -1158,7 +1160,7 @@ namespace Rain.Core
                 if (value == null)
                     return;
 
-                if (assetBundleUnloadState == LoaderState.FINISHED)
+                if (assetBundleUnloadState == LoaderState.Finished)
                     value();
                 else
                     onUnloadFinishedImpl += value;

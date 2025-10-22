@@ -34,9 +34,9 @@ namespace Rain.Core
         public AssetBundle Load(string assetName, System.Type assetType, ref AssetMgr.AssetInfo info, string subAssetName = null, bool isLoadAll = false)
         {
             AssetBundle result;
-
+            //依赖
             List<string> assetBundlePaths = new List<string>(GetDependenciedAssetBundles(info.AbName));
-
+            //
             for (int i = 0; i < assetBundlePaths.Count; i++)
             {
                 assetBundlePaths[i] = GetAssetBundlePathByAbName(assetBundlePaths[i]);
@@ -887,7 +887,7 @@ namespace Rain.Core
             string fullPath;
 
             if (GameConfig.LocalGameVersion.EnableHotUpdate &&
-                GameConfig.RemoteAssetBundleMap.ABMap.TryGetValue(assetName, out AssetMapping assetMapping) &&
+                GameConfig.RemoteAssetBundleMap.ABMap.TryGetValue(assetName, out AssetMapping assetMapping) && //远端资源表上有数据
                 assetMapping != null &&
                 !string.IsNullOrEmpty(assetMapping.Updated))
             {
@@ -900,13 +900,14 @@ namespace Rain.Core
             {
                 fullPath = AssetBundleHelper.GetAssetBundleFullName(null, AssetBundleHelper.SourceType.PackagePath);
             }
-            else if (AssetMgr.ForceRemoteAssetBundle)
+            else if (AssetMgr.ForceRemoteAssetBundle)//强制使用远端数据
             {
                 fullPath = AssetBundleHelper.GetAssetBundleFullName(null, AssetBundleHelper.SourceType.RemoteAddress);
             }
             else
             {
-                fullPath = AssetBundleHelper.GetAssetBundleFullName(null, AssetBundleHelper.SourceType.StreamingAssets);
+                fullPath = AssetBundleHelper.GetAssetBundleFullName(null, AssetBundleHelper.SourceType.PersistentAssets);
+                //fullPath = AssetBundleHelper.GetAssetBundleFullName(null, AssetBundleHelper.SourceType.StreamingAssets);
             }
 
             return fullPath;

@@ -112,6 +112,7 @@ public partial class LoginView : BaseView
                     Debug.Log("版本检查完成");
                     yield return StartCoroutine(HotUpdateMgr.Ins.InitRemoteVersion());
                     yield return StartCoroutine(HotUpdateMgr.Ins.InitRemoteAssetBundleMap());
+                    yield return StartCoroutine(HotUpdateMgr.Ins.LoadRemoteResMap());
                     //检查是否需要更新
                     Tuple<Dictionary<string, string>, long> tuple = HotUpdateMgr.Ins.CheckHotUpdate();
                     float startVal = ui.progress_Slider.value;

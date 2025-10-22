@@ -13,7 +13,7 @@ namespace Rain.Core
         /// </summary>
         public string Version;
         /// <summary>
-        /// 文件名和MD5
+        /// ab映射<ab包包名, 映射类>
         /// </summary>
         public Dictionary<string, AssetMapping> ABMap = new Dictionary<string, AssetMapping>();
         /// <summary>

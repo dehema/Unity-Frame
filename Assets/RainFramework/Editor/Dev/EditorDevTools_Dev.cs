@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing.Text;
 using System.IO;
 using System.Linq;
 using DotLiquid;
@@ -160,29 +161,27 @@ public class EditorDevTools_Dev : EditorDevTools_Base
                 EditorCoroutineUtility.StartCoroutine(StopGame(), this);
             }
             GUILayout.FlexibleSpace();
+            if (GUILayout.Button("重启游戏 Ctrl+R", style.btLarge, GUILayout.Height(40)))
+            {
+                ResetGame();
+            }
+            GUILayout.FlexibleSpace();
         }
         else
         {
             GUILayout.FlexibleSpace();
             GUI.backgroundColor = Color.green;
-            if (GUILayout.Button("启动游戏 Ctrl+P | Ctrl+R", style.btLarge, GUILayout.Width(200), GUILayout.Height(40)))
+            if (GUILayout.Button("启动游戏 Ctrl+P | Ctrl+R", style.btLarge, GUILayout.Height(40)))
             {
                 StartGame();
             }
             GUILayout.FlexibleSpace();
             GUI.backgroundColor = Color.white;
-            if (GUILayout.Button("生成资源表", style.btLarge, GUILayout.Width(200), GUILayout.Height(40)))
+            if (GUILayout.Button("生成资源表", style.btLarge, GUILayout.Height(40)))
             {
                 GenerateResMap();
             }
             GUILayout.FlexibleSpace();
-        }
-        if (EditorApplication.isPlaying)
-        {
-            if (GUILayout.Button("重启游戏 Ctrl+R", style.btLarge, GUILayout.Height(40)))
-            {
-                ResetGame();
-            }
         }
         GUILayout.EndHorizontal();
         if (EditorApplication.isPlaying)
@@ -243,13 +242,16 @@ public class EditorDevTools_Dev : EditorDevTools_Base
 
                 // 获取文件名（不含扩展名）作为资源名称
                 string fileName = Path.GetFileNameWithoutExtension(assetPath);
+                
+                // 获取AB名称
+                string abName = EditorUtil.GetResAssetBundleName(assetPath);
 
                 // 创建资源映射
                 ResMapping mapping = new ResMapping
                 {
                     assetName = fileName,
                     logicPath = relativePath,
-                    abName = "" // Resources 不需要 AB 名称
+                    AbName = abName
                 };
 
                 // 如果资源名称已存在，记录警告
@@ -297,7 +299,6 @@ public class EditorDevTools_Dev : EditorDevTools_Base
         // 检查路径中是否包含 /Resources/ 或路径以 /Resources 结尾
         return assetPath.Contains("/Resources/") || assetPath.EndsWith("/Resources");
     }
-
     /// <summary>
     /// 获取相对于Resources文件夹的路径
     /// </summary>

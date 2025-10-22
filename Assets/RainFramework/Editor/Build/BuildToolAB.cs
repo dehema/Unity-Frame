@@ -13,6 +13,12 @@ using System.Collections.Generic;
 /// </summary>
 public class BuildToolAB : BuildToolBase
 {
+    /// <summary>
+    /// ab资源列表 <名字,路径>
+    /// 路径是 Assets/AssetBundles/Art/Atlas/atlas_2D.spriteatlas
+    /// </summary>
+    private Dictionary<string, string> assetsBundlePaths = new Dictionary<string, string>();
+
     public BuildToolAB(BuildToolConfig _config) : base(_config)
     {
         pageName = "AB包设置";
@@ -37,13 +43,15 @@ public class BuildToolAB : BuildToolBase
         EditorGUILayout.BeginHorizontal();
 
         if (GUILayout.Button("设置AB", BuildToolWindow.btStyle, GUILayout.Height(30)))
+        {
             SetAllAssetBundles();
+            CreateABFileList();
+        }
         if (GUILayout.Button("清除AB", BuildToolWindow.btStyle, GUILayout.Height(30)))
             ClearAllAssetBundles();
         if (GUILayout.Button("打包AB", BuildToolWindow.btStyle, GUILayout.Height(30)))
         {
             BuildAllAssetBundles();
-            CreateABFileList();
             WriteResourceMapFile();
         }
         if (GUILayout.Button("上传AB", BuildToolWindow.btStyle, GUILayout.Height(30)))
@@ -134,6 +142,7 @@ public class BuildToolAB : BuildToolBase
     /// </summary>
     public void SetAllAssetBundles()
     {
+        assetsBundlePaths.Clear();
         SetAllAtlasAssetBundles();
     }
 
@@ -148,45 +157,53 @@ public class BuildToolAB : BuildToolBase
         EditorUtility.DisplayProgressBar("设置AB包", "正在处理图集...", 0f);
         for (int i = 0; i < atlasFiles.Length; i++)
         {
+            atlasFiles[i] = atlasFiles[i].Replace("\\", "/");
             string atlasFile = atlasFiles[i];
             string fileName = Path.GetFileNameWithoutExtension(atlasFile);
 
-            try
-            {
-                EditorUtility.DisplayProgressBar("设置AB包", $"正在处理: {fileName}", (float)i / atlasFiles.Length);
+            EditorUtility.DisplayProgressBar("设置AB包", $"正在处理: {fileName}", (float)i / atlasFiles.Length);
 
-                string relativePath = atlasFile.Replace(Application.dataPath, "Assets");
-                SpriteAtlas atlas = AssetDatabase.LoadAssetAtPath<SpriteAtlas>(relativePath);
+            string relativePath = atlasFile.Replace(Application.dataPath, "Assets");
+            SpriteAtlas atlas = AssetDatabase.LoadAssetAtPath<SpriteAtlas>(relativePath);
 
-                if (atlas != null)
-                {
-                    // 生成AB包名称（基于图集路径）
-                    string abName = GenerateAssetBundleName(relativePath);
-                    // 设置AssetBundle标签
-                    AssetImporter importer = AssetImporter.GetAtPath(relativePath);
-                    if (importer != null)
-                    {
-                        importer.assetBundleName = abName;
-                        importer.assetBundleVariant = "";
-                        Debug.Log($"图集 {fileName} 设置AB包标签: {abName}");
-                    }
-                    else
-                    {
-                        Debug.LogError($"无法获取图集 {fileName} 的AssetImporter");
-                    }
-                }
-                else
-                {
-                    Debug.LogError($"无法加载图集: {relativePath}");
-                }
-            }
-            catch (Exception e)
+            if (atlas == null || !CheckAssetsBundleRepeat(relativePath))
             {
-                Debug.LogError($"设置图集 {fileName} AB包标签失败: {e.Message}");
+                Debug.LogError($"无法加载图集:{relativePath}");
             }
         }
         EditorUtility.ClearProgressBar();
         AssetDatabase.Refresh();
+    }
+
+    /// <summary>
+    /// 检查ab资源是否重复
+    /// </summary>
+    /// <param name="_assetPath"></param>
+    private bool CheckAssetsBundleRepeat(string _assetPath)
+    {
+        // 生成AB包名称（基于图集路径）
+        string abName = GenerateAssetBundleName(_assetPath);
+        if (assetsBundlePaths.ContainsKey(abName))
+        {
+            Debug.LogError($"发现重复资源:{_assetPath}");
+            return false;
+        }
+        assetsBundlePaths[abName] = _assetPath;
+
+        // 设置AssetBundle标签
+        AssetImporter importer = AssetImporter.GetAtPath(_assetPath);
+        if (importer != null)
+        {
+            importer.assetBundleName = abName;
+            importer.assetBundleVariant = "";
+            Debug.Log($"设置AB包标签:{abName}");
+            return true;
+        }
+        else
+        {
+            Debug.LogError($"无法获取AssetImporter:{abName}");
+        }
+        return false;
     }
 
     /// <summary>
@@ -309,7 +326,7 @@ public class BuildToolAB : BuildToolBase
 
             Debug.Log($"AB包打包完成，输出目录: {config.ABOutputPath}");
             EditorUtility.RevealInFinder(config.ABOutputPath + "/");
-            Debug.Log($"打包完成，AB包已打包到:\n{config.ABOutputPath}");
+            Debug.Log($"打包完成，AB包已打包 到:\n{config.ABOutputPath}");
         }
         catch (Exception e)
         {
@@ -329,23 +346,18 @@ public class BuildToolAB : BuildToolBase
         string[] allFiles = Directory.GetFiles(config.ABOutputPath, "*", SearchOption.AllDirectories);
         foreach (string filePath in allFiles)
         {
-            try
-            {
-                string relativePath = Path.GetRelativePath(config.ABOutputPath, filePath);
-                string md5 = CalculateFileMD5(filePath);
+            if (filePath.EndsWith(".manifest"))
+                continue;
+            string relativePath = Path.GetRelativePath(config.ABOutputPath, filePath);
+            string md5 = CalculateFileMD5(filePath);
 
-                AssetMapping assetMapping = new AssetMapping();
-                assetMapping.AbName = relativePath;
-                assetMapping.AssetPath = relativePath;
-                assetMapping.Version = config.Version;
-                assetMapping.MD5 = md5;
-                assetMapping.Size = new FileInfo(filePath).Length.ToString();
-                assetBundleMap.ABMap[relativePath] = assetMapping;
-            }
-            catch (Exception e)
-            {
-                Debug.LogError($"处理文件失败: {filePath}, 错误: {e.Message}");
-            }
+            AssetMapping assetMapping = new AssetMapping();
+            assetMapping.AbName = relativePath;
+            assetMapping.AssetPath = assetsBundlePaths.ContainsKey(relativePath) ? assetsBundlePaths[relativePath] : relativePath;
+            assetMapping.Version = config.Version;
+            assetMapping.MD5 = md5;
+            assetMapping.Size = new FileInfo(filePath).Length.ToString();
+            assetBundleMap.ABMap[relativePath] = assetMapping;
         }
         // 保存文件列表到JSON
         string jsonPath = Path.Combine(Application.persistentDataPath, $"{nameof(AssetBundleMap)}.json");
@@ -548,7 +560,8 @@ public class BuildToolAB : BuildToolBase
 
     private static Dictionary<string, string[]> resourceMapping;
     /// <summary>
-    /// 写入ResourceMap文件
+    /// 写入ResourceMap文件 
+    /// RainFramework/AssetMap/Resources下面生成一个资源映射文件
     /// </summary>
     public void WriteResourceMapFile()
     {
@@ -559,7 +572,7 @@ public class BuildToolAB : BuildToolBase
         AssetDatabase.Refresh();
 
 
-        string ResourceMapPath = Application.dataPath + "/F8Framework/AssetMap/Resources/" + nameof(ResMap) + ".json";
+        string ResourceMapPath = Application.dataPath + "/RainFramework/AssetMap/Resources/" + nameof(ResMap) + ".json";
         FileTools.CheckFileAndCreateDirWhenNeeded(ResourceMapPath);
         FileTools.SafeWriteAllText(ResourceMapPath, JsonConvert.SerializeObject(resourceMapping));
         AssetDatabase.Refresh();

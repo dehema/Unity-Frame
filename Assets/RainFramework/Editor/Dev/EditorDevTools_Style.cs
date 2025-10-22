@@ -18,6 +18,6 @@ public class EditorDevTools_Style
         lbTitle = new GUIStyle(lb) { fontSize = 16 };
 
         bt = new GUIStyle(_skin.button) { fontSize = 12, alignment = TextAnchor.MiddleCenter, hover = { textColor = Color.green } };
-        btLarge = new GUIStyle(bt) { fontSize = 14 };
+        btLarge = new GUIStyle(bt) { fontSize = 14, padding = new RectOffset(20, 20, 0, 0) };
     }
 }
