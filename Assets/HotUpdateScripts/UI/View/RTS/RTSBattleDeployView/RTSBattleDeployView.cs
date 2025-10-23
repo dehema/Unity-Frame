@@ -68,7 +68,7 @@ public partial class RTSBattleDeployView : BaseView
 
     public void RefreshShowFormation()
     {
-        GameObject go = Resources.Load<GameObject>($"Prefab/Formation/{formationID}");
+        GameObject go = AssetMgr.Ins.Load<GameObject>($"RTS_Formation_{formationID}");
         if (go == null)
         {
             return;

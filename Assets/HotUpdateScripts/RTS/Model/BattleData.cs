@@ -75,7 +75,8 @@ namespace Rain.RTS.Core
             // 清空现有数据
             army.areaUnitDatas.Clear();
 
-            GameObject prefab = Resources.Load<GameObject>($"Prefab/Formation/{army.formationID}");
+            string formationName = $"RTS_Formation_{army.formationID}";
+            GameObject prefab = AssetMgr.Ins.Load<GameObject>(formationName);
             if (prefab == null)
             {
                 Debug.LogError($"无法加载阵型预制体: {army.formationID}");

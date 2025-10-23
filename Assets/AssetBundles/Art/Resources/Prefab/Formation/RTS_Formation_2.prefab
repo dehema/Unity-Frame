@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3431924790691070231}
   m_Layer: 5
-  m_Name: Formation_2
+  m_Name: RTS_Formation_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
