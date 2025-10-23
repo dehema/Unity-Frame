@@ -588,7 +588,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1368658851576667185, guid: b6312e608a27ab94b8d15598d43d1a34, type: 3}
       propertyPath: m_TileSpriteArray.Array.data[0].m_RefCount
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1368658851576667185, guid: b6312e608a27ab94b8d15598d43d1a34, type: 3}
       propertyPath: m_TileSpriteArray.Array.data[1].m_RefCount
@@ -663,12 +663,20 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1368658851576667185, guid: b6312e608a27ab94b8d15598d43d1a34, type: 3}
+      propertyPath: m_Tiles.Array.data[5].second.m_AllTileFlags
+      value: 1073741824
+      objectReference: {fileID: 0}
+    - target: {fileID: 1368658851576667185, guid: b6312e608a27ab94b8d15598d43d1a34, type: 3}
+      propertyPath: m_Tiles.Array.data[6].second.m_AllTileFlags
+      value: 1073741824
+      objectReference: {fileID: 0}
+    - target: {fileID: 1368658851576667185, guid: b6312e608a27ab94b8d15598d43d1a34, type: 3}
       propertyPath: m_Tiles.Array.data[5].second.m_TileSpriteIndex
-      value: 1
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 1368658851576667185, guid: b6312e608a27ab94b8d15598d43d1a34, type: 3}
       propertyPath: m_Tiles.Array.data[6].second.m_TileSpriteIndex
-      value: 1
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 1368658851576667185, guid: b6312e608a27ab94b8d15598d43d1a34, type: 3}
       propertyPath: m_Tiles.Array.data[7].second.m_TileSpriteIndex
@@ -1140,16 +1148,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 0}
-  mousePanSpeed: 1
-  posLimit: {x: -60, y: 20, z: -20, w: 20}
-  panDampening: 5
-  touchPanSpeed: 0.01
-  touchMinDistance: 10
-  zoomDefaultSize: 15
-  zoomMinSize: 3
-  zoomMaxSize: 20
-  touchZoomSpeed: 0.5
-  zoomDampening: 5
+  _setting:
+    MousePanSpeed: 1
+    MouseZoomSpeed: 3
+    PosLimit: {x: -60, y: 20, z: -20, w: 20}
+    PanDampening: 5
+    TouchPanSpeed: 0.01
+    TouchMinDistance: 10
+    ZoomDefaultSize: 15
+    ZoomMinSize: 3
+    ZoomMaxSize: 20
+    TouchZoomSpeed: 0.5
+    ZoomDampening: 5
 --- !u!4 &5290530545942642543
 Transform:
   m_ObjectHideFlags: 0

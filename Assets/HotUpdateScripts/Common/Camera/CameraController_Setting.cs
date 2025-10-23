@@ -6,7 +6,7 @@ using UnityEngine;
 /// 相机配置 - 只读类，用于存储从配置表读取的初始数据
 /// </summary>
 [System.Serializable]
-public class CameraController_Config
+public class CameraController_Setting
 {
     [Header("【相机设置】")]
     //鼠标专用

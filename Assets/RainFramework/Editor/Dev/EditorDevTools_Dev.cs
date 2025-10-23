@@ -108,7 +108,7 @@ public class EditorDevTools_Dev : EditorDevTools_Base
         if (GUILayout.Button("打开Excel配置目录", style.bt))
         {
             string path = Directory.GetParent(Application.dataPath).FullName + @"\Config\Excel";
-            EditorUtility.RevealInFinder(path);
+            EditorUtility.RevealInFinder(path + "/");
         }
         if (GUILayout.Button("导出Excel", style.bt))
         {
@@ -242,7 +242,7 @@ public class EditorDevTools_Dev : EditorDevTools_Base
 
                 // 获取文件名（不含扩展名）作为资源名称
                 string fileName = Path.GetFileNameWithoutExtension(assetPath);
-                
+
                 // 获取AB名称
                 string abName = EditorUtil.GetResAssetBundleName(assetPath);
 
