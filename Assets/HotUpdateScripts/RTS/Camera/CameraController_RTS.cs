@@ -135,7 +135,7 @@ public class CameraController_RTS : MonoBehaviour
             mainCamera.orthographicSize = targetOrthographicSize;
         }
         float zoomRatio = Mathf.InverseLerp(maxOrthographicSize, minOrthographicSize, mainCamera.orthographicSize);
-        MsgMgr.Ins.DispatchEvent(MsgEvent.CameraZoomRatioChange, mainCamera.orthographicSize, zoomRatio);
+        MsgMgr.Ins.DispatchEvent(MsgEvent.City_Camera_Zoom, mainCamera.orthographicSize, zoomRatio);
     }
 
     /// <summary>

@@ -12,51 +12,8 @@ using UnityEditor;
 /// <summary>
 /// SLG类型游戏的相机控制器
 /// </summary>
-public class CameraController_City : MonoBehaviour
+public class CameraController_World : CameraController_Base
 {
-    [SerializeField][Header("相机组件")] public Camera mainCamera;                   // 主相机引用
-    [Header("【相机设置】")]
-    //鼠标专用
-    [SerializeField][Header("鼠标移动速度")] public float mousePanSpeed = 1;
-    [SerializeField][Header("鼠标缩放速度")] public const float mouseZoomSpeed = 3f;
-
-    //移动
-    [SerializeField][Header("移动范围限制")] private Vector4 posLimit = new Vector4(-60, 20, -20, 20);
-    [SerializeField][Header("移动平滑度")] private float panDampening = 5f;
-    [SerializeField][Header("触摸平移速度")] private float touchPanSpeed = 0.01f;
-    [SerializeField][Header("触摸最小距离")] private float touchMinDistance = 10f;
-
-    //缩放
-    [SerializeField][Header("缩放默认值")] private float zoomDefaultSize = 15f;
-    [SerializeField][Header("缩放最小值")] private float zoomMinSize = 3f;
-    [SerializeField][Header("缩放最大值")] private float zoomMaxSize = 20f;
-    [SerializeField][Header("触摸缩放速度")] private float touchZoomSpeed = 0.5f;
-    [SerializeField][Header("缩放平滑度")] private float zoomDampening = 5f;
-
-    // 当前目标正交尺寸
-    private float targetOrthographicSize;
-    // 相机目标位置
-    private Vector3 targetPosition;
-    // 鼠标中键拖动状态
-    private bool isMiddleMouseDragging = false;
-    private Vector3 lastMousePosition;
-    // 触摸输入相关变量
-    private Vector2 lastTouchPosition;
-    private float lastTouchDistance;
-    //当前帧是否移动
-    private bool isTouchPanning = false;
-    //当前帧是否缩放
-    private bool isTwoFingerZoom = false;
-
-    public Vector4 PosLimit { get => posLimit; set => posLimit = value; }
-    public float PanDampening { get => panDampening; set => panDampening = value; }
-    public float TouchPanSpeed { get => touchPanSpeed; set => touchPanSpeed = value; }
-    public float TouchMinDistance { get => touchMinDistance; set => touchMinDistance = value; }
-    public float ZoomDefaultSize { get => zoomDefaultSize; set => zoomDefaultSize = value; }
-    public float ZoomMinSize { get => zoomMinSize; set => zoomMinSize = value; }
-    public float ZoomMaxSize { get => zoomMaxSize; set => zoomMaxSize = value; }
-    public float TouchZoomSpeed { get => touchZoomSpeed; set => touchZoomSpeed = value; }
-    public float ZoomDampening { get => zoomDampening; set => zoomDampening = value; }
 
     // 将位置限制在 posLimit 指定的范围内（X: xMin~xMax, Z: zMin~zMax）
     private Vector3 ClampPosition(Vector3 position)
@@ -78,7 +35,7 @@ public class CameraController_City : MonoBehaviour
 
     void Start()
     {
-        mousePanSpeed = 1;
+        MousePanSpeed = 1;
 
         // 确保相机为正交投影
         if (mainCamera != null && !mainCamera.orthographic)
@@ -99,7 +56,7 @@ public class CameraController_City : MonoBehaviour
         // 初始化目标位置为当前位置并进行边界限制
         targetPosition = ClampPosition(mainCamera.transform.position);
         mainCamera.transform.position = targetPosition;
-        MsgMgr.Ins.DispatchEvent(MsgEvent.CameraMove, mainCamera.transform.position);
+        MsgMgr.Ins.DispatchEvent(MsgEvent.City_Camera_Move, mainCamera.transform.position);
     }
 
     // 每帧更新
@@ -158,7 +115,7 @@ public class CameraController_City : MonoBehaviour
             mainCamera.orthographicSize = targetOrthographicSize;
         }
         float zoomRatio = Mathf.InverseLerp(ZoomMaxSize, ZoomMinSize, mainCamera.orthographicSize);
-        MsgMgr.Ins.DispatchEvent(MsgEvent.CameraZoomRatioChange, mainCamera.orthographicSize, zoomRatio);
+        MsgMgr.Ins.DispatchEvent(MsgEvent.City_Camera_Zoom, mainCamera.orthographicSize, zoomRatio);
     }
 
     /// <summary>
@@ -179,7 +136,7 @@ public class CameraController_City : MonoBehaviour
             float zoomFactor = Mathf.Max(mainCamera.orthographicSize * 0.1f, 0.5f);
 
             // 应用缩放
-            targetOrthographicSize -= scrollInput * mouseZoomSpeed * zoomFactor;
+            targetOrthographicSize -= scrollInput * MouseZoomSpeed * zoomFactor;
 
             // 限制缩放范围
             targetOrthographicSize = Mathf.Clamp(targetOrthographicSize, ZoomMinSize, ZoomMaxSize);
@@ -269,7 +226,7 @@ public class CameraController_City : MonoBehaviour
             // 当距离很小时，直接设置为目标位置，避免无限插值
             mainCamera.transform.position = targetPosition;
         }
-        MsgMgr.Ins.DispatchEvent(MsgEvent.CameraMove, mainCamera.transform.position);
+        MsgMgr.Ins.DispatchEvent(MsgEvent.City_Camera_Move, mainCamera.transform.position);
     }
 
     /// <summary>
@@ -301,9 +258,9 @@ public class CameraController_City : MonoBehaviour
             // 计算相机移动方向和距离
             // 注意：鼠标向右移动，相机应该向左移动，所以使用负值
             Vector3 moveDirection = new Vector3(
-                -mouseDelta.x * screenToWorldRatio * mousePanSpeed,
+                -mouseDelta.x * screenToWorldRatio * MousePanSpeed,
                 0,
-                -mouseDelta.y * screenToWorldRatio * mousePanSpeed
+                -mouseDelta.y * screenToWorldRatio * MousePanSpeed
             );
 
             // 考虑相机的旋转角度，确保移动方向正确
@@ -474,8 +431,8 @@ public class CameraController_City : MonoBehaviour
 }
 
 #if UNITY_EDITOR
-[CustomEditor(typeof(CameraController_City))]
-public class CameraController_RTSEditor : Editor
+[CustomEditor(typeof(CameraController_World))]
+public class CameraController_WorldMap_Editor : Editor
 {
     public override void OnInspectorGUI()
     {
@@ -487,7 +444,7 @@ public class CameraController_RTSEditor : Editor
         EditorGUILayout.LabelField("编辑器工具", EditorStyles.boldLabel);
 
         // 获取目标组件
-        CameraController_City cameraController = (CameraController_City)target;
+        CameraController_World cameraController = (CameraController_World)target;
 
         // 添加重置相机位置按钮
         if (GUILayout.Button("调整相机视野中心到世界原点 (0,0,0)"))

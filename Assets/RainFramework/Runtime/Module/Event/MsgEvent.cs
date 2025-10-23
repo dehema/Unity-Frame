@@ -33,11 +33,13 @@ namespace Rain.Core
         RTS_CameraZoomOut,                  //镜头缩小
         RTS_CameraZoomRatioChange,          //镜头倍率调整
 
-        //城镇镜头
-        CameraMove,
-        CameraZoomIn,                   //镜头放大
-        CameraZoomOut,                  //镜头缩小
-        CameraZoomRatioChange,          //镜头倍率调整
+        //城镇相机
+        City_Camera_Move,
+        City_Camera_Zoom,               //镜头倍率调整
+
+        //世界地图相机
+        WorldMap_Camera_Move,           //世界地图相机移动
+        WorldMap_Camera_Zoom,           //相机倍率调整
 
         //场景
         SceneLoaded,                    //场景加载

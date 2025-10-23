@@ -28,16 +28,16 @@ public partial class CityHUDView : BaseView
     {
         base.OnOpen(_viewParam);
         InitBuildingMenus();
-        MsgMgr.Ins.AddEventListener(MsgEvent.CameraMove, OnCameraMove, this);
-        MsgMgr.Ins.AddEventListener(MsgEvent.CameraZoomRatioChange, OnCameraScale, this);
+        MsgMgr.Ins.AddEventListener(MsgEvent.City_Camera_Move, OnCameraMove, this);
+        MsgMgr.Ins.AddEventListener(MsgEvent.City_Camera_Zoom, OnCameraScale, this);
         MsgMgr.Ins.AddEventListener(MsgEvent.SelectCityBuilding, OnSelectBuilding, this);
         ResetNameFadeVal();
     }
 
     public override void OnClose(Action _cb)
     {
-        MsgMgr.Ins.RemoveEventListener(MsgEvent.CameraMove, OnCameraMove, this);
-        MsgMgr.Ins.RemoveEventListener(MsgEvent.CameraZoomRatioChange, OnCameraScale, this);
+        MsgMgr.Ins.RemoveEventListener(MsgEvent.City_Camera_Move, OnCameraMove, this);
+        MsgMgr.Ins.RemoveEventListener(MsgEvent.City_Camera_Zoom, OnCameraScale, this);
         MsgMgr.Ins.RemoveEventListener(MsgEvent.SelectCityBuilding, OnSelectBuilding, this);
         base.OnClose(_cb);
     }

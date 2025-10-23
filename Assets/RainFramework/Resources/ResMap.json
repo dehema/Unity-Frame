@@ -24,10 +24,10 @@
     "logicPath": "UI/casual/Inbox/inbox_list_get_reward_bg",
     "AbName": "casual"
   },
-  "Human_Archer_1": {
-    "assetName": "Human_Archer_1",
-    "logicPath": "Prefab/Unit/Human_Archer_1",
-    "AbName": "Human_Archer_1"
+  "RTS_Human_Archer_1": {
+    "assetName": "RTS_Human_Archer_1",
+    "logicPath": "Prefab/Unit/RTS_Human_Archer_1",
+    "AbName": "RTS_Human_Archer_1"
   },
   "Slider": {
     "assetName": "Slider",
@@ -124,10 +124,10 @@
     "logicPath": "UI/common/Icon_ColorIcon_Drop01",
     "AbName": "common"
   },
-  "Human_Cavalry_1": {
-    "assetName": "Human_Cavalry_1",
-    "logicPath": "Prefab/Unit/Human_Cavalry_1",
-    "AbName": "Human_Cavalry_1"
+  "RTS_Human_Cavalry_1": {
+    "assetName": "RTS_Human_Cavalry_1",
+    "logicPath": "Prefab/Unit/RTS_Human_Cavalry_1",
+    "AbName": "RTS_Human_Cavalry_1"
   },
   "Btn_Rectangle00_n_Gray": {
     "assetName": "Btn_Rectangle00_n_Gray",
@@ -1619,10 +1619,10 @@
     "logicPath": "UI/casual/Pass/pass_reward_icon_book",
     "AbName": "casual"
   },
-  "Formation_1": {
-    "assetName": "Formation_1",
-    "logicPath": "Prefab/Formation/Formation_1",
-    "AbName": "Formation_1"
+  "RTS_Formation_1": {
+    "assetName": "RTS_Formation_1",
+    "logicPath": "Prefab/Formation/RTS_Formation_1",
+    "AbName": "RTS_Formation_1"
   },
   "mission_reward_bg_purple": {
     "assetName": "mission_reward_bg_purple",
@@ -1794,10 +1794,10 @@
     "logicPath": "UI/bg/夜晚",
     "AbName": "bg"
   },
-  "Formation_2": {
-    "assetName": "Formation_2",
-    "logicPath": "Prefab/Formation/Formation_2",
-    "AbName": "Formation_2"
+  "RTS_Formation_2": {
+    "assetName": "RTS_Formation_2",
+    "logicPath": "Prefab/Formation/RTS_Formation_2",
+    "AbName": "RTS_Formation_2"
   },
   "ImageTextMixView": {
     "assetName": "ImageTextMixView",
@@ -1823,6 +1823,11 @@
     "assetName": "rune_frame",
     "logicPath": "UI/casual/RuneFuse/rune_frame",
     "AbName": "casual"
+  },
+  "worldMap_Palette": {
+    "assetName": "worldMap_Palette",
+    "logicPath": "Prefab/Tile/worldMap_Palette",
+    "AbName": "worldMap_Palette"
   },
   "TT_Mounted_Priest": {
     "assetName": "TT_Mounted_Priest",
@@ -1869,10 +1874,10 @@
     "logicPath": "UI/unit/TT_Heavy_Infantry",
     "AbName": "unit"
   },
-  "Formation_4": {
-    "assetName": "Formation_4",
-    "logicPath": "Prefab/Formation/Formation_4",
-    "AbName": "Formation_4"
+  "RTS_Formation_4": {
+    "assetName": "RTS_Formation_4",
+    "logicPath": "Prefab/Formation/RTS_Formation_4",
+    "AbName": "RTS_Formation_4"
   },
   "射击游戏": {
     "assetName": "射击游戏",
@@ -2329,10 +2334,10 @@
     "logicPath": "Prefab/CityBuilding/HandwritingWorkshop_Level_02",
     "AbName": "HandwritingWorkshop_Level_02"
   },
-  "Human_Mage_1": {
-    "assetName": "Human_Mage_1",
-    "logicPath": "Prefab/Unit/Human_Mage_1",
-    "AbName": "Human_Mage_1"
+  "RTS_Human_Mage_1": {
+    "assetName": "RTS_Human_Mage_1",
+    "logicPath": "Prefab/Unit/RTS_Human_Mage_1",
+    "AbName": "RTS_Human_Mage_1"
   },
   "TT_Scout": {
     "assetName": "TT_Scout",
@@ -2458,6 +2463,11 @@
     "assetName": "TT_King",
     "logicPath": "UI/unit/TT_King",
     "AbName": "unit"
+  },
+  "ResMap": {
+    "assetName": "ResMap",
+    "logicPath": "ResMap",
+    "AbName": "ResMap"
   },
   "lobby_pass_bar_bg": {
     "assetName": "lobby_pass_bar_bg",
@@ -2664,10 +2674,10 @@
     "logicPath": "UI/casual/equipment_detail_lv_bg",
     "AbName": "casual"
   },
-  "Formation_3": {
-    "assetName": "Formation_3",
-    "logicPath": "Prefab/Formation/Formation_3",
-    "AbName": "Formation_3"
+  "RTS_Formation_3": {
+    "assetName": "RTS_Formation_3",
+    "logicPath": "Prefab/Formation/RTS_Formation_3",
+    "AbName": "RTS_Formation_3"
   },
   "pass_prg_bg": {
     "assetName": "pass_prg_bg",
@@ -3129,10 +3139,10 @@
     "logicPath": "UI/casual/Shop/shop_price_icon_gem",
     "AbName": "casual"
   },
-  "Human_Infantry_1": {
-    "assetName": "Human_Infantry_1",
-    "logicPath": "Prefab/Unit/Human_Infantry_1",
-    "AbName": "Human_Infantry_1"
+  "RTS_Human_Infantry_1": {
+    "assetName": "RTS_Human_Infantry_1",
+    "logicPath": "Prefab/Unit/RTS_Human_Infantry_1",
+    "AbName": "RTS_Human_Infantry_1"
   },
   "inbox_reward_gold": {
     "assetName": "inbox_reward_gold",
@@ -3594,10 +3604,10 @@
     "logicPath": "Prefab/CityBuilding/MagicTower_Level_02",
     "AbName": "MagicTower_Level_02"
   },
-  "Formation_5": {
-    "assetName": "Formation_5",
-    "logicPath": "Prefab/Formation/Formation_5",
-    "AbName": "Formation_5"
+  "RTS_Formation_5": {
+    "assetName": "RTS_Formation_5",
+    "logicPath": "Prefab/Formation/RTS_Formation_5",
+    "AbName": "RTS_Formation_5"
   },
   "ranking_icon_trophy": {
     "assetName": "ranking_icon_trophy",

@@ -22,7 +22,7 @@ public partial class RTSHudView : BaseView
         MsgMgr.Ins.AddEventListener(MsgEvent.RTSBattleUnitAdd, OnBattleUnitAdd, this);
         MsgMgr.Ins.AddEventListener(MsgEvent.RTSBattleUnitDie, OnBattleUnitRemove, this);
         MsgMgr.Ins.AddEventListener(MsgEvent.RTSBattleUnitMove, OnBattleUnitMove, this);
-        MsgMgr.Ins.AddEventListener(MsgEvent.CameraZoomRatioChange, OnCameraZoomRatioChange, this);
+        MsgMgr.Ins.AddEventListener(MsgEvent.City_Camera_Zoom, OnCameraZoomRatioChange, this);
         MsgMgr.Ins.AddEventListener(MsgEvent.RTSUnitHPChange, OnRTSUnitHPChange, this);
     }
 
