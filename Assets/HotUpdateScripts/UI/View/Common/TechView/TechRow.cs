@@ -21,7 +21,7 @@ public partial class TechRow : InfiniteScrollItem
         if (techRootPool != null)
             return;
         TechView techView = UIMgr.Ins.GetView<TechView>();
-        GameObject go = Instantiate(Resources.Load<GameObject>("View/TechView/TechRoot"), UIMgr.Ins.GetView<TechView>().transform);
+        GameObject go = Instantiate(AssetMgr.Ins.Load<GameObject>("TechRoot"), UIMgr.Ins.GetView<TechView>().transform);
         if (go)
         {
             techRootPool = PoolMgr.Ins.CreatePool(go, techView.gameObject);

@@ -42,7 +42,7 @@ public partial class TechView : BaseView
             Tab tab = item.GetComponent<Tab>();
 
             item.transform.Find("text").GetComponent<TextMeshProUGUI>().text = config.Name;
-            item.transform.Find("icon").GetComponent<Image>().sprite = Resources.Load<Sprite>($"UI/2D/{config.Icon}");
+            item.transform.Find("icon").GetComponent<Image>().sprite = AssetMgr.Ins.Load<Sprite>(config.Icon);
             item.transform.Find("line").gameObject.SetActive(index != ConfigMgr.TechCategory.DataList.Count - 1);
 
             //data

@@ -2002,7 +2002,9 @@ namespace Rain.Core
                 else
                 {
                     string text = textAsset.ToString();
-                    ResMap.ResMappings = JsonConvert.DeserializeObject<Dictionary<string, ResMapping>>(text);
+                    Dictionary<string, ResMapping> dict = JsonConvert.DeserializeObject<Dictionary<string, ResMapping>>(text);
+                    if (dict != null)
+                        ResMap.ResMappings = dict;
                 }
             }
         }

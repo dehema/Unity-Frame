@@ -22,7 +22,6 @@ namespace Rain.Core
         private Downloader packageDownloader;
 
         public bool UseLocalConfig = false;      //是否使用本地配置
-        public string AssetBundlesConfigPath => Path.Combine(GameConfig.ResGameVersion.GameRemoteAddress, nameof(AssetBundleMap) + ".json");
 
         public void OnInit(object createParam)
         {
@@ -112,6 +111,7 @@ namespace Rain.Core
         /// <returns></returns>
         public IEnumerator InitRemoteAssetBundleMap()
         {
+            string AssetBundlesConfigPath = Path.Combine(GameConfig.ResGameVersion.GameRemoteAddress, nameof(AssetBundleMap) + ".json");
             if (!GameConfig.LocalGameVersion.EnableHotUpdate && !GameConfig.LocalGameVersion.EnablePackage)
                 yield break;
             //获取到远端版本信息后再去获取资源信息

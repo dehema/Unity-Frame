@@ -269,11 +269,6 @@
     "logicPath": "UI/casual/Stage/stage_character_bg_red",
     "AbName": "casual"
   },
-  "AssetBundleMap": {
-    "assetName": "AssetBundleMap",
-    "logicPath": "AssetBundleMap",
-    "AbName": "AssetBundleMap"
-  },
   "Itemicon_Diamond_Blue": {
     "assetName": "Itemicon_Diamond_Blue",
     "logicPath": "UI/common/Itemicon_Diamond_Blue",
@@ -593,11 +588,6 @@
     "assetName": "switch_off",
     "logicPath": "UI/casual/Setting/switch_off",
     "AbName": "casual"
-  },
-  "ResMap": {
-    "assetName": "ResMap",
-    "logicPath": "ResMap",
-    "AbName": "ResMap"
   },
   "stage_character_bg_green": {
     "assetName": "stage_character_bg_green",

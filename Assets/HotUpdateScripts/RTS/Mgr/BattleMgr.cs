@@ -102,7 +102,7 @@ namespace Rain.RTS.Core
         public BaseBattleUnit CreateUnit(UnitConfig unitConfig, UnitInitData _initData = null)
         {
             BaseBattleUnit battleUnit = null;
-            GameObject prefab = Resources.Load<GameObject>("Prefab/Unit/" + unitConfig.FullID);
+            GameObject prefab = AssetMgr.Ins.Load<GameObject>("Prefab/Unit/" + unitConfig.FullID);
             if (prefab != null)
             {
                 // 实例化单位预制体
