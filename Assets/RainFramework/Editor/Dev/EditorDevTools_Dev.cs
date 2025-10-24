@@ -268,7 +268,7 @@ public class EditorDevTools_Dev : EditorDevTools_Base
         }
 
         // 生成 JSON 文件
-        string jsonContent = JsonConvert.SerializeObject(resourceMappings, Formatting.Indented);
+        string jsonContent = JsonConvert.SerializeObject(resourceMappings);
         string jsonFilePath = resMapPath + $"{nameof(ResMap)}.json";
 
         // 删除旧文件
