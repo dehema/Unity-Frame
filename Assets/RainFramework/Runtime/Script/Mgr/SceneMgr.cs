@@ -26,8 +26,10 @@ public class SceneMgr : ModuleSingletonMono<SceneMgr>, IModule
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        currSceneID = (SceneID)Enum.Parse(typeof(SceneID), scene.name);
         SceneChangeParam param = new SceneChangeParam();
         param.sceneName = scene.name;
+        param.sceneID = currSceneID;
         MsgMgr.Ins.DispatchEvent(MsgEvent.SceneLoaded, param);
         // 直接触发当前场景内所有 ISceneConfigProvider 的 OnSceneLoad（避免业务层自己再绑一次）
         //var providers = GameObject.FindObjectsOfType<MonoBehaviour>(true);
@@ -49,6 +51,7 @@ public class SceneMgr : ModuleSingletonMono<SceneMgr>, IModule
     {
         SceneChangeParam param = new SceneChangeParam();
         param.sceneName = scene.name;
+        param.sceneID = currSceneID;
         MsgMgr.Ins.DispatchEvent(MsgEvent.SceneUnload, param);
         // 直接触发当前场景内所有 ISceneConfigProvider 的 OnSceneLoad（避免业务层自己再绑一次）
         //var providers = GameObject.FindObjectsOfType<MonoBehaviour>(true);
@@ -152,4 +155,5 @@ public class SceneMgr : ModuleSingletonMono<SceneMgr>, IModule
 public class SceneChangeParam
 {
     public string sceneName;
+    public SceneID sceneID;
 }
