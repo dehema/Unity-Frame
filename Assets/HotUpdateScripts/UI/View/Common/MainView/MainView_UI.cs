@@ -40,6 +40,8 @@ public partial class MainView : Rain.UI.BaseView
         [SerializeField] public Button btExplore_Button;
         [SerializeField] public GameObject btWorldMap;
         [SerializeField] public Button btWorldMap_Button;
+        [SerializeField] public GameObject btMainCity;
+        [SerializeField] public Button btMainCity_Button;
         [SerializeField] public GameObject btChatPanel;
         [SerializeField] public Button btChatPanel_Button;
         [SerializeField] public GameObject iconChatMenu;

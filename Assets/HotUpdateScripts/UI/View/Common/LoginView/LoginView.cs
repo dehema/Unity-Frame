@@ -59,7 +59,7 @@ public partial class LoginView : BaseView
         LoginState[] loginStates = { LoginState.InitLocalResources, LoginState.CheckVersion, LoginState.UpdateResources, LoginState.GameLogin };
         string[] stateTexts = { "正在初始化本地资源...", "正在检查版本...", "正在更新资源...", "正在登录游戏..." };
         float[] progressValues = { 0.25f, 0.5f, 0.75f, 1.0f };
-        float[] durations = { 0.5f, 0.8f, 1.2f, 0.6f };
+        float[] durations = { 0.25f, 0.25f, 0.25f, 0.25f };
 
         for (int i = 0; i < loginStates.Length; i++)
         {

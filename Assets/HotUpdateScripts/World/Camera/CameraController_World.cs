@@ -23,6 +23,13 @@ public class CameraController_World : CameraController_Base
     protected override void Start()
     {
         base.Start();
-        MsgMgr.Ins.DispatchEvent(MsgEvent.City_Camera_Move, mainCamera.transform.position);
+        MsgMgr.Ins.DispatchEvent(MsgEvent.WorldMap_Camera_Move, mainCamera.transform.position);
+    }
+
+    protected override void LoadConfig()
+    {
+        base.LoadConfig();
+
+        Setting.PosLimit = ParseVector4("-1000, 1000, -1000, 1000");
     }
 }

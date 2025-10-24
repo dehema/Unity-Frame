@@ -13,7 +13,7 @@ using UnityEngine;
 public partial class CityHUDView : BaseView
 {
     CityHUDViewParam param;
-    MainCityCreator cityCreator => MainCityCreator.Ins;
+    MainCitySceneCreator cityCreator => MainCitySceneCreator.Ins;
     ObjPool poolBuildingMenu;
     Dictionary<BuildingController, BuildingHudItem> hudItems = new Dictionary<BuildingController, BuildingHudItem>();
     float nameFadeVal = 1;

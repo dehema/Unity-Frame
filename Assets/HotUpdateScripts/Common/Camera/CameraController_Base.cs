@@ -222,7 +222,6 @@ public class CameraController_Base : MonoBehaviour
             // 当距离很小时，直接设置为目标位置，避免无限插值
             mainCamera.transform.position = targetPosition;
         }
-        MsgMgr.Ins.DispatchEvent(MsgEvent.City_Camera_Move, mainCamera.transform.position);
     }
 
     /// <summary>
