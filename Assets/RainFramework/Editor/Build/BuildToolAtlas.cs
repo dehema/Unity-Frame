@@ -120,37 +120,46 @@ public class BuildToolAtlas : BuildToolBase
     /// </summary>
     public void BuildAtlas()
     {
-        EditorUtility.DisplayProgressBar("打包图集", "正在扫描UI文件夹...", 0f);
-
-        // 确保Atlas目录存在
-        if (!Directory.Exists(atlasPath))
+        try
         {
-            Directory.CreateDirectory(atlasPath);
+            EditorUtility.DisplayProgressBar("打包图集", "正在扫描UI文件夹...", 0f);
+
+            // 确保Atlas目录存在
+            if (!Directory.Exists(atlasPath))
+            {
+                Directory.CreateDirectory(atlasPath);
+                AssetDatabase.Refresh();
+            }
+
+            // 获取UI目录下的所有文件夹
+            string[] uiFolders = Directory.GetDirectories(sourcePath);
+            int totalFolders = uiFolders.Length;
+            int processedFolders = 0;
+
+            foreach (string folderPath in uiFolders)
+            {
+                string folderName = Path.GetFileName(folderPath);
+                EditorUtility.DisplayProgressBar("打包图集", $"正在处理文件夹: {folderName}", (float)processedFolders / totalFolders);
+
+                // 创建对应的图集文件
+                CreateAtlasForFolder(folderPath, folderName, atlasPath);
+
+                processedFolders++;
+            }
+
+            EditorUtility.ClearProgressBar();
             AssetDatabase.Refresh();
+            Debug.Log($"打包图集完成，成功处理 {processedFolders} 个文件夹的图集");
+
+            // 自动进行Pack Preview
+            AutoPackPreview();
         }
-
-        // 获取UI目录下的所有文件夹
-        string[] uiFolders = Directory.GetDirectories(sourcePath);
-        int totalFolders = uiFolders.Length;
-        int processedFolders = 0;
-
-        foreach (string folderPath in uiFolders)
+        catch (Exception e)
         {
-            string folderName = Path.GetFileName(folderPath);
-            EditorUtility.DisplayProgressBar("打包图集", $"正在处理文件夹: {folderName}", (float)processedFolders / totalFolders);
-
-            // 创建对应的图集文件
-            CreateAtlasForFolder(folderPath, folderName, atlasPath);
-
-            processedFolders++;
+            EditorUtility.ClearProgressBar();
+            Debug.LogError($"打包图集失败: {e.Message}");
+            EditorUtility.DisplayDialog("打包失败", $"打包图集时发生错误:\n{e.Message}", "确定");
         }
-
-        EditorUtility.ClearProgressBar();
-        AssetDatabase.Refresh();
-        Debug.Log($"打包图集完成，成功处理 {processedFolders} 个文件夹的图集");
-
-        // 自动进行Pack Preview
-        AutoPackPreview();
     }
 
     /// <summary>
