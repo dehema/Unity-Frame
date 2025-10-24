@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.U2D;
 using UnityEditor.U2D;
 using System.Linq;
+using Rain.Core;
 
 /// <summary>
 /// 图集工具类
@@ -28,10 +29,11 @@ public class BuildToolAtlas : BuildToolBase
         if (Directory.Exists(atlasPath))
         {
             // 获取所有.spriteatlas文件
-            string[] atlasFiles = Directory.GetFiles(atlasPath, "*.spriteatlas", SearchOption.AllDirectories);
+            string[] atlasFiles = FileTools.GetSpecifyFilesInFolder(atlasPath, "*.spriteatlas");
 
             if (atlasFiles.Length > 0)
             {
+                FileTools.PathsFormatToUnityPath(atlasFiles);
                 EditorGUILayout.Space(10);
                 EditorGUILayout.LabelField($"图集列表 ({atlasFiles.Length} 个):", EditorStyles.boldLabel);
 
@@ -114,7 +116,7 @@ public class BuildToolAtlas : BuildToolBase
 
         // 显示超大图片列表
         DrawOversizedImagesList();
-        
+
         // 显示忽略列表
         DrawIgnoreList();
 
@@ -268,22 +270,14 @@ public class BuildToolAtlas : BuildToolBase
             if (EditorUtility.DisplayDialog("确认清理", "确定要清理所有图集文件吗？", "确定", "取消"))
             {
                 // 删除所有图集文件
-                string[] atlasFiles = Directory.GetFiles(atlasPath, "*.*", SearchOption.AllDirectories);
+                string[] atlasFiles = FileTools.GetSpecifyFilesInFolder(atlasPath, "*.spriteatlas");
                 foreach (string file in atlasFiles)
                 {
                     File.Delete(file);
                 }
 
                 // 删除空文件夹
-                string[] emptyDirs = Directory.GetDirectories(atlasPath, "*", SearchOption.AllDirectories);
-                foreach (string dir in emptyDirs)
-                {
-                    if (Directory.GetFiles(dir).Length == 0 && Directory.GetDirectories(dir).Length == 0)
-                    {
-                        Directory.Delete(dir);
-                    }
-                }
-
+                FileTools.SafeClearDir(atlasPath);
                 AssetDatabase.Refresh();
             }
         }
@@ -304,8 +298,8 @@ public class BuildToolAtlas : BuildToolBase
             return;
         }
 
-        string[] atlasFiles = Directory.GetFiles(atlasPath, "*.spriteatlas", SearchOption.AllDirectories);
-
+        string[] atlasFiles = FileTools.GetSpecifyFilesInFolder(atlasPath, "*.spriteatlas");
+        FileTools.PathsFormatToUnityPath(atlasFiles);
         if (atlasFiles.Length == 0)
         {
             Debug.LogWarning("没有找到图集文件，无法进行Pack Preview");
@@ -405,19 +399,12 @@ public class BuildToolAtlas : BuildToolBase
         oversizedImages.Clear();
 
         // 获取所有图片文件
-        string[] imageExtensions = { "*.png", "*.jpg", "*.jpeg", "*.tga", "*.psd", "*.tiff" };
-        List<string> allImageFiles = new List<string>();
+        string[] allImagePaths = FileTools.GetAllImageFilesInFolder(sourcePath);
 
-        foreach (string extension in imageExtensions)
-        {
-            string[] files = Directory.GetFiles(sourcePath, extension, SearchOption.AllDirectories);
-            allImageFiles.AddRange(files);
-        }
-
-        int totalFiles = allImageFiles.Count;
+        int totalFiles = allImagePaths.Length;
         int processedFiles = 0;
 
-        foreach (string imagePath in allImageFiles)
+        foreach (string imagePath in allImagePaths)
         {
             string relativePath = imagePath.Replace(Application.dataPath, "Assets");
             string fileName = Path.GetFileName(imagePath);
@@ -589,6 +576,7 @@ public class BuildToolAtlas : BuildToolBase
 
                     // 从当前列表中移除
                     oversizedImages.Remove(imageInfo);
+                    EditorGUILayout.EndHorizontal(); // 确保GUI布局平衡
                     break; // 退出循环，因为列表已修改
                 }
 
@@ -600,6 +588,7 @@ public class BuildToolAtlas : BuildToolBase
                         IgnoreImage(imageInfo.relativePath);
                         // 从当前列表中移除
                         oversizedImages.Remove(imageInfo);
+                        EditorGUILayout.EndHorizontal(); // 确保GUI布局平衡
                         break; // 退出循环，因为列表已修改
                     }
                 }
@@ -640,7 +629,7 @@ public class BuildToolAtlas : BuildToolBase
     {
         // 加载忽略列表
         LoadIgnoreList();
-        
+
         // 切换显示状态
         showIgnoreList = !showIgnoreList;
     }
@@ -654,7 +643,7 @@ public class BuildToolAtlas : BuildToolBase
             return;
 
         EditorGUILayout.Space(10);
-        
+
         if (ignoredImagePaths.Count > 0)
         {
             EditorGUILayout.LabelField($"忽略列表 ({ignoredImagePaths.Count} 个):", EditorStyles.boldLabel);
@@ -674,15 +663,15 @@ public class BuildToolAtlas : BuildToolBase
             {
                 string imagePath = ignoredImagePaths[i];
                 string fileName = Path.GetFileName(imagePath);
-                
+
                 EditorGUILayout.BeginHorizontal();
-                
+
                 // 文件名
                 EditorGUILayout.LabelField(fileName, GUILayout.Width(200));
-                
+
                 // 文件路径
                 EditorGUILayout.LabelField(imagePath, GUILayout.ExpandWidth(true));
-                
+
                 // 删除按钮
                 if (GUILayout.Button("删除", BuildToolWindow.btStyle, GUILayout.Width(50)))
                 {
@@ -690,12 +679,12 @@ public class BuildToolAtlas : BuildToolBase
                     SaveIgnoreList();
                     Debug.Log($"已从忽略列表移除: {fileName}");
                 }
-                
+
                 EditorGUILayout.EndHorizontal();
             }
 
             EditorGUILayout.EndVertical();
-            
+
             // 操作按钮
             EditorGUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
@@ -717,7 +706,7 @@ public class BuildToolAtlas : BuildToolBase
         else
         {
             EditorGUILayout.LabelField("当前没有忽略的图片", EditorStyles.centeredGreyMiniLabel);
-            
+
             // 关闭按钮
             EditorGUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();

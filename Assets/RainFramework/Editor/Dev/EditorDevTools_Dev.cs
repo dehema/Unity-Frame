@@ -668,7 +668,6 @@ public class EditorDevTools_Dev : EditorDevTools_Base
               .WithNamingConvention(CamelCaseNamingConvention.Instance)
               .Build();
         AllSceneConfig allSceneConfig = deserializer.Deserialize<AllSceneConfig>(config);
-        Util.Log(allSceneConfig);
 
         //创建模板
         string template = File.ReadAllText(SceneTemplatePath);
@@ -690,10 +689,10 @@ public class EditorDevTools_Dev : EditorDevTools_Base
             List<EditorBuildSettingsScene> sceneList = currentScenes.ToList();
             foreach (var item in allSceneConfig.scenes)
             {
-                string scenePath = "Assets/AssetBundles/Scenes/" + item.Key + ".unity";
-                if (!File.Exists(scenePath))
+                string scenePath = FileTools.GetFirstFileByName("Assets/AssetBundles/Scenes/", item.Key + ".unity");
+                if (string.IsNullOrEmpty(scenePath))
                 {
-                    Debug.LogError($"场景不存在: {scenePath}");
+                    Debug.LogError($"场景不存在: {item.Key}.unity (在 Assets/AssetBundles/Scenes/ 及其子目录中未找到)");
                     continue;
                 }
                 if (sceneList.Any(s => s.path == scenePath))

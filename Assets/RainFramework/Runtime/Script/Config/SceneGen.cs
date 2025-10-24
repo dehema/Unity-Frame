@@ -14,11 +14,15 @@ public class SceneName
     /// </summary>
 	public const string WorldMap = "WorldMap";
     /// <summary>
+    /// 世界地图编辑
+    /// </summary>
+	public const string WorldMapEdit = "WorldMapEdit";
+    /// <summary>
     /// 塔防场景
     /// </summary>
 	public const string TD = "TD";
     /// <summary>
-    /// RTS单位测试场景
+    /// RTS单位测试
     /// </summary>
 	public const string RTSUnitTest = "RTSUnitTest";
     /// <summary>
@@ -46,11 +50,15 @@ public enum SceneID
     /// </summary>
 	WorldMap,
     /// <summary>
+    /// 世界地图编辑
+    /// </summary>
+	WorldMapEdit,
+    /// <summary>
     /// 塔防场景
     /// </summary>
 	TD,
     /// <summary>
-    /// RTS单位测试场景
+    /// RTS单位测试
     /// </summary>
 	RTSUnitTest,
     /// <summary>

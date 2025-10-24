@@ -78,16 +78,16 @@ public class EditorDevTools_Scene : EditorDevTools_Base
         // 获取场景名称（不包含路径和扩展名）
         string sceneName = Path.GetFileNameWithoutExtension(scene.path);
 
-        // 检查场景是否已启用
-        bool isEnabled = scene.enabled;
-        GUI.enabled = isEnabled;
+        //// 检查场景是否已启用
+        //bool isEnabled = scene.enabled;
+        //GUI.enabled = isEnabled;
 
-        // 设置按钮颜色：已启用的场景使用正常颜色，禁用的场景使用灰色
-        Color originalColor = GUI.color;
-        if (!isEnabled)
-        {
-            GUI.color = new Color(originalColor.r, originalColor.g, originalColor.b, 0.5f);
-        }
+        //// 设置按钮颜色：已启用的场景使用正常颜色，禁用的场景使用灰色
+        //Color originalColor = GUI.color;
+        //if (!isEnabled)
+        //{
+        //    GUI.color = new Color(originalColor.r, originalColor.g, originalColor.b, 0.5f);
+        //}
 
         // 检查当前打开的场景
         bool isCurrentScene = false;
@@ -123,8 +123,8 @@ public class EditorDevTools_Scene : EditorDevTools_Base
             }
         }
 
-        // 恢复GUI设置
-        GUI.color = originalColor;
-        GUI.enabled = true;
+        //// 恢复GUI设置
+        //GUI.color = originalColor;
+        //GUI.enabled = true;
     }
 }

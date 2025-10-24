@@ -81,8 +81,7 @@ public class BuildToolAB : BuildToolBase
             return;
         }
 
-        string[] atlasFiles = Directory.GetFiles(BuildToolAtlas.atlasPath, "*.spriteatlas", SearchOption.AllDirectories);
-
+        string[] atlasFiles = FileTools.GetSpecifyFilesInFolder(BuildToolAtlas.atlasPath, "*.spriteatlas");
         if (atlasFiles.Length > 0)
         {
             EditorGUILayout.Space(10);
@@ -164,13 +163,13 @@ public class BuildToolAB : BuildToolBase
     /// </summary>
     public void SetAllAtlasAssetBundles()
     {
-        string[] atlasFiles = Directory.GetFiles(BuildToolAtlas.atlasPath, "*.spriteatlas", SearchOption.AllDirectories);
+        string[] atlasFiles = FileTools.GetSpecifyFilesInFolder(BuildToolAtlas.atlasPath, "*.spriteatlas");
         if (atlasFiles.Length == 0)
             return;
+        FileTools.PathsFormatToUnityPath(atlasFiles);
         EditorUtility.DisplayProgressBar("设置AB包", "正在处理图集...", 0f);
         for (int i = 0; i < atlasFiles.Length; i++)
         {
-            atlasFiles[i] = atlasFiles[i].Replace("\\", "/");
             string atlasFile = atlasFiles[i];
             string fileName = Path.GetFileNameWithoutExtension(atlasFile);
 
@@ -356,7 +355,8 @@ public class BuildToolAB : BuildToolBase
         AssetBundleMap assetBundleMap = new AssetBundleMap();
         assetBundleMap.Version = config.Version;
         // 获取AB包输出目录下的所有文件
-        string[] allFiles = Directory.GetFiles(config.ABOutputPath, "*", SearchOption.AllDirectories);
+        string[] allFiles = FileTools.GetAllFilesInFolder(config.ABOutputPath);
+        FileTools.PathsFormatToUnityPath(allFiles);
         foreach (string filePath in allFiles)
         {
             if (filePath.EndsWith(".manifest"))
@@ -403,8 +403,8 @@ public class BuildToolAB : BuildToolBase
         {
             if (Directory.Exists(_direPath))
             {
-                string[] files = Directory.GetFiles(_direPath, "*", SearchOption.AllDirectories);
-                string[] directories = Directory.GetDirectories(_direPath, "*", SearchOption.AllDirectories);
+                string[] files = FileTools.GetAllFilesInFolder(config.ABOutputPath);
+                string[] directories = FileTools.GetAllDirsInFolder(_direPath);
 
                 // 删除所有文件
                 foreach (string file in files)
@@ -461,7 +461,7 @@ public class BuildToolAB : BuildToolBase
         int currentFile = 0;
 
         // 复制所有文件
-        string[] allFiles = Directory.GetFiles(config.ABOutputPath, "*", SearchOption.AllDirectories);
+        string[] allFiles = FileTools.GetAllFilesInFolder(config.ABOutputPath);
         int totalFileNums = allFiles.Length;
         foreach (string sourceFile in allFiles)
         {
@@ -542,7 +542,7 @@ public class BuildToolAB : BuildToolBase
             return;
         }
 
-        string[] atlasFiles = Directory.GetFiles(BuildToolAtlas.atlasPath, "*.spriteatlas", SearchOption.AllDirectories);
+        string[] atlasFiles = FileTools.GetSpecifyFilesInFolder(BuildToolAtlas.atlasPath, "*.spriteatlas");
 
         Debug.Log($"=== 图集AB包信息 ===");
         Debug.Log($"找到 {atlasFiles.Length} 个图集文件");

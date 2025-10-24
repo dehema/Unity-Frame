@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Rain.Core;
 using Rain.UI;
 using Rain.UI.Editor;
 using TMPro;
@@ -270,7 +271,9 @@ public class EditorDevTools_UI : EditorDevTools_Base
         List<string> PrefabPath = new List<string>();
         Action<string, string> FindPrefabPath = (_resDirPath, prefix) =>
         {
-            foreach (var filePath in Directory.GetFiles(_resDirPath + prefix, "*.prefab", SearchOption.AllDirectories))
+            string[] paths = FileTools.GetSpecifyFilesInFolder(_resDirPath + prefix, "*.prefab");
+            FileTools.PathsFormatToUnityPath(paths);
+            foreach (var filePath in paths)
             {
                 string fileName = Path.GetFileName(filePath);
                 fileName = fileName.Replace(".prefab", string.Empty);

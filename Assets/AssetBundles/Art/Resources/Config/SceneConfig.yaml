@@ -10,12 +10,13 @@ scenes:
         comment: 主城 
     WorldMap:
         comment: 世界地图
+    WorldMapEdit:
+        comment: 世界地图编辑
     TD:
         comment: 塔防场景
     RTSUnitTest:
-        comment: RTS单位测试场景
+        comment: RTS单位测试
     RTSBattle:
         comment: RTS战斗场景
     RTSUnitDummyTest:
         comment: RTS单位测试
-
