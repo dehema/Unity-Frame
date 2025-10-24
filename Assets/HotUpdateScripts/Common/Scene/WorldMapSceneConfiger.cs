@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using Rain.Core;
 using UnityEngine;
 
-[RequireComponent(typeof(MainCitySceneCreator))]
-public class MainCitySceneConfiger : MonoBehaviour, ISceneConfigProvider
+[RequireComponent(typeof(WorldMapSceneCreator))]
+public class WorldMapSceneConfiger : MonoBehaviour, ISceneConfigProvider
 {
     SceneID sceneID = SceneID.MainCity;
-    MainCitySceneCreator mainCityCreator;
+    WorldMapSceneCreator worldMapCreator;
 
     private void Awake()
     {
-        mainCityCreator = GetComponent<MainCitySceneCreator>();
+        worldMapCreator = GetComponent<WorldMapSceneCreator>();
         MsgMgr.Ins.AddEventListener(MsgEvent.SceneLoaded, OnSceneLoad, this);
         MsgMgr.Ins.AddEventListener(MsgEvent.SceneUnload, OnSceneUnLoad, this);
     }

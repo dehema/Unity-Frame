@@ -1,16 +1,16 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using Rain.Core;
 using UnityEngine;
 
 /// <summary>
-/// Ö÷³Ç´´½¨Æ÷
+/// ä¸»åŸåˆ›å»ºå™¨
 /// </summary>
-public class MainCityCreator : MonoBehaviour
+public class MainCitySceneCreator : MonoBehaviour
 {
-    public static MainCityCreator Ins;
-    [SerializeField][Header("½¨Öş¸¸ÎïÌå")] private Transform buildingParent;
-    //½¨ÖşÀ¸Î»ºÍ½¨Öş
+    public static MainCitySceneCreator Ins;
+    [SerializeField][Header("å»ºç­‘çˆ¶ç‰©ä½“")] private Transform buildingParent;
+    //å»ºç­‘æ ä½å’Œå»ºç­‘
     public Dictionary<int, BuildingController> buildingSlots { get; private set; }
 
     private void Awake()
