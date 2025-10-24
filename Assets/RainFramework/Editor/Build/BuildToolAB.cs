@@ -585,9 +585,8 @@ public class BuildToolAB : BuildToolBase
         AssetDatabase.Refresh();
 
 
-        string ResourceMapPath = Application.dataPath + "/RainFramework/Resources/" + nameof(ResMap) + ".json";
-        FileTools.CheckFileAndCreateDirWhenNeeded(ResourceMapPath);
-        FileTools.SafeWriteAllText(ResourceMapPath, JsonConvert.SerializeObject(resourceMapping));
+        FileTools.CheckFileAndCreateDirWhenNeeded(resourceMapPath);
+        FileTools.SafeWriteAllText(resourceMapPath, JsonConvert.SerializeObject(resourceMapping));
         AssetDatabase.Refresh();
 
         RLog.LogAsset($"写入Resources资产数据，生成：{nameof(ResMap)}文件");

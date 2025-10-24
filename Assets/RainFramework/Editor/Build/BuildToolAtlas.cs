@@ -106,10 +106,17 @@ public class BuildToolAtlas : BuildToolBase
         {
             CheckImageSizes();
         }
+        if (GUILayout.Button("管理忽略列表", BuildToolWindow.btStyle, GUILayout.Height(30)))
+        {
+            ShowIgnoreListManager();
+        }
         EditorGUILayout.EndHorizontal();
 
         // 显示超大图片列表
         DrawOversizedImagesList();
+        
+        // 显示忽略列表
+        DrawIgnoreList();
 
         DrawAtlasList();
     }
@@ -354,6 +361,7 @@ public class BuildToolAtlas : BuildToolBase
     // 忽略列表文件路径
     private const string ignoreListFile = "Assets/Editor/BuildToolAtlas_IgnoreList.json";
     private List<string> ignoredImagePaths = new List<string>();
+    private bool showIgnoreList = false;
 
     /// <summary>
     /// 超大图片信息
@@ -601,13 +609,9 @@ public class BuildToolAtlas : BuildToolBase
 
             EditorGUILayout.EndVertical();
 
-            // 操作按钮
+            // 关闭按钮
             EditorGUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
-            if (GUILayout.Button("管理忽略列表", BuildToolWindow.btStyle, GUILayout.Width(120)))
-            {
-                ShowIgnoreListManager();
-            }
             if (GUILayout.Button("关闭列表", BuildToolWindow.btStyle, GUILayout.Width(100)))
             {
                 showOversizedImages = false;
@@ -634,24 +638,94 @@ public class BuildToolAtlas : BuildToolBase
     /// </summary>
     private void ShowIgnoreListManager()
     {
-        if (ignoredImagePaths.Count == 0)
-        {
-            EditorUtility.DisplayDialog("忽略列表", "当前没有忽略的图片。", "确定");
+        // 加载忽略列表
+        LoadIgnoreList();
+        
+        // 切换显示状态
+        showIgnoreList = !showIgnoreList;
+    }
+
+    /// <summary>
+    /// 绘制忽略列表
+    /// </summary>
+    private void DrawIgnoreList()
+    {
+        if (!showIgnoreList)
             return;
-        }
 
-        string message = $"当前忽略的图片 ({ignoredImagePaths.Count} 个):\n\n";
-        foreach (string path in ignoredImagePaths)
+        EditorGUILayout.Space(10);
+        
+        if (ignoredImagePaths.Count > 0)
         {
-            message += $"• {Path.GetFileName(path)}\n";
-        }
-        message += "\n是否要清空忽略列表？";
+            EditorGUILayout.LabelField($"忽略列表 ({ignoredImagePaths.Count} 个):", EditorStyles.boldLabel);
+            EditorGUILayout.BeginVertical("box");
 
-        if (EditorUtility.DisplayDialog("忽略列表管理", message, "清空列表", "取消"))
+            // 表头
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("文件名", EditorStyles.boldLabel, GUILayout.Width(200));
+            EditorGUILayout.LabelField("文件路径", EditorStyles.boldLabel, GUILayout.ExpandWidth(true));
+            EditorGUILayout.LabelField("操作", EditorStyles.boldLabel, GUILayout.Width(100));
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.Space(5);
+
+            // 显示每个忽略的图片
+            for (int i = ignoredImagePaths.Count - 1; i >= 0; i--)
+            {
+                string imagePath = ignoredImagePaths[i];
+                string fileName = Path.GetFileName(imagePath);
+                
+                EditorGUILayout.BeginHorizontal();
+                
+                // 文件名
+                EditorGUILayout.LabelField(fileName, GUILayout.Width(200));
+                
+                // 文件路径
+                EditorGUILayout.LabelField(imagePath, GUILayout.ExpandWidth(true));
+                
+                // 删除按钮
+                if (GUILayout.Button("删除", BuildToolWindow.btStyle, GUILayout.Width(50)))
+                {
+                    ignoredImagePaths.RemoveAt(i);
+                    SaveIgnoreList();
+                    Debug.Log($"已从忽略列表移除: {fileName}");
+                }
+                
+                EditorGUILayout.EndHorizontal();
+            }
+
+            EditorGUILayout.EndVertical();
+            
+            // 操作按钮
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            if (GUILayout.Button("清空列表", BuildToolWindow.btStyle, GUILayout.Width(100)))
+            {
+                if (EditorUtility.DisplayDialog("确认清空", "确定要清空所有忽略的图片吗？", "确定", "取消"))
+                {
+                    ignoredImagePaths.Clear();
+                    SaveIgnoreList();
+                    Debug.Log("忽略列表已清空");
+                }
+            }
+            if (GUILayout.Button("关闭列表", BuildToolWindow.btStyle, GUILayout.Width(100)))
+            {
+                showIgnoreList = false;
+            }
+            EditorGUILayout.EndHorizontal();
+        }
+        else
         {
-            ignoredImagePaths.Clear();
-            SaveIgnoreList();
-            EditorUtility.DisplayDialog("操作完成", "忽略列表已清空。", "确定");
+            EditorGUILayout.LabelField("当前没有忽略的图片", EditorStyles.centeredGreyMiniLabel);
+            
+            // 关闭按钮
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            if (GUILayout.Button("关闭列表", BuildToolWindow.btStyle, GUILayout.Width(100)))
+            {
+                showIgnoreList = false;
+            }
+            EditorGUILayout.EndHorizontal();
         }
     }
 

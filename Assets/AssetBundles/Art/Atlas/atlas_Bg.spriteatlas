@@ -43,34 +43,10 @@ SpriteAtlas:
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
-    packedSpriteRenderDataKeys:
-    - 84cd79215522f714fa6e711577986ddd: 21300000
-    - cef4bda328e35d04696e35eecc3ee571: 21300000
-    - 82e02b652803e46438d3ec1efc0605de: 21300000
-    - ab7b4ce891ee40548b4e19566131daa9: 21300000
-    - 96f6146ad67dc4246bbc5af7532bbe3b: 21300000
-    - f61076cb5fe32b9448fd42f3f0494802: 21300000
-    - a440662cf5b8fb94ab3bf5b5912dbb73: 21300000
-    - 3f3eab5d8be27e84eb946fc8b0b2b4d0: 21300000
+    packedSpriteRenderDataKeys: []
   m_MasterAtlas: {fileID: 0}
-  m_PackedSprites:
-  - {fileID: 21300000, guid: 84cd79215522f714fa6e711577986ddd, type: 3}
-  - {fileID: 21300000, guid: cef4bda328e35d04696e35eecc3ee571, type: 3}
-  - {fileID: 21300000, guid: 82e02b652803e46438d3ec1efc0605de, type: 3}
-  - {fileID: 21300000, guid: ab7b4ce891ee40548b4e19566131daa9, type: 3}
-  - {fileID: 21300000, guid: 96f6146ad67dc4246bbc5af7532bbe3b, type: 3}
-  - {fileID: 21300000, guid: f61076cb5fe32b9448fd42f3f0494802, type: 3}
-  - {fileID: 21300000, guid: a440662cf5b8fb94ab3bf5b5912dbb73, type: 3}
-  - {fileID: 21300000, guid: 3f3eab5d8be27e84eb946fc8b0b2b4d0, type: 3}
-  m_PackedSpriteNamesToIndex:
-  - bg_tech
-  - "\u5361\u724C\u6E38\u620F"
-  - bg_loading
-  - Game Win
-  - "\u591C\u665A"
-  - "\u5C04\u51FB\u6E38\u620F"
-  - bg_loading_logo
-  - Game Fail
+  m_PackedSprites: []
+  m_PackedSpriteNamesToIndex: []
   m_RenderDataMap: {}
   m_Tag: atlas_bg
   m_IsVariant: 0
