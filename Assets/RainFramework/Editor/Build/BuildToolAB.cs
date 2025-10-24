@@ -111,18 +111,31 @@ public class BuildToolAB : BuildToolBase
 
                     if (isSet)
                     {
-                        EditorGUILayout.LabelField($"✓ {abName}", GUILayout.Width(120));
                         GUI.color = Color.green;
-                        EditorGUILayout.LabelField("已设置", GUILayout.Width(60));
+                        EditorGUILayout.LabelField("✓已设置", GUILayout.Width(60));
                         GUI.color = Color.white;
                     }
                     else
                     {
-                        EditorGUILayout.LabelField("未设置", GUILayout.Width(120));
                         GUI.color = Color.red;
-                        EditorGUILayout.LabelField("未设置", GUILayout.Width(60));
+                        EditorGUILayout.LabelField("×未设置", GUILayout.Width(60));
                         GUI.color = Color.white;
                     }
+
+                    // 显示文件路径
+                    EditorGUILayout.LabelField(relativePath, GUILayout.ExpandWidth(true));
+
+                    // 选择按钮
+                    if (GUILayout.Button("选择", BuildToolWindow.btStyle, GUILayout.Width(50)))
+                    {
+                        SpriteAtlas atlas = AssetDatabase.LoadAssetAtPath<SpriteAtlas>(relativePath);
+                        if (atlas != null)
+                        {
+                            Selection.activeObject = atlas;
+                            EditorGUIUtility.PingObject(atlas);
+                        }
+                    }
+
                     EditorGUILayout.EndHorizontal();
                 }
             }
@@ -247,8 +260,8 @@ public class BuildToolAB : BuildToolBase
                             !string.IsNullOrEmpty(importer.assetBundleVariant))
                         {
                             // 清除AB包设置
-                            importer.assetBundleName = "";
                             importer.assetBundleVariant = "";
+                            importer.assetBundleName = "";
                             clearedCount++;
 
                             Debug.Log($"已清除AB包设置: {assetPath}");
@@ -572,7 +585,7 @@ public class BuildToolAB : BuildToolBase
         AssetDatabase.Refresh();
 
 
-        string ResourceMapPath = Application.dataPath + "/RainFramework/AssetMap/Resources/" + nameof(ResMap) + ".json";
+        string ResourceMapPath = Application.dataPath + "/RainFramework/Resources/" + nameof(ResMap) + ".json";
         FileTools.CheckFileAndCreateDirWhenNeeded(ResourceMapPath);
         FileTools.SafeWriteAllText(ResourceMapPath, JsonConvert.SerializeObject(resourceMapping));
         AssetDatabase.Refresh();

@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.U2D;
 using UnityEditor.U2D;
+using System.Linq;
 
 /// <summary>
 /// 图集工具类
@@ -45,12 +46,10 @@ public class BuildToolAtlas : BuildToolBase
                     EditorGUILayout.BeginHorizontal();
 
                     // 显示图集名称
-                    EditorGUILayout.LabelField($"{fileName}", GUILayout.Width(200));
+                    EditorGUILayout.LabelField($"{fileName}", GUILayout.Width(150));
 
-                    // 显示文件大小
-                    FileInfo fileInfo = new FileInfo(atlasFile);
-                    string fileSize = FormatFileSize(fileInfo.Length);
-                    EditorGUILayout.LabelField(fileSize, GUILayout.Width(80));
+                    // 显示图集路径
+                    EditorGUILayout.LabelField(relativePath, GUILayout.ExpandWidth(true));
 
                     // 选择按钮
                     if (GUILayout.Button("选择", BuildToolWindow.btStyle, GUILayout.Width(50)))
@@ -108,10 +107,10 @@ public class BuildToolAtlas : BuildToolBase
             CheckImageSizes();
         }
         EditorGUILayout.EndHorizontal();
-        
+
         // 显示超大图片列表
         DrawOversizedImagesList();
-        
+
         DrawAtlasList();
     }
 
@@ -120,46 +119,37 @@ public class BuildToolAtlas : BuildToolBase
     /// </summary>
     public void BuildAtlas()
     {
-        try
+        EditorUtility.DisplayProgressBar("打包图集", "正在扫描UI文件夹...", 0f);
+
+        // 确保Atlas目录存在
+        if (!Directory.Exists(atlasPath))
         {
-            EditorUtility.DisplayProgressBar("打包图集", "正在扫描UI文件夹...", 0f);
-
-            // 确保Atlas目录存在
-            if (!Directory.Exists(atlasPath))
-            {
-                Directory.CreateDirectory(atlasPath);
-                AssetDatabase.Refresh();
-            }
-
-            // 获取UI目录下的所有文件夹
-            string[] uiFolders = Directory.GetDirectories(sourcePath);
-            int totalFolders = uiFolders.Length;
-            int processedFolders = 0;
-
-            foreach (string folderPath in uiFolders)
-            {
-                string folderName = Path.GetFileName(folderPath);
-                EditorUtility.DisplayProgressBar("打包图集", $"正在处理文件夹: {folderName}", (float)processedFolders / totalFolders);
-
-                // 创建对应的图集文件
-                CreateAtlasForFolder(folderPath, folderName, atlasPath);
-
-                processedFolders++;
-            }
-
-            EditorUtility.ClearProgressBar();
+            Directory.CreateDirectory(atlasPath);
             AssetDatabase.Refresh();
-            Debug.Log($"打包图集完成，成功处理 {processedFolders} 个文件夹的图集");
+        }
 
-            // 自动进行Pack Preview
-            AutoPackPreview();
-        }
-        catch (Exception e)
+        // 获取UI目录下的所有文件夹
+        string[] uiFolders = Directory.GetDirectories(sourcePath);
+        int totalFolders = uiFolders.Length;
+        int processedFolders = 0;
+
+        foreach (string folderPath in uiFolders)
         {
-            EditorUtility.ClearProgressBar();
-            Debug.LogError($"打包图集失败: {e.Message}");
-            EditorUtility.DisplayDialog("打包失败", $"打包图集时发生错误:\n{e.Message}", "确定");
+            string folderName = Path.GetFileName(folderPath);
+            EditorUtility.DisplayProgressBar("打包图集", $"正在处理文件夹: {folderName}", (float)processedFolders / totalFolders);
+
+            // 创建对应的图集文件
+            CreateAtlasForFolder(folderPath, folderName, atlasPath);
+
+            processedFolders++;
         }
+
+        EditorUtility.ClearProgressBar();
+        AssetDatabase.Refresh();
+        Debug.Log($"打包图集完成，成功处理 {processedFolders} 个文件夹的图集");
+
+        // 自动进行Pack Preview
+        AutoPackPreview();
     }
 
     /// <summary>
@@ -170,7 +160,7 @@ public class BuildToolAtlas : BuildToolBase
         Debug.Log($"开始处理文件夹: {folderName}, 路径: {folderPath}");
 
         // 获取文件夹中的所有图片文件
-        string[] imageFiles = Directory.GetFiles(folderPath, "*.png", SearchOption.AllDirectories);
+        string[] imageFiles = GetAllImageFiles(folderPath);
 
         if (imageFiles.Length == 0)
         {
@@ -240,6 +230,25 @@ public class BuildToolAtlas : BuildToolBase
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
         Debug.Log($"图集 {folderName} 创建完成");
+    }
+
+    /// <summary>
+    /// 获取所有图片文件
+    /// </summary>
+    /// <param name="folderPath"></param>
+    /// <returns></returns>
+    public string[] GetAllImageFiles(string folderPath)
+    {
+        // 定义所有常见图片格式的扩展名（不区分大小写）
+        string[] imageExtensions = new[] { ".png", ".jpg", ".jpeg", ".gif", ".bmp", ".tiff", ".webp", ".svg" };
+
+        // 搜索文件夹及子目录中所有文件，筛选出图片格式
+        return Directory.EnumerateFiles(folderPath, "*.*", SearchOption.AllDirectories)
+            .Where(file =>
+                // 检查文件扩展名是否在图片格式列表中（忽略大小写）
+                imageExtensions.Contains(Path.GetExtension(file), StringComparer.OrdinalIgnoreCase)
+            )
+            .ToArray();
     }
 
     /// <summary>
@@ -341,7 +350,7 @@ public class BuildToolAtlas : BuildToolBase
     // 存储检测结果
     private List<OversizedImageInfo> oversizedImages = new List<OversizedImageInfo>();
     private bool showOversizedImages = false;
-    
+
     // 忽略列表文件路径
     private const string ignoreListFile = "Assets/Editor/BuildToolAtlas_IgnoreList.json";
     private List<string> ignoredImagePaths = new List<string>();
@@ -449,7 +458,7 @@ public class BuildToolAtlas : BuildToolBase
     private void LoadIgnoreList()
     {
         ignoredImagePaths.Clear();
-        
+
         if (File.Exists(ignoreListFile))
         {
             try
@@ -514,7 +523,7 @@ public class BuildToolAtlas : BuildToolBase
             return;
 
         EditorGUILayout.Space(10);
-        
+
         if (oversizedImages.Count > 0)
         {
             EditorGUILayout.LabelField($"超大图片列表 ({oversizedImages.Count} 个):", EditorStyles.boldLabel);
@@ -535,23 +544,23 @@ public class BuildToolAtlas : BuildToolBase
             foreach (var imageInfo in oversizedImages)
             {
                 EditorGUILayout.BeginHorizontal();
-                
+
                 // 图片名称
                 EditorGUILayout.LabelField(imageInfo.fileName, GUILayout.Width(200));
-                
+
                 // 尺寸信息（用绿色显示）
                 GUI.color = Color.green;
                 EditorGUILayout.LabelField($"{imageInfo.width}x{imageInfo.height}", GUILayout.Width(90));
                 GUI.color = Color.white;
-                
+
                 // 文件大小
                 FileInfo fileInfo = new FileInfo(imageInfo.relativePath);
                 string fileSize = FormatFileSize(fileInfo.Length);
                 EditorGUILayout.LabelField(fileSize, GUILayout.Width(70));
-                
+
                 // 文件路径（填充剩余空间）
                 EditorGUILayout.LabelField(imageInfo.relativePath, GUILayout.ExpandWidth(true));
-                
+
                 // 选择按钮
                 if (GUILayout.Button("选择", BuildToolWindow.btStyle, GUILayout.Width(40)))
                 {
@@ -562,19 +571,19 @@ public class BuildToolAtlas : BuildToolBase
                         EditorGUIUtility.PingObject(texture);
                     }
                 }
-                
+
                 // 删除按钮
                 if (GUILayout.Button("删除", BuildToolWindow.btStyle, GUILayout.Width(40)))
                 {
                     // 删除文件
                     AssetDatabase.DeleteAsset(imageInfo.relativePath);
                     AssetDatabase.Refresh();
-                    
+
                     // 从当前列表中移除
                     oversizedImages.Remove(imageInfo);
                     break; // 退出循环，因为列表已修改
                 }
-                
+
                 // 忽略按钮
                 if (GUILayout.Button("忽略", BuildToolWindow.btStyle, GUILayout.Width(40)))
                 {
@@ -586,12 +595,12 @@ public class BuildToolAtlas : BuildToolBase
                         break; // 退出循环，因为列表已修改
                     }
                 }
-                
+
                 EditorGUILayout.EndHorizontal();
             }
 
             EditorGUILayout.EndVertical();
-            
+
             // 操作按钮
             EditorGUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
@@ -608,7 +617,7 @@ public class BuildToolAtlas : BuildToolBase
         else
         {
             EditorGUILayout.LabelField("✅ 所有图片尺寸都在 512x512 以内", EditorStyles.centeredGreyMiniLabel);
-            
+
             // 关闭按钮
             EditorGUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();

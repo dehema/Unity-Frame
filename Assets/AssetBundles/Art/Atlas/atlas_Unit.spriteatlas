@@ -56,6 +56,18 @@ SpriteAtlas:
     - {fileID: 2800000, guid: a80f6b8051c5672499ebd8009f5b332b, type: 3}
     - {fileID: 2800000, guid: c62ff07714e61cc449dd97eb05e9fd59, type: 3}
     - {fileID: 2800000, guid: 73792e23ed010334d97c977d33ffd2e3, type: 3}
+    - {fileID: 2800000, guid: ada5a9a6f11437849be3c58af69d8f16, type: 3}
+    - {fileID: 2800000, guid: 6be674a6e2dfac9488380d91e04ec49c, type: 3}
+    - {fileID: 2800000, guid: 56aa668d6830c5d42bb27a61a1bed206, type: 3}
+    - {fileID: 2800000, guid: 4e7034737dfa94048952a09ce895c02e, type: 3}
+    - {fileID: 2800000, guid: eada5006987e59f45b86871dad8c9860, type: 3}
+    - {fileID: 2800000, guid: bfcc20e19ccee3743bd2233c8d438775, type: 3}
+    - {fileID: 2800000, guid: 5c42c529831b74444a103d573431fd5f, type: 3}
+    - {fileID: 2800000, guid: 1beb9a51cd8b5e544b01a9e4c4b22647, type: 3}
+    - {fileID: 2800000, guid: b3edbeec211b1de43b51b37f11817dad, type: 3}
+    - {fileID: 2800000, guid: 5907d73ef26113b46b549ad98fd470fe, type: 3}
+    - {fileID: 2800000, guid: d7a32bf746f2c114b9bce531bf2044a0, type: 3}
+    - {fileID: 2800000, guid: db265204abdee0348bec92888bc62305, type: 3}
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -63,77 +75,113 @@ SpriteAtlas:
     - a80f6b8051c5672499ebd8009f5b332b: 21300000
     - d6dce9b097222b642a44102ec0d67222: 21300000
     - 2bbace2140eb57445b898a6df8beb26d: 21300000
+    - 1beb9a51cd8b5e544b01a9e4c4b22647: 21300000
     - b6b5846136f080d498c072d379d8d394: 21300000
+    - bfcc20e19ccee3743bd2233c8d438775: 21300000
     - bef6bc124fda3034ea2e14b7842eb80b: 21300000
     - 50292682c604e9c448d55b16505453c6: 21300000
     - 15294cc27f4391d4ba2b25b577da5461: 21300000
     - 73792e23ed010334d97c977d33ffd2e3: 21300000
+    - 4e7034737dfa94048952a09ce895c02e: 21300000
     - 98427c73fe1e42e4ab2fd4657407b4e7: 21300000
+    - db265204abdee0348bec92888bc62305: 21300000
     - cc2ca46477fa27d46bff06e3cd844b60: 21300000
     - 299175158e401d44eb71ea1d9c1e55c5: 21300000
+    - eada5006987e59f45b86871dad8c9860: 21300000
     - 647047766d1aa3f4d94a2a48aaba2fd1: 21300000
+    - 6be674a6e2dfac9488380d91e04ec49c: 21300000
+    - ada5a9a6f11437849be3c58af69d8f16: 21300000
     - c62ff07714e61cc449dd97eb05e9fd59: 21300000
     - 3c9a6897946faf24b91a1cc4eef34ab1: 21300000
     - c1b546c72aee0f648a741b11b93ce88b: 21300000
+    - d7a32bf746f2c114b9bce531bf2044a0: 21300000
     - 01f6ee78b19efb441a45a1b830cb0dc2: 21300000
     - 51357d190cec3e746aa9d7b9256d8dcd: 21300000
+    - 5c42c529831b74444a103d573431fd5f: 21300000
     - 8de4b5894d83cdc4d9f53f2977217e79: 21300000
     - eda11ddb72e7f8c49897d1718dcf4b8b: 21300000
     - 2516e80c0c0437d419a914bf12e369c0: 21300000
     - 717b7a0c6b84c614d8dba99f06ef4eb3: 21300000
     - cdc2ec4c05648be4c8ef9f6b3bea3c77: 21300000
+    - b3edbeec211b1de43b51b37f11817dad: 21300000
+    - 56aa668d6830c5d42bb27a61a1bed206: 21300000
     - 5442339d47d202e4ab733d08e339408a: 21300000
+    - 5907d73ef26113b46b549ad98fd470fe: 21300000
     - f72537bef4bf0cb42bbe1ba93ad42cba: 21300000
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: a80f6b8051c5672499ebd8009f5b332b, type: 3}
   - {fileID: 21300000, guid: d6dce9b097222b642a44102ec0d67222, type: 3}
   - {fileID: 21300000, guid: 2bbace2140eb57445b898a6df8beb26d, type: 3}
+  - {fileID: 21300000, guid: 1beb9a51cd8b5e544b01a9e4c4b22647, type: 3}
   - {fileID: 21300000, guid: b6b5846136f080d498c072d379d8d394, type: 3}
+  - {fileID: 21300000, guid: bfcc20e19ccee3743bd2233c8d438775, type: 3}
   - {fileID: 21300000, guid: bef6bc124fda3034ea2e14b7842eb80b, type: 3}
   - {fileID: 21300000, guid: 50292682c604e9c448d55b16505453c6, type: 3}
   - {fileID: 21300000, guid: 15294cc27f4391d4ba2b25b577da5461, type: 3}
   - {fileID: 21300000, guid: 73792e23ed010334d97c977d33ffd2e3, type: 3}
+  - {fileID: 21300000, guid: 4e7034737dfa94048952a09ce895c02e, type: 3}
   - {fileID: 21300000, guid: 98427c73fe1e42e4ab2fd4657407b4e7, type: 3}
+  - {fileID: 21300000, guid: db265204abdee0348bec92888bc62305, type: 3}
   - {fileID: 21300000, guid: cc2ca46477fa27d46bff06e3cd844b60, type: 3}
   - {fileID: 21300000, guid: 299175158e401d44eb71ea1d9c1e55c5, type: 3}
+  - {fileID: 21300000, guid: eada5006987e59f45b86871dad8c9860, type: 3}
   - {fileID: 21300000, guid: 647047766d1aa3f4d94a2a48aaba2fd1, type: 3}
+  - {fileID: 21300000, guid: 6be674a6e2dfac9488380d91e04ec49c, type: 3}
+  - {fileID: 21300000, guid: ada5a9a6f11437849be3c58af69d8f16, type: 3}
   - {fileID: 21300000, guid: c62ff07714e61cc449dd97eb05e9fd59, type: 3}
   - {fileID: 21300000, guid: 3c9a6897946faf24b91a1cc4eef34ab1, type: 3}
   - {fileID: 21300000, guid: c1b546c72aee0f648a741b11b93ce88b, type: 3}
+  - {fileID: 21300000, guid: d7a32bf746f2c114b9bce531bf2044a0, type: 3}
   - {fileID: 21300000, guid: 01f6ee78b19efb441a45a1b830cb0dc2, type: 3}
   - {fileID: 21300000, guid: 51357d190cec3e746aa9d7b9256d8dcd, type: 3}
+  - {fileID: 21300000, guid: 5c42c529831b74444a103d573431fd5f, type: 3}
   - {fileID: 21300000, guid: 8de4b5894d83cdc4d9f53f2977217e79, type: 3}
   - {fileID: 21300000, guid: eda11ddb72e7f8c49897d1718dcf4b8b, type: 3}
   - {fileID: 21300000, guid: 2516e80c0c0437d419a914bf12e369c0, type: 3}
   - {fileID: 21300000, guid: 717b7a0c6b84c614d8dba99f06ef4eb3, type: 3}
   - {fileID: 21300000, guid: cdc2ec4c05648be4c8ef9f6b3bea3c77, type: 3}
+  - {fileID: 21300000, guid: b3edbeec211b1de43b51b37f11817dad, type: 3}
+  - {fileID: 21300000, guid: 56aa668d6830c5d42bb27a61a1bed206, type: 3}
   - {fileID: 21300000, guid: 5442339d47d202e4ab733d08e339408a, type: 3}
+  - {fileID: 21300000, guid: 5907d73ef26113b46b549ad98fd470fe, type: 3}
   - {fileID: 21300000, guid: f72537bef4bf0cb42bbe1ba93ad42cba, type: 3}
   m_PackedSpriteNamesToIndex:
   - TT_Scout
   - TT_Heavy_Infantry
   - TT_Light_Cavalry
+  - "\u68EE\u6797\u7CBE\u7075"
   - TT_Mounted_Priest
+  - "\u5DE8\u9B54"
   - TT_HeavySwordman
   - TT_Mounted_King
   - TT_Crossbowman
   - TT_Swordman
+  - "\u53F2\u83B1\u59C6"
   - TT_Mounted_Paladin
+  - "\u9AB7\u9AC5\u58EB\u5175"
   - TT_Commander
   - TT_King
+  - "\u54E5\u5E03\u6797"
   - TT_Mounted_Mage
+  - "\u4EBA\u65CF\u9B54\u6CD5\u5E08"
+  - "\u4EBA\u65CF\u5251\u58EB"
   - TT_Spearman
   - TT_Peasant
   - TT_Archer
+  - "\u86C7\u53D1\u5973\u5996"
   - TT_Paladin
   - TT_HighPriest
+  - "\u6028\u7075"
   - TT_Priest
   - TT_Halberdier
   - TT_Mounted_Knight
   - TT_Light_Infantry
   - TT_Heavy_Cavalry
+  - "\u706B\u9F99"
+  - "\u517D\u4EBA\u58EB\u5175"
   - TT_Mounted_Scout
+  - "\u7F8E\u4EBA\u9C7C"
   - TT_Mage
   m_RenderDataMap: {}
   m_Tag: atlas_unit
