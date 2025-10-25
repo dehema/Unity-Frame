@@ -353,7 +353,7 @@ public class BuildToolAtlas : BuildToolBase
     private bool showOversizedImages = false;
 
     // 忽略列表文件路径
-    private const string ignoreListFile = "Assets/Editor/BuildToolAtlas_IgnoreList.json";
+    private const string ignoreListFile = "Assets/RainFramework/Editor/BuildToolAtlas_IgnoreList.json";
     private List<string> ignoredImagePaths = new List<string>();
     private bool showIgnoreList = false;
 
