@@ -1,10 +1,370 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
+using Rain.Core;
 
 /// <summary>
-/// �����ͼ������
+/// 世界地图管理器
 /// </summary>
 public class WorldMapMgr : MonoBehaviour
 {
+    public static WorldMapMgr Ins;
+
+    [Header("地图设置")]
+    [SerializeField] private int singleMapSize = 100; // 单张地图尺寸
+    [SerializeField] private int totalMapSize = 1000; // 总地图尺寸
+    [SerializeField] private float mapSpacing = 1f; // 地图间距
+    [SerializeField] private int maxLoadedMaps = 9; // 最大同时加载的地图数量（3x3）
+
+    [Header("预制体设置")]
+    [SerializeField] private GameObject worldMapPrefab; // 世界地图预制体（worldMap_0_0）
+    [SerializeField] private Transform mapContainer; // 地图容器
+
+    // 地图管理
+    private Dictionary<Vector2Int, GameObject> loadedMaps = new Dictionary<Vector2Int, GameObject>();
+    private Vector2Int currentMapIndex = Vector2Int.zero;
+    private int maxMapCount; // 每个轴最大地图数量
+
+    private void Awake()
+    {
+        Ins = this;
+        maxMapCount = totalMapSize / singleMapSize;
+
+        // 创建地图容器
+        if (mapContainer == null)
+        {
+            GameObject container = new GameObject("MapContainer");
+            mapContainer = container.transform;
+            mapContainer.SetParent(transform);
+        }
+
+        // 监听相机移动事件
+        MsgMgr.Ins.AddEventListener(MsgEvent.WorldMap_Camera_Move, OnCameraMove, this);
+    }
+
+    private void Start()
+    {
+        // 初始加载中心地图
+        LoadMap(Vector2Int.zero);
+    }
+
+    /// <summary>
+    /// 相机移动回调
+    /// </summary>
+    private void OnCameraMove(params object[] obj)
+    {
+        if (obj.Length > 0 && obj[0] is Vector3 cameraPos)
+        {
+            CheckAndLoadMaps(cameraPos);
+        }
+    }
+
+    /// <summary>
+    /// 检查并加载地图
+    /// </summary>
+    private void CheckAndLoadMaps(Vector3 cameraPosition)
+    {
+        // 计算当前相机所在的地图索引
+        Vector2Int newMapIndex = GetMapIndexFromPosition(cameraPosition);
+
+        // 如果相机移动到了新的地图区域
+        if (newMapIndex != currentMapIndex)
+        {
+            currentMapIndex = newMapIndex;
+
+            // 加载周围的地图
+            LoadSurroundingMaps(currentMapIndex);
+
+            // 卸载远离的地图
+            UnloadDistantMaps(currentMapIndex);
+        }
+    }
+
+    /// <summary>
+    /// 根据位置计算地图索引
+    /// </summary>
+    private Vector2Int GetMapIndexFromPosition(Vector3 position)
+    {
+        // 考虑45度旋转，需要转换坐标
+        float mapWorldSize = singleMapSize * mapSpacing;
+
+        // 计算地图索引（考虑45度旋转）
+        int mapX = Mathf.FloorToInt(position.x / mapWorldSize);
+        int mapY = Mathf.FloorToInt(position.z / mapWorldSize);
+
+        return new Vector2Int(mapX, mapY);
+    }
+
+    /// <summary>
+    /// 加载周围的地图
+    /// </summary>
+    private void LoadSurroundingMaps(Vector2Int centerIndex)
+    {
+        // 如果当前加载的地图数量已达到上限，先卸载最远的地图
+        if (loadedMaps.Count >= maxLoadedMaps)
+        {
+            UnloadFarthestMap(centerIndex);
+        }
+
+        // 加载3x3区域的地图
+        for (int x = -1; x <= 1; x++)
+        {
+            for (int y = -1; y <= 1; y++)
+            {
+                Vector2Int mapIndex = centerIndex + new Vector2Int(x, y);
+
+                // 检查是否在总地图范围内
+                if (IsMapIndexValid(mapIndex))
+                {
+                    LoadMap(mapIndex);
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// 卸载最远的地图
+    /// </summary>
+    private void UnloadFarthestMap(Vector2Int centerIndex)
+    {
+        Vector2Int farthestMapIndex = Vector2Int.zero;
+        float maxDistance = 0f;
+
+        foreach (var kvp in loadedMaps)
+        {
+            Vector2Int mapIndex = kvp.Key;
+            float distance = Vector2Int.Distance(mapIndex, centerIndex);
+
+            if (distance > maxDistance)
+            {
+                maxDistance = distance;
+                farthestMapIndex = mapIndex;
+            }
+        }
+
+        if (maxDistance > 0f)
+        {
+            UnloadMap(farthestMapIndex);
+            Debug.Log($"卸载最远地图: {farthestMapIndex} 距离: {maxDistance:F2}");
+        }
+    }
+
+    /// <summary>
+    /// 卸载远离的地图
+    /// </summary>
+    private void UnloadDistantMaps(Vector2Int centerIndex)
+    {
+        List<Vector2Int> mapsToUnload = new List<Vector2Int>();
+
+        foreach (var kvp in loadedMaps)
+        {
+            Vector2Int mapIndex = kvp.Key;
+
+            // 如果地图距离中心超过2格，则卸载
+            if (Vector2Int.Distance(mapIndex, centerIndex) > 2f)
+            {
+                mapsToUnload.Add(mapIndex);
+            }
+        }
+
+        // 卸载地图
+        foreach (Vector2Int mapIndex in mapsToUnload)
+        {
+            UnloadMap(mapIndex);
+        }
+
+        if (mapsToUnload.Count > 0)
+        {
+            Debug.Log($"卸载了 {mapsToUnload.Count} 个远离的地图");
+        }
+    }
+
+    /// <summary>
+    /// 检查地图索引是否有效
+    /// </summary>
+    private bool IsMapIndexValid(Vector2Int mapIndex)
+    {
+        return mapIndex.x >= 0 && mapIndex.x < maxMapCount &&
+               mapIndex.y >= 0 && mapIndex.y < maxMapCount;
+    }
+
+    /// <summary>
+    /// 加载指定索引的地图
+    /// </summary>
+    private void LoadMap(Vector2Int mapIndex)
+    {
+        if (loadedMaps.ContainsKey(mapIndex))
+        {
+            return; // 地图已加载
+        }
+
+        // 检查是否在总地图范围内
+        if (!IsMapIndexValid(mapIndex))
+        {
+            Debug.LogWarning($"地图索引 {mapIndex} 超出总地图范围");
+            return;
+        }
+
+        // 获取预制体（始终是同一个）
+        GameObject prefab = GetMapPrefab(mapIndex);
+        if (prefab == null)
+        {
+            Debug.LogError($"无法获取地图预制体，索引: {mapIndex}");
+            return;
+        }
+
+        // 计算地图位置
+        Vector3 mapPosition = GetMapPosition(mapIndex);
+
+        // 实例化地图
+        GameObject mapInstance = Instantiate(prefab, mapPosition, Quaternion.Euler(90, 0, 45), mapContainer);
+        mapInstance.name = $"Map_{mapIndex.x}_{mapIndex.y}";
+
+        // 添加到已加载地图字典
+        loadedMaps[mapIndex] = mapInstance;
+
+        Debug.Log($"加载地图: {mapIndex} 位置: {mapPosition} 旋转: (90,0,45) 预制体: {prefab.name}");
+    }
+
+    /// <summary>
+    /// 卸载指定索引的地图
+    /// </summary>
+    private void UnloadMap(Vector2Int mapIndex)
+    {
+        if (loadedMaps.TryGetValue(mapIndex, out GameObject mapInstance))
+        {
+            DestroyImmediate(mapInstance);
+            loadedMaps.Remove(mapIndex);
+
+            Debug.Log($"卸载地图: {mapIndex}");
+        }
+    }
+
+    /// <summary>
+    /// 根据地图索引获取预制体
+    /// </summary>
+    private GameObject GetMapPrefab(Vector2Int mapIndex)
+    {
+        if (worldMapPrefab == null)
+        {
+            worldMapPrefab = Resources.Load<GameObject>("Prefab/WorldMapTile/worldMap_0_0");
+        }
+        return worldMapPrefab;
+    }
+
+    /// <summary>
+    /// 根据地图索引计算世界位置
+    /// </summary>
+    private Vector3 GetMapPosition(Vector2Int mapIndex)
+    {
+        float mapWorldSize = singleMapSize * mapSpacing;
+
+        // 计算地图位置，初始地图(0,0)位置为(0,0,0)
+        float x = mapIndex.x * mapWorldSize;
+        float z = mapIndex.y * mapWorldSize;
+
+        return new Vector3(x, 0, z);
+    }
+
+    /// <summary>
+    /// 获取当前加载的地图数量
+    /// </summary>
+    public int GetLoadedMapCount()
+    {
+        return loadedMaps.Count;
+    }
+
+    /// <summary>
+    /// 获取当前地图索引
+    /// </summary>
+    public Vector2Int GetCurrentMapIndex()
+    {
+        return currentMapIndex;
+    }
+
+    /// <summary>
+    /// 获取当前加载的地图信息
+    /// </summary>
+    public Dictionary<Vector2Int, GameObject> GetLoadedMaps()
+    {
+        return new Dictionary<Vector2Int, GameObject>(loadedMaps);
+    }
+
+    /// <summary>
+    /// 显示地图加载状态（调试用）
+    /// </summary>
+    [ContextMenu("显示地图状态")]
+    public void ShowMapStatus()
+    {
+        Debug.Log($"=== 地图管理器状态 ===");
+        Debug.Log($"当前地图索引: {currentMapIndex}");
+        Debug.Log($"已加载地图数量: {loadedMaps.Count}");
+        Debug.Log($"单张地图尺寸: {singleMapSize}");
+        Debug.Log($"总地图尺寸: {totalMapSize}");
+        Debug.Log($"最大地图数量: {maxMapCount}");
+        Debug.Log($"地图预制体: {(worldMapPrefab != null ? worldMapPrefab.name : "未设置")}");
+
+        Debug.Log("已加载的地图:");
+        foreach (var kvp in loadedMaps)
+        {
+            Debug.Log($"  - {kvp.Key}: {kvp.Value.name} 位置: {kvp.Value.transform.position} 旋转: {kvp.Value.transform.eulerAngles}");
+        }
+    }
+
+    /// <summary>
+    /// 验证地图Transform设置（调试用）
+    /// </summary>
+    [ContextMenu("验证地图Transform")]
+    public void ValidateMapTransforms()
+    {
+        Debug.Log("=== 验证地图Transform设置 ===");
+
+        foreach (var kvp in loadedMaps)
+        {
+            Vector2Int mapIndex = kvp.Key;
+            GameObject mapInstance = kvp.Value;
+
+            Vector3 expectedPosition = GetMapPosition(mapIndex);
+            Vector3 actualPosition = mapInstance.transform.position;
+            Vector3 actualRotation = mapInstance.transform.eulerAngles;
+            Vector3 expectedRotation = new Vector3(90, 0, 45);
+
+            bool positionCorrect = Vector3.Distance(expectedPosition, actualPosition) < 0.01f;
+            bool rotationCorrect = Vector3.Distance(actualRotation, expectedRotation) < 0.01f;
+
+            Debug.Log($"地图 {mapIndex}:");
+            Debug.Log($"  期望位置: {expectedPosition}, 实际位置: {actualPosition}, 正确: {positionCorrect}");
+            Debug.Log($"  期望旋转: {expectedRotation}, 实际旋转: {actualRotation}, 正确: {rotationCorrect}");
+
+            if (!positionCorrect || !rotationCorrect)
+            {
+                Debug.LogWarning($"地图 {mapIndex} Transform设置不正确！");
+            }
+        }
+
+        Debug.Log("验证完成");
+    }
+
+    /// <summary>
+    /// 清理所有地图（调试用）
+    /// </summary>
+    [ContextMenu("清理所有地图")]
+    public void ClearAllMaps()
+    {
+        foreach (var kvp in loadedMaps)
+        {
+            if (kvp.Value != null)
+            {
+                DestroyImmediate(kvp.Value);
+            }
+        }
+        loadedMaps.Clear();
+        Debug.Log("已清理所有地图");
+    }
+
+    private void OnDestroy()
+    {
+        MsgMgr.Ins.RemoveEventListener(MsgEvent.WorldMap_Camera_Move, OnCameraMove, this);
+    }
 }

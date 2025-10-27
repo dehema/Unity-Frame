@@ -25,10 +25,13 @@ public class CameraController_City : CameraController_Base
         MsgMgr.Ins.DispatchEvent(MsgEvent.City_Camera_Move, mainCamera.transform.position);
     }
 
-    // 每帧更新
     protected override void Update()
     {
         base.Update();
+        if (IsCurrentFrameMoving)
+        {
+            MsgMgr.Ins.DispatchEvent(MsgEvent.City_Camera_Move, mainCamera.transform.position);
+        }
     }
 
     protected override void LoadConfig()

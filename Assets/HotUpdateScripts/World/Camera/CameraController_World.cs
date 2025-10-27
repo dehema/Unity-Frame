@@ -25,6 +25,15 @@ public class CameraController_World : CameraController_Base
         base.Start();
         MsgMgr.Ins.DispatchEvent(MsgEvent.WorldMap_Camera_Move, mainCamera.transform.position);
     }
+    
+    protected override void Update()
+    {
+        base.Update();
+        if (IsCurrentFrameMoving)
+        {
+            MsgMgr.Ins.DispatchEvent(MsgEvent.WorldMap_Camera_Move, mainCamera.transform.position);
+        }
+    }
 
     protected override void LoadConfig()
     {

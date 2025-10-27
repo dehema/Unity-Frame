@@ -4,6 +4,7 @@ using Rain.Core;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.PlayerLoop;
 
 /// <summary>
 /// 相机控制器基类 - 管理可修改的运行时数据和只读的配置数据
@@ -16,6 +17,16 @@ public class CameraController_Base : MonoBehaviour
     [SerializeField] private CameraController_Setting _setting;
     protected CameraController_Setting Setting => _setting;
 
+    /// <summary>
+    /// 当前帧是否移动
+    /// </summary>
+    public bool IsCurrentFrameMoving { get => isCurrentFrameIsMoving; set => isCurrentFrameIsMoving = value; }
+
+    /// <summary>
+    /// 当前帧是否缩放
+    /// </summary>
+    public bool IsCurrentFrameZooming { get => isCurrentFrameZooming; set => isCurrentFrameZooming = value; }
+
     // 当前目标正交尺寸
     protected float targetOrthographicSize;
     // 相机目标位置
@@ -27,9 +38,13 @@ public class CameraController_Base : MonoBehaviour
     protected Vector2 lastTouchPosition;
     protected float lastTouchDistance;
     //当前帧是否移动
-    protected bool isTouchPanning = false;
+    private bool _isTouchMove = false;
     //当前帧是否缩放
-    protected bool isTwoFingerZoom = false;
+    private bool _isTouchZoom = false;
+
+    // 当前帧状态检测
+    private bool isCurrentFrameZooming = false;
+    private bool isCurrentFrameIsMoving = false;
 
     protected virtual void Awake()
     {
@@ -70,14 +85,26 @@ public class CameraController_Base : MonoBehaviour
     {
         if (mainCamera == null) return;
 
+        // 重置当前帧状态
+        ResetCurrentFrameStates();
+
         // 处理相机缩放
         HandleZoom();
 
         // 处理相机平移
-        HandlePanning();
+        HandleMove();
 
         // 处理射线检测
         HandleRaycast();
+    }
+
+    /// <summary>
+    /// 重置当前帧状态
+    /// </summary>
+    private void ResetCurrentFrameStates()
+    {
+        IsCurrentFrameZooming = false;
+        IsCurrentFrameMoving = false;
     }
 
     /// <summary>
@@ -110,8 +137,7 @@ public class CameraController_Base : MonoBehaviour
         {
             mainCamera.orthographicSize = targetOrthographicSize;
         }
-        float zoomRatio = Mathf.InverseLerp(Setting.ZoomMaxSize, Setting.ZoomMinSize, mainCamera.orthographicSize);
-        MsgMgr.Ins.DispatchEvent(MsgEvent.City_Camera_Zoom, mainCamera.orthographicSize, zoomRatio);
+        IsCurrentFrameZooming = true;
     }
 
     /// <summary>
@@ -154,10 +180,10 @@ public class CameraController_Base : MonoBehaviour
             float currentTouchDistance = Vector2.Distance(touch1.position, touch2.position);
 
             // 如果是第一次检测到两指触摸，记录初始距离
-            if (!isTwoFingerZoom)
+            if (!_isTouchZoom)
             {
                 lastTouchDistance = currentTouchDistance;
-                isTwoFingerZoom = true;
+                _isTouchZoom = true;
             }
             else
             {
@@ -184,23 +210,23 @@ public class CameraController_Base : MonoBehaviour
         else
         {
             // 没有两指触摸时，重置两指缩放状态
-            isTwoFingerZoom = false;
+            _isTouchZoom = false;
         }
     }
 
     /// <summary>
     /// 处理相机平移（鼠标拖动和触摸拖动）
     /// </summary>
-    private void HandlePanning()
+    private void HandleMove()
     {
         // 处理鼠标平移（PC端）
 #if UNITY_STANDALONE || UNITY_EDITOR
-        HandleMousePanning();
+        HandleMouseMove();
 #endif
 
         // 处理触摸平移（移动端）
 #if UNITY_ANDROID || UNITY_IOS
-        HandleTouchPanning();
+        HandleTouchMove();
 #endif
 
         if (mainCamera.transform.position == targetPosition)
@@ -216,18 +242,21 @@ public class CameraController_Base : MonoBehaviour
             // 先对目标位置进行边界限制
             targetPosition = ClampPosition(targetPosition);
             mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, targetPosition, Time.deltaTime * Setting.PanDampening);
+
         }
         else
         {
             // 当距离很小时，直接设置为目标位置，避免无限插值
             mainCamera.transform.position = targetPosition;
         }
+
+        IsCurrentFrameMoving = true;
     }
 
     /// <summary>
     /// 处理鼠标平移
     /// </summary>
-    private void HandleMousePanning()
+    private void HandleMouseMove()
     {
         // 检测鼠标左键按下状态
         if (Input.GetMouseButtonDown(0)) // 鼠标左键按下
@@ -273,21 +302,21 @@ public class CameraController_Base : MonoBehaviour
     /// <summary>
     /// 处理触摸平移（单指拖动）
     /// </summary>
-    private void HandleTouchPanning()
+    private void HandleTouchMove()
     {
         // 只有在单指触摸且不是两指缩放时才处理平移
-        if (Input.touchCount == 1 && !isTwoFingerZoom)
+        if (Input.touchCount == 1 && !_isTouchZoom)
         {
             Touch touch = Input.GetTouch(0);
 
             // 检测触摸开始
             if (touch.phase == TouchPhase.Began)
             {
-                isTouchPanning = true;
+                _isTouchMove = true;
                 lastTouchPosition = touch.position;
             }
             // 检测触摸移动
-            else if (touch.phase == TouchPhase.Moved && isTouchPanning)
+            else if (touch.phase == TouchPhase.Moved && _isTouchMove)
             {
                 // 计算触摸位置差值
                 Vector2 touchDelta = touch.position - lastTouchPosition;
@@ -317,13 +346,13 @@ public class CameraController_Base : MonoBehaviour
             // 检测触摸结束
             else if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
             {
-                isTouchPanning = false;
+                _isTouchMove = false;
             }
         }
         else if (Input.touchCount == 0)
         {
             // 没有触摸时，重置触摸平移状态
-            isTouchPanning = false;
+            _isTouchMove = false;
         }
     }
 
@@ -357,52 +386,27 @@ public class CameraController_Base : MonoBehaviour
     }
 
     /// <summary>
-    /// 调整相机位置使其视野中心对准世界原点(0,0,0)（仅修改X和Z坐标）
+    /// 重置相机位置，使镜头对准世界原点(0,0,0)
+    /// 在保持高度不变的情况下，调整X和Z坐标
     /// </summary>
     public void ResetCameraToWorldCenter()
     {
-        if (mainCamera != null)
-        {
-            Vector3 currentPosition = mainCamera.transform.position;
+        SetCameraPosLookAtPos(0, 0);
+    }
 
-            // 计算从相机位置到世界原点的射线
-            Vector3 worldCenter = Vector3.zero;
-
-            // 对于正交相机，我们需要计算相机应该移动到哪里才能让视野中心对准世界原点
-            // 使用相机的前向向量投影到XZ平面上
-            Vector3 cameraForward = mainCamera.transform.forward;
-
-            // 如果相机是俯视角度，计算相机在XZ平面上应该的位置
-            if (Mathf.Abs(cameraForward.y) > 0.01f) // 确保不是完全水平的相机
-            {
-                // 计算从当前Y高度到地面(Y=0)的距离比例
-                float distanceToGround = currentPosition.y / Mathf.Abs(cameraForward.y);
-
-                // 计算相机在XZ平面上的偏移量，使得视线中心指向世界原点
-                Vector3 offsetOnGround = new Vector3(cameraForward.x, 0, cameraForward.z).normalized * distanceToGround;
-
-                // 计算新的相机位置（只修改X和Z）
-                Vector3 newPosition = new Vector3(
-                    worldCenter.x - offsetOnGround.x,
-                    currentPosition.y, // 保持Y坐标不变
-                    worldCenter.z - offsetOnGround.z
-                );
-
-                // 应用边界限制
-                newPosition = ClampPosition(newPosition);
-                mainCamera.transform.position = newPosition;
-                targetPosition = newPosition;
-            }
-            else
-            {
-                // 如果是水平相机，直接将XZ坐标设为0
-                Vector3 newPosition = new Vector3(0f, currentPosition.y, 0f);
-                // 应用边界限制
-                newPosition = ClampPosition(newPosition);
-                mainCamera.transform.position = newPosition;
-                targetPosition = newPosition;
-            }
-        }
+    /// <summary>
+    /// 修改相机位置，使其朝向某个点
+    /// </summary>
+    public void SetCameraPosLookAtPos(float _posX, float _posZ)
+    {
+        Vector3 dir = mainCamera.transform.forward;
+        float cameraHeight = mainCamera.transform.position.y;
+        float distance = cameraHeight / Mathf.Sin(mainCamera.transform.eulerAngles.x);
+        Vector3 pos = distance * -dir + new Vector3(_posX, 0, _posZ);
+        pos = new Vector3(pos.x, cameraHeight, pos.z);
+        pos = ClampPosition(pos);
+        mainCamera.transform.position = pos;
+        targetPosition = pos;
     }
 
     protected virtual void LoadConfig()
@@ -452,44 +456,3 @@ public class CameraController_Base : MonoBehaviour
     }
 }
 
-#if UNITY_EDITOR
-[CustomEditor(typeof(CameraController_Base))]
-public class CameraController_Base_Editor : Editor
-{
-    public override void OnInspectorGUI()
-    {
-        // 绘制默认的Inspector界面
-        DrawDefaultInspector();
-
-        // 添加分隔线
-        EditorGUILayout.Space();
-        EditorGUILayout.LabelField("编辑器工具", EditorStyles.boldLabel);
-
-        // 获取目标组件
-        CameraController_Base cameraController = (CameraController_Base)target;
-
-        // 添加重置相机位置按钮
-        if (GUILayout.Button("调整相机视野中心到世界原点 (0,0,0)"))
-        {
-            cameraController.ResetCameraToWorldCenter();
-
-            // 标记场景为已修改（如果在编辑模式下）
-            if (!Application.isPlaying)
-            {
-                EditorUtility.SetDirty(cameraController);
-                UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(cameraController.gameObject.scene);
-            }
-        }
-
-        // 显示当前相机位置信息
-        if (cameraController.mainCamera != null)
-        {
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("当前相机信息", EditorStyles.boldLabel);
-            EditorGUILayout.LabelField($"位置: {cameraController.mainCamera.transform.position}");
-            EditorGUILayout.LabelField($"角度: {cameraController.mainCamera.transform.eulerAngles}");
-            EditorGUILayout.LabelField($"正交尺寸: {cameraController.mainCamera.orthographicSize:F2}");
-        }
-    }
-}
-#endif

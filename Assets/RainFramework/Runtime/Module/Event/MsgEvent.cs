@@ -28,25 +28,24 @@ namespace Rain.Core
         RTSBattleEnd,
         RTSUnitHPChange,                //RTS单位血量变化
 
-        //RTS镜头
-        RTS_CameraZoomIn,                   //镜头放大
-        RTS_CameraZoomOut,                  //镜头缩小
-        RTS_CameraZoomRatioChange,          //镜头倍率调整
+        //RTS相机
+        RTS_Camera_Move,                //RTS相机移动
+        RTS_Camera_Zoom,                //RTS相机缩放
 
         //城镇相机
-        City_Camera_Move,
-        City_Camera_Zoom,               //镜头倍率调整
+        City_Camera_Move,               //城镇相机移动
+        City_Camera_Zoom,               //城镇相机缩放
 
         //世界地图相机
         WorldMap_Camera_Move,           //世界地图相机移动
-        WorldMap_Camera_Zoom,           //相机倍率调整
+        WorldMap_Camera_Zoom,           //世界地图相机缩放
 
         //场景
         SceneLoaded,                    //场景加载
         SceneUnload,                    //场景卸载
 
         //UI事件
-        SelectCityBuilding,     //打开城市建筑详情界面
+        SelectCityBuilding,             //打开城市建筑详情界面
     }
 }
 
