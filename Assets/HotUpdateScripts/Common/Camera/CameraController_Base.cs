@@ -1,10 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Rain.Core;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.PlayerLoop;
 
 /// <summary>
 /// 相机控制器基类 - 管理可修改的运行时数据和只读的配置数据
@@ -16,6 +14,8 @@ public class CameraController_Base : MonoBehaviour
 
     [SerializeField] private CameraController_Setting _setting;
     protected CameraController_Setting Setting => _setting;
+
+    public static CameraController_Base Ins;
 
     /// <summary>
     /// 当前帧是否移动
@@ -52,7 +52,7 @@ public class CameraController_Base : MonoBehaviour
         {
             mainCamera = GetComponent<Camera>();
         }
-
+        Ins = this;
         SceneMgr.Ins.Camera = mainCamera;
     }
 
@@ -401,12 +401,26 @@ public class CameraController_Base : MonoBehaviour
     {
         Vector3 dir = mainCamera.transform.forward;
         float cameraHeight = mainCamera.transform.position.y;
-        float distance = cameraHeight / Mathf.Sin(mainCamera.transform.eulerAngles.x);
+        float distance = cameraHeight / Mathf.Sin(mainCamera.transform.eulerAngles.x /** Mathf.Deg2Rad*/);
         Vector3 pos = distance * -dir + new Vector3(_posX, 0, _posZ);
         pos = new Vector3(pos.x, cameraHeight, pos.z);
         pos = ClampPosition(pos);
         mainCamera.transform.position = pos;
         targetPosition = pos;
+    }
+
+    /// <summary>
+    /// 获取相机看向的位置
+    /// </summary>
+    /// <returns></returns>
+    public Vector3 GetCameraLookPos()
+    {
+        Vector3 dir = mainCamera.transform.forward;
+        float cameraHeight = mainCamera.transform.position.y;
+        float distance = cameraHeight / Mathf.Sin(mainCamera.transform.eulerAngles.x * Mathf.Deg2Rad);
+        Vector3 pos = dir * distance + mainCamera.transform.position;
+        pos = new Vector3(pos.x, 0, pos.z);
+        return pos;
     }
 
     protected virtual void LoadConfig()

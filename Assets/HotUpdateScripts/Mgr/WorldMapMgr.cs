@@ -12,9 +12,8 @@ public class WorldMapMgr : MonoBehaviour
     public static WorldMapMgr Ins;
 
     [Header("地图设置")]
-    [SerializeField] private int singleMapSize = 100; // 单张地图尺寸
+    [SerializeField] private int perMapSize = 100; // 单张地图尺寸
     [SerializeField] private int totalMapSize = 1000; // 总地图尺寸
-    [SerializeField] private float mapSpacing = 1f; // 地图间距
     [SerializeField] private int maxLoadedMaps = 9; // 最大同时加载的地图数量（3x3）
 
     [Header("预制体设置")]
@@ -29,13 +28,14 @@ public class WorldMapMgr : MonoBehaviour
     private void Awake()
     {
         Ins = this;
-        maxMapCount = totalMapSize / singleMapSize;
+        maxMapCount = totalMapSize / perMapSize;
 
         // 创建地图容器
         if (mapContainer == null)
         {
             GameObject container = new GameObject("MapContainer");
             mapContainer = container.transform;
+            mapContainer.localEulerAngles = new Vector3(90, 0, 45);
             mapContainer.SetParent(transform);
         }
 
@@ -49,24 +49,27 @@ public class WorldMapMgr : MonoBehaviour
         LoadMap(Vector2Int.zero);
     }
 
+    private void OnDestroy()
+    {
+        MsgMgr.Ins.RemoveEventListener(MsgEvent.WorldMap_Camera_Move, OnCameraMove, this);
+    }
+
     /// <summary>
     /// 相机移动回调
     /// </summary>
     private void OnCameraMove(params object[] obj)
     {
-        if (obj.Length > 0 && obj[0] is Vector3 cameraPos)
-        {
-            CheckAndLoadMaps(cameraPos);
-        }
+        CheckAndLoadMaps();
     }
 
     /// <summary>
     /// 检查并加载地图
     /// </summary>
-    private void CheckAndLoadMaps(Vector3 cameraPosition)
+    private void CheckAndLoadMaps()
     {
-        // 计算当前相机所在的地图索引
-        Vector2Int newMapIndex = GetMapIndexFromPosition(cameraPosition);
+
+        Vector3 cameraPos = CameraController_WorldMap.Ins.GetCameraLookPos();
+        Vector2Int newMapIndex = GetMapIndexFromPosition(cameraPos);
 
         // 如果相机移动到了新的地图区域
         if (newMapIndex != currentMapIndex)
@@ -84,16 +87,12 @@ public class WorldMapMgr : MonoBehaviour
     /// <summary>
     /// 根据位置计算地图索引
     /// </summary>
-    private Vector2Int GetMapIndexFromPosition(Vector3 position)
+    private Vector2Int GetMapIndexFromPosition(Vector3 worldPos)
     {
-        // 考虑45度旋转，需要转换坐标
-        float mapWorldSize = singleMapSize * mapSpacing;
-
-        // 计算地图索引（考虑45度旋转）
-        int mapX = Mathf.FloorToInt(position.x / mapWorldSize);
-        int mapY = Mathf.FloorToInt(position.z / mapWorldSize);
-
-        return new Vector2Int(mapX, mapY);
+        Vector2Int localPos = WorldPosToLocal(worldPos);
+        Debug.Log(localPos);
+        Vector2Int index = new Vector2Int(localPos.x / perMapSize, localPos.y / perMapSize);
+        return index;
     }
 
     /// <summary>
@@ -218,7 +217,10 @@ public class WorldMapMgr : MonoBehaviour
         Vector3 mapPosition = GetMapPosition(mapIndex);
 
         // 实例化地图
-        GameObject mapInstance = Instantiate(prefab, mapPosition, Quaternion.Euler(90, 0, 45), mapContainer);
+        GameObject mapInstance = Instantiate(prefab, mapContainer);
+        mapInstance.transform.localPosition = mapPosition;
+        mapInstance.transform.localEulerAngles = Vector3.zero;
+
         mapInstance.name = $"Map_{mapIndex.x}_{mapIndex.y}";
 
         // 添加到已加载地图字典
@@ -258,13 +260,23 @@ public class WorldMapMgr : MonoBehaviour
     /// </summary>
     private Vector3 GetMapPosition(Vector2Int mapIndex)
     {
-        float mapWorldSize = singleMapSize * mapSpacing;
-
-        // 计算地图位置，初始地图(0,0)位置为(0,0,0)
-        float x = mapIndex.x * mapWorldSize;
-        float z = mapIndex.y * mapWorldSize;
+        float x = Mathf.Cos(45 * Mathf.Deg2Rad) * mapIndex.x * perMapSize;
+        float z = Mathf.Cos(45 * Mathf.Deg2Rad) * mapIndex.y * perMapSize;
 
         return new Vector3(x, 0, z);
+    }
+
+    /// <summary>
+    /// 世界坐标转本地坐标
+    /// </summary>
+    /// <returns></returns>
+    private Vector2Int WorldPosToLocal(Vector3 _worldPos)
+    {
+        float angleRad = 45f * Mathf.Deg2Rad;
+        Vector2Int localPos = new Vector2Int(
+            Mathf.FloorToInt(Mathf.Abs(_worldPos.x * Mathf.Cos(angleRad) - _worldPos.z * Mathf.Sin(angleRad))),
+            Mathf.FloorToInt(Mathf.Abs(_worldPos.x * Mathf.Sin(angleRad) + _worldPos.z * Mathf.Cos(angleRad))));
+        return localPos;
     }
 
     /// <summary>
@@ -289,82 +301,5 @@ public class WorldMapMgr : MonoBehaviour
     public Dictionary<Vector2Int, GameObject> GetLoadedMaps()
     {
         return new Dictionary<Vector2Int, GameObject>(loadedMaps);
-    }
-
-    /// <summary>
-    /// 显示地图加载状态（调试用）
-    /// </summary>
-    [ContextMenu("显示地图状态")]
-    public void ShowMapStatus()
-    {
-        Debug.Log($"=== 地图管理器状态 ===");
-        Debug.Log($"当前地图索引: {currentMapIndex}");
-        Debug.Log($"已加载地图数量: {loadedMaps.Count}");
-        Debug.Log($"单张地图尺寸: {singleMapSize}");
-        Debug.Log($"总地图尺寸: {totalMapSize}");
-        Debug.Log($"最大地图数量: {maxMapCount}");
-        Debug.Log($"地图预制体: {(worldMapPrefab != null ? worldMapPrefab.name : "未设置")}");
-
-        Debug.Log("已加载的地图:");
-        foreach (var kvp in loadedMaps)
-        {
-            Debug.Log($"  - {kvp.Key}: {kvp.Value.name} 位置: {kvp.Value.transform.position} 旋转: {kvp.Value.transform.eulerAngles}");
-        }
-    }
-
-    /// <summary>
-    /// 验证地图Transform设置（调试用）
-    /// </summary>
-    [ContextMenu("验证地图Transform")]
-    public void ValidateMapTransforms()
-    {
-        Debug.Log("=== 验证地图Transform设置 ===");
-
-        foreach (var kvp in loadedMaps)
-        {
-            Vector2Int mapIndex = kvp.Key;
-            GameObject mapInstance = kvp.Value;
-
-            Vector3 expectedPosition = GetMapPosition(mapIndex);
-            Vector3 actualPosition = mapInstance.transform.position;
-            Vector3 actualRotation = mapInstance.transform.eulerAngles;
-            Vector3 expectedRotation = new Vector3(90, 0, 45);
-
-            bool positionCorrect = Vector3.Distance(expectedPosition, actualPosition) < 0.01f;
-            bool rotationCorrect = Vector3.Distance(actualRotation, expectedRotation) < 0.01f;
-
-            Debug.Log($"地图 {mapIndex}:");
-            Debug.Log($"  期望位置: {expectedPosition}, 实际位置: {actualPosition}, 正确: {positionCorrect}");
-            Debug.Log($"  期望旋转: {expectedRotation}, 实际旋转: {actualRotation}, 正确: {rotationCorrect}");
-
-            if (!positionCorrect || !rotationCorrect)
-            {
-                Debug.LogWarning($"地图 {mapIndex} Transform设置不正确！");
-            }
-        }
-
-        Debug.Log("验证完成");
-    }
-
-    /// <summary>
-    /// 清理所有地图（调试用）
-    /// </summary>
-    [ContextMenu("清理所有地图")]
-    public void ClearAllMaps()
-    {
-        foreach (var kvp in loadedMaps)
-        {
-            if (kvp.Value != null)
-            {
-                DestroyImmediate(kvp.Value);
-            }
-        }
-        loadedMaps.Clear();
-        Debug.Log("已清理所有地图");
-    }
-
-    private void OnDestroy()
-    {
-        MsgMgr.Ins.RemoveEventListener(MsgEvent.WorldMap_Camera_Move, OnCameraMove, this);
     }
 }

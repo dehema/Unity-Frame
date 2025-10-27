@@ -10,9 +10,9 @@ using UnityEditor;
 #endif
 
 /// <summary>
-/// SLG类型游戏的相机控制器
+/// 世界地图的相机控制器
 /// </summary>
-public class CameraController_World : CameraController_Base
+public class CameraController_WorldMap : CameraController_Base
 {
 
     protected override void Awake()

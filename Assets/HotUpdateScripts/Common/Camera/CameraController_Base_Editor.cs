@@ -40,19 +40,19 @@ public class CameraController_Base_Editor : Editor
         // 添加目标坐标设置UI
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("相机目标设置", EditorStyles.boldLabel);
-        
+
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("目标X坐标:", GUILayout.Width(80));
         targetX = EditorGUILayout.FloatField(targetX);
         EditorGUILayout.LabelField("目标Z坐标:", GUILayout.Width(80));
         targetZ = EditorGUILayout.FloatField(targetZ);
         EditorGUILayout.EndHorizontal();
-        
+
         EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("移动相机看向目标坐标"))
         {
             cameraController.SetCameraPosLookAtPos(targetX, targetZ);
-            
+
             // 标记场景为已修改（如果在编辑模式下）
             if (!Application.isPlaying)
             {
@@ -60,19 +60,20 @@ public class CameraController_Base_Editor : Editor
                 UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(cameraController.gameObject.scene);
             }
         }
-        
+
         // 显示目标坐标信息
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.EndHorizontal();
-        
+
         EditorGUILayout.EndHorizontal();
         // 显示当前相机位置信息
         if (cameraController.mainCamera != null)
         {
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("当前相机信息", EditorStyles.boldLabel);
-            EditorGUILayout.LabelField($"目标坐标: ({targetX:F2}, {targetZ:F2})", EditorStyles.miniLabel);
-            
+            Vector3 targetPos = cameraController.GetCameraLookPos();
+            EditorGUILayout.LabelField($"目标坐标: ({targetPos.x:F2}, 0, {targetPos.z:F2})", EditorStyles.miniLabel);
+
             // 显示当前帧状态
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("当前帧状态", EditorStyles.boldLabel);
@@ -90,9 +91,9 @@ public class CameraController_Base_Editor : Editor
     protected virtual void DrawSubclassSpecificGUI(CameraController_Base cameraController)
     {
         // 根据子类类型显示不同的内容
-        if (cameraController is CameraController_World)
+        if (cameraController is CameraController_WorldMap)
         {
-            DrawWorldCameraGUI((CameraController_World)cameraController);
+            DrawWorldCameraGUI((CameraController_WorldMap)cameraController);
         }
         else if (cameraController is CameraController_City)
         {
@@ -103,26 +104,16 @@ public class CameraController_Base_Editor : Editor
     /// <summary>
     /// 绘制世界相机特定的GUI
     /// </summary>
-    private void DrawWorldCameraGUI(CameraController_World worldCamera)
+    private void DrawWorldCameraGUI(CameraController_WorldMap worldCamera)
     {
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("世界地图相机", EditorStyles.boldLabel);
-        
+
         // 显示世界地图相关信息
         if (WorldMapMgr.Ins != null)
         {
             EditorGUILayout.LabelField($"当前地图索引: {WorldMapMgr.Ins.GetCurrentMapIndex()}");
             EditorGUILayout.LabelField($"已加载地图数量: {WorldMapMgr.Ins.GetLoadedMapCount()}");
-            
-            if (GUILayout.Button("显示地图状态"))
-            {
-                WorldMapMgr.Ins.ShowMapStatus();
-            }
-            
-            if (GUILayout.Button("验证地图Transform"))
-            {
-                WorldMapMgr.Ins.ValidateMapTransforms();
-            }
         }
         else
         {
