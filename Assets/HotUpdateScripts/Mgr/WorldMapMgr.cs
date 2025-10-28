@@ -46,7 +46,7 @@ public class WorldMapMgr : MonoBehaviour
     private void Start()
     {
         // 初始加载中心地图
-        LoadMap(Vector2Int.zero);
+        LoadSurroundingMaps(Vector2Int.zero);
     }
 
     private void OnDestroy()
@@ -87,10 +87,9 @@ public class WorldMapMgr : MonoBehaviour
     /// <summary>
     /// 根据位置计算地图索引
     /// </summary>
-    private Vector2Int GetMapIndexFromPosition(Vector3 worldPos)
+    public Vector2Int GetMapIndexFromPosition(Vector3 worldPos)
     {
         Vector2Int localPos = WorldPosToLocal(worldPos);
-        Debug.Log(localPos);
         Vector2Int index = new Vector2Int(localPos.x / perMapSize, localPos.y / perMapSize);
         return index;
     }
@@ -107,9 +106,9 @@ public class WorldMapMgr : MonoBehaviour
         }
 
         // 加载3x3区域的地图
-        for (int x = -1; x <= 1; x++)
+        for (int y = -1; y <= 1; y++)
         {
-            for (int y = -1; y <= 1; y++)
+            for (int x = -1; x <= 1; x++)
             {
                 Vector2Int mapIndex = centerIndex + new Vector2Int(x, y);
 
@@ -172,11 +171,6 @@ public class WorldMapMgr : MonoBehaviour
         {
             UnloadMap(mapIndex);
         }
-
-        if (mapsToUnload.Count > 0)
-        {
-            Debug.Log($"卸载了 {mapsToUnload.Count} 个远离的地图");
-        }
     }
 
     /// <summary>
@@ -226,7 +220,7 @@ public class WorldMapMgr : MonoBehaviour
         // 添加到已加载地图字典
         loadedMaps[mapIndex] = mapInstance;
 
-        Debug.Log($"加载地图: {mapIndex} 位置: {mapPosition} 旋转: (90,0,45) 预制体: {prefab.name}");
+        Debug.Log($"加载地图: {mapIndex} 位置: {mapPosition} 旋转: (90,0,45) 预制体: {prefab.name}", prefab);
     }
 
     /// <summary>
@@ -260,17 +254,17 @@ public class WorldMapMgr : MonoBehaviour
     /// </summary>
     private Vector3 GetMapPosition(Vector2Int mapIndex)
     {
-        float x = Mathf.Cos(45 * Mathf.Deg2Rad) * mapIndex.x * perMapSize;
-        float z = Mathf.Cos(45 * Mathf.Deg2Rad) * mapIndex.y * perMapSize;
+        float x = mapIndex.x * perMapSize;
+        float y = mapIndex.y * perMapSize;
 
-        return new Vector3(x, 0, z);
+        return new Vector3(y, x, 0);
     }
 
     /// <summary>
     /// 世界坐标转本地坐标
     /// </summary>
     /// <returns></returns>
-    private Vector2Int WorldPosToLocal(Vector3 _worldPos)
+    public Vector2Int WorldPosToLocal(Vector3 _worldPos)
     {
         float angleRad = 45f * Mathf.Deg2Rad;
         Vector2Int localPos = new Vector2Int(

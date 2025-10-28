@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using Rain.Core;
 using UnityEngine;
 using UnityEngine.EventSystems;
-
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -39,6 +37,13 @@ public class CameraController_WorldMap : CameraController_Base
     {
         base.LoadConfig();
 
+        Dictionary<string, GameSettingConfig> config = ConfigMgr.GameSetting.DataMap;
+
         Setting.PosLimit = ParseVector4("-1000, 1000, -1000, 1000");
+
+        Setting.ZoomDefaultSize = float.Parse(config["camera_worldMap_zoomDefaultSize"].Val);
+        Setting.ZoomMinSize = float.Parse(config["camera_worldMap_zoomMinSize"].Val);
+        Setting.ZoomMaxSize = float.Parse(config["camera_worldMap_zoomMaxSize"].Val);
+        Setting.MouseZoomSpeed = float.Parse(config["camera_worldMap_mouseZoomSpeed"].Val);
     }
 }

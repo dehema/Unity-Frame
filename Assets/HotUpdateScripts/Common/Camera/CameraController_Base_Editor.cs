@@ -71,8 +71,10 @@ public class CameraController_Base_Editor : Editor
         {
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("当前相机信息", EditorStyles.boldLabel);
+
             Vector3 targetPos = cameraController.GetCameraLookPos();
-            EditorGUILayout.LabelField($"目标坐标: ({targetPos.x:F2}, 0, {targetPos.z:F2})", EditorStyles.miniLabel);
+            EditorGUILayout.LabelField($"注视坐标: ({targetPos.x:F1}, 0, {targetPos.z:F1})", EditorStyles.miniLabel);
+
 
             // 显示当前帧状态
             EditorGUILayout.Space();
@@ -112,8 +114,14 @@ public class CameraController_Base_Editor : Editor
         // 显示世界地图相关信息
         if (WorldMapMgr.Ins != null)
         {
-            EditorGUILayout.LabelField($"当前地图索引: {WorldMapMgr.Ins.GetCurrentMapIndex()}");
             EditorGUILayout.LabelField($"已加载地图数量: {WorldMapMgr.Ins.GetLoadedMapCount()}");
+
+            Vector3 targetPos = worldCamera.GetCameraLookPos();
+            Vector2Int targetCube = WorldMapMgr.Ins.WorldPosToLocal(targetPos);
+            EditorGUILayout.LabelField($"注视地块: ({targetCube.x}, {targetCube.y})", EditorStyles.miniLabel);
+
+            Vector2Int mapIndex = WorldMapMgr.Ins.GetMapIndexFromPosition(targetPos);
+            EditorGUILayout.LabelField($"注视地图索引: ({mapIndex.x}, {mapIndex.y})", EditorStyles.miniLabel);
         }
         else
         {

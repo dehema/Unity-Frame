@@ -14,7 +14,7 @@ public class CameraController_Setting
     [SerializeField][Header("鼠标缩放速度")] public float MouseZoomSpeed = 3f;
 
     //移动
-    [SerializeField][Header("移动范围限制")] public Vector4 PosLimit = new Vector4(-60, 20, -20, 20);
+    [SerializeField][Header("移动范围限制")] public Vector4 PosLimit = new Vector4(-1000000, 1000000, -1000000, 1000000);
     [SerializeField][Header("移动平滑度")] public float PanDampening = 5f;
     [SerializeField][Header("触摸平移速度")] public float TouchPanSpeed = 0.01f;
     [SerializeField][Header("触摸最小距离")] public float TouchMinDistance = 10f;

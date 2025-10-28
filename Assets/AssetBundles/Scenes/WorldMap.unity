@@ -227,9 +227,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcd358b894177564d87b4b90523a2166, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  singleMapSize: 100
+  perMapSize: 100
   totalMapSize: 1000
-  mapSpacing: 1
   maxLoadedMaps: 9
   worldMapPrefab: {fileID: 0}
   mapContainer: {fileID: 0}
@@ -9274,7 +9273,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: -20
-  far clip plane: 1000
+  far clip plane: 2000
   field of view: 60
   orthographic: 1
   orthographic size: 10
@@ -9302,7 +9301,7 @@ Transform:
   m_GameObject: {fileID: 1864586214}
   serializedVersion: 2
   m_LocalRotation: {x: 0.42261827, y: 0, z: 0, w: 0.9063079}
-  m_LocalPosition: {x: 0, y: 50, z: -40}
+  m_LocalPosition: {x: 0, y: 1000, z: -839.0995}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9320,11 +9319,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7f807c1d41036942b11e2606513951a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainCamera: {fileID: 0}
+  mainCamera: {fileID: 1864586216}
   _setting:
     MousePanSpeed: 1
     MouseZoomSpeed: 3
-    PosLimit: {x: -60, y: 20, z: -20, w: 20}
+    PosLimit: {x: -1000000, y: 1000000, z: -1000000, w: 1000000}
     PanDampening: 5
     TouchPanSpeed: 0.01
     TouchMinDistance: 10

@@ -401,7 +401,7 @@ public class CameraController_Base : MonoBehaviour
     {
         Vector3 dir = mainCamera.transform.forward;
         float cameraHeight = mainCamera.transform.position.y;
-        float distance = cameraHeight / Mathf.Sin(mainCamera.transform.eulerAngles.x /** Mathf.Deg2Rad*/);
+        float distance = cameraHeight / Mathf.Sin(mainCamera.transform.eulerAngles.x * Mathf.Deg2Rad);
         Vector3 pos = distance * -dir + new Vector3(_posX, 0, _posZ);
         pos = new Vector3(pos.x, cameraHeight, pos.z);
         pos = ClampPosition(pos);
