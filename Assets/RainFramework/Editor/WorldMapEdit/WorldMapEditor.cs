@@ -21,23 +21,21 @@ public class WorldMapEditor : EditorWindow
 
     // TileMap相关
     private Tilemap currentTilemap;
-    private TileBase selectedTile;
     private TileBase defaultTile;
 
     // 随机地图相关
     private List<TileBase> randomTiles = new List<TileBase>();
-    private float randomTileRatio = 0.3f; // 随机瓦片比例，默认30%
+    private float randomTileRatio = 0.05f; // 随机瓦片比例，默认5%
     private bool showRandomTiles = false;
     private int objectPickerControlID = 0;
 
     // 地图尺寸相关
-    private int mapWidth = 200;
-    private int mapHeight = 200;
+    private int mapWidth = 100;
+    private int mapHeight = 100;
     private int mapCount = 1;
 
     // 窗口状态
     private Vector2 scrollPosition;
-    private bool showTilePalette = true;
 
     [MenuItem("开发工具/世界地图编辑器")]
     public static void ShowWindow()
@@ -50,6 +48,15 @@ public class WorldMapEditor : EditorWindow
     private void OnEnable()
     {
         LoadWorldMapPrefabs();
+        if (defaultTile == null)
+        {
+            defaultTile = AssetDatabase.LoadAssetAtPath<TileBase>("Assets/AssetBundles/Art/Tile/worldmap ground_4.asset");
+        }
+        if (randomTiles.Count == 0)
+        {
+            randomTiles.Add(AssetDatabase.LoadAssetAtPath<TileBase>("Assets/AssetBundles/Art/Tile/worldmap ground_1.asset"));
+            randomTiles.Add(AssetDatabase.LoadAssetAtPath<TileBase>("Assets/AssetBundles/Art/Tile/worldmap ground_3.asset"));
+        }
     }
 
     private void OnGUI()
@@ -118,6 +125,11 @@ public class WorldMapEditor : EditorWindow
 
             // 按钮区域
             EditorGUILayout.BeginHorizontal();
+            if (GUILayout.Button("打开预制体", GUILayout.Height(25)))
+            {
+                OpenSelectedPrefab();
+            }
+
             if (GUILayout.Button("刷新预制体列表", GUILayout.Height(25)))
             {
                 LoadWorldMapPrefabs();
@@ -190,7 +202,6 @@ public class WorldMapEditor : EditorWindow
 
             // 瓦片选择
             EditorGUILayout.LabelField("瓦片选择", EditorStyles.boldLabel);
-            selectedTile = (TileBase)EditorGUILayout.ObjectField("选择瓦片", selectedTile, typeof(TileBase), false);
             defaultTile = (TileBase)EditorGUILayout.ObjectField("默认瓦片", defaultTile, typeof(TileBase), false);
 
             EditorGUILayout.Space(5);
@@ -766,6 +777,26 @@ public class WorldMapEditor : EditorWindow
         // 使用EditorGUIUtility.ShowObjectPicker显示对象选择器
         objectPickerControlID = EditorGUIUtility.GetControlID(FocusType.Passive);
         EditorGUIUtility.ShowObjectPicker<TileBase>(null, false, "", objectPickerControlID);
+    }
+
+    /// <summary>
+    /// 打开选中的预制体
+    /// </summary>
+    private void OpenSelectedPrefab()
+    {
+        if (currentPrefab != null)
+        {
+            // 在Project窗口中高亮显示选中的预制体
+            EditorGUIUtility.PingObject(currentPrefab);
+            Selection.activeObject = currentPrefab;
+            
+            // 在预制体编辑器中打开预制体
+            AssetDatabase.OpenAsset(currentPrefab);
+        }
+        else
+        {
+            EditorUtility.DisplayDialog("提示", "请先选择一个预制体", "确定");
+        }
     }
 
 }

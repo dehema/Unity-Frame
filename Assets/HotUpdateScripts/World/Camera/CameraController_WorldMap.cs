@@ -23,13 +23,17 @@ public class CameraController_WorldMap : CameraController_Base
         base.Start();
         MsgMgr.Ins.DispatchEvent(MsgEvent.WorldMap_Camera_Move, mainCamera.transform.position);
     }
-    
+
     protected override void Update()
     {
         base.Update();
         if (IsCurrentFrameMoving)
         {
             MsgMgr.Ins.DispatchEvent(MsgEvent.WorldMap_Camera_Move, mainCamera.transform.position);
+        }
+        if (IsCurrentFrameZooming)
+        {
+            MsgMgr.Ins.DispatchEvent(MsgEvent.WorldMap_Camera_Zoom, mainCamera.orthographicSize);
         }
     }
 
