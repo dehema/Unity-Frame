@@ -32,6 +32,10 @@ public class CameraController_City : CameraController_Base
         {
             MsgMgr.Ins.DispatchEvent(MsgEvent.City_Camera_Move, mainCamera.transform.position);
         }
+        if (IsCurrentFrameZooming)
+        {
+            MsgMgr.Ins.DispatchEvent(MsgEvent.City_Camera_Zoom, mainCamera.orthographicSize);
+        }
     }
 
     protected override void LoadConfig()

@@ -19,6 +19,9 @@ public class PlayerData : DBClass
     public DBLong ore;
     public DBLong diamond;
 
+    //背包
+    public DBDictClass<string, DBItemData> items = new DBDictClass<string, DBItemData>();
+
     //科技
     public Dictionary<string, TechData> techs = new Dictionary<string, TechData>();
 

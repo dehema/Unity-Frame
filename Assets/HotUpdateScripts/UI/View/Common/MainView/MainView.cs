@@ -36,10 +36,11 @@ public partial class MainView : BaseView
         ui.btChatPanel_Button.SetButton(() => { UIMgr.Ins.OpenView<ChatView>(); });
         ui.btMainCity_Button.SetButton(OnClickMainCity);
         ui.btWorldMap_Button.SetButton(OnClickWorldMap);
+        ui.btBag_Button.SetButton(OnClickBag);
     }
 
     /// <summary>
-    /// 点击世界地图
+    /// 点击主城
     /// </summary>
     void OnClickMainCity()
     {
@@ -52,6 +53,11 @@ public partial class MainView : BaseView
     void OnClickWorldMap()
     {
         SceneMgr.Ins.ChangeScene(SceneID.WorldMap, showView: false);
+    }
+
+    void OnClickBag()
+    {
+        UIMgr.Ins.OpenView<BagView>();
     }
 
     private void OnSelectBuilding(object[] objs)

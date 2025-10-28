@@ -34,7 +34,7 @@ public partial class TopView : BaseView
             Util.Common.DONumVal(oldGold, DataMgr.Ins.playerData.gold.Value, _num =>
             {
                 int num = (int)_num;
-                ui.goldNum_Text.text = Util.Common.GetValByThousands(num);
+                ui.goldNum_Text.text = Util.Text.FormatNum(num);
                 oldGold = num;
             });
         });

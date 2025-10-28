@@ -99,7 +99,7 @@ public class ViewName
     /// </summary>
 	public const string UIControlDemoView = "UIControlDemoView";
     /// <summary>
-    /// UI示例
+    /// Demo
     /// </summary>
 	public const string DemoView = "DemoView";
     /// <summary>
@@ -146,6 +146,10 @@ public class ViewName
     /// 登录
     /// </summary>
 	public const string LoginView = "LoginView";
+    /// <summary>
+    /// 背包
+    /// </summary>
+	public const string BagView = "BagView";
     /// <summary>
     /// RTS单位
     /// </summary>

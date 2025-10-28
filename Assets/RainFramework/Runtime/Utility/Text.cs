@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Security.Cryptography;
 using System.Text;
+using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Rain.Core
 {
@@ -48,16 +49,22 @@ namespace Rain.Core
 
             /// <summary>
             /// 生成指定长度的随机字符串
+            /// 使用UnityEngine.Random类生成随机字符，包含数字0-9、小写字母a-z、大写字母A-Z
             /// </summary>
             /// <param name="length">字符串长度</param>
             /// <returns>生成的随机字符串</returns>
             public static string GenerateRandomString(int length)
             {
+                if (length <= 0)
+                {
+                    return string.Empty;
+                }
+
                 stringBuilderCache.Clear();
-                Random rd = new Random();
                 for (int i = 0; i < length; i++)
                 {
-                    stringBuilderCache.Append(stringConstant[rd.Next(62)]);
+                    int randomIndex = Random.Range(0, stringConstant.Length);
+                    stringBuilderCache.Append(stringConstant[randomIndex]);
                 }
 
                 return stringBuilderCache.ToString();
@@ -259,6 +266,48 @@ namespace Rain.Core
 
                 return context;
             }
+
+            /// <summary>
+            /// 获取千分位格式化后的数值
+            /// - 输入1234567.89，返回"1,234,567.89"（英文格式）
+            /// - 输入1234567.89，返回"1.234.567,89"（葡萄牙语格式）
+            /// </summary>
+            public static string FormatNum(long _val, int _decimals = 0, SystemLanguage _lang = SystemLanguage.Unknown)
+            {
+                if (_lang == SystemLanguage.Unknown)
+                    _lang = LangMgr.Ins.currLang;
+                char decimalSign = (_lang == SystemLanguage.Portuguese ? ',' : '.');
+                char thouandSign = (_lang == SystemLanguage.Portuguese ? '.' : ',');
+                string result = "";
+                string str = _val.ToString("f" + _decimals);
+                string[] strArr = str.Split('.');
+                if (strArr.Length > 1)
+                {
+                    //有小数部分
+                    result = decimalSign + strArr[1];
+                }
+                int _intVal = (int)_val;
+                if (_intVal == 0)
+                {
+                    result = '0' + result;
+                }
+                while (_intVal > 0)
+                {
+                    string tempVal = (_intVal % 1000).ToString();
+                    if (_intVal >= 1000)
+                    {
+                        tempVal = tempVal.PadLeft(3, '0');
+                        result = thouandSign + tempVal + result;
+                    }
+                    else
+                    {
+                        result = tempVal + result;
+                    }
+                    _intVal /= 1000;
+                }
+                return result;
+            }
+
         }
     }
 }

@@ -73,6 +73,9 @@ namespace Rain.UI.Editor
 
             var resourceBuildingUI = new EditorDevTools_UI(this);
             rootPages.Add(resourceBuildingUI);
+
+            var editorDevTools_Debug = new EditorDevTools_Debug(this);
+            rootPages.Add(editorDevTools_Debug);
         }
 
         private void InitializePages()

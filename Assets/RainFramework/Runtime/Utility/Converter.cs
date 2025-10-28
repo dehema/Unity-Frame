@@ -7,6 +7,9 @@ namespace Rain.Core
 {
     public static partial class Util
     {
+        /// <summary>
+        /// 转换
+        /// </summary>
         public static class Converter
         {
             [ThreadStatic] //每个静态类型字段对于每一个线程都是唯一的

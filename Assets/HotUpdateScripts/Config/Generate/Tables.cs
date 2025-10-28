@@ -47,6 +47,10 @@ public partial class Tables
     /// </summary>
     public TbCityBuildingSlot TbCityBuildingSlot {get; }
     /// <summary>
+    /// 道具
+    /// </summary>
+    public TbItem TbItem {get; }
+    /// <summary>
     /// 单位
     /// </summary>
     public TbUnit TbUnit {get; }
@@ -65,6 +69,7 @@ public partial class Tables
         TbCityBuilding = new TbCityBuilding(loader("tbcitybuilding"));
         TbCityBuildingLevel = new TbCityBuildingLevel(loader("tbcitybuildinglevel"));
         TbCityBuildingSlot = new TbCityBuildingSlot(loader("tbcitybuildingslot"));
+        TbItem = new TbItem(loader("tbitem"));
         TbUnit = new TbUnit(loader("tbunit"));
         TbDeployFormation = new TbDeployFormation(loader("tbdeployformation"));
         ResolveRef();
@@ -80,6 +85,7 @@ public partial class Tables
         TbCityBuilding.ResolveRef(this);
         TbCityBuildingLevel.ResolveRef(this);
         TbCityBuildingSlot.ResolveRef(this);
+        TbItem.ResolveRef(this);
         TbUnit.ResolveRef(this);
         TbDeployFormation.ResolveRef(this);
     }

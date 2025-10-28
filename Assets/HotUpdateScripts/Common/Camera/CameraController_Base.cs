@@ -261,6 +261,12 @@ public class CameraController_Base : MonoBehaviour
         // 检测鼠标左键按下状态
         if (Input.GetMouseButtonDown(0)) // 鼠标左键按下
         {
+            // 检查是否点击到UI，如果点击到UI则不开始拖动
+            if (IsPointerOverUI())
+            {
+                return;
+            }
+            
             isMiddleMouseDragging = true;
             lastMousePosition = Input.mousePosition;
         }
@@ -272,6 +278,13 @@ public class CameraController_Base : MonoBehaviour
         // 处理鼠标拖动
         if (isMiddleMouseDragging)
         {
+            // 检查是否点击到UI，如果点击到UI则停止拖动
+            if (IsPointerOverUI())
+            {
+                isMiddleMouseDragging = false;
+                return;
+            }
+
             // 计算鼠标位置差值
             Vector3 mouseDelta = Input.mousePosition - lastMousePosition;
 
@@ -312,12 +325,25 @@ public class CameraController_Base : MonoBehaviour
             // 检测触摸开始
             if (touch.phase == TouchPhase.Began)
             {
+                // 检查是否点击到UI，如果点击到UI则不开始拖动
+                if (IsPointerOverUI(touch.fingerId))
+                {
+                    return;
+                }
+                
                 _isTouchMove = true;
                 lastTouchPosition = touch.position;
             }
             // 检测触摸移动
             else if (touch.phase == TouchPhase.Moved && _isTouchMove)
             {
+                // 检查是否点击到UI，如果点击到UI则停止拖动
+                if (IsPointerOverUI(touch.fingerId))
+                {
+                    _isTouchMove = false;
+                    return;
+                }
+
                 // 计算触摸位置差值
                 Vector2 touchDelta = touch.position - lastTouchPosition;
 
@@ -364,9 +390,25 @@ public class CameraController_Base : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// 检查鼠标是否在UI上
+    /// </summary>
+    private bool IsPointerOverUI()
+    {
+        return EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
+    }
+
+    /// <summary>
+    /// 检查触摸是否在UI上
+    /// </summary>
+    private bool IsPointerOverUI(int touchId)
+    {
+        return EventSystem.current != null && EventSystem.current.IsPointerOverGameObject(touchId);
+    }
+
     protected virtual GameObject GetHandleRaycast()
     {
-        bool isOverUI = EventSystem.current.IsPointerOverGameObject();
+        bool isOverUI = IsPointerOverUI();
         if (isOverUI)
         {
             return null; // 点到UI

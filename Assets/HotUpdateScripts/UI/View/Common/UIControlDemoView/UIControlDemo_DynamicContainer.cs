@@ -15,10 +15,15 @@ namespace Rain.UI
         private void Start()
         {
             InitData();
+            infiniteScroll.onChangeValue.AddListener(OnChangeValue);
+            infiniteScroll.onChangeActiveItem.AddListener(OnChangeActiveItem);
+            infiniteScroll.onStartLine.AddListener(OnStartLine);
+            infiniteScroll.onEndLine.AddListener(OnEndLine);
         }
 
         private void InitData()
         {
+            //PlayerMgr.Ins.
             Object[] objects = Resources.LoadAll<Sprite>("UI/Common");
             int index = 0;
             foreach (Object obj in objects)

@@ -17,4 +17,3 @@ namespace Rain.UI
         public UILoader uiLoader;
     }
 }
-    

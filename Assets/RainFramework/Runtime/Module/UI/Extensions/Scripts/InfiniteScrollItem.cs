@@ -89,17 +89,17 @@ namespace Rain.Core
             return activeItem;
         }
 
-        public void AddSelectCallback(Action<InfiniteScrollData> callback)
+        public void AddSelectCallback(Action<InfiniteScrollData> _callback)
         {
-            selectCallback += callback;
+            selectCallback += _callback;
         }
 
-        public void RemoveSelectCallback(Action<InfiniteScrollData> callback)
+        public void RemoveSelectCallback(Action<InfiniteScrollData> _callback)
         {
-            selectCallback -= callback;
+            selectCallback -= _callback;
         }
 
-        public virtual void UpdateData(InfiniteScrollData scrollData)
+        public virtual void UpdateData(InfiniteScrollData _scrollData)
         {
         }
 

@@ -99,22 +99,21 @@ namespace Rain.Core
         /// <param name="action"></param>
         public void Emit(DBAction action)
         {
-            if (this._delegateDic is null)
+            if (this._delegateDic is not null)
             {
-                return;
-            }
-            var modify = new DBModify { value = this._value, action = action };
-            foreach (var item in this._delegateDic.Values)
-            {
-                if (item != null)
+                var modify = new DBModify { value = this._value, action = action };
+                foreach (var item in this._delegateDic.Values)
                 {
-                    if (_dispatcher != null)
+                    if (item != null)
                     {
-                        _dispatcher.Add(this, item, modify);
-                    }
-                    else
-                    {
-                        item(modify);
+                        if (_dispatcher != null)
+                        {
+                            _dispatcher.Add(this, item, modify);
+                        }
+                        else
+                        {
+                            item(modify);
+                        }
                     }
                 }
             }

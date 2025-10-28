@@ -44,12 +44,10 @@ view:
         DebugView:
             comment: 调试弹窗
             layer: NormalLayer
-            hasBg: true
             bgColor: "#000000B0"
         BlockView:
             comment: 奖励弹窗
             layer: DialogLayer
-            hasBg: true
             bgColor: "#000000B0"
         TopView:
             comment: 资源栏
@@ -109,18 +107,15 @@ view:
             comment: 科技
             layer: DialogLayer
             bgColor: "#FFFFFFFF"
-            hasBg: true
         TechDetailView:
             comment: 科技详情
             layer: DialogLayer
             bgColor: "#000000B0"
-            hasBg: true
             bgClose: true
         ConfirmDiamondSpeedView:
             comment: 钻石加速
             layer: DialogLayer
             bgColor: "#000000B0"
-            hasBg: true
             bgClose: true
         MainView:
             comment: 主UI
@@ -129,12 +124,10 @@ view:
         CityBuildingDetailView:
             comment: 城市建筑详情
             layer: DialogLayer
-            hasBg: true
             bgClose: true
         CityBuildingUpgradeView:
             comment: 城市建筑升级
             layer: DialogLayer
-            hasBg: true
             bgClose: true
         CityHUDView:
             layer: BaseLayer
@@ -142,13 +135,15 @@ view:
         ChatView:
             comment: 聊天
             layer: DialogLayer
-            hasBg: true
             bgColor: "#153d66FF"
         LoginView:
             comment: 登录
             layer: TopLayer
-            hasBg: true
             bgColor: "#FFFFFFFF"
+        BagView:
+            comment: 背包
+            layer: DialogLayer
+            bgColor: "#00325FFF"
     RTS:
         RTSUnitTestView:
             comment: RTS单位
@@ -164,5 +159,4 @@ view:
             comment: 战斗部署
             layer: NormalLayer
             bgColor: "#FFFFFFFF"
-            hasBg: true
         

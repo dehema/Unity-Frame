@@ -28,6 +28,7 @@ public class ConfigMgr : MonoSingleton<ConfigMgr>
     public static TbCityBuilding CityBuilding => cfg.TbCityBuilding;
     public static TbCityBuildingLevel CityBuildingLevel => cfg.TbCityBuildingLevel;
     public static TbCityBuildingSlot CityBuildingSlot => cfg.TbCityBuildingSlot;
+    public static TbItem Item => cfg.TbItem;
 
     public void LoadAllConfig(bool _localConfig = true)
     {
