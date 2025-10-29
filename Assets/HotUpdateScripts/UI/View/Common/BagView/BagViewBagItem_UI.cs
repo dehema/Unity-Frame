@@ -15,12 +15,14 @@ public partial class BagViewBagItem : Rain.Core.InfiniteScrollItem
         [SerializeField] public RectTransform content_Rect;
         [SerializeField] public GameObject board;
         [SerializeField] public Image board_Image;
+        [SerializeField] public Button board_Button;
         [SerializeField] public GameObject icon;
         [SerializeField] public Image icon_Image;
         [SerializeField] public GameObject num;
         [SerializeField] public TextMeshProUGUI num_Text;
         [SerializeField] public GameObject param;
         [SerializeField] public TextMeshProUGUI param_Text;
+        [SerializeField] public GameObject onSel;
     }
 
     [Header("自动序列化组件")]

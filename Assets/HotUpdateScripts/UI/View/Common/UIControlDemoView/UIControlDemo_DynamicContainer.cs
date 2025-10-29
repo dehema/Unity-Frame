@@ -34,7 +34,7 @@ namespace Rain.UI
                 data.name = sprite.name;
                 data.icon = sprite;
                 data.buttonEnabled = true;
-                data.buttonEvent = (index) => { Debug.Log($"µã»÷ {index}"); };
+                data.OnSelectItemIndex = (index) => { Debug.Log($"µã»÷ {index}"); };
                 infiniteScroll.InsertData(data);
                 index++;
             }

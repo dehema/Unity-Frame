@@ -35,9 +35,9 @@ namespace Rain.UI
 
         private void OnClickEvent()
         {
-            if (itemData.buttonEvent != null)
+            if (itemData.OnSelectItemIndex != null)
             {
-                itemData.buttonEvent(GetDataIndex());
+                itemData.OnSelectItemIndex(GetDataIndex());
             }
         }
     }
@@ -50,6 +50,6 @@ namespace Rain.UI
         public float itemSize;  //∂‘œÛ≥ﬂ¥Á
 
         public bool buttonEnabled = false;
-        public System.Action<int> buttonEvent;
+        public System.Action<int> OnSelectItemIndex;
     }
 }

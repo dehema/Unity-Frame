@@ -28,7 +28,7 @@ namespace Rain.UI
         {
             UIControlDemo_DynamicContainerItemData data = new UIControlDemo_DynamicContainerItemData();
             data.name = $"Item {itemList.Count}";
-            data.buttonEvent = (i) => { Debug.Log($"onclick {i}"); };
+            data.OnSelectItemIndex = (i) => { Debug.Log($"onclick {i}"); };
             itemList.Add(data);
         }
 

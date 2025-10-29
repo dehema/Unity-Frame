@@ -56,13 +56,13 @@ namespace Rain.Core
             itemObject.SetAxis(cachedData.anchorMin, cachedData.anchorMax, cachedData.itemPivot);
 
             itemObject.AddSelectCallback(OnSelectItem);
-            
+
             RectTransform itemTransform = itemObject.rectTransform;
             itemTransform.sizeDelta = layout.GetAxisVector(layout.GetMainSize(itemTransform.sizeDelta));
 
             itemObjectList.Add(itemObject);
 
-            
+
 
             return itemObject;
         }
@@ -103,7 +103,7 @@ namespace Rain.Core
         {
             InfiniteScrollItem item = context.itemObject;
 
-            if( item == null || 
+            if (item == null ||
                 item.GetDataIndex() != context.index)
             {
                 context.itemObject = null;
@@ -134,7 +134,7 @@ namespace Rain.Core
                 if (findEmptyIndex == true)
                 {
                     if (emptyIndex == -1 &&
-                        itemObjectList[index].IsActive() == false )
+                        itemObjectList[index].IsActive() == false)
                     {
                         emptyIndex = index;
                     }
@@ -143,18 +143,23 @@ namespace Rain.Core
 
             return emptyIndex;
         }
-        
+
         internal void OnUpdateItemSize(DataContext context)
         {
             if (dynamicItemSize == true)
             {
-                if(context.itemObject != null)
+                if (context.itemObject != null)
                 {
                     UpdateAllData(false);
                 }
 
                 needReBuildLayout = true;
             }
+        }
+
+        public List<InfiniteScrollItem> GetAllItem()
+        {
+            return itemObjectList;
         }
     }
 }

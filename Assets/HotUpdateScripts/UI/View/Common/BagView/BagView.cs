@@ -13,6 +13,8 @@ public partial class BagView : BaseView
     BagViewParam param;
     ItemType currPageItemType;
     DBBinding handler;
+    private InfiniteScroll infinite { get { return ui.InfiniteScroll_InfiniteScroll; } }
+    private BagViewBagItem currSelectItem;
     public override void Init(IViewParam _viewParam = null)
     {
         base.Init(_viewParam);
@@ -43,10 +45,10 @@ public partial class BagView : BaseView
 
     void InitUI()
     {
-        ui.InfiniteScroll_InfiniteScroll.onChangeValue.AddListener(OnChangeValue);
-        ui.InfiniteScroll_InfiniteScroll.onChangeActiveItem.AddListener(OnChangeActiveItem);
-        ui.InfiniteScroll_InfiniteScroll.onStartLine.AddListener(OnStartLine);
-        ui.InfiniteScroll_InfiniteScroll.onEndLine.AddListener(OnEndLine);
+        infinite.onChangeValue.AddListener(OnChangeValue);
+        infinite.onChangeActiveItem.AddListener(OnChangeActiveItem);
+        infinite.onStartLine.AddListener(OnStartLine);
+        infinite.onEndLine.AddListener(OnEndLine);
         ui.tgItemTypeRes_Toggle.SetToggle((bool ison) => { if (ison) RefreshBagContent(ItemType.Res); });
         ui.tgItemTypeSpeed_Toggle.SetToggle((bool ison) => { if (ison) RefreshBagContent(ItemType.Speed); });
         ui.tgItemTypeBuff_Toggle.SetToggle((bool ison) => { if (ison) RefreshBagContent(ItemType.Buff); });
@@ -58,13 +60,12 @@ public partial class BagView : BaseView
     List<DBItemData> currItemDatas = new List<DBItemData>();
     void RefreshBagContent(ItemType _itemType)
     {
+        currSelectItem = null;
         currPageItemType = _itemType;
         currItemDatas = PlayerMgr.Ins.GetAllItemByType(_itemType);
-        ui.InfiniteScroll_InfiniteScroll.ClearData();
-        float itemSize = (ui.InfiniteScroll_Rect.rect.width -
-            ui.InfiniteScroll_InfiniteScroll.GetPadding().x * 2 -
-            (ui.InfiniteScroll_InfiniteScroll.layout.GridCount() - 1) * ui.InfiniteScroll_InfiniteScroll.GetSpace().x) /
-            ui.InfiniteScroll_InfiniteScroll.layout.GridCount();
+        infinite.ClearData();
+        float itemSize = (ui.InfiniteScroll_Rect.rect.width - infinite.GetPadding().x * 2 - (infinite.layout.GridCount() - 1) * infinite.GetSpace().x)
+            / infinite.layout.GridCount();
         BagViewBagItemData[] datas = new BagViewBagItemData[currItemDatas.Count];
         for (int index = 0; index < currItemDatas.Count; index++)
         {
@@ -74,10 +75,10 @@ public partial class BagView : BaseView
             data.itemConfig = itemData.ItemConfig;
             data.itemNum = itemData.ItemNum.Value;
             data.itemSize = itemSize;
-            data.buttonEvent = (index) => { Debug.Log($"点击 {index}"); };
+            data.OnSelectItem = OnSelectItem;
             datas[index] = data;
         }
-        ui.InfiniteScroll_InfiniteScroll.InsertData(datas);
+        infinite.InsertData(datas);
     }
 
     public void OnChangeValue(int firstItemIndex, int lastItemIndex, bool isStartLine, bool isEndLine)
@@ -109,6 +110,24 @@ public partial class BagView : BaseView
     {
         string str2 = isEndLine ? "到达最下方" : "没有到最下方";
         Debug.Log(str2);
+    }
+
+    /// <summary>
+    /// 当选择对象
+    /// </summary>
+    private void OnSelectItem(BagViewBagItem _item)
+    {
+        currSelectItem = _item;
+        foreach (var item in infinite.GetAllItem())
+        {
+            if (_item != currSelectItem)
+            {
+                (item as BagViewBagItem).SetOnSelect(false);
+            }
+        }
+        currSelectItem?.SetOnSelect(true);
+        ui.selItemDialog.SetActive(currSelectItem != null);
+        ui.selItemDialog_BagViewSelItemDialog.SetBagViewBagItem(currSelectItem);
     }
 }
 
