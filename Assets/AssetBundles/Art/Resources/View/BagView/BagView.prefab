@@ -1016,7 +1016,7 @@ GameObject:
   - component: {fileID: 2121337208236648196}
   - component: {fileID: 2121337208236648195}
   m_Layer: 5
-  m_Name: $InfiniteScroll#InfiniteScroll
+  m_Name: $InfiniteScroll#InfiniteScroll,Rect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1140,8 +1140,8 @@ MonoBehaviour:
   dynamicItemSize: 0
   layout:
     axis: 1
-    padding: {x: 0, y: 5}
-    space: {x: 0, y: 0}
+    padding: {x: 50, y: 50}
+    space: {x: 50, y: 50}
     topToBotton: 1
     leftToRight: 1
     values:
@@ -1276,7 +1276,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 2121337209595942931}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.99988395
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1349,7 +1349,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00015641771}
+  m_AnchoredPosition: {x: 0, y: -0.000013832426}
   m_SizeDelta: {x: 0, y: 95.5}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &2121337209595942930
@@ -2235,6 +2235,7 @@ MonoBehaviour:
     tgItemTypeOther_Toggle: {fileID: 6560652372363782276}
     InfiniteScroll: {fileID: 2121337208236648198}
     InfiniteScroll_InfiniteScroll: {fileID: 2121337208236648195}
+    InfiniteScroll_Rect: {fileID: 2121337208236648199}
 --- !u!1 &5599453076090144948
 GameObject:
   m_ObjectHideFlags: 0

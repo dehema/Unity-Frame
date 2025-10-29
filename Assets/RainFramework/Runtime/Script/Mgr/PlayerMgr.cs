@@ -27,16 +27,16 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
     {
         switch (_quality)
         {
-            case 0:
+            case 1:
             default:
                 return "Btn_Rectangle00_n_Gray";
-            case 1:
-                return "Btn_Rectangle00_n_Green";
             case 2:
-                return "Btn_Rectangle00_n_Blue";
+                return "Btn_Rectangle00_n_Green";
             case 3:
-                return "Btn_Rectangle00_n_Purple";
+                return "Btn_Rectangle00_n_Blue";
             case 4:
+                return "Btn_Rectangle00_n_Purple";
+            case 5:
                 return "Btn_Rectangle00_n_Orange";
 
         }

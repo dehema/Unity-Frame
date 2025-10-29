@@ -11,6 +11,8 @@ public partial class BagViewBagItem : Rain.Core.InfiniteScrollItem
     [System.Serializable]
     struct SerializableUIComponents
     {
+        [SerializeField] public GameObject content;
+        [SerializeField] public RectTransform content_Rect;
         [SerializeField] public GameObject board;
         [SerializeField] public Image board_Image;
         [SerializeField] public GameObject icon;

@@ -44,9 +44,10 @@ namespace Rain.UI
 
     public class UIControlDemo_DynamicContainerItemData : InfiniteScrollData
     {
-        public int index;
+        public int index;       //Ë÷Òý
         public string name = string.Empty;
         public Sprite icon;
+        public float itemSize;  //¶ÔÏó³ß´ç
 
         public bool buttonEnabled = false;
         public System.Action<int> buttonEvent;

@@ -61,6 +61,10 @@ public partial class BagView : BaseView
         currPageItemType = _itemType;
         currItemDatas = PlayerMgr.Ins.GetAllItemByType(_itemType);
         ui.InfiniteScroll_InfiniteScroll.ClearData();
+        float itemSize = (ui.InfiniteScroll_Rect.rect.width -
+            ui.InfiniteScroll_InfiniteScroll.GetPadding().x * 2 -
+            (ui.InfiniteScroll_InfiniteScroll.layout.GridCount() - 1) * ui.InfiniteScroll_InfiniteScroll.GetSpace().x) /
+            ui.InfiniteScroll_InfiniteScroll.layout.GridCount();
         BagViewBagItemData[] datas = new BagViewBagItemData[currItemDatas.Count];
         for (int index = 0; index < currItemDatas.Count; index++)
         {
@@ -69,6 +73,7 @@ public partial class BagView : BaseView
             data.index = index;
             data.itemConfig = itemData.ItemConfig;
             data.itemNum = itemData.ItemNum.Value;
+            data.itemSize = itemSize;
             data.buttonEvent = (index) => { Debug.Log($"点击 {index}"); };
             datas[index] = data;
         }

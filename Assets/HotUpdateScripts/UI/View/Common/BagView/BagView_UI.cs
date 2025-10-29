@@ -30,6 +30,7 @@ public partial class BagView : Rain.UI.BaseView
         [SerializeField] public Toggle tgItemTypeOther_Toggle;
         [SerializeField] public GameObject InfiniteScroll;
         [SerializeField] public InfiniteScroll InfiniteScroll_InfiniteScroll;
+        [SerializeField] public RectTransform InfiniteScroll_Rect;
     }
 
     [Header("自动序列化组件")]
