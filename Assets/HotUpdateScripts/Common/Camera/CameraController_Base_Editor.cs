@@ -51,7 +51,7 @@ public class CameraController_Base_Editor : Editor
         EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("移动相机看向目标坐标"))
         {
-            cameraController.SetCameraPosLookAtPos(targetX, targetZ);
+            cameraController.SetCameraPosLookAtPos(new Vector3(targetX, 0, targetZ));
 
             // 标记场景为已修改（如果在编辑模式下）
             if (!Application.isPlaying)

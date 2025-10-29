@@ -62,13 +62,14 @@ public partial class MainView : BaseView
 
     private void OnSelectBuilding(object[] objs)
     {
-        CityBuildingData cityBuildingData = objs[0] as CityBuildingData;
+        CityBuildingData cityBuildingData = objs.Length > 0 ? objs[0] as CityBuildingData : null;
         //科研
         //if (cityBuildingData.BuildingType == CityBuildingType.Tech && cityBuildingData.Level.Value > 0)
         //{
         //    UIMgr.Ins.OpenView<TechView>();
         //}
         //else
+        if (cityBuildingData != null)
         {
             CityBuildingDetailViewParam param = new CityBuildingDetailViewParam();
             param.cityBuildingData = cityBuildingData;

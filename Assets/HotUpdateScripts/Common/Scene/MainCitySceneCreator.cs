@@ -33,6 +33,7 @@ public class MainCitySceneCreator : MonoBehaviour
             buildingGo.transform.localPosition = new Vector3(slotConfig.PosX, slotConfig.PosY, slotConfig.PosZ);
             buildingGo.transform.eulerAngles = new Vector3(0, slotConfig.RotY, 0);
             buildingGo.transform.localScale = new Vector3(buildingConfig.Scale, buildingConfig.Scale, buildingConfig.Scale);
+            cityBuildingData.BuildingObject = buildingGo;
             BuildingController buildingController = buildingGo.AddComponent<BuildingController>();
             buildingController.Init(cityBuildingData);
             buildingSlots[slotConfig.SlotID] = buildingController;

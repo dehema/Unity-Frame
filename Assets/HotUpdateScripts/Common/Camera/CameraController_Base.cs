@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using Rain.Core;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -14,8 +15,6 @@ public class CameraController_Base : MonoBehaviour
 
     [SerializeField] private CameraController_Setting _setting;
     protected CameraController_Setting Setting => _setting;
-
-    public static CameraController_Base Ins;
 
     /// <summary>
     /// 当前帧是否移动
@@ -41,6 +40,10 @@ public class CameraController_Base : MonoBehaviour
     private bool _isTouchMove = false;
     //当前帧是否缩放
     private bool _isTouchZoom = false;
+    //正在播放移动动画
+    private bool _isTweenMove = false;
+    //正在播放缩放动画
+    private bool _isTweenZoom = false;
 
     // 当前帧状态检测
     private bool isCurrentFrameZooming = false;
@@ -52,7 +55,6 @@ public class CameraController_Base : MonoBehaviour
         {
             mainCamera = GetComponent<Camera>();
         }
-        Ins = this;
         SceneMgr.Ins.Camera = mainCamera;
     }
 
@@ -107,11 +109,262 @@ public class CameraController_Base : MonoBehaviour
         IsCurrentFrameMoving = false;
     }
 
+    #region 移动
+
+
+    /// <summary>
+    /// 处理相机平移（鼠标拖动和触摸拖动）
+    /// </summary>
+    private void HandleMove()
+    {
+        //正在移动动画
+        if (_isTouchMove)
+            return;
+        // 处理鼠标平移（PC端）
+#if UNITY_STANDALONE || UNITY_EDITOR
+        HandleMouseMove();
+#endif
+
+        // 处理触摸平移（移动端）
+#if UNITY_ANDROID || UNITY_IOS
+        HandleTouchMove();
+#endif
+
+        if (mainCamera.transform.position == targetPosition)
+        {
+            return;
+        }
+
+        // 平滑过渡到目标位置（应用边界限制）
+        Vector3 positionDifference = mainCamera.transform.position - targetPosition;
+        float distance = positionDifference.magnitude;
+        if (distance > 0.01f) // 当距离大于0.01时才继续插值
+        {
+            // 先对目标位置进行边界限制
+            targetPosition = ClampPosition(targetPosition);
+            mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, targetPosition, Time.deltaTime * Setting.PanDampening);
+
+        }
+        else
+        {
+            // 当距离很小时，直接设置为目标位置，避免无限插值
+            mainCamera.transform.position = targetPosition;
+        }
+
+        IsCurrentFrameMoving = true;
+    }
+
+    /// <summary>
+    /// 处理鼠标平移
+    /// </summary>
+    private void HandleMouseMove()
+    {
+        // 检测鼠标左键按下状态
+        if (Input.GetMouseButtonDown(0)) // 鼠标左键按下
+        {
+            // 检查是否点击到UI，如果点击到UI则不开始拖动
+            if (IsPointerOverUI())
+            {
+                return;
+            }
+
+            isMiddleMouseDragging = true;
+            lastMousePosition = Input.mousePosition;
+        }
+        else if (Input.GetMouseButtonUp(0)) // 鼠标左键释放
+        {
+            isMiddleMouseDragging = false;
+        }
+
+        // 处理鼠标拖动
+        if (isMiddleMouseDragging)
+        {
+            // 检查是否点击到UI，如果点击到UI则停止拖动
+            if (IsPointerOverUI())
+            {
+                isMiddleMouseDragging = false;
+                return;
+            }
+
+            // 计算鼠标位置差值
+            Vector3 mouseDelta = Input.mousePosition - lastMousePosition;
+
+            // 根据屏幕尺寸和相机正交尺寸计算移动比例
+            // 屏幕像素到世界坐标的转换比例
+            float screenToWorldRatio = (mainCamera.orthographicSize * 2) / Screen.height;
+
+            // 计算相机移动方向和距离
+            // 注意：鼠标向右移动，相机应该向左移动，所以使用负值
+            Vector3 moveDirection = new Vector3(
+                -mouseDelta.x * screenToWorldRatio * Setting.MousePanSpeed,
+                0,
+                -mouseDelta.y * screenToWorldRatio * Setting.MousePanSpeed
+            );
+
+            // 考虑相机的旋转角度，确保移动方向正确
+            moveDirection = Quaternion.Euler(0, mainCamera.transform.eulerAngles.y, 0) * moveDirection;
+            moveDirection.y = 0; // 确保Y轴不变
+
+            // 更新目标位置并进行边界限制
+            targetPosition = ClampPosition(targetPosition + moveDirection);
+
+            // 更新鼠标位置记录
+            lastMousePosition = Input.mousePosition;
+        }
+    }
+
+    /// <summary>
+    /// 处理触摸平移（单指拖动）
+    /// </summary>
+    private void HandleTouchMove()
+    {
+        // 只有在单指触摸且不是两指缩放时才处理平移
+        if (Input.touchCount == 1 && !_isTouchZoom)
+        {
+            Touch touch = Input.GetTouch(0);
+
+            // 检测触摸开始
+            if (touch.phase == TouchPhase.Began)
+            {
+                // 检查是否点击到UI，如果点击到UI则不开始拖动
+                if (IsPointerOverUI(touch.fingerId))
+                {
+                    return;
+                }
+
+                _isTouchMove = true;
+                lastTouchPosition = touch.position;
+            }
+            // 检测触摸移动
+            else if (touch.phase == TouchPhase.Moved && _isTouchMove)
+            {
+                // 检查是否点击到UI，如果点击到UI则停止拖动
+                if (IsPointerOverUI(touch.fingerId))
+                {
+                    _isTouchMove = false;
+                    return;
+                }
+
+                // 计算触摸位置差值
+                Vector2 touchDelta = touch.position - lastTouchPosition;
+
+                // 根据屏幕尺寸和相机正交尺寸计算移动比例
+                // 屏幕像素到世界坐标的转换比例
+                float screenToWorldRatio = (mainCamera.orthographicSize * 2) / Screen.height;
+
+                // 计算相机移动方向和距离
+                // 注意：触摸向右移动，相机应该向左移动，所以使用负值
+                Vector3 moveDirection = new Vector3(
+                    -touchDelta.x * screenToWorldRatio * Setting.TouchPanSpeed,
+                    0,
+                    -touchDelta.y * screenToWorldRatio * Setting.TouchPanSpeed
+                );
+
+                // 考虑相机的旋转角度，确保移动方向正确
+                moveDirection = Quaternion.Euler(0, mainCamera.transform.eulerAngles.y, 0) * moveDirection;
+                moveDirection.y = 0; // 确保Y轴不变
+
+                // 更新目标位置并进行边界限制
+                targetPosition = ClampPosition(targetPosition + moveDirection);
+
+                // 更新触摸位置记录
+                lastTouchPosition = touch.position;
+            }
+            // 检测触摸结束
+            else if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
+            {
+                _isTouchMove = false;
+            }
+        }
+        else if (Input.touchCount == 0)
+        {
+            // 没有触摸时，重置触摸平移状态
+            _isTouchMove = false;
+        }
+    }
+
+
+    /// <summary>
+    /// 重置相机位置，使镜头对准世界原点(0,0,0)
+    /// 在保持高度不变的情况下，调整X和Z坐标
+    /// </summary>
+    public void ResetCameraToWorldCenter()
+    {
+        SetCameraPosLookAtPos(Vector3.zero);
+    }
+
+    /// <summary>
+    /// 世界坐标转相机坐标
+    /// </summary>
+    /// <param name="_worldPos"></param>
+    /// <returns></returns>
+    private Vector3 WorldPosToCameraPos(Vector3 _worldPos)
+    {
+        Vector3 dir = mainCamera.transform.forward;
+        float cameraHeight = mainCamera.transform.position.y;
+        float distance = cameraHeight / Mathf.Sin(mainCamera.transform.eulerAngles.x * Mathf.Deg2Rad);
+        Vector3 cameraPos = distance * -dir + new Vector3(_worldPos.x, 0, _worldPos.z);
+        cameraPos = new Vector3(cameraPos.x, cameraHeight, cameraPos.z);
+        cameraPos = ClampPosition(cameraPos);
+        return cameraPos;
+    }
+
+    /// <summary>
+    /// 修改相机位置，使其朝向某个点
+    /// </summary>
+    public virtual void SetCameraPosLookAtPos(Vector3 _pos, bool _tween = true)
+    {
+        Vector3 cameraPos = WorldPosToCameraPos(_pos);
+        if (_tween)
+        {
+            mainCamera.transform.DOMove(cameraPos, 0.5f).OnPlay(() =>
+            {
+                _isTweenMove = true;
+            }).OnComplete(() =>
+            {
+                _isTweenMove = false;
+                targetPosition = cameraPos;
+            });
+        }
+        else
+        {
+            mainCamera.transform.position = cameraPos;
+            targetPosition = cameraPos;
+        }
+    }
+
+    /// <summary>
+    /// 获取相机看向的位置
+    /// </summary>
+    /// <returns></returns>
+    public Vector3 GetCameraLookPos()
+    {
+        Vector3 dir = mainCamera.transform.forward;
+        float cameraHeight = mainCamera.transform.position.y;
+        float distance = cameraHeight / Mathf.Sin(mainCamera.transform.eulerAngles.x * Mathf.Deg2Rad);
+        Vector3 pos = dir * distance + mainCamera.transform.position;
+        pos = new Vector3(pos.x, 0, pos.z);
+        return pos;
+    }
+
+    // 将位置限制在 posLimit 指定的范围内（X: xMin~xMax, Z: zMin~zMax）
+    protected Vector3 ClampPosition(Vector3 position)
+    {
+        float clampedX = Mathf.Clamp(position.x, Setting.PosLimit.x, Setting.PosLimit.y);
+        float clampedZ = Mathf.Clamp(position.z, Setting.PosLimit.z, Setting.PosLimit.w);
+        return new Vector3(clampedX, position.y, clampedZ);
+    }
+    #endregion
+
+    #region 缩放
     /// <summary>
     /// 处理相机缩放
     /// </summary>
     private void HandleZoom()
     {
+        //正在缩放动画
+        if (_isTouchZoom)
+            return;
         // 处理鼠标滚轮缩放（PC端）
 #if UNITY_STANDALONE || UNITY_EDITOR
         HandleMouseZoom();
@@ -214,173 +467,31 @@ public class CameraController_Base : MonoBehaviour
         }
     }
 
+
     /// <summary>
-    /// 处理相机平移（鼠标拖动和触摸拖动）
+    /// 修改相机缩放
     /// </summary>
-    private void HandleMove()
+    public virtual void SetCameraZoom(float _size = 10, bool _tween = true)
     {
-        // 处理鼠标平移（PC端）
-#if UNITY_STANDALONE || UNITY_EDITOR
-        HandleMouseMove();
-#endif
-
-        // 处理触摸平移（移动端）
-#if UNITY_ANDROID || UNITY_IOS
-        HandleTouchMove();
-#endif
-
-        if (mainCamera.transform.position == targetPosition)
+        if (_tween)
         {
-            return;
-        }
-
-        // 平滑过渡到目标位置（应用边界限制）
-        Vector3 positionDifference = mainCamera.transform.position - targetPosition;
-        float distance = positionDifference.magnitude;
-        if (distance > 0.01f) // 当距离大于0.01时才继续插值
-        {
-            // 先对目标位置进行边界限制
-            targetPosition = ClampPosition(targetPosition);
-            mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, targetPosition, Time.deltaTime * Setting.PanDampening);
-
+            mainCamera.DOOrthoSize(_size, 0.5f).OnPlay(() =>
+            {
+                _isTweenZoom = true;
+            }).OnComplete(() =>
+            {
+                _isTweenZoom = false;
+                targetOrthographicSize = _size;
+            });
         }
         else
         {
-            // 当距离很小时，直接设置为目标位置，避免无限插值
-            mainCamera.transform.position = targetPosition;
-        }
-
-        IsCurrentFrameMoving = true;
-    }
-
-    /// <summary>
-    /// 处理鼠标平移
-    /// </summary>
-    private void HandleMouseMove()
-    {
-        // 检测鼠标左键按下状态
-        if (Input.GetMouseButtonDown(0)) // 鼠标左键按下
-        {
-            // 检查是否点击到UI，如果点击到UI则不开始拖动
-            if (IsPointerOverUI())
-            {
-                return;
-            }
-            
-            isMiddleMouseDragging = true;
-            lastMousePosition = Input.mousePosition;
-        }
-        else if (Input.GetMouseButtonUp(0)) // 鼠标左键释放
-        {
-            isMiddleMouseDragging = false;
-        }
-
-        // 处理鼠标拖动
-        if (isMiddleMouseDragging)
-        {
-            // 检查是否点击到UI，如果点击到UI则停止拖动
-            if (IsPointerOverUI())
-            {
-                isMiddleMouseDragging = false;
-                return;
-            }
-
-            // 计算鼠标位置差值
-            Vector3 mouseDelta = Input.mousePosition - lastMousePosition;
-
-            // 根据屏幕尺寸和相机正交尺寸计算移动比例
-            // 屏幕像素到世界坐标的转换比例
-            float screenToWorldRatio = (mainCamera.orthographicSize * 2) / Screen.height;
-
-            // 计算相机移动方向和距离
-            // 注意：鼠标向右移动，相机应该向左移动，所以使用负值
-            Vector3 moveDirection = new Vector3(
-                -mouseDelta.x * screenToWorldRatio * Setting.MousePanSpeed,
-                0,
-                -mouseDelta.y * screenToWorldRatio * Setting.MousePanSpeed
-            );
-
-            // 考虑相机的旋转角度，确保移动方向正确
-            moveDirection = Quaternion.Euler(0, mainCamera.transform.eulerAngles.y, 0) * moveDirection;
-            moveDirection.y = 0; // 确保Y轴不变
-
-            // 更新目标位置并进行边界限制
-            targetPosition = ClampPosition(targetPosition + moveDirection);
-
-            // 更新鼠标位置记录
-            lastMousePosition = Input.mousePosition;
+            mainCamera.orthographicSize = _size;
         }
     }
+    #endregion
 
-    /// <summary>
-    /// 处理触摸平移（单指拖动）
-    /// </summary>
-    private void HandleTouchMove()
-    {
-        // 只有在单指触摸且不是两指缩放时才处理平移
-        if (Input.touchCount == 1 && !_isTouchZoom)
-        {
-            Touch touch = Input.GetTouch(0);
 
-            // 检测触摸开始
-            if (touch.phase == TouchPhase.Began)
-            {
-                // 检查是否点击到UI，如果点击到UI则不开始拖动
-                if (IsPointerOverUI(touch.fingerId))
-                {
-                    return;
-                }
-                
-                _isTouchMove = true;
-                lastTouchPosition = touch.position;
-            }
-            // 检测触摸移动
-            else if (touch.phase == TouchPhase.Moved && _isTouchMove)
-            {
-                // 检查是否点击到UI，如果点击到UI则停止拖动
-                if (IsPointerOverUI(touch.fingerId))
-                {
-                    _isTouchMove = false;
-                    return;
-                }
-
-                // 计算触摸位置差值
-                Vector2 touchDelta = touch.position - lastTouchPosition;
-
-                // 根据屏幕尺寸和相机正交尺寸计算移动比例
-                // 屏幕像素到世界坐标的转换比例
-                float screenToWorldRatio = (mainCamera.orthographicSize * 2) / Screen.height;
-
-                // 计算相机移动方向和距离
-                // 注意：触摸向右移动，相机应该向左移动，所以使用负值
-                Vector3 moveDirection = new Vector3(
-                    -touchDelta.x * screenToWorldRatio * Setting.TouchPanSpeed,
-                    0,
-                    -touchDelta.y * screenToWorldRatio * Setting.TouchPanSpeed
-                );
-
-                // 考虑相机的旋转角度，确保移动方向正确
-                moveDirection = Quaternion.Euler(0, mainCamera.transform.eulerAngles.y, 0) * moveDirection;
-                moveDirection.y = 0; // 确保Y轴不变
-
-                // 更新目标位置并进行边界限制
-                targetPosition = ClampPosition(targetPosition + moveDirection);
-
-                // 更新触摸位置记录
-                lastTouchPosition = touch.position;
-            }
-            // 检测触摸结束
-            else if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
-            {
-                _isTouchMove = false;
-            }
-        }
-        else if (Input.touchCount == 0)
-        {
-            // 没有触摸时，重置触摸平移状态
-            _isTouchMove = false;
-        }
-    }
 
     /// <summary>
     /// 处理射线检测
@@ -427,44 +538,6 @@ public class CameraController_Base : MonoBehaviour
         return null;
     }
 
-    /// <summary>
-    /// 重置相机位置，使镜头对准世界原点(0,0,0)
-    /// 在保持高度不变的情况下，调整X和Z坐标
-    /// </summary>
-    public void ResetCameraToWorldCenter()
-    {
-        SetCameraPosLookAtPos(0, 0);
-    }
-
-    /// <summary>
-    /// 修改相机位置，使其朝向某个点
-    /// </summary>
-    public void SetCameraPosLookAtPos(float _posX, float _posZ)
-    {
-        Vector3 dir = mainCamera.transform.forward;
-        float cameraHeight = mainCamera.transform.position.y;
-        float distance = cameraHeight / Mathf.Sin(mainCamera.transform.eulerAngles.x * Mathf.Deg2Rad);
-        Vector3 pos = distance * -dir + new Vector3(_posX, 0, _posZ);
-        pos = new Vector3(pos.x, cameraHeight, pos.z);
-        pos = ClampPosition(pos);
-        mainCamera.transform.position = pos;
-        targetPosition = pos;
-    }
-
-    /// <summary>
-    /// 获取相机看向的位置
-    /// </summary>
-    /// <returns></returns>
-    public Vector3 GetCameraLookPos()
-    {
-        Vector3 dir = mainCamera.transform.forward;
-        float cameraHeight = mainCamera.transform.position.y;
-        float distance = cameraHeight / Mathf.Sin(mainCamera.transform.eulerAngles.x * Mathf.Deg2Rad);
-        Vector3 pos = dir * distance + mainCamera.transform.position;
-        pos = new Vector3(pos.x, 0, pos.z);
-        return pos;
-    }
-
     protected virtual void LoadConfig()
     {
         Dictionary<string, GameSettingConfig> config = ConfigMgr.GameSetting.DataMap;
@@ -503,12 +576,6 @@ public class CameraController_Base : MonoBehaviour
         targetOrthographicSize = _size;
     }
 
-    // 将位置限制在 posLimit 指定的范围内（X: xMin~xMax, Z: zMin~zMax）
-    protected Vector3 ClampPosition(Vector3 position)
-    {
-        float clampedX = Mathf.Clamp(position.x, Setting.PosLimit.x, Setting.PosLimit.y);
-        float clampedZ = Mathf.Clamp(position.z, Setting.PosLimit.z, Setting.PosLimit.w);
-        return new Vector3(clampedX, position.y, clampedZ);
-    }
+
 }
 

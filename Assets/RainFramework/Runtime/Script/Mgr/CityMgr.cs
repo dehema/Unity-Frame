@@ -115,8 +115,19 @@ public class CityMgr : MonoSingleton<CityMgr>
     public void SelectBuilding(CityBuildingData buildingData)
     {
         selectedBuilding = buildingData;
-        CityBuildingConfig config = buildingData.BuildingConfig;
-        Debug.Log($"选中建筑: {config.BuildingName}");
+
+        //镜头
+        if (selectedBuilding != null)
+        {
+            CityBuildingConfig config = buildingData.BuildingConfig;
+            Debug.Log($"选中建筑: {config.BuildingName}");
+            CameraController_City.Ins.SetCameraPosLookAtPos(buildingData.BuildingObject.transform.position);
+            CameraController_City.Ins.SetCameraZoomToObject();
+        }
+        else
+        {
+            CameraController_City.Ins.SetCameraZoomToDefault();
+        }
 
         MsgMgr.Ins.DispatchEvent(MsgEvent.SelectCityBuilding, buildingData);
     }

@@ -17,6 +17,7 @@ public partial class CityHUDView : BaseView
     ObjPool poolBuildingMenu;
     Dictionary<BuildingController, BuildingHudItem> hudItems = new Dictionary<BuildingController, BuildingHudItem>();
     float nameFadeVal = 1;
+    bool isTweenThisFrame; //当前帧是否已经播放过动画 位移和缩放只保留一个
 
     public override void Init(IViewParam _viewParam = null)
     {
@@ -40,6 +41,11 @@ public partial class CityHUDView : BaseView
         MsgMgr.Ins.RemoveEventListener(MsgEvent.City_Camera_Zoom, OnCameraScale, this);
         MsgMgr.Ins.RemoveEventListener(MsgEvent.SelectCityBuilding, OnSelectBuilding, this);
         base.OnClose(_cb);
+    }
+
+    private void Update()
+    {
+        isTweenThisFrame = false;
     }
 
     private void InitBuildingMenus()
@@ -97,18 +103,27 @@ public partial class CityHUDView : BaseView
 
     public void OnCameraMove(object[] param)
     {
-        UpdateBuildingMenusPos();
-        ResetNameFadeVal();
+        if (!isTweenThisFrame)
+        {
+            UpdateBuildingMenusPos();
+            ResetNameFadeVal();
+            isTweenThisFrame = true;
+        }
     }
 
     public void OnCameraScale(object[] param)
     {
-        UpdateBuildingMenusPos();
+        if (!isTweenThisFrame)
+        {
+            UpdateBuildingMenusPos();
+            ResetNameFadeVal();
+            isTweenThisFrame = true;
+        }
     }
 
     private void OnSelectBuilding(object[] objs)
     {
-
+        CityBuildingData cityBuildingData = objs.Length > 0 ? objs[0] as CityBuildingData : null;
     }
 }
 

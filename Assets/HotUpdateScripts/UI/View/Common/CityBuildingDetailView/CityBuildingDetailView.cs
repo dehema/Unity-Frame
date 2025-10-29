@@ -42,6 +42,7 @@ public partial class CityBuildingDetailView : BaseView
     {
         base.OnClose(_cb);
         dbLevel.UnBind();
+        CityMgr.Ins.SelectBuilding(null);
     }
 }
 

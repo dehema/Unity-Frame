@@ -12,10 +12,11 @@ using UnityEditor;
 /// </summary>
 public class CameraController_WorldMap : CameraController_Base
 {
-
+    public static CameraController_WorldMap Ins { get; private set; }
     protected override void Awake()
     {
         base.Awake();
+        Ins = this;
     }
 
     protected override void Start()

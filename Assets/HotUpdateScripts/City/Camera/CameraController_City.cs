@@ -14,9 +14,14 @@ using UnityEditor;
 /// </summary>
 public class CameraController_City : CameraController_Base
 {
+    public static CameraController_City Ins { get; private set; }
+    float buildingZoom; //建筑选中缩放值
+    float defaultZoom;  //默认缩放值
+
     protected override void Awake()
     {
         base.Awake();
+        Ins = this;
     }
 
     protected override void Start()
@@ -45,6 +50,8 @@ public class CameraController_City : CameraController_Base
         Dictionary<string, GameSettingConfig> config = ConfigMgr.GameSetting.DataMap;
 
         Setting.PosLimit = ParseVector4(config["camera_city_posLimit"].Val);
+        buildingZoom = float.Parse(config["camera_city_buildingZoom"].Val);
+        defaultZoom = float.Parse(config["camera_city_defaultZoom"].Val);
     }
 
     GameObject _pressedTarget = null;
@@ -91,4 +98,16 @@ public class CameraController_City : CameraController_Base
         }
         return null;
     }
+
+    #region 缩放
+    public void SetCameraZoomToObject(float _size = 10, bool _tween = true)
+    {
+        base.SetCameraZoom(buildingZoom, _tween);
+    }
+
+    public void SetCameraZoomToDefault(float _size = 15, bool _tween = true)
+    {
+        base.SetCameraZoom(defaultZoom, _tween);
+    }
+    #endregion
 }
