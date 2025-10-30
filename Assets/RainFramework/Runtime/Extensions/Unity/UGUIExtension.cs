@@ -69,6 +69,7 @@ namespace Rain.Core
         // 设置按钮点击事件
         public static void SetButton(this Button _button, Action _action)
         {
+            _button.onClick.RemoveAllListeners();
             _button.onClick.AddListener(() =>
             {
                 //AudioMgr.Ins.PlaySound(_music);

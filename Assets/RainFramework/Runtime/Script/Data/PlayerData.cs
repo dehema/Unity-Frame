@@ -1,17 +1,17 @@
 ﻿using System.Collections.Generic;
 using Rain.Core;
+using UnityEngine;
 
 public class PlayerData : DBClass
 {
-    //属性
+    //--------------------------------------------------属性--------------------------------------------------
     public DBString playerName;
     public DBInt level;
     public DBInt exp;
-
     public DBFloat hp;
     public DBFloat hpMax;
 
-    //资源
+    //--------------------------------------------------资源--------------------------------------------------
     public DBLong food;
     public DBLong wood;
     public DBLong gold;
@@ -28,7 +28,12 @@ public class PlayerData : DBClass
     //建筑
     public DBDictClass<int, CityBuildingData> cityBuildings = new DBDictClass<int, CityBuildingData>();
 
+    //--------------------------------------------------通用--------------------------------------------------
+    //创建时间
     public long createTime;
+
+    //--------------------------------------------------世界地图--------------------------------------------------
+    public WorldMapData worldMapData = new WorldMapData();
 
     public PlayerData()
     {

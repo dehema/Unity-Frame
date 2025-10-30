@@ -517,7 +517,8 @@ public class CameraController_Base : MonoBehaviour
         return EventSystem.current != null && EventSystem.current.IsPointerOverGameObject(touchId);
     }
 
-    protected virtual GameObject GetHandleRaycast()
+    public RaycastHit RaycastHit;
+    protected virtual GameObject GetHandleRaycast(int _layer = 7)
     {
         bool isOverUI = IsPointerOverUI();
         if (isOverUI)
@@ -526,14 +527,11 @@ public class CameraController_Base : MonoBehaviour
         }
         // 从相机位置发射射线到鼠标位置
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
 
-        // 只检测Layer 7的对象
-        int layerMask = 1 << 7; // Layer 7
-
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
+        int layerMask = 1 << _layer; // Layer
+        if (Physics.Raycast(ray, out RaycastHit, Mathf.Infinity, layerMask))
         {
-            return hit.collider.gameObject;
+            return RaycastHit.collider.gameObject;
         }
         return null;
     }

@@ -4,6 +4,8 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Rain.Core;
+using Newtonsoft.Json;
+using System.IO;
 
 /// <summary>
 /// 世界地图编辑器
@@ -138,6 +140,11 @@ public class WorldMapEditor : EditorWindow
             if (GUILayout.Button("显示预制体文件夹", GUILayout.Height(25)))
             {
                 ShowPrefabFolder();
+            }
+
+            if (GUILayout.Button("生成地图数据映射文件", GUILayout.Height(25)))
+            {
+                CreateWorldMapFile();
             }
             EditorGUILayout.EndHorizontal();
         }
@@ -489,6 +496,41 @@ public class WorldMapEditor : EditorWindow
     }
 
     /// <summary>
+    /// 生成地图数据映射文件
+    /// </summary>
+    void CreateWorldMapFile()
+    {
+        if (currentTilemap == null)
+        {
+            Debug.LogWarning("未找到当前Tilemap，无法读取瓦片信息。");
+            return;
+        }
+
+        // 尝试使用tilemap的有效范围进行遍历
+        BoundsInt bounds = currentTilemap.cellBounds;
+
+        WorldMapConfig mapData = new WorldMapConfig();
+        mapData.sizeWidth = mapWidth;
+        mapData.sizeHeight = mapHeight;
+        MapLayer mapLayer = new MapLayer();
+        mapData.layers[0] = mapLayer;
+        foreach (var pos in bounds.allPositionsWithin)
+        {
+            TileBase tile = currentTilemap.GetTile(pos);
+            if (tile == null)
+                continue;
+
+            string tileName = tile.name;
+            int tileIndex = int.Parse(tileName.Split("_")[1]);
+            int posIndex = pos.y + pos.x * 100;
+            TileData tileData = new TileData(posIndex, pos.y, pos.x);
+            mapLayer.tiles[posIndex] = tileData;
+        }
+        string json = JsonConvert.SerializeObject(mapData);
+        File.WriteAllText("Assets/RainFramework/Resources/WorldMapConfig.json", json);
+    }
+
+    /// <summary>
     /// 使用默认瓦片填充整个地图
     /// </summary>
     private void FillMapWithDefaultTile()
@@ -789,7 +831,7 @@ public class WorldMapEditor : EditorWindow
             // 在Project窗口中高亮显示选中的预制体
             EditorGUIUtility.PingObject(currentPrefab);
             Selection.activeObject = currentPrefab;
-            
+
             // 在预制体编辑器中打开预制体
             AssetDatabase.OpenAsset(currentPrefab);
         }

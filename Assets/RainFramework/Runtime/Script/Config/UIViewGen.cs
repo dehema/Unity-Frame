@@ -135,7 +135,7 @@ public class ViewName
     /// </summary>
 	public const string CityBuildingUpgradeView = "CityBuildingUpgradeView";
     /// <summary>
-    /// 
+    /// 城市HUD
     /// </summary>
 	public const string CityHUDView = "CityHUDView";
     /// <summary>
@@ -150,6 +150,10 @@ public class ViewName
     /// 背包
     /// </summary>
 	public const string BagView = "BagView";
+    /// <summary>
+    /// 世界地图HUD
+    /// </summary>
+	public const string WorldMapHudView = "WorldMapHudView";
     /// <summary>
     /// RTS单位
     /// </summary>

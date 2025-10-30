@@ -7,6 +7,8 @@ using Rain.UI;
 using SimpleJSON;
 using Rain.Core;
 using System.IO;
+using Newtonsoft.Json;
+
 #if UNITY_ANDROID
 using UnityEngine.Networking;
 #endif
@@ -17,6 +19,10 @@ public class ConfigMgr : MonoSingleton<ConfigMgr>
 
     private UIViewConfig uiViewConfig;
     public UIViewConfig UIViewConfig => uiViewConfig;
+    /// <summary>
+    /// 世界地图配置
+    /// </summary>
+    public WorldMapConfig WorldMapConfig;
 
     public static TbGameSetting GameSetting => cfg.TbGameSetting;
     public static TbSLGSetting SLGSetting => cfg.TbSLGSetting;
@@ -33,6 +39,7 @@ public class ConfigMgr : MonoSingleton<ConfigMgr>
     public void LoadAllConfig(bool _localConfig = true)
     {
         uiViewConfig = LoadViewConfig();
+        WorldMapConfig = LoadWorldMapConfig();
 
         cfg = new Tables(LoadJson);
         AllLoadComplete();
@@ -126,6 +133,17 @@ public class ConfigMgr : MonoSingleton<ConfigMgr>
             }
         }
         return uiViewConfig;
+    }
+
+    /// <summary>
+    /// 读取世界地图配置
+    /// </summary>
+    /// <returns></returns>
+    private WorldMapConfig LoadWorldMapConfig()
+    {
+        string json = AssetMgr.Ins.Load<TextAsset>("WorldMapConfig").text;
+        WorldMapConfig config = JsonConvert.DeserializeObject<WorldMapConfig>(json);
+        return config;
     }
 
     /// <summary>

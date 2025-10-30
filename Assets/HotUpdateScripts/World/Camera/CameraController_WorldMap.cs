@@ -51,4 +51,23 @@ public class CameraController_WorldMap : CameraController_Base
         Setting.ZoomMaxSize = float.Parse(config["camera_worldMap_zoomMaxSize"].Val);
         Setting.MouseZoomSpeed = float.Parse(config["camera_worldMap_mouseZoomSpeed"].Val);
     }
+
+    #region 射线
+    Vector3 _pressMousePos;
+    protected override void HandleRaycast()
+    {
+        // 检测鼠标左键点击
+        if (Input.GetMouseButtonDown(0))
+        {
+            _pressMousePos = Input.mousePosition;
+        }
+        else if (Input.mousePosition == _pressMousePos && Input.GetMouseButtonUp(0))
+        {
+            if (GetHandleRaycast())
+            {
+                Debug.Log(RaycastHit.point);
+            }
+        }
+    }
+    #endregion
 }

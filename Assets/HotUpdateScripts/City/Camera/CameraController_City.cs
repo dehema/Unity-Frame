@@ -78,27 +78,6 @@ public class CameraController_City : CameraController_Base
         }
     }
 
-    protected override GameObject GetHandleRaycast()
-    {
-        bool isOverUI = EventSystem.current.IsPointerOverGameObject();
-        if (isOverUI)
-        {
-            return null; // 点到UI
-        }
-        // 从相机位置发射射线到鼠标位置
-        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-
-        // 只检测Layer 7的对象
-        int layerMask = 1 << 7; // Layer 7
-
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
-        {
-            return hit.collider.gameObject;
-        }
-        return null;
-    }
-
     #region 缩放
     public void SetCameraZoomToObject(float _size = 10, bool _tween = true)
     {

@@ -130,6 +130,7 @@ view:
             layer: DialogLayer
             bgClose: true
         CityHUDView:
+            comment: 城市HUD
             layer: BaseLayer
             hasBg: false
         ChatView:
@@ -144,6 +145,10 @@ view:
             comment: 背包
             layer: DialogLayer
             bgColor: "#00325FFF"
+        WorldMapHudView:
+            comment: 世界地图HUD
+            layer: BaseLayer
+            hasBg: false
     RTS:
         RTSUnitTestView:
             comment: RTS单位
