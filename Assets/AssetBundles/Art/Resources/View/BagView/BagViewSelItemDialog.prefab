@@ -421,6 +421,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ui:
+    btClose: {fileID: 0}
+    btClose_Button: {fileID: 0}
     arrow: {fileID: 2207065253756026176}
     arrow_Rect: {fileID: 4987173177791205411}
     selItemName: {fileID: 7761818645240889345}

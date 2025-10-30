@@ -102,7 +102,7 @@ public partial class BagViewSelItemDialog : BaseUI
             ui.arrow.transform.localScale = new Vector3(1, -1, 1);
         }
         dialogRect.anchoredPosition = new Vector2(0, dialogPosY);
-        ui.arrow_Rect.anchoredPosition = new Vector2(itemScreenPos.x + itemRect.rect.width / 2, 0);
+        ui.arrow_Rect.anchoredPosition = new Vector2(itemScreenPos.x + itemRect.rect.width / 2 - 30, 0);
     }
 
     void RefreshData()

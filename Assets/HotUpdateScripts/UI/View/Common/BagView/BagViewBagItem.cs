@@ -11,6 +11,7 @@ public partial class BagViewBagItem : InfiniteScrollItem
     {
         base.UpdateData(scrollData);
         ItemData = _scrollData as BagViewBagItemData;
+        gameObject.name = ItemData.index.ToString();
         ui.content_Rect.SetSizeDeltaWidth(ItemData.itemSize);
         ui.content_Rect.SetSizeDeltaHeight(ItemData.itemSize);
         ui.num_Text.text = Util.Text.FormatNum(ItemData.itemNum);
@@ -26,6 +27,10 @@ public partial class BagViewBagItem : InfiniteScrollItem
     public override void SetActive(bool active, bool notifyEvent = true)
     {
         base.SetActive(active, notifyEvent);
+        if (active)
+        {
+            ui.onSel.SetActive(false);
+        }
     }
 
     /// <summary>
@@ -37,8 +42,6 @@ public partial class BagViewBagItem : InfiniteScrollItem
         ui.onSel.SetActive(_isOn);
     }
 }
-
-
 
 public class BagViewBagItemData : UIControlDemo_DynamicContainerItemData
 {

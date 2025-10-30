@@ -4,7 +4,6 @@ using Rain.Core;
 using Rain.UI;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
 
 /// <summary>
 /// 背包
@@ -119,10 +118,13 @@ public partial class BagView : BaseView
     /// </summary>
     private void OnSelectItem(BagViewBagItem _item)
     {
-        currSelectItem = _item;
+        if (currSelectItem == _item)
+            currSelectItem = null;
+        else
+            currSelectItem = _item;
         foreach (var item in infinite.GetAllItem())
         {
-            if (_item != currSelectItem)
+            if (item != currSelectItem)
             {
                 (item as BagViewBagItem).SetOnSelect(false);
             }
