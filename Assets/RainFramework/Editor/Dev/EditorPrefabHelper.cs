@@ -81,10 +81,10 @@ public class EditorPrefabHelper
     #endregion
 
     #region slider
-    [MenuItem(RainUIMenuPrefix + "Slider")]
+    [MenuItem(RainUIMenuPrefix + "进度条")]
     public static void CreateSlider()
     {
-        CreatePrefab(folderPath + "Slider");
+        CreatePrefab(folderPath + "进度条");
     }
     #endregion
 

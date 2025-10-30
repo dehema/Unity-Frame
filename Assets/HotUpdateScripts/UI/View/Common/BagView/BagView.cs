@@ -4,6 +4,7 @@ using Rain.Core;
 using Rain.UI;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 /// <summary>
 /// 背包
@@ -26,6 +27,7 @@ public partial class BagView : BaseView
     public override void OnOpen(IViewParam _viewParam = null)
     {
         base.OnOpen(_viewParam);
+        OnSelectItem(null);
         handler = PlayerMgr.Ins.playerData.items.Bind((db) =>
         {
             RefreshBagContent(currPageItemType);
@@ -126,6 +128,11 @@ public partial class BagView : BaseView
             }
         }
         currSelectItem?.SetOnSelect(true);
+        RefreshSelItemDialog();
+    }
+
+    void RefreshSelItemDialog()
+    {
         ui.selItemDialog.SetActive(currSelectItem != null);
         ui.selItemDialog_BagViewSelItemDialog.SetBagViewBagItem(currSelectItem);
     }

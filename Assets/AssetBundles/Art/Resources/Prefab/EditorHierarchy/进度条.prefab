@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 295239941599551405}
   - component: {fileID: 5831687609656088001}
   m_Layer: 5
-  m_Name: Slider
+  m_Name: "\u8FDB\u5EA6\u6761"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

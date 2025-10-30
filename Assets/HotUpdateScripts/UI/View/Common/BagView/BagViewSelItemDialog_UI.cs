@@ -11,6 +11,8 @@ public partial class BagViewSelItemDialog : Rain.UI.BaseUI
     [System.Serializable]
     struct SerializableUIComponents
     {
+        [SerializeField] public GameObject arrow;
+        [SerializeField] public RectTransform arrow_Rect;
         [SerializeField] public GameObject selItemName;
         [SerializeField] public TextMeshProUGUI selItemName_Text;
         [SerializeField] public GameObject selItemDesc;
