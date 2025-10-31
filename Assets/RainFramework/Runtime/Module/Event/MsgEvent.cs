@@ -39,6 +39,8 @@ namespace Rain.Core
         //世界地图相机
         WorldMap_Camera_Move,           //世界地图相机移动
         WorldMap_Camera_Zoom,           //世界地图相机缩放
+        WorldMap_SelectTile,            //世界地图选择地块（vector3世界坐标）
+
 
         //场景
         SceneLoaded,                    //场景加载

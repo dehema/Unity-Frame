@@ -45,6 +45,10 @@ public class SceneMgr : ModuleSingletonMono<SceneMgr>, IModule
             UIMgr.Ins.OpenView(ViewName.MainView);
             UIMgr.Ins.OpenView(ViewName.CityHUDView);
         }
+        else if (scene.name == SceneName.WorldMap)
+        {
+            UIMgr.Ins.OpenView(ViewName.WorldMapHudView);
+        }
     }
 
     private void OnSceneUnloaded(Scene scene)

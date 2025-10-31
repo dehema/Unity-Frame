@@ -27,7 +27,7 @@ public class WorldMapEditor : EditorWindow
 
     // 随机地图相关
     private List<TileBase> randomTiles = new List<TileBase>();
-    private float randomTileRatio = 0.05f; // 随机瓦片比例，默认5%
+    private float randomTileRatio = 5; // 随机瓦片比例，默认5%
     private bool showRandomTiles = false;
     private int objectPickerControlID = 0;
 
@@ -254,8 +254,8 @@ public class WorldMapEditor : EditorWindow
             // 随机瓦片比例设置
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("随机瓦片比例:", GUILayout.Width(100));
-            randomTileRatio = EditorGUILayout.Slider(randomTileRatio, 0f, 1f);
-            EditorGUILayout.LabelField($"{(randomTileRatio * 100):F0}%", GUILayout.Width(40));
+            randomTileRatio = Mathf.CeilToInt(EditorGUILayout.Slider(randomTileRatio, 0f, 100f));
+            EditorGUILayout.LabelField($"{(randomTileRatio)}%", GUILayout.Width(40));
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.Space(5);
@@ -300,7 +300,7 @@ public class WorldMapEditor : EditorWindow
             {
                 if (defaultTile != null)
                 {
-                    if (EditorUtility.DisplayDialog("确认生成", $"确定要生成 {sizePerArea}x{sizePerArea} 的随机地图吗？\n随机瓦片比例: {(randomTileRatio * 100):F0}%", "确定", "取消"))
+                    if (EditorUtility.DisplayDialog("确认生成", $"确定要生成 {sizePerArea}x{sizePerArea} 的随机地图吗？\n随机瓦片比例: {(randomTileRatio):F0}%", "确定", "取消"))
                     {
                         GenerateRandomMap();
                     }
@@ -549,7 +549,9 @@ public class WorldMapEditor : EditorWindow
             }
         }
         string json = JsonConvert.SerializeObject(mapConfig);
-        File.WriteAllText("Assets/RainFramework/Resources/WorldMapConfig.json", json);
+        string jsonFilePath = "Assets/RainFramework/Resources/WorldMapConfig.json";
+        File.WriteAllText(jsonFilePath, json);
+        EditorUtility.OpenWithDefaultApp(jsonFilePath);
     }
 
     /// <summary>
@@ -615,6 +617,7 @@ public class WorldMapEditor : EditorWindow
     /// </summary>
     private void RefreshTileDisplay()
     {
+        currentPrefab.SetLayer(1 << 7);
         EditorUtility.SetDirty(currentTilemap);
         EditorUtility.SetDirty(currentPrefab);
         SceneView.RepaintAll();
@@ -751,6 +754,8 @@ public class WorldMapEditor : EditorWindow
             // 复制预制体
             if (AssetDatabase.CopyAsset(basePath, newPath))
             {
+                GameObject prefab = Resources.Load<GameObject>(newPath);
+                prefab.SetLayer(1 << 7);
                 createdCount++;
             }
         }
@@ -784,7 +789,7 @@ public class WorldMapEditor : EditorWindow
 
         // 计算随机瓦片数量
         int totalTiles = sizePerArea * sizePerArea;
-        int randomTileCount = Mathf.RoundToInt(totalTiles * randomTileRatio);
+        int randomTileCount = Mathf.RoundToInt(totalTiles * randomTileRatio / 100f);
 
         // 创建位置列表用于随机选择
         List<Vector3Int> allPositions = new List<Vector3Int>();
@@ -830,7 +835,7 @@ public class WorldMapEditor : EditorWindow
 
         RefreshTileDisplay();
 
-        Debug.Log($"已生成 {sizePerArea}x{sizePerArea} 的随机地图，随机瓦片比例: {(randomTileRatio * 100):F0}%");
+        Debug.Log($"已生成 {sizePerArea}x{sizePerArea} 的随机地图，随机瓦片比例: {(randomTileRatio):F0}%");
     }
 
     /// <summary>

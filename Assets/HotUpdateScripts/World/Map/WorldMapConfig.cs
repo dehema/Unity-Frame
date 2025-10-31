@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 /// <summary>整个地图数据</summary>
 [Serializable]
@@ -31,11 +32,19 @@ public class TileArea
 [Serializable]
 public class TileData
 {
-    public int Index;   // 瓦片索引
+    public int Index;   // 瓦片索引(区域相对索引，不能直接使用)
     public int Type;    // 瓦片索引
+    [NonSerialized]
+    public Vector2Int Pos;
 
     public TileData() { }
     public TileData(int _index) { Index = _index; }
+    public TileData(TileData _otherData)
+    {
+        this.Index = _otherData.Index;
+        this.Type = _otherData.Type;
+        this.Pos = _otherData.Pos;
+    }
 }
 
 /// <summary>

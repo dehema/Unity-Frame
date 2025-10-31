@@ -87,30 +87,30 @@ namespace Rain.UI
             return Tools.Ins.WorldPosToAnchor(_pos, GetComponentInParent<Canvas>());
         }
     }
-}
 
 
 #if UNITY_EDITOR
-[CustomEditor(typeof(BaseUI), true)]
-public class BaseUI_Editor : Editor
-{
-    public override void OnInspectorGUI()
+    [CustomEditor(typeof(BaseUI), true)]
+    public class BaseUI_Editor : Editor
     {
-        // 绘制默认的Inspector界面
-        DrawDefaultInspector();
-
-        // 添加分隔线
-        EditorGUILayout.Space();
-        EditorGUILayout.LabelField("编辑器工具", EditorStyles.boldLabel);
-
-        if (!Application.isPlaying)
+        public override void OnInspectorGUI()
         {
-            // 添加重置相机位置按钮
-            if (GUILayout.Button("导出UI"))
+            // 绘制默认的Inspector界面
+            DrawDefaultInspector();
+
+            // 添加分隔线
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("编辑器工具", EditorStyles.boldLabel);
+
+            if (!Application.isPlaying)
             {
-                UIMgr.ActionExportUI_Editor?.Invoke();
+                // 添加重置相机位置按钮
+                if (GUILayout.Button("导出UI"))
+                {
+                    UIMgr.ActionExportUI_Editor?.Invoke();
+                }
             }
         }
     }
-}
 #endif
+}

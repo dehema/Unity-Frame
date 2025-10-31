@@ -16,6 +16,8 @@ public partial class WorldMapHudView : Rain.UI.BaseView
         [SerializeField] public Button bg_Button;
         [SerializeField] public GameObject content;
         [SerializeField] public RectTransform content_Rect;
+        [SerializeField] public GameObject selectTile;
+        [SerializeField] public WorldMapSelectTileDialog selectTile_WorldMapSelectTileDialog;
     }
 
     [Header("自动序列化组件")]

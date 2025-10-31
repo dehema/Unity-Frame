@@ -14,7 +14,7 @@ public class WorldMapMgr : MonoBehaviour
     public static WorldMapMgr Ins;
 
     [Header("地图设置")]
-    private int areaSize = 100;       // 单张地图尺寸
+    private int areaSize = 100;       // 单个地图区域尺寸
     private int mapSize = 1000;    // 总地图尺寸
     private int maxLoadedAreas = 10000;  // 最大同时加载的地图数量（3x3）
     private int currMapLayer = 0;       //当前地图lod层级
@@ -43,20 +43,13 @@ public class WorldMapMgr : MonoBehaviour
         {
             GameObject container = new GameObject("MapContainer");
             mapContainer = container.transform;
-            mapContainer.localEulerAngles = new Vector3(90, 0, 45);
+            mapContainer.localEulerAngles = new Vector3(270, -90, -45);
             mapContainer.SetParent(transform);
         }
 
         // 监听相机移动事件
         MsgMgr.Ins.AddEventListener(MsgEvent.WorldMap_Camera_Move, OnCameraMove, this);
         MsgMgr.Ins.AddEventListener(MsgEvent.WorldMap_Camera_Zoom, OnCameraZoom, this);
-    }
-
-
-    private void OnDestroy()
-    {
-        MsgMgr.Ins.RemoveEventListener(MsgEvent.WorldMap_Camera_Move, OnCameraMove, this);
-        MsgMgr.Ins.RemoveEventListener(MsgEvent.WorldMap_Camera_Zoom, OnCameraZoom, this);
     }
 
     #region 相机
@@ -88,7 +81,7 @@ public class WorldMapMgr : MonoBehaviour
         //相机注视坐标
         Vector3 cameraPos = CameraController_WorldMap.Ins.GetCameraLookPos();
         //计算地图索引
-        Vector2Int newAreaIndex = GetAreaIndexFromPosition(cameraPos);
+        Vector2Int newAreaIndex = WorldPosToAreaPos(cameraPos);
 
         // 计算相机当前能看到的视野范围
         Vector2Int visibleAreaRange = CalculateVisibleAreaRange();
@@ -111,9 +104,9 @@ public class WorldMapMgr : MonoBehaviour
     #region 区域
 
     /// <summary>
-    /// 根据位置计算区域索引
+    /// 世界坐标转区域坐标
     /// </summary>
-    public Vector2Int GetAreaIndexFromPosition(Vector3 _worldPos)
+    public Vector2Int WorldPosToAreaPos(Vector3 _worldPos)
     {
         Vector2Int tilePos = WorldPosToTilePos(_worldPos);
         Vector2Int index = new Vector2Int(tilePos.x / areaSize, tilePos.y / areaSize);
@@ -344,8 +337,8 @@ public class WorldMapMgr : MonoBehaviour
     /// </summary>
     private Vector3 GetAreaPosition(Vector2Int _areaIndex)
     {
-        float x = _areaIndex.x * areaSize;
-        float y = _areaIndex.y * areaSize;
+        float x = _areaIndex.y * areaSize;
+        float y = _areaIndex.x * areaSize;
 
         return new Vector3(x, y, 0);
     }
@@ -421,6 +414,139 @@ public class WorldMapMgr : MonoBehaviour
         return new Vector3(worldX, 0, worldZ);
     }
 
+    /// <summary>
+    /// 根据地块坐标获取区域索引
+    /// </summary>
+    /// <param name="_tilePos">地块坐标</param>
+    /// <returns>区域索引（areaX * maxMapCount + areaY）</returns>
+    public int GetAreaIndex(Vector2Int _tilePos)
+    {
+        // 计算区域坐标
+        int areaX = _tilePos.x / areaSize;
+        int areaY = _tilePos.y / areaSize;
+
+        // 转换为一维索引：areaX * maxMapCount + areaY
+        int areaIndex = areaX + areaY * maxMapCount;
+        return areaIndex;
+    }
+
+    /// <summary>
+    /// 获取地块区域信息
+    /// </summary>
+    /// <param name="_areaIndex">区域索引</param>
+    /// <returns>TileArea对象，如果不存在则返回null</returns>
+    public TileArea GetTileArea(int _areaIndex)
+    {
+        // 检查ConfigMgr是否存在
+        if (ConfigMgr.Ins == null || ConfigMgr.Ins.WorldMapConfig == null)
+        {
+            Debug.LogWarning("WorldMapConfig未加载");
+            return null;
+        }
+
+        WorldMapConfig config = ConfigMgr.Ins.WorldMapConfig;
+
+        // 获取当前图层的区域映射
+        if (!config.Layers.ContainsKey(currMapLayer))
+        {
+            Debug.LogWarning($"图层 {currMapLayer} 不存在");
+            return null;
+        }
+
+        MapLayer layer = config.Layers[currMapLayer];
+
+        // 从图层获取TileArea索引
+        if (!layer.Areas.ContainsKey(_areaIndex))
+        {
+            // 如果区域不存在，返回null
+            return null;
+        }
+
+        int tileAreaIndex = layer.Areas[_areaIndex];
+
+        // 从WorldMapConfig获取TileArea对象
+        if (!config.Areas.ContainsKey(tileAreaIndex))
+        {
+            Debug.LogWarning($"TileArea索引 {tileAreaIndex} 不存在");
+            return null;
+        }
+
+        return config.Areas[tileAreaIndex];
+    }
+
+    /// <summary>
+    /// 世界地块坐标转成区域的地块坐标
+    /// </summary>
+    /// <param name="_worldTilePos">世界地块坐标</param>
+    /// <returns>区域内的本地地块坐标（相对于区域左下角的坐标）</returns>
+    public Vector2Int WorldTilePosToLocalTilePos(Vector2Int _worldTilePos)
+    {
+        // 计算区域内的相对位置
+        int localX = _worldTilePos.x % areaSize;
+        int localY = _worldTilePos.y % areaSize;
+
+        // 处理负数情况
+        if (localX < 0)
+            localX += areaSize;
+        if (localY < 0)
+            localY += areaSize;
+
+        return new Vector2Int(localX, localY);
+    }
+
+    /// <summary>
+    /// 获取地块数据
+    /// </summary>
+    /// <param name="_worldTilePos">世界地块坐标</param>
+    /// <returns>TileData对象，如果不存在则返回默认TileData</returns>
+    public TileData GetTileData(Vector2Int _worldTilePos)
+    {
+        // 获取区域索引
+        int areaIndex = GetAreaIndex(_worldTilePos);
+        // 获取TileArea
+        TileArea tileArea = GetTileArea(areaIndex);
+        if (tileArea == null)
+        {
+            return null;
+        }
+
+
+        int localTileIndex = TilePosToTileIndex(_worldTilePos);
+        TileData tileData = null;
+        if (tileArea.Tiles.ContainsKey(localTileIndex))
+        {
+            tileData = new TileData(tileArea.Tiles[localTileIndex]);
+        }
+        else
+        {
+            tileData = new TileData();
+            tileData.Type = tileArea.DefaultTile;
+        }
+
+        tileData.Pos = _worldTilePos;
+        return tileData;
+    }
+
+    /// <summary>
+    /// 地块坐标转地块索引(世界坐标和本地坐标都可以)
+    /// </summary>
+    /// <returns></returns>
+    public int TilePosToTileIndex(Vector2Int _tilePos)
+    {
+        Vector2Int tilePos = WorldTilePosToLocalTilePos(_tilePos);
+        int localTileIndex = tilePos.x + tilePos.y * areaSize;
+        return localTileIndex;
+    }
+
+    /// <summary>
+    /// 选择地图
+    /// </summary>
+    /// <param name="_worldPos"></param>
+    public void SelectTile(Vector3 _worldPos)
+    {
+        Vector2Int tilePos = WorldPosToTilePos(_worldPos);
+        MsgMgr.Ins.DispatchEvent(MsgEvent.WorldMap_SelectTile, tilePos);
+    }
     #endregion
 
     #region 调试

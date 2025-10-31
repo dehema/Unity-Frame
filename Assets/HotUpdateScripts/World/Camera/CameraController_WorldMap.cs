@@ -93,9 +93,19 @@ public class CameraController_WorldMap : CameraController_Base
         {
             if (GetHandleRaycast())
             {
-                Debug.Log(RaycastHit.point);
+                OnSelectTile(RaycastHit.point);
             }
         }
     }
+
+    /// <summary>
+    /// 选择地图
+    /// </summary>
+    /// <param name="_worldPos"></param>
+    public void OnSelectTile(Vector3 _worldPos)
+    {
+        WorldMapMgr.Ins.SelectTile(_worldPos);
+    }
+
     #endregion
 }

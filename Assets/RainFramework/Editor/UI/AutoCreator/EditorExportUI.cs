@@ -445,8 +445,8 @@ namespace Rain.UI.Editor
                         }
                         else
                         {
-                            bool res = EditorUtility.DisplayDialog("错误", $"在名为{componentFullName}的对象上找不到{componentFullName}组件", "确定", "自动添加");
-                            if (res == false)
+                            bool res = EditorUtility.DisplayDialog("错误", $"在名为{componentFullName}的对象上找不到{componentFullName}组件", "自动添加", "确定");
+                            if (res)
                             {
                                 try
                                 {

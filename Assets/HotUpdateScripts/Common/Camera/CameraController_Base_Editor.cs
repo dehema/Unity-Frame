@@ -120,11 +120,11 @@ public class CameraController_Base_Editor : Editor
             Vector2Int targetCube = WorldMapMgr.Ins.WorldPosToTilePos(targetPos);
             EditorGUILayout.LabelField($"注视地块: ({targetCube.x}, {targetCube.y})", EditorStyles.miniLabel);
 
-            Vector2Int mapIndex = WorldMapMgr.Ins.GetAreaIndexFromPosition(targetPos);
-            EditorGUILayout.LabelField($"注视地图索引: ({mapIndex.x}, {mapIndex.y})", EditorStyles.miniLabel);
+            Vector2Int mapIndex = WorldMapMgr.Ins.WorldPosToAreaPos(targetPos);
+            EditorGUILayout.LabelField($"注视区域索引: ({mapIndex.x}, {mapIndex.y})", EditorStyles.miniLabel);
 
             Vector2Int visibleRange = WorldMapMgr.Ins.GetCurrentVisibleAreaRange();
-            EditorGUILayout.LabelField($"可见地图范围: {visibleRange.x}x{visibleRange.y}", EditorStyles.miniLabel);
+            EditorGUILayout.LabelField($"可见区域范围: {visibleRange.x}x{visibleRange.y}", EditorStyles.miniLabel);
 
             // 显示相机视野信息
             string viewInfo = WorldMapMgr.Ins.GetCameraViewInfo();
