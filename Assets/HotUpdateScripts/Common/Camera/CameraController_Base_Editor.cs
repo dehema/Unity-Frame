@@ -27,7 +27,7 @@ public class CameraController_Base_Editor : Editor
         // 添加重置相机位置按钮
         if (GUILayout.Button("调整相机视野中心到世界原点 (0,0,0)"))
         {
-            cameraController.ResetCameraToWorldCenter();
+            cameraController.ResetCameraToWorldCenter(false);
 
             // 标记场景为已修改（如果在编辑模式下）
             if (!Application.isPlaying)
@@ -51,7 +51,7 @@ public class CameraController_Base_Editor : Editor
         EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("移动相机看向目标坐标"))
         {
-            cameraController.SetCameraPosLookAtPos(new Vector3(targetX, 0, targetZ));
+            cameraController.SetCameraPosLookAtPos(new Vector3(targetX, 0, targetZ), false);
 
             // 标记场景为已修改（如果在编辑模式下）
             if (!Application.isPlaying)
@@ -117,7 +117,7 @@ public class CameraController_Base_Editor : Editor
             EditorGUILayout.LabelField($"已加载地图数量: {WorldMapMgr.Ins.GetLoadedAreaCount()}");
 
             Vector3 targetPos = worldCamera.GetCameraLookPos();
-            Vector2Int targetCube = WorldMapMgr.Ins.WorldPosToLocal(targetPos);
+            Vector2Int targetCube = WorldMapMgr.Ins.WorldPosToTilePos(targetPos);
             EditorGUILayout.LabelField($"注视地块: ({targetCube.x}, {targetCube.y})", EditorStyles.miniLabel);
 
             Vector2Int mapIndex = WorldMapMgr.Ins.GetAreaIndexFromPosition(targetPos);

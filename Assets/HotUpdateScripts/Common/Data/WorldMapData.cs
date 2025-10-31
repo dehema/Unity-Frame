@@ -12,5 +12,5 @@ public class WorldMapData : DBClass
     /// <summary>
     /// 城市位置
     /// </summary>
-    public Vector2Int cityPos = new Vector2Int(592, 659);
+    public Vector2Int cityPos = new Vector2Int(12, 955);
 }

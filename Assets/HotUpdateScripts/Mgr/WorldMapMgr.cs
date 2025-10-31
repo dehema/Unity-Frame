@@ -6,6 +6,8 @@ using Rain.Core;
 
 /// <summary>
 /// 世界地图管理器
+/// 右上为X正方向，左上为Y正方向
+/// 整张地图由10x10张tileMap实现动态加载/卸载
 /// </summary>
 public class WorldMapMgr : MonoBehaviour
 {
@@ -26,6 +28,11 @@ public class WorldMapMgr : MonoBehaviour
     private Vector2Int lastVisibleAreaRange = Vector2Int.zero; // 上次的可见地图范围
     private int maxMapCount; // 每个轴最大地图数量
 
+    /// <summary>
+    /// 世界地图数据
+    /// </summary>
+    public WorldMapData WorldMapData => DataMgr.Ins.playerData.worldMapData;
+
     private void Awake()
     {
         Ins = this;
@@ -45,12 +52,6 @@ public class WorldMapMgr : MonoBehaviour
         MsgMgr.Ins.AddEventListener(MsgEvent.WorldMap_Camera_Zoom, OnCameraZoom, this);
     }
 
-    private void Start()
-    {
-        // 初始加载中心地图
-        Vector2Int initialRange = CalculateVisibleAreaRange();
-        LoadSurroundingAreas(Vector2Int.zero, initialRange);
-    }
 
     private void OnDestroy()
     {
@@ -78,7 +79,7 @@ public class WorldMapMgr : MonoBehaviour
     /// <summary>
     /// 检查并加载地图
     /// </summary>
-    private void CheckAndLoadAreas()
+    public void CheckAndLoadAreas()
     {
         if (CameraController_WorldMap.Ins == null || CameraController_WorldMap.Ins.mainCamera == null)
         {
@@ -114,8 +115,8 @@ public class WorldMapMgr : MonoBehaviour
     /// </summary>
     public Vector2Int GetAreaIndexFromPosition(Vector3 _worldPos)
     {
-        Vector2Int localPos = WorldPosToLocal(_worldPos);
-        Vector2Int index = new Vector2Int(localPos.x / areaSize, localPos.y / areaSize);
+        Vector2Int tilePos = WorldPosToTilePos(_worldPos);
+        Vector2Int index = new Vector2Int(tilePos.x / areaSize, tilePos.y / areaSize);
         return index;
     }
 
@@ -171,8 +172,6 @@ public class WorldMapMgr : MonoBehaviour
         {
             UnloadFarthestArea(centerIndex);
         }
-
-        // 根据可见范围动态加载地图
         int halfRangeX = visibleRange.x / 2;
         int halfRangeY = visibleRange.y / 2;
 
@@ -341,27 +340,14 @@ public class WorldMapMgr : MonoBehaviour
     }
 
     /// <summary>
-    /// 根据地图索引计算世界位置
+    /// 获取区域的世界坐标
     /// </summary>
     private Vector3 GetAreaPosition(Vector2Int _areaIndex)
     {
         float x = _areaIndex.x * areaSize;
         float y = _areaIndex.y * areaSize;
 
-        return new Vector3(y, x, 0);
-    }
-
-    /// <summary>
-    /// 世界坐标转本地坐标
-    /// </summary>
-    /// <returns></returns>
-    public Vector2Int WorldPosToLocal(Vector3 _worldPos)
-    {
-        float angleRad = 45f * Mathf.Deg2Rad;
-        Vector2Int localPos = new Vector2Int(
-            Mathf.FloorToInt(Mathf.Abs(_worldPos.x * Mathf.Cos(angleRad) - _worldPos.z * Mathf.Sin(angleRad))),
-            Mathf.FloorToInt(Mathf.Abs(_worldPos.x * Mathf.Sin(angleRad) + _worldPos.z * Mathf.Cos(angleRad))));
-        return localPos;
+        return new Vector3(x, y, 0);
     }
 
     /// <summary>
@@ -394,6 +380,45 @@ public class WorldMapMgr : MonoBehaviour
     public Vector2Int GetCurrentVisibleAreaRange()
     {
         return lastVisibleAreaRange;
+    }
+
+    #endregion
+
+    #region 地块
+    /// <summary>
+    /// 世界坐标转本地坐标
+    /// </summary>
+    /// <returns></returns>
+    public Vector2Int WorldPosToTilePos(Vector3 _worldPos)
+    {
+        float angleRad = 45f * Mathf.Deg2Rad;
+        float cos = Mathf.Cos(angleRad);
+        float sin = Mathf.Sin(angleRad);
+        Vector2Int localPos = new Vector2Int(
+            Mathf.FloorToInt(_worldPos.x * sin + _worldPos.z * cos),
+            Mathf.FloorToInt(_worldPos.z * sin - _worldPos.x * cos)
+        );
+        return localPos;
+    }
+
+    /// <summary>
+    /// 本地坐标转世界坐标
+    /// </summary>
+    /// <param name="_tilePos">本地坐标</param>
+    /// <returns>世界坐标</returns>
+    public Vector3 TilePosToWorldPos(Vector2Int _tilePos)
+    {
+        float angleRad = 45f * Mathf.Deg2Rad;
+        // 计算旋转矩阵的逆变换（逆时针旋转45度的逆是顺时针旋转45度，等价于使用负角度计算）
+        float cos = Mathf.Cos(angleRad);
+        float sin = Mathf.Sin(angleRad);
+
+        // 原函数使用了绝对值，转回时需还原符号（此处默认正向转换，若有坐标系偏移可在此调整）
+        float worldX = _tilePos.x * sin - _tilePos.y * cos;
+        float worldZ = _tilePos.x * cos + _tilePos.y * sin;
+
+        // 返回世界坐标（Y轴可根据实际需求设置，如地形高度）
+        return new Vector3(worldX, 0, worldZ);
     }
 
     #endregion

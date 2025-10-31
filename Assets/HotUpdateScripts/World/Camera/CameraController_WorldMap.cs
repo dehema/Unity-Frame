@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Rain.Core;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using static SettingField;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -51,9 +50,20 @@ public class CameraController_WorldMap : CameraController_Base
         {
             if (sceneChangeParam.sceneID == SceneID.WorldMap)
             {
-                look
+                LookAtTile(WorldMapMgr.Ins.WorldMapData.cityPos, false);
             }
         }
+    }
+
+    /// <summary>
+    /// 看向地块
+    /// </summary>
+    /// <param name="_tilePos"></param>
+    public void LookAtTile(Vector2Int _tilePos, bool _isTween = false)
+    {
+        Vector3 worldPos = WorldMapMgr.Ins.TilePosToWorldPos(_tilePos);
+        SetCameraPosLookAtPos(worldPos, _isTween);
+        WorldMapMgr.Ins.CheckAndLoadAreas();
     }
 
     protected override void LoadConfig()

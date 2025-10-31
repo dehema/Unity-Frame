@@ -192,10 +192,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcd358b894177564d87b4b90523a2166, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  perMapSize: 100
-  totalMapSize: 1000
-  maxLoadedMaps: 9
-  worldMapPrefab: {fileID: 0}
   mapContainer: {fileID: 0}
 --- !u!1 &797334732
 GameObject:
@@ -438,7 +434,7 @@ Transform:
   m_GameObject: {fileID: 1864586214}
   serializedVersion: 2
   m_LocalRotation: {x: 0.42261827, y: 0, z: 0, w: 0.9063079}
-  m_LocalPosition: {x: 0, y: 1000, z: -839.0995}
+  m_LocalPosition: {x: 0, y: 100, z: -839.0995}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -288,9 +288,9 @@ public class CameraController_Base : MonoBehaviour
     /// 重置相机位置，使镜头对准世界原点(0,0,0)
     /// 在保持高度不变的情况下，调整X和Z坐标
     /// </summary>
-    public void ResetCameraToWorldCenter()
+    public void ResetCameraToWorldCenter(bool _isTween)
     {
-        SetCameraPosLookAtPos(Vector3.zero);
+        SetCameraPosLookAtPos(Vector3.zero, _isTween);
     }
 
     /// <summary>
