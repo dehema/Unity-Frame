@@ -12,25 +12,24 @@ public class WorldMapMgr : MonoBehaviour
     public static WorldMapMgr Ins;
 
     [Header("地图设置")]
-    private int perMapSize = 100;       // 单张地图尺寸
-    private int totalMapSize = 1000;    // 总地图尺寸
-    private int maxLoadedMaps = 10000;  // 最大同时加载的地图数量（3x3）
+    private int areaSize = 100;       // 单张地图尺寸
+    private int mapSize = 1000;    // 总地图尺寸
+    private int maxLoadedAreas = 10000;  // 最大同时加载的地图数量（3x3）
     private int currMapLayer = 0;       //当前地图lod层级
 
     [Header("预制体设置")]
-    [SerializeField] private GameObject worldMapPrefab; // 世界地图预制体（worldMap_0_0）
     [SerializeField] private Transform mapContainer; // 地图容器
 
     // 地图管理
     private Dictionary<Vector2Int, GameObject> loadedAreas = new Dictionary<Vector2Int, GameObject>();
-    private Vector2Int currentMapIndex = Vector2Int.zero;
-    private Vector2Int lastVisibleMapRange = Vector2Int.zero; // 上次的可见地图范围
+    private Vector2Int currentAreaIndex = Vector2Int.zero;
+    private Vector2Int lastVisibleAreaRange = Vector2Int.zero; // 上次的可见地图范围
     private int maxMapCount; // 每个轴最大地图数量
 
     private void Awake()
     {
         Ins = this;
-        maxMapCount = totalMapSize / perMapSize;
+        maxMapCount = mapSize / areaSize;
 
         // 创建地图容器
         if (mapContainer == null)
@@ -49,7 +48,7 @@ public class WorldMapMgr : MonoBehaviour
     private void Start()
     {
         // 初始加载中心地图
-        Vector2Int initialRange = CalculateVisibleMapRange();
+        Vector2Int initialRange = CalculateVisibleAreaRange();
         LoadSurroundingAreas(Vector2Int.zero, initialRange);
     }
 
@@ -59,23 +58,27 @@ public class WorldMapMgr : MonoBehaviour
         MsgMgr.Ins.RemoveEventListener(MsgEvent.WorldMap_Camera_Zoom, OnCameraZoom, this);
     }
 
+    #region 相机
     /// <summary>
     /// 相机移动回调
     /// </summary>
     private void OnCameraMove(params object[] obj)
     {
-        CheckAndLoadMaps();
+        CheckAndLoadAreas();
     }
 
     private void OnCameraZoom(params object[] obj)
     {
-        CheckAndLoadMaps();
+        CheckAndLoadAreas();
     }
+    #endregion
+
+    #region 地图
 
     /// <summary>
     /// 检查并加载地图
     /// </summary>
-    private void CheckAndLoadMaps()
+    private void CheckAndLoadAreas()
     {
         if (CameraController_WorldMap.Ins == null || CameraController_WorldMap.Ins.mainCamera == null)
         {
@@ -84,24 +87,27 @@ public class WorldMapMgr : MonoBehaviour
         //相机注视坐标
         Vector3 cameraPos = CameraController_WorldMap.Ins.GetCameraLookPos();
         //计算地图索引
-        Vector2Int newMapIndex = GetAreaIndexFromPosition(cameraPos);
+        Vector2Int newAreaIndex = GetAreaIndexFromPosition(cameraPos);
 
         // 计算相机当前能看到的视野范围
-        Vector2Int visibleMapRange = CalculateVisibleMapRange();
+        Vector2Int visibleAreaRange = CalculateVisibleAreaRange();
 
         // 如果相机移动到了新的地图区域或者缩放级别发生变化
-        if (newMapIndex != currentMapIndex || visibleMapRange != lastVisibleMapRange)
+        if (newAreaIndex != currentAreaIndex || visibleAreaRange != lastVisibleAreaRange)
         {
-            currentMapIndex = newMapIndex;
-            lastVisibleMapRange = visibleMapRange;
+            currentAreaIndex = newAreaIndex;
+            lastVisibleAreaRange = visibleAreaRange;
 
-            // 加载周围的地图
-            LoadSurroundingAreas(currentMapIndex, visibleMapRange);
+            // 加载周围的区域
+            LoadSurroundingAreas(currentAreaIndex, visibleAreaRange);
 
-            // 卸载远离的地图
-            UnloadDistantMaps(currentMapIndex, visibleMapRange);
+            // 卸载远离的区域
+            UnloadDistantAreas(currentAreaIndex, visibleAreaRange);
         }
     }
+    #endregion
+
+    #region 区域
 
     /// <summary>
     /// 根据位置计算区域索引
@@ -109,14 +115,14 @@ public class WorldMapMgr : MonoBehaviour
     public Vector2Int GetAreaIndexFromPosition(Vector3 _worldPos)
     {
         Vector2Int localPos = WorldPosToLocal(_worldPos);
-        Vector2Int index = new Vector2Int(localPos.x / perMapSize, localPos.y / perMapSize);
+        Vector2Int index = new Vector2Int(localPos.x / areaSize, localPos.y / areaSize);
         return index;
     }
 
     /// <summary>
     /// 计算相机当前能看到的视野范围（以地图数量为单位）
     /// </summary>
-    private Vector2Int CalculateVisibleMapRange()
+    private Vector2Int CalculateVisibleAreaRange()
     {
         if (CameraController_WorldMap.Ins == null || CameraController_WorldMap.Ins.mainCamera == null)
         {
@@ -145,8 +151,8 @@ public class WorldMapMgr : MonoBehaviour
 
         // 将世界坐标范围转换为地图数量
         // 由于地图容器旋转了45度，需要考虑这个变换
-        int mapRangeX = Mathf.CeilToInt(effectiveSize / perMapSize);
-        int mapRangeY = Mathf.CeilToInt(effectiveSize / perMapSize);
+        int mapRangeX = Mathf.CeilToInt(effectiveSize / areaSize);
+        int mapRangeY = Mathf.CeilToInt(effectiveSize / areaSize);
 
         // 确保最小范围为1，最大范围不超过总地图数量
         mapRangeX = Mathf.Clamp(mapRangeX, 1, maxMapCount);
@@ -161,7 +167,7 @@ public class WorldMapMgr : MonoBehaviour
     private void LoadSurroundingAreas(Vector2Int centerIndex, Vector2Int visibleRange)
     {
         // 如果当前加载的地图数量已达到上限，先卸载最远的地图
-        if (loadedAreas.Count >= maxLoadedMaps)
+        if (loadedAreas.Count >= maxLoadedAreas)
         {
             UnloadFarthestArea(centerIndex);
         }
@@ -180,12 +186,12 @@ public class WorldMapMgr : MonoBehaviour
         {
             for (int x = startX; x <= endX; x++)
             {
-                Vector2Int mapIndex = new Vector2Int(x, y);
+                Vector2Int areaIndex = new Vector2Int(x, y);
 
                 // 检查是否在总地图范围内
-                if (IsAreaIndexValid(mapIndex))
+                if (IsAreaIndexValid(areaIndex))
                 {
-                    LoadArea(mapIndex);
+                    LoadArea(areaIndex);
                 }
             }
         }
@@ -198,32 +204,32 @@ public class WorldMapMgr : MonoBehaviour
     /// </summary>
     private void UnloadFarthestArea(Vector2Int _centerIndex)
     {
-        Vector2Int farthestMapIndex = Vector2Int.zero;
+        Vector2Int farthestAreaIndex = Vector2Int.zero;
         float maxDistance = 0f;
 
         foreach (var kvp in loadedAreas)
         {
-            Vector2Int mapIndex = kvp.Key;
-            float distance = Vector2Int.Distance(mapIndex, _centerIndex);
+            Vector2Int areaIndex = kvp.Key;
+            float distance = Vector2Int.Distance(areaIndex, _centerIndex);
 
             if (distance > maxDistance)
             {
                 maxDistance = distance;
-                farthestMapIndex = mapIndex;
+                farthestAreaIndex = areaIndex;
             }
         }
 
         if (maxDistance > 0f)
         {
-            UnloadMap(farthestMapIndex);
-            Debug.Log($"卸载最远地图: {farthestMapIndex} 距离: {maxDistance:F2}");
+            UnloadArea(farthestAreaIndex);
+            Debug.Log($"卸载最远地图: {farthestAreaIndex} 距离: {maxDistance:F2}");
         }
     }
 
     /// <summary>
     /// 卸载远离的地图
     /// </summary>
-    private void UnloadDistantMaps(Vector2Int centerIndex, Vector2Int visibleRange)
+    private void UnloadDistantAreas(Vector2Int centerIndex, Vector2Int visibleRange)
     {
         List<Vector2Int> mapsToUnload = new List<Vector2Int>();
 
@@ -239,20 +245,20 @@ public class WorldMapMgr : MonoBehaviour
 
         foreach (var kvp in loadedAreas)
         {
-            Vector2Int mapIndex = kvp.Key;
+            Vector2Int areaIndex = kvp.Key;
 
             // 如果地图不在保留范围内，则卸载
-            if (mapIndex.x < keepStartX || mapIndex.x > keepEndX ||
-                mapIndex.y < keepStartY || mapIndex.y > keepEndY)
+            if (areaIndex.x < keepStartX || areaIndex.x > keepEndX ||
+                areaIndex.y < keepStartY || areaIndex.y > keepEndY)
             {
-                mapsToUnload.Add(mapIndex);
+                mapsToUnload.Add(areaIndex);
             }
         }
 
         // 卸载地图
-        foreach (Vector2Int mapIndex in mapsToUnload)
+        foreach (Vector2Int areaIndex in mapsToUnload)
         {
-            UnloadMap(mapIndex);
+            UnloadArea(areaIndex);
         }
 
         if (mapsToUnload.Count > 0)
@@ -288,7 +294,7 @@ public class WorldMapMgr : MonoBehaviour
         }
 
         // 获取预制体（始终是同一个）
-        GameObject prefab = GetMapPrefab(_areaIndex);
+        GameObject prefab = GetAreaPrefab(_areaIndex);
         if (prefab == null)
         {
             Debug.LogError($"无法获取地图预制体，索引: {_areaIndex}");
@@ -296,7 +302,7 @@ public class WorldMapMgr : MonoBehaviour
         }
 
         // 计算地图位置
-        Vector3 mapPosition = GetMapPosition(_areaIndex);
+        Vector3 mapPosition = GetAreaPosition(_areaIndex);
 
         // 实例化地图
         GameObject mapInstance = Instantiate(prefab, mapContainer);
@@ -312,38 +318,35 @@ public class WorldMapMgr : MonoBehaviour
     }
 
     /// <summary>
-    /// 卸载指定索引的地图
+    /// 卸载指定索引的区域
     /// </summary>
-    private void UnloadMap(Vector2Int mapIndex)
+    private void UnloadArea(Vector2Int _areaIndex)
     {
-        if (loadedAreas.TryGetValue(mapIndex, out GameObject mapInstance))
+        if (loadedAreas.TryGetValue(_areaIndex, out GameObject areaInstance))
         {
-            DestroyImmediate(mapInstance);
-            loadedAreas.Remove(mapIndex);
+            DestroyImmediate(areaInstance);
+            loadedAreas.Remove(_areaIndex);
 
-            Debug.Log($"卸载地图: {mapIndex}");
+            Debug.Log($"卸载地图: {_areaIndex}");
         }
     }
 
     /// <summary>
     /// 根据地图索引获取预制体
     /// </summary>
-    private GameObject GetMapPrefab(Vector2Int mapIndex)
+    private GameObject GetAreaPrefab(Vector2Int _areaIndex)
     {
-        if (worldMapPrefab == null)
-        {
-            worldMapPrefab = Resources.Load<GameObject>("Prefab/WorldMapTile/worldMap_0_0");
-        }
+        GameObject worldMapPrefab = AssetMgr.Ins.Load<GameObject>("worldMap_0_0");
         return worldMapPrefab;
     }
 
     /// <summary>
     /// 根据地图索引计算世界位置
     /// </summary>
-    private Vector3 GetMapPosition(Vector2Int mapIndex)
+    private Vector3 GetAreaPosition(Vector2Int _areaIndex)
     {
-        float x = mapIndex.x * perMapSize;
-        float y = mapIndex.y * perMapSize;
+        float x = _areaIndex.x * areaSize;
+        float y = _areaIndex.y * areaSize;
 
         return new Vector3(y, x, 0);
     }
@@ -372,15 +375,15 @@ public class WorldMapMgr : MonoBehaviour
     /// <summary>
     /// 获取当前地图索引
     /// </summary>
-    public Vector2Int GetCurrentMapIndex()
+    public Vector2Int GetCurrentAreaIndex()
     {
-        return currentMapIndex;
+        return currentAreaIndex;
     }
 
     /// <summary>
     /// 获取当前加载的地图信息
     /// </summary>
-    public Dictionary<Vector2Int, GameObject> GetLoadedMaps()
+    public Dictionary<Vector2Int, GameObject> GetLoadedAreas()
     {
         return new Dictionary<Vector2Int, GameObject>(loadedAreas);
     }
@@ -388,11 +391,14 @@ public class WorldMapMgr : MonoBehaviour
     /// <summary>
     /// 获取当前可见的地图范围
     /// </summary>
-    public Vector2Int GetCurrentVisibleMapRange()
+    public Vector2Int GetCurrentVisibleAreaRange()
     {
-        return lastVisibleMapRange;
+        return lastVisibleAreaRange;
     }
 
+    #endregion
+
+    #region 调试
     /// <summary>
     /// 获取相机视野信息（用于调试）
     /// </summary>
@@ -406,8 +412,9 @@ public class WorldMapMgr : MonoBehaviour
         Camera camera = CameraController_WorldMap.Ins.mainCamera;
         float orthographicSize = camera.orthographicSize;
         float aspectRatio = (float)Screen.width / Screen.height;
-        Vector2Int visibleRange = CalculateVisibleMapRange();
+        Vector2Int visibleRange = CalculateVisibleAreaRange();
 
         return $"相机尺寸: {orthographicSize:F2}, 屏幕比例: {aspectRatio:F2}, 可见地图范围: {visibleRange}, 已加载地图: {loadedAreas.Count}";
     }
+    #endregion
 }

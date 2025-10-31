@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Rain.Core;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using static SettingField;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -17,6 +19,7 @@ public class CameraController_WorldMap : CameraController_Base
     {
         base.Awake();
         Ins = this;
+        MsgMgr.Ins.AddEventListener(MsgEvent.SceneLoaded, OnSceneLoaded, this);
     }
 
     protected override void Start()
@@ -35,6 +38,21 @@ public class CameraController_WorldMap : CameraController_Base
         if (IsCurrentFrameZooming)
         {
             MsgMgr.Ins.DispatchEvent(MsgEvent.WorldMap_Camera_Zoom, mainCamera.orthographicSize);
+        }
+    }
+
+    /// <summary>
+    /// 场景加载
+    /// </summary>
+    private void OnSceneLoaded(object[] param)
+    {
+        SceneChangeParam sceneChangeParam = param.Length > 0 ? param[0] as SceneChangeParam : null;
+        if (sceneChangeParam != null)
+        {
+            if (sceneChangeParam.sceneID == SceneID.WorldMap)
+            {
+                look
+            }
         }
     }
 

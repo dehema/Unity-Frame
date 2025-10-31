@@ -123,7 +123,7 @@ public class CameraController_Base_Editor : Editor
             Vector2Int mapIndex = WorldMapMgr.Ins.GetAreaIndexFromPosition(targetPos);
             EditorGUILayout.LabelField($"注视地图索引: ({mapIndex.x}, {mapIndex.y})", EditorStyles.miniLabel);
 
-            Vector2Int visibleRange = WorldMapMgr.Ins.GetCurrentVisibleMapRange();
+            Vector2Int visibleRange = WorldMapMgr.Ins.GetCurrentVisibleAreaRange();
             EditorGUILayout.LabelField($"可见地图范围: {visibleRange.x}x{visibleRange.y}", EditorStyles.miniLabel);
 
             // 显示相机视野信息
