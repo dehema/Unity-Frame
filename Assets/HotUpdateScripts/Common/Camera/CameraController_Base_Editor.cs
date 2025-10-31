@@ -114,13 +114,13 @@ public class CameraController_Base_Editor : Editor
         // 显示世界地图相关信息
         if (WorldMapMgr.Ins != null)
         {
-            EditorGUILayout.LabelField($"已加载地图数量: {WorldMapMgr.Ins.GetLoadedMapCount()}");
+            EditorGUILayout.LabelField($"已加载地图数量: {WorldMapMgr.Ins.GetLoadedAreaCount()}");
 
             Vector3 targetPos = worldCamera.GetCameraLookPos();
             Vector2Int targetCube = WorldMapMgr.Ins.WorldPosToLocal(targetPos);
             EditorGUILayout.LabelField($"注视地块: ({targetCube.x}, {targetCube.y})", EditorStyles.miniLabel);
 
-            Vector2Int mapIndex = WorldMapMgr.Ins.GetMapIndexFromPosition(targetPos);
+            Vector2Int mapIndex = WorldMapMgr.Ins.GetAreaIndexFromPosition(targetPos);
             EditorGUILayout.LabelField($"注视地图索引: ({mapIndex.x}, {mapIndex.y})", EditorStyles.miniLabel);
 
             Vector2Int visibleRange = WorldMapMgr.Ins.GetCurrentVisibleMapRange();

@@ -32,8 +32,9 @@ public class WorldMapEditor : EditorWindow
     private int objectPickerControlID = 0;
 
     // 地图尺寸相关
-    private int mapWidth = 100;
-    private int mapHeight = 100;
+    private int mapSize = 1000;         //地图的尺寸
+    private int sizePerArea = 100;      //每个区域的尺寸
+    private int areaNumPerDire = 10; //单方向上的地图数量
     private int mapCount = 1;
 
     // 窗口状态
@@ -42,7 +43,8 @@ public class WorldMapEditor : EditorWindow
     [MenuItem("开发工具/世界地图编辑器")]
     public static void ShowWindow()
     {
-        WorldMapEditor window = GetWindow<WorldMapEditor>("世界地图编辑器");
+        // 获取Hierarchy窗口类型并停靠到它旁边
+        WorldMapEditor window = GetWindow<WorldMapEditor>("世界地图编辑器", typeof(EditorWindow).Assembly.GetType("UnityEditor.SceneHierarchyWindow"));
         window.minSize = new Vector2(400, 300);
         window.Show();
     }
@@ -189,10 +191,9 @@ public class WorldMapEditor : EditorWindow
             // 地图尺寸设置
             EditorGUILayout.LabelField("地图尺寸", EditorStyles.boldLabel);
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("宽度:", GUILayout.Width(50));
-            mapWidth = EditorGUILayout.IntField(mapWidth, GUILayout.Width(80));
-            EditorGUILayout.LabelField("高度:", GUILayout.Width(50));
-            mapHeight = EditorGUILayout.IntField(mapHeight, GUILayout.Width(80));
+            EditorGUILayout.LabelField("尺寸:", GUILayout.Width(50));
+            sizePerArea = EditorGUILayout.IntField(sizePerArea, GUILayout.Width(80));
+            areaNumPerDire = mapSize / sizePerArea;
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.BeginHorizontal();
@@ -201,8 +202,7 @@ public class WorldMapEditor : EditorWindow
             EditorGUILayout.EndHorizontal();
 
             // 限制尺寸范围
-            mapWidth = Mathf.Clamp(mapWidth, 1, 1000);
-            mapHeight = Mathf.Clamp(mapHeight, 1, 1000);
+            sizePerArea = Mathf.Clamp(sizePerArea, 1, 200);
             mapCount = Mathf.Clamp(mapCount, 1, 100);
 
             EditorGUILayout.Space(5);
@@ -285,7 +285,7 @@ public class WorldMapEditor : EditorWindow
             {
                 if (defaultTile != null)
                 {
-                    if (EditorUtility.DisplayDialog("确认填充", $"确定要使用默认瓦片填充 {mapWidth}x{mapHeight} 的地图吗？", "确定", "取消"))
+                    if (EditorUtility.DisplayDialog("确认填充", $"确定要使用默认瓦片填充 {sizePerArea}x{sizePerArea} 的地图吗？", "确定", "取消"))
                     {
                         FillMapWithDefaultTile();
                     }
@@ -300,7 +300,7 @@ public class WorldMapEditor : EditorWindow
             {
                 if (defaultTile != null)
                 {
-                    if (EditorUtility.DisplayDialog("确认生成", $"确定要生成 {mapWidth}x{mapHeight} 的随机地图吗？\n随机瓦片比例: {(randomTileRatio * 100):F0}%", "确定", "取消"))
+                    if (EditorUtility.DisplayDialog("确认生成", $"确定要生成 {sizePerArea}x{sizePerArea} 的随机地图吗？\n随机瓦片比例: {(randomTileRatio * 100):F0}%", "确定", "取消"))
                     {
                         GenerateRandomMap();
                     }
@@ -315,7 +315,7 @@ public class WorldMapEditor : EditorWindow
             EditorGUILayout.BeginHorizontal();
             if (GUILayout.Button("创建新地图", GUILayout.Height(30)))
             {
-                if (EditorUtility.DisplayDialog("确认创建", $"确定要创建 {mapWidth}x{mapHeight} 的新地图吗？\n这将清除所有现有瓦片。", "确定", "取消"))
+                if (EditorUtility.DisplayDialog("确认创建", $"确定要创建 {sizePerArea}x{sizePerArea} 的新地图吗？\n这将清除所有现有瓦片。", "确定", "取消"))
                 {
                     CreateNewMap();
                 }
@@ -337,7 +337,7 @@ public class WorldMapEditor : EditorWindow
 
             if (GUILayout.Button("批量创建地图", GUILayout.Height(30)))
             {
-                if (EditorUtility.DisplayDialog("确认批量创建", $"确定要批量创建 {mapCount} 个 {mapWidth}x{mapHeight} 的地图吗？", "确定", "取消"))
+                if (EditorUtility.DisplayDialog("确认批量创建", $"确定要批量创建 {mapCount} 个 {sizePerArea}x{sizePerArea} 的地图吗？", "确定", "取消"))
                 {
                     BatchCreateMaps();
                 }
@@ -509,24 +509,46 @@ public class WorldMapEditor : EditorWindow
         // 尝试使用tilemap的有效范围进行遍历
         BoundsInt bounds = currentTilemap.cellBounds;
 
-        WorldMapConfig mapData = new WorldMapConfig();
-        mapData.sizeWidth = mapWidth;
-        mapData.sizeHeight = mapHeight;
+        WorldMapConfig mapConfig = new WorldMapConfig();
+        mapConfig.MapSize = mapSize;
+        mapConfig.SizePerArea = sizePerArea;
         MapLayer mapLayer = new MapLayer();
-        mapData.layers[0] = mapLayer;
+        mapConfig.Layers[0] = mapLayer;
+        TileArea tileArea = new TileArea();
+        mapConfig.Areas[0] = tileArea;
+
+        // 先收集所有tile数据
+        List<KeyValuePair<int, TileData>> tileList = new List<KeyValuePair<int, TileData>>();
         foreach (var pos in bounds.allPositionsWithin)
         {
             TileBase tile = currentTilemap.GetTile(pos);
             if (tile == null)
                 continue;
+            if (tile == defaultTile)
+                continue;
 
-            string tileName = tile.name;
-            int tileIndex = int.Parse(tileName.Split("_")[1]);
             int posIndex = pos.y + pos.x * 100;
-            TileData tileData = new TileData(posIndex, pos.y, pos.x);
-            mapLayer.tiles[posIndex] = tileData;
+            TileData tileData = new TileData(posIndex);
+            string tileName = tile.name;
+            tileData.Type = int.Parse(tileName.Split("_")[1]);
+            tileList.Add(new KeyValuePair<int, TileData>(posIndex, tileData));
         }
-        string json = JsonConvert.SerializeObject(mapData);
+
+        // 根据index排序后从小到大进行赋值
+        tileList.Sort((a, b) => a.Key.CompareTo(b.Key));
+        foreach (var kvp in tileList)
+        {
+            tileArea.Tiles[kvp.Key] = kvp.Value;
+        }
+        for (int y = 0; y < areaNumPerDire; y++)
+        {
+            for (int x = 0; x < areaNumPerDire; x++)
+            {
+                int index = y * areaNumPerDire + x;
+                mapLayer.Areas[index] = 0;
+            }
+        }
+        string json = JsonConvert.SerializeObject(mapConfig);
         File.WriteAllText("Assets/RainFramework/Resources/WorldMapConfig.json", json);
     }
 
@@ -544,9 +566,9 @@ public class WorldMapEditor : EditorWindow
         Undo.RegisterCompleteObjectUndo(currentTilemap, "Fill Map With Default Tile");
 
         // 从0开始填充整个地图区域
-        for (int x = 0; x < mapWidth; x++)
+        for (int x = 0; x < sizePerArea; x++)
         {
-            for (int y = 0; y < mapHeight; y++)
+            for (int y = 0; y < sizePerArea; y++)
             {
                 Vector3Int position = new Vector3Int(x, y, 0);
                 currentTilemap.SetTile(position, defaultTile);
@@ -556,7 +578,7 @@ public class WorldMapEditor : EditorWindow
 
         RefreshTileDisplay();
 
-        Debug.Log($"已使用默认瓦片填充 {mapWidth}x{mapHeight} 的地图");
+        Debug.Log($"已使用默认瓦片填充 {sizePerArea}x{sizePerArea} 的地图");
     }
 
     /// <summary>
@@ -585,7 +607,7 @@ public class WorldMapEditor : EditorWindow
             RefreshTileDisplay();
         }
 
-        Debug.Log($"已创建 {mapWidth}x{mapHeight} 的新地图");
+        Debug.Log($"已创建 {sizePerArea}x{sizePerArea} 的新地图");
     }
 
     /// <summary>
@@ -663,9 +685,9 @@ public class WorldMapEditor : EditorWindow
             // 复制当前地图的所有瓦片到目标地图
             if (defaultTile != null)
             {
-                for (int x = 0; x < mapWidth; x++)
+                for (int x = 0; x < sizePerArea; x++)
                 {
-                    for (int y = 0; y < mapHeight; y++)
+                    for (int y = 0; y < sizePerArea; y++)
                     {
                         Vector3Int position = new Vector3Int(x, y, 0);
                         targetTilemap.SetTile(position, defaultTile);
@@ -761,23 +783,23 @@ public class WorldMapEditor : EditorWindow
         Undo.RegisterCompleteObjectUndo(currentTilemap, "Generate Random Map");
 
         // 计算随机瓦片数量
-        int totalTiles = mapWidth * mapHeight;
+        int totalTiles = sizePerArea * sizePerArea;
         int randomTileCount = Mathf.RoundToInt(totalTiles * randomTileRatio);
 
         // 创建位置列表用于随机选择
         List<Vector3Int> allPositions = new List<Vector3Int>();
-        for (int x = 0; x < mapWidth; x++)
+        for (int x = 0; x < sizePerArea; x++)
         {
-            for (int y = 0; y < mapHeight; y++)
+            for (int y = 0; y < sizePerArea; y++)
             {
                 allPositions.Add(new Vector3Int(x, y, 0));
             }
         }
 
         // 先填充默认瓦片
-        for (int x = 0; x < mapWidth; x++)
+        for (int x = 0; x < sizePerArea; x++)
         {
-            for (int y = 0; y < mapHeight; y++)
+            for (int y = 0; y < sizePerArea; y++)
             {
                 Vector3Int position = new Vector3Int(x, y, 0);
                 currentTilemap.SetTile(position, defaultTile);
@@ -808,7 +830,7 @@ public class WorldMapEditor : EditorWindow
 
         RefreshTileDisplay();
 
-        Debug.Log($"已生成 {mapWidth}x{mapHeight} 的随机地图，随机瓦片比例: {(randomTileRatio * 100):F0}%");
+        Debug.Log($"已生成 {sizePerArea}x{sizePerArea} 的随机地图，随机瓦片比例: {(randomTileRatio * 100):F0}%");
     }
 
     /// <summary>

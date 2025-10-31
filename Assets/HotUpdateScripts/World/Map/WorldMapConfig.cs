@@ -1,44 +1,51 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>Õû¸öµØÍ¼Êı¾İ</summary>
+/// <summary>æ•´ä¸ªåœ°å›¾æ•°æ®</summary>
 [Serializable]
 public class WorldMapConfig
 {
-    public Dictionary<int, MapLayer> layers = new Dictionary<int, MapLayer>();    // Í¼²ãÁĞ±í
-    public int sizeWidth;                                       // µØÍ¼³ß´ç
-    public int sizeHeight;                                       // µØÍ¼³ß´ç
+    public int MapSize;                                                             // æ¯ä¸ªåŒºåŸŸçš„å°ºå¯¸
+    public int SizePerArea;                                                         // å•æ–¹å‘ä¸Šçš„åœ°å›¾æ•°é‡
+    public Dictionary<int, MapLayer> Layers = new Dictionary<int, MapLayer>();      // å›¾å±‚åˆ—è¡¨
+    public Dictionary<int, TileArea> Areas = new Dictionary<int, TileArea>();       // å›¾å±‚åˆ—è¡¨
 }
 
-/// <summary>µ¥¸öÍ¼²ãÊı¾İ</summary>
+/// <summary>å•ä¸ªå›¾å±‚æ•°æ®</summary>
 [Serializable]
 public class MapLayer
 {
-    public int defaultTileIndex = 4;                            //Í¼²ãÄ¬ÈÏÍßÆ¬ID
-    public Dictionary<int, TileData> tiles = new Dictionary<int, TileData>();     // ÍßÆ¬ÁĞ±í£¨Ï¡Êè´æ´¢£©
+    public Dictionary<int, int> Areas = new Dictionary<int, int>();   //åŒºåŸŸæ•°æ®
 }
 
-/// <summary>µ¥¸öÍßÆ¬Êı¾İ£¨½öº¬±ØÒªĞÅÏ¢£©</summary>
+/// <summary>å•ä¸ªç“¦ç‰‡æ•°æ®ï¼ˆä»…å«å¿…è¦ä¿¡æ¯ï¼‰</summary>
+[Serializable]
+public class TileArea
+{
+    public int DefaultTile = 4;
+    public Dictionary<int, TileData> Tiles = new Dictionary<int, TileData>();   // ç“¦ç‰‡åˆ—è¡¨ï¼ˆç¨€ç–å­˜å‚¨ï¼‰
+}
+
+/// <summary>å•ä¸ªç“¦ç‰‡æ•°æ®</summary>
 [Serializable]
 public class TileData
 {
-    public int index;   // ÍßÆ¬Ë÷Òı
-    public int x;       // Íø¸ñX×ø±ê
-    public int y;       // Íø¸ñY×ø±ê
+    public int Index;   // ç“¦ç‰‡ç´¢å¼•
+    public int Type;    // ç“¦ç‰‡ç´¢å¼•
 
     public TileData() { }
-    public TileData(int _index, int _x, int _y) { index = _index; x = _x; y = _y; }
+    public TileData(int _index) { Index = _index; }
 }
 
 /// <summary>
-/// ÍßÆ¬ÀàĞÍ
+/// ç“¦ç‰‡ç±»å‹
 /// </summary>
 public enum TileUnitType
 {
-    Tree = 0,       //Ê÷
-    Water = 1,      //Ë®
-    Sea = 2,        //º£Ñó
-    mountain = 3,   //É½
-    plain = 4,      //²İÔ­
+    Tree = 0,       //æ ‘
+    Water = 1,      //æ°´
+    Sea = 2,        //æµ·æ´‹
+    mountain = 3,   //å±±
+    plain = 4,      //è‰åŸ
 }
